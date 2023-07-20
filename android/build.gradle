@@ -1,0 +1,83 @@
+import java.security.MessageDigest
+class Checksum {
+    static getChecksum(file, type) {
+        def digest = MessageDigest.getInstance(type)
+        def inputStream = file.newInputStream()
+        def buffer = new byte[16384]
+        def len
+
+        while((len=inputStream.read(buffer)) > 0) {
+            digest.update(buffer, 0, len)
+        }
+
+        def result = ""
+        for(byte b : digest.digest()) {
+            result += toHex(b)
+        }
+        return result
+    }
+    private static hexChr(int b) {
+        return Integer.toHexString(b & 0xF)
+    }
+    private static toHex(int b) {
+        return hexChr((b & 0xF0) >> 4) + hexChr(b & 0x0F)
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+android {
+    compileSdkVersion safeExtGet('compileSdkVersion', 33)
+    buildToolsVersion = "30.0.2"
+
+    defaultConfig {
+        minSdkVersion safeExtGet('minSdkVersion', 21)
+        targetSdkVersion safeExtGet('targetSdkVersion', 33)
+        versionCode 1
+        versionName "1.0.0"
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+def urlAAR = { name, url, sha1Expected ->
+    File file = new File("$buildDir/download/${name}.aar")
+    file.parentFile.mkdirs()
+    if (!file.exists()) {
+        new URL(url).withInputStream { downloadStream ->
+            file.withOutputStream { fileOut ->
+                fileOut << downloadStream
+            }
+        }
+    }
+
+    def sha1sum = Checksum.getChecksum(file, "SHA1")
+    if (sha1sum != sha1Expected) {
+        file.delete()
+        println "URL($name): $url"
+        println "sha1 expected: $sha1Expected"
+        println "sha1 actual: $sha1sum"
+        throw new Error("AAR file SHA1 mismatch: " + name)
+    }
+
+    files(file.absolutePath)
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${safeExtGet('kotlinVersion', '1.8.0')}")
+    implementation 'com.facebook.react:react-native:+'
+
+    releaseImplementation urlAAR('onecore-release', 'http://localhost:9800/onecore-release.aar', '758eb624fd418ad0810cc3d57a7f7b2e907fb588')
+    debugImplementation urlAAR('onecore-debug', 'http://localhost:9800/onecore-debug.aar', 'cd5bbfc18db3cfb5378a88b7ac2320e0af871b8b')
+    api 'net.java.dev.jna:jna:5.13.0@aar'
+}
