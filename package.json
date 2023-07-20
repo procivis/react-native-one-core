@@ -1,0 +1,33 @@
+{
+  "name": "react-native-one-core",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Pavel Zarecky <zarecky@procivis.ch> (https://procivis.ch)",
+  "license": "UNLICENSED",
+  "description": "ONE core bindings for React Native",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": [
+    "react-native",
+    "one-core"
+  ],
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "android",
+    "ios",
+    "react-native-one-core.podspec"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "babel-jest": "^29.5.0",
+    "jest": "^29.5.0"
+  }
+}
