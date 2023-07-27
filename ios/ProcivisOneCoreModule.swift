@@ -15,26 +15,63 @@ class ProcivisOneCoreModule: NSObject {
     func getVersion(
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
-            let version = core.version();
-            resolve([
-                "target": version.target,
-                "buildTime": version.buildTime,
-                "branch": version.branch,
-                "tag": version.tag,
-                "commit": version.commit,
-                "rustVersion": version.rustVersion,
-                "pipelineId": version.pipelineId
-            ]);
-        }
-    
-    @objc(createOrg:rejecter:)
-    func createOrg(
-        resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock) {
-            do {
-                resolve(try core.createOrg());
-            } catch {
-                reject("createOrg", "createOrg error: \(error).", error);
+            asyncCall(resolve, reject) {
+                let version = core.version();
+                return [
+                    "target": version.target,
+                    "buildTime": version.buildTime,
+                    "branch": version.branch,
+                    "tag": version.tag,
+                    "commit": version.commit,
+                    "rustVersion": version.rustVersion,
+                    "pipelineId": version.pipelineId
+                ]
             }
         }
+    
+    @objc(handleInvitation:resolver:rejecter:)
+    func handleInvitation(
+        url: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try core.handleInvitation(url: url);
+                return [
+                    "issuedCredentialId": result.issuedCredentialId
+                ]
+            }
+        }
+    
+    @objc(getCredentials:rejecter:)
+    func getCredentials(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try core.getCredentials();
+                return result.map { (credential: Credential) in [
+                    "id": credential.id,
+                    "createdDate": credential.createdDate,
+                    "issuanceDate": credential.issuanceDate,
+                    "lastModified": credential.lastModified,
+                    "issuerDid": credential.issuerDid,
+                    "state": serializeEnumValue(value: credential.state),
+                    "claims": credential.claims.map { (claim: Claim) in [
+                        "id": claim.id,
+                        "key": claim.key,
+                        "dataType": serializeEnumValue(value: claim.dataType),
+                        "value": claim.value,
+                    ] },
+                    "schema": [
+                        "id": credential.schema.id,
+                        "createdDate": credential.schema.createdDate,
+                        "lastModified": credential.schema.lastModified,
+                        "name": credential.schema.name,
+                        "organisationId": credential.schema.organisationId,
+                        "format": serializeEnumValue(value: credential.schema.format),
+                        "revocationMethod": serializeEnumValue(value: credential.schema.revocationMethod),
+                    ],
+                ] }
+            }
+        }
+    
 }
