@@ -4,12 +4,10 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.ReadableArray
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 
 object Util {
     // error handling
-    fun <T> asyncCall(promise: Promise, function: () -> T) {
+    fun asyncCall(promise: Promise, function: () -> Any?) {
         try {
             promise.resolve(function())
         } catch (error: Throwable) {
@@ -22,73 +20,90 @@ object Util {
     }
 
     // generic object parsing
-    fun <T> convertObjectDataClass(input: T): ReadableMap {
-        return convertJsonObjectNode(convertDataClassToJson(input))
+    fun convertToRN(input: Any?): Any? {
+        val (type, value) = getRNType(input)
+        return when (type) {
+            RNType.MAP -> value?.let { convertObject(it) }
+            RNType.ARRAY -> convertArray(input as Collection<*>)
+            else -> throw IllegalArgumentException("Invalid conversion: $input")
+        }
     }
 
-    fun <T> convertArrayDataClass(input: Collection<T>): ReadableArray {
-        return convertJsonArrayNode(convertDataClassToJson(input))
+    private enum class RNType {
+        MAP,
+        ARRAY,
+        NULL,
+        INT,
+        DOUBLE,
+        BOOLEAN,
+        STRING
     }
 
-    private fun <T> convertDataClassToJson(input: T): JsonNode {
-        val mapper = ObjectMapper()
-        val json = mapper.writeValueAsString(input)
-        return mapper.readTree(json)
-    }
-
-    private fun convertJsonObjectNode(input: JsonNode): ReadableMap {
-        if (!input.isObject) {
-            throw Exception("Not an object node")
+    private fun getRNType(input: Any?): Pair<RNType, *> {
+        if (input == null) {
+            return Pair(RNType.NULL, null)
         }
 
-        val result = Arguments.createMap()
-        input.fields().forEach { field ->
-            val key = field.key
-            val value = field.value
+        val type = input!!.javaClass
 
-            if (value.isArray) {
-                result.putArray(key, convertJsonArrayNode(value))
-            } else if (value.isObject) {
-                result.putMap(key, convertJsonObjectNode(value))
-            } else if (value.isNull) {
-                result.putNull(key)
-            } else if (value.isBoolean) {
-                result.putBoolean(key, value.asBoolean())
-            } else if (value.isIntegralNumber && value.canConvertToInt()) {
-                result.putInt(key, value.asInt())
-            } else if (value.isNumber) {
-                result.putDouble(key, value.asDouble())
-            } else {
-                result.putString(key, value.asText())
+        if (Collection::class.java.isAssignableFrom(type)) {
+            return Pair(RNType.ARRAY, input as Collection<*>)
+        } else if (type.isEnum) {
+            return Pair(RNType.STRING, (input as Enum<*>).name)
+        } else if (type == Boolean::class.java || type == java.lang.Boolean::class.java) {
+            return Pair(RNType.BOOLEAN, input as Boolean)
+        } else if (type == String::class.java || type == java.lang.String::class.java) {
+            return Pair(RNType.STRING, input as String)
+        } else if (type == Int::class.java || type == java.lang.Integer::class.java) {
+            return Pair(RNType.INT, input as Int)
+        } else if (type == Byte::class.java || type == java.lang.Byte::class.java) {
+            return Pair(RNType.INT, (input as Byte).toInt())
+        } else if (type == Short::class.java || type == java.lang.Short::class.java) {
+            return Pair(RNType.INT, (input as Short).toInt())
+        } else if (type == Long::class.java || type == java.lang.Long::class.java) {
+            return Pair(RNType.DOUBLE, (input as Long).toDouble())
+        } else if (type == Float::class.java || type == java.lang.Float::class.java) {
+            return Pair(RNType.DOUBLE, (input as Float).toDouble())
+        } else if (type == Double::class.java || type == java.lang.Double::class.java) {
+            return Pair(RNType.DOUBLE, input as Double)
+        } else if (type == Char::class.java || type == java.lang.Character::class.java) {
+            return Pair(RNType.STRING, (input as Char).toString())
+        } else {
+            return Pair(RNType.MAP, input)
+        }
+    }
+
+    private fun convertObject(input: Any): ReadableMap {
+        val result = Arguments.createMap()
+        input.javaClass.declaredFields.forEach { field ->
+            val name = field.name
+            field.isAccessible = true
+            val (type, value) = getRNType(field.get(input))
+            when (type) {
+                RNType.MAP -> result.putMap(name, value?.let { convertObject(it) })
+                RNType.ARRAY -> result.putArray(name, convertArray(value as Collection<*>))
+                RNType.NULL -> result.putNull(name)
+                RNType.INT -> result.putInt(name, value as Int)
+                RNType.DOUBLE -> result.putDouble(name, value as Double)
+                RNType.BOOLEAN -> result.putBoolean(name, value as Boolean)
+                RNType.STRING -> result.putString(name, value as String)
             }
         }
         return result
     }
 
-    private fun convertJsonArrayNode(input: JsonNode): ReadableArray {
-        if (!input.isArray) {
-            throw Exception("Not an array node")
-        }
-
+    private fun convertArray(input: Collection<*>): ReadableArray {
         val result = Arguments.createArray()
-        val size = input.size()
-        for (n in 0 until size) {
-            val item = input.get(n)
-
-            if (item.isArray) {
-                result.pushArray(convertJsonArrayNode(item))
-            } else if (item.isObject) {
-                result.pushMap(convertJsonObjectNode(item))
-            } else if (item.isNull) {
-                result.pushNull()
-            } else if (item.isBoolean) {
-                result.pushBoolean(item.asBoolean())
-            } else if (item.isIntegralNumber && item.canConvertToInt()) {
-                result.pushInt(item.asInt())
-            } else if (item.isNumber) {
-                result.pushDouble(item.asDouble())
-            } else {
-                result.pushString(item.asText())
+        input.forEach { item ->
+            val (type, value) = getRNType(item)
+            when (type) {
+                RNType.MAP -> result.pushMap(value?.let { convertObject(it) })
+                RNType.ARRAY -> result.pushArray(convertArray(value as Collection<*>))
+                RNType.NULL -> result.pushNull()
+                RNType.INT -> result.pushInt(value as Int)
+                RNType.DOUBLE -> result.pushDouble(value as Double)
+                RNType.BOOLEAN -> result.pushBoolean(value as Boolean)
+                RNType.STRING -> result.pushString(value as String)
             }
         }
         return result
