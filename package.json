@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "prepare": "husky install",
+    "postinstall": "if [ -e node_modules/husky ]; then husky install; fi",
     "test": "jest"
   },
   "peerDependencies": {
