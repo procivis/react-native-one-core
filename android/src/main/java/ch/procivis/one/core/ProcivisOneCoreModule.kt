@@ -21,7 +21,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun getVersion(promise: Promise) {
         Util.asyncCall(promise) {
             val version = oneCore.version()
-            return@asyncCall Util.convertObjectDataClass(version)
+            return@asyncCall Util.convertToRN(version)
         }
     }
 
@@ -29,7 +29,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun handleInvitation(url: String, promise: Promise) {
         Util.asyncCall(promise) {
             val invitationResult = oneCore.handleInvitation(url)
-            return@asyncCall Util.convertObjectDataClass(invitationResult)
+            return@asyncCall Util.convertToRN(invitationResult)
         }
     }
 
@@ -37,7 +37,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun getCredentials(promise: Promise) {
         Util.asyncCall(promise) {
             val credentials = oneCore.getCredentials()
-            return@asyncCall Util.convertArrayDataClass(credentials)
+            return@asyncCall Util.convertToRN(credentials)
         }
     }
 }
