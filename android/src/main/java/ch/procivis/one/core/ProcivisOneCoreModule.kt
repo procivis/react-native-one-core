@@ -26,6 +26,20 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun createOrganisation(uuid: String?, promise: Promise) {
+        Util.asyncCall(promise) {
+            return@asyncCall oneCore.createOrganisation(uuid)
+        }
+    }
+
+    @ReactMethod
+    fun createLocalDid(did: String, organisationId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            return@asyncCall oneCore.createLocalDid(did, organisationId)
+        }
+    }
+
+    @ReactMethod
     fun handleInvitation(url: String, promise: Promise) {
         Util.asyncCall(promise) {
             val invitationResult = oneCore.handleInvitation(url)
