@@ -29,6 +29,27 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
+    @objc(createOrganisation:resolver:rejecter:)
+    func createOrganisation(
+        uuid: String?,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                return try core.createOrganisation(uuid: uuid);
+            }
+        }
+    
+    @objc(createLocalDid:organisationId:resolver:rejecter:)
+    func createLocalDid(
+        did: String,
+        organisationId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                return try core.createLocalDid(did: did, organisationId: organisationId);
+            }
+        }
+    
     @objc(handleInvitation:resolver:rejecter:)
     func handleInvitation(
         url: String,
