@@ -60,10 +60,35 @@ export interface Credential {
     claims: Claim[];
     schema: CredentialSchema;
 }
-interface ONECore {
+export interface ONECore {
+    getVersion(): Promise<Version>;
+    createOrganisation(uuid: string | undefined): Promise<string>;
+    createLocalDid(did: string, organisationId: string): Promise<string>;
     handleInvitation(url: string): Promise<InvitationResult>;
     getCredentials(): Promise<Credential[]>;
-    getVersion(): Promise<Version>;
+}
+export declare enum OneErrorCode {
+    DataLayerError = "DataLayerError",
+    SSIError = "SSIError",
+    FormatterError = "FormatterError",
+    GeneralRuntimeError = "GeneralRuntimeError",
+    AlreadyExists = "AlreadyExists",
+    IncorrectParameters = "IncorrectParameters",
+    RecordNotFound = "RecordNotFound",
+    RecordNotUpdated = "RecordNotUpdated",
+    Other = "Other"
+}
+/**
+ * Specific errors being throw from the {@link ONECore} functions
+ */
+export declare class OneError extends Error {
+    readonly code: OneErrorCode;
+    readonly cause: unknown;
+    constructor(params: {
+        code: OneErrorCode;
+        cause: unknown;
+        message?: string;
+    });
 }
 declare const rnONE: ONECore;
 export default rnONE;
