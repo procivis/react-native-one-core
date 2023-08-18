@@ -9,7 +9,7 @@ import Foundation
 @objc(ProcivisOneCoreModule)
 class ProcivisOneCoreModule: NSObject {
     private static let TAG = "ProcivisOneCoreModule";
-    private let core = initializeCore(dataDirPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!);
+    private let core = try! initializeCore(dataDirPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!);
     
     @objc(getVersion:rejecter:)
     func getVersion(
@@ -17,15 +17,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let version = core.version();
-                return [
-                    "target": version.target,
-                    "buildTime": version.buildTime,
-                    "branch": version.branch,
-                    "tag": version.tag,
-                    "commit": version.commit,
-                    "rustVersion": version.rustVersion,
-                    "pipelineId": version.pipelineId
-                ]
+                return serialize(version: version)
             }
         }
     
@@ -57,9 +49,39 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let result = try core.handleInvitation(url: url);
-                return [
-                    "issuedCredentialId": result.issuedCredentialId
-                ]
+                
+                switch(result) {
+                case let .invitationResponseCredentialIssuance(issuedCredentialId):
+                    return [
+                        "issuedCredentialId": issuedCredentialId
+                    ] as NSDictionary;
+                    
+                case let .invitationResponseProofRequest(proofRequest):
+                    return [
+                        "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) }
+                    ] as NSDictionary;
+                }
+            }
+        }
+    
+    @objc(holderRejectProof:rejecter:)
+    func rejectProof(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try core.holderRejectProof();
+                return nil as NSDictionary?;
+            }
+        }
+    
+    @objc(holderSubmitProof:resolver:rejecter:)
+    func submitProof(
+        credentialIds: [String],
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try core.holderSubmitProof(credentialIds: credentialIds);
+                return nil as NSDictionary?;
             }
         }
     
@@ -69,29 +91,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let result = try core.getCredentials();
-                return result.map { (credential: Credential) in [
-                    "id": credential.id,
-                    "createdDate": credential.createdDate,
-                    "issuanceDate": credential.issuanceDate,
-                    "lastModified": credential.lastModified,
-                    "issuerDid": credential.issuerDid,
-                    "state": serializeEnumValue(value: credential.state),
-                    "claims": credential.claims.map { (claim: Claim) in [
-                        "id": claim.id,
-                        "key": claim.key,
-                        "dataType": serializeEnumValue(value: claim.dataType),
-                        "value": claim.value,
-                    ] },
-                    "schema": [
-                        "id": credential.schema.id,
-                        "createdDate": credential.schema.createdDate,
-                        "lastModified": credential.schema.lastModified,
-                        "name": credential.schema.name,
-                        "organisationId": credential.schema.organisationId,
-                        "format": serializeEnumValue(value: credential.schema.format),
-                        "revocationMethod": serializeEnumValue(value: credential.schema.revocationMethod),
-                    ],
-                ] }
+                return result.map { serialize(credential: $0) }
             }
         }
     

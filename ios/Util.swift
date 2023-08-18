@@ -7,19 +7,6 @@
 
 import Foundation
 
-// Enum values serialization
-func serializeEnumValue<T>(value: T) -> String {
-    return String(describing: value).snakeCased()
-}
-
-private let snakeCaseRegex = try! NSRegularExpression(pattern: "([a-z0-9])([A-Z])", options: [])
-extension String {
-    func snakeCased() -> String {
-        let range = NSRange(location: 0, length: count)
-        return snakeCaseRegex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$1_$2").uppercased()
-    }
-}
-
 // Error handling
 func asyncCall<Result>(_ resolve: @escaping RCTPromiseResolveBlock,
                        _ reject: @escaping RCTPromiseRejectBlock, _ function: () throws -> Result) {
