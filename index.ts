@@ -35,12 +35,6 @@ export enum CredentialFormat {
   MDOC = "MDOC",
 }
 
-export enum ClaimDataType {
-  STRING = "STRING",
-  DATE = "DATE",
-  NUMBER = "NUMBER",
-}
-
 export interface CredentialSchema {
   id: string;
   createdDate: string;
@@ -54,7 +48,7 @@ export interface CredentialSchema {
 export interface Claim {
   id: string;
   key: string;
-  dataType: ClaimDataType;
+  dataType: string;
   value: string;
 }
 
@@ -74,7 +68,7 @@ export interface ProofRequestClaim {
   createdDate: string;
   lastModified: string;
   key: string;
-  dataType: ClaimDataType;
+  dataType: string;
   required: boolean;
   credentialSchema: CredentialSchema;
 }
@@ -113,6 +107,7 @@ export enum OneErrorCode {
   GeneralRuntimeError = "GeneralRuntimeError",
   AlreadyExists = "AlreadyExists",
   IncorrectParameters = "IncorrectParameters",
+  DatatypeValidationError = "DatatypeValidationError",
   RecordNotFound = "RecordNotFound",
   RecordNotUpdated = "RecordNotUpdated",
   Other = "Other",
