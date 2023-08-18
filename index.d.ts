@@ -27,11 +27,6 @@ export declare enum CredentialFormat {
     JSON_LD = "JSON_LD",
     MDOC = "MDOC"
 }
-export declare enum ClaimDataType {
-    STRING = "STRING",
-    DATE = "DATE",
-    NUMBER = "NUMBER"
-}
 export interface CredentialSchema {
     id: string;
     createdDate: string;
@@ -44,7 +39,7 @@ export interface CredentialSchema {
 export interface Claim {
     id: string;
     key: string;
-    dataType: ClaimDataType;
+    dataType: string;
     value: string;
 }
 export interface Credential {
@@ -62,7 +57,7 @@ export interface ProofRequestClaim {
     createdDate: string;
     lastModified: string;
     key: string;
-    dataType: ClaimDataType;
+    dataType: string;
     required: boolean;
     credentialSchema: CredentialSchema;
 }
@@ -89,6 +84,7 @@ export declare enum OneErrorCode {
     GeneralRuntimeError = "GeneralRuntimeError",
     AlreadyExists = "AlreadyExists",
     IncorrectParameters = "IncorrectParameters",
+    DatatypeValidationError = "DatatypeValidationError",
     RecordNotFound = "RecordNotFound",
     RecordNotUpdated = "RecordNotUpdated",
     Other = "Other"
