@@ -4,6 +4,8 @@ import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.ReadableArray
+import uniffi.one_core.HandleInvitationResponse
 
 class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -43,7 +45,32 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun handleInvitation(url: String, promise: Promise) {
         Util.asyncCall(promise) {
             val invitationResult = oneCore.handleInvitation(url)
-            return@asyncCall Util.convertToRN(invitationResult)
+            return@asyncCall Util.convertToRN(
+                when (invitationResult) {
+                    is HandleInvitationResponse.InvitationResponseCredentialIssuance -> invitationResult
+                    is HandleInvitationResponse.InvitationResponseProofRequest -> invitationResult.proofRequest
+                }
+            )
+        }
+    }
+
+    @ReactMethod
+    fun holderRejectProof(promise: Promise) {
+        Util.asyncCall(promise) {
+            oneCore.holderRejectProof()
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun holderSubmitProof(credentialIds: ReadableArray, promise: Promise) {
+        Util.asyncCall(promise) {
+            val list = mutableListOf<String>()
+            for (n in 0 until credentialIds.size()) {
+                list.add(credentialIds.getString(n))
+            }
+            oneCore.holderSubmitProof(list)
+            return@asyncCall null
         }
     }
 
