@@ -12,10 +12,6 @@ export interface Version {
   pipelineId: string;
 }
 
-export interface InvitationResult {
-  issuedCredentialId: string;
-}
-
 export enum CredentialState {
   CREATED = "CREATED",
   PENDING = "PENDING",
@@ -73,11 +69,35 @@ export interface Credential {
   schema: CredentialSchema;
 }
 
+export interface ProofRequestClaim {
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  key: string;
+  dataType: ClaimDataType;
+  required: boolean;
+  credentialSchema: CredentialSchema;
+}
+
+export interface InvitationResultCredentialIssuance {
+  issuedCredentialId: string;
+}
+
+export interface InvitationResultProofRequest {
+  claims: ProofRequestClaim[];
+}
+
+export type InvitationResult =
+  | InvitationResultCredentialIssuance
+  | InvitationResultProofRequest;
+
 export interface ONECore {
   getVersion(): Promise<Version>;
   createOrganisation(uuid: string | undefined): Promise<string>;
   createLocalDid(did: string, organisationId: string): Promise<string>;
   handleInvitation(url: string): Promise<InvitationResult>;
+  holderRejectProof(): Promise<void>;
+  holderSubmitProof(credentialIds: string[]): Promise<void>;
   getCredentials(): Promise<Credential[]>;
 }
 
@@ -87,7 +107,7 @@ export interface ONECore {
 export enum OneErrorCode {
   // OneCoreError
   DataLayerError = "DataLayerError",
-  SSIError = "SSIError",
+  SsiError = "SsiError",
   FormatterError = "FormatterError",
   // DataLayerError
   GeneralRuntimeError = "GeneralRuntimeError",
@@ -128,7 +148,7 @@ function wrapFn<Fn extends (...args: any[]) => Promise<any>>(
         throw new OneError({
           code,
           cause,
-          message: cause.message,
+          message: cause?.message,
         });
       } else {
         throw cause;

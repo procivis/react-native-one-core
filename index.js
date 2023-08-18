@@ -35,7 +35,7 @@ export var OneErrorCode;
 (function (OneErrorCode) {
     // OneCoreError
     OneErrorCode["DataLayerError"] = "DataLayerError";
-    OneErrorCode["SSIError"] = "SSIError";
+    OneErrorCode["SsiError"] = "SsiError";
     OneErrorCode["FormatterError"] = "FormatterError";
     // DataLayerError
     OneErrorCode["GeneralRuntimeError"] = "GeneralRuntimeError";
@@ -66,7 +66,7 @@ function wrapFn(fn, name) {
                 throw new OneError({
                     code,
                     cause,
-                    message: cause.message,
+                    message: cause?.message,
                 });
             }
             else {
