@@ -49,7 +49,7 @@ func serialize(claim: Claim) -> NSDictionary {
     return [
         "id": claim.id,
         "key": claim.key,
-        "dataType": serializeEnumValue(value: claim.dataType),
+        "dataType": claim.dataType,
         "value": claim.value,
     ]
 }
@@ -73,7 +73,7 @@ func serialize(proofRequestClaim: ProofRequestClaim) -> NSDictionary {
         "createdDate": proofRequestClaim.createdDate,
         "lastModified": proofRequestClaim.lastModified,
         "key": proofRequestClaim.key,
-        "dataType": serializeEnumValue(value: proofRequestClaim.dataType),
+        "dataType": proofRequestClaim.dataType,
         "required": proofRequestClaim.required,
         "credentialSchema": serialize(credentialSchema: proofRequestClaim.credentialSchema),
     ]

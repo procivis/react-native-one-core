@@ -23,12 +23,6 @@ export var CredentialFormat;
     CredentialFormat["JSON_LD"] = "JSON_LD";
     CredentialFormat["MDOC"] = "MDOC";
 })(CredentialFormat || (CredentialFormat = {}));
-export var ClaimDataType;
-(function (ClaimDataType) {
-    ClaimDataType["STRING"] = "STRING";
-    ClaimDataType["DATE"] = "DATE";
-    ClaimDataType["NUMBER"] = "NUMBER";
-})(ClaimDataType || (ClaimDataType = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;
@@ -41,6 +35,7 @@ export var OneErrorCode;
     OneErrorCode["GeneralRuntimeError"] = "GeneralRuntimeError";
     OneErrorCode["AlreadyExists"] = "AlreadyExists";
     OneErrorCode["IncorrectParameters"] = "IncorrectParameters";
+    OneErrorCode["DatatypeValidationError"] = "DatatypeValidationError";
     OneErrorCode["RecordNotFound"] = "RecordNotFound";
     OneErrorCode["RecordNotUpdated"] = "RecordNotUpdated";
     OneErrorCode["Other"] = "Other";
