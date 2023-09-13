@@ -42,21 +42,22 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(handleInvitation:resolver:rejecter:)
+    @objc(handleInvitation:didId:resolver:rejecter:)
     func handleInvitation(
         url: String,
+        didId: String,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try core.handleInvitation(url: url);
+                let result = try core.handleInvitation(url: url, didId: didId);
                 
                 switch(result) {
-                case let .invitationResponseCredentialIssuance(issuedCredentialId):
+                case let .credentialIssuance(issuedCredentialId):
                     return [
                         "issuedCredentialId": issuedCredentialId
                     ] as NSDictionary;
                     
-                case let .invitationResponseProofRequest(proofRequest):
+                case let .proofRequest(proofRequest):
                     return [
                         "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) }
                     ] as NSDictionary;
@@ -85,13 +86,29 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(getCredentials:rejecter:)
+    @objc(getCredentials:resolver:rejecter:)
     func getCredentials(
+        query: NSDictionary,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try core.getCredentials();
-                return result.map { serialize(credential: $0) }
+                let listQuery = ListQueryBindingDto (
+                    page: query.value(forKey: "page") as! UInt32,
+                    pageSize: query.value(forKey: "pageSize") as! UInt32,
+                    organisationId: query.value(forKey: "organisationId") as! String)
+                let result = try core.getCredentials(query: listQuery);
+                return serialize(credentialList: result)
+            }
+        }
+    
+    @objc(getCredential:resolver:rejecter:)
+    func getCredential(
+        credentialId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try core.getCredential(credentialId: credentialId);
+                return serialize(credentialDetail: result)
             }
         }
     
