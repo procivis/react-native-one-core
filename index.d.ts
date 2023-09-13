@@ -7,7 +7,7 @@ export interface Version {
     rustVersion: string;
     pipelineId: string;
 }
-export declare enum CredentialState {
+export declare enum CredentialStateEnum {
     CREATED = "CREATED",
     PENDING = "PENDING",
     OFFERED = "OFFERED",
@@ -16,25 +16,13 @@ export declare enum CredentialState {
     REVOKED = "REVOKED",
     ERROR = "ERROR"
 }
-export declare enum RevocationMethod {
-    NONE = "NONE",
-    STATUS_LIST2021 = "STATUS_LIST2021",
-    LVVC = "LVVC"
-}
-export declare enum CredentialFormat {
-    JWT = "JWT",
-    SD_JWT = "SD_JWT",
-    JSON_LD = "JSON_LD",
-    MDOC = "MDOC"
-}
 export interface CredentialSchema {
     id: string;
     createdDate: string;
     lastModified: string;
     name: string;
-    organisationId: string;
-    format: CredentialFormat;
-    revocationMethod: RevocationMethod;
+    format: string;
+    revocationMethod: string;
 }
 export interface Claim {
     id: string;
@@ -42,15 +30,17 @@ export interface Claim {
     dataType: string;
     value: string;
 }
-export interface Credential {
+export interface CredentialListItem {
     id: string;
     createdDate: string;
     issuanceDate: string;
     lastModified: string;
     issuerDid?: string | null;
-    state: CredentialState;
-    claims: Claim[];
+    state: CredentialStateEnum;
     schema: CredentialSchema;
+}
+export interface CredentialDetail extends CredentialListItem {
+    claims: Claim[];
 }
 export interface ProofRequestClaim {
     id: string;
@@ -60,6 +50,16 @@ export interface ProofRequestClaim {
     dataType: string;
     required: boolean;
     credentialSchema: CredentialSchema;
+}
+export interface ListQuery {
+    page: number;
+    pageSize: number;
+    organisationId: string;
+}
+export interface ItemList<Item> {
+    totalItems: number;
+    totalPages: number;
+    values: Item[];
 }
 export interface InvitationResultCredentialIssuance {
     issuedCredentialId: string;
@@ -72,21 +72,23 @@ export interface ONECore {
     getVersion(): Promise<Version>;
     createOrganisation(uuid: string | undefined): Promise<string>;
     createLocalDid(did: string, organisationId: string): Promise<string>;
-    handleInvitation(url: string): Promise<InvitationResult>;
+    handleInvitation(url: string, didId: string): Promise<InvitationResult>;
     holderRejectProof(): Promise<void>;
     holderSubmitProof(credentialIds: string[]): Promise<void>;
-    getCredentials(): Promise<Credential[]>;
+    getCredentials(query: ListQuery): Promise<ItemList<CredentialListItem>>;
+    getCredential(credentialId: string): Promise<CredentialDetail>;
 }
 export declare enum OneErrorCode {
-    DataLayerError = "DataLayerError",
-    SsiError = "SsiError",
-    FormatterError = "FormatterError",
     GeneralRuntimeError = "GeneralRuntimeError",
+    MappingError = "MappingError",
     AlreadyExists = "AlreadyExists",
     IncorrectParameters = "IncorrectParameters",
-    DatatypeValidationError = "DatatypeValidationError",
-    RecordNotFound = "RecordNotFound",
-    RecordNotUpdated = "RecordNotUpdated",
+    NotFound = "NotFound",
+    NotUpdated = "NotUpdated",
+    ValidationError = "ValidationError",
+    ConfigValidationError = "ConfigValidationError",
+    TransportProtocolError = "TransportProtocolError",
+    FormatterError = "FormatterError",
     Other = "Other"
 }
 /**
