@@ -27,6 +27,7 @@ RCT_EXTERN_METHOD(createLocalDid:(NSString *)did
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(handleInvitation:(NSString *)url
+                  didId:(NSString *)didId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -37,7 +38,12 @@ RCT_EXTERN_METHOD(holderSubmitProof:(NSArray *)credentialIds
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getCredentials:(RCTPromiseResolveBlock)resolve
+RCT_EXTERN_METHOD(getCredentials:(NSDictionary *)query
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getCredential:(NSString *)credentialId
+                  resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 @end

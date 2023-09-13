@@ -5,7 +5,9 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
-import uniffi.one_core.HandleInvitationResponse
+import com.facebook.react.bridge.ReadableMap
+import uniffi.one_core.HandleInvitationResponseBindingEnum
+import uniffi.one_core.ListQueryBindingDto
 
 class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -13,7 +15,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     override fun getName() = "ProcivisOneCoreModule"
 
-    private val oneCore: uniffi.one_core.OneCoreInterface
+    private val oneCore: uniffi.one_core.OneCoreBindingInterface
 
     init {
         oneCore = uniffi.one_core.initializeCore(this.reactApplicationContext.filesDir.absolutePath)
@@ -42,13 +44,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun handleInvitation(url: String, promise: Promise) {
+    fun handleInvitation(url: String, holderDidId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val invitationResult = oneCore.handleInvitation(url)
+            val invitationResult = oneCore.handleInvitation(url, holderDidId)
             return@asyncCall Util.convertToRN(
                 when (invitationResult) {
-                    is HandleInvitationResponse.InvitationResponseCredentialIssuance -> invitationResult
-                    is HandleInvitationResponse.InvitationResponseProofRequest -> invitationResult.proofRequest
+                    is HandleInvitationResponseBindingEnum.CredentialIssuance -> invitationResult
+                    is HandleInvitationResponseBindingEnum.ProofRequest -> invitationResult.proofRequest
                 }
             )
         }
@@ -75,10 +77,24 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getCredentials(promise: Promise) {
+    fun getCredentials(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val credentials = oneCore.getCredentials()
+            val listQuery = ListQueryBindingDto(
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                query.getString("organisationId").toString()
+            )
+
+            val credentials = oneCore.getCredentials(listQuery)
             return@asyncCall Util.convertToRN(credentials)
+        }
+    }
+
+    @ReactMethod
+    fun getCredential(credentialId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val credential = oneCore.getCredential(credentialId)
+            return@asyncCall Util.convertToRN(credential)
         }
     }
 }

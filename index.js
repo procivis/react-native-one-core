@@ -1,43 +1,30 @@
 import { NativeModules } from "react-native";
 const ONE = NativeModules.ProcivisOneCoreModule;
-export var CredentialState;
-(function (CredentialState) {
-    CredentialState["CREATED"] = "CREATED";
-    CredentialState["PENDING"] = "PENDING";
-    CredentialState["OFFERED"] = "OFFERED";
-    CredentialState["ACCEPTED"] = "ACCEPTED";
-    CredentialState["REJECTED"] = "REJECTED";
-    CredentialState["REVOKED"] = "REVOKED";
-    CredentialState["ERROR"] = "ERROR";
-})(CredentialState || (CredentialState = {}));
-export var RevocationMethod;
-(function (RevocationMethod) {
-    RevocationMethod["NONE"] = "NONE";
-    RevocationMethod["STATUS_LIST2021"] = "STATUS_LIST2021";
-    RevocationMethod["LVVC"] = "LVVC";
-})(RevocationMethod || (RevocationMethod = {}));
-export var CredentialFormat;
-(function (CredentialFormat) {
-    CredentialFormat["JWT"] = "JWT";
-    CredentialFormat["SD_JWT"] = "SD_JWT";
-    CredentialFormat["JSON_LD"] = "JSON_LD";
-    CredentialFormat["MDOC"] = "MDOC";
-})(CredentialFormat || (CredentialFormat = {}));
+export var CredentialStateEnum;
+(function (CredentialStateEnum) {
+    CredentialStateEnum["CREATED"] = "CREATED";
+    CredentialStateEnum["PENDING"] = "PENDING";
+    CredentialStateEnum["OFFERED"] = "OFFERED";
+    CredentialStateEnum["ACCEPTED"] = "ACCEPTED";
+    CredentialStateEnum["REJECTED"] = "REJECTED";
+    CredentialStateEnum["REVOKED"] = "REVOKED";
+    CredentialStateEnum["ERROR"] = "ERROR";
+})(CredentialStateEnum || (CredentialStateEnum = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;
 (function (OneErrorCode) {
-    // OneCoreError
-    OneErrorCode["DataLayerError"] = "DataLayerError";
-    OneErrorCode["SsiError"] = "SsiError";
-    OneErrorCode["FormatterError"] = "FormatterError";
-    // DataLayerError
+    // ServiceError
     OneErrorCode["GeneralRuntimeError"] = "GeneralRuntimeError";
+    OneErrorCode["MappingError"] = "MappingError";
     OneErrorCode["AlreadyExists"] = "AlreadyExists";
     OneErrorCode["IncorrectParameters"] = "IncorrectParameters";
-    OneErrorCode["DatatypeValidationError"] = "DatatypeValidationError";
-    OneErrorCode["RecordNotFound"] = "RecordNotFound";
-    OneErrorCode["RecordNotUpdated"] = "RecordNotUpdated";
+    OneErrorCode["NotFound"] = "NotFound";
+    OneErrorCode["NotUpdated"] = "NotUpdated";
+    OneErrorCode["ValidationError"] = "ValidationError";
+    OneErrorCode["ConfigValidationError"] = "ConfigValidationError";
+    OneErrorCode["TransportProtocolError"] = "TransportProtocolError";
+    OneErrorCode["FormatterError"] = "FormatterError";
     OneErrorCode["Other"] = "Other";
 })(OneErrorCode || (OneErrorCode = {}));
 /**

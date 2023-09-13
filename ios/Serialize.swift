@@ -21,7 +21,7 @@ extension String {
 }
 
 // Business objects serialization
-func serialize(version: Version) -> NSDictionary {
+func serialize(version: VersionBindingDto) -> NSDictionary {
     return [
         "target": version.target,
         "buildTime": version.buildTime,
@@ -33,19 +33,18 @@ func serialize(version: Version) -> NSDictionary {
     ]
 }
 
-func serialize(credentialSchema: CredentialSchema) -> NSDictionary {
+func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
     return [
         "id": credentialSchema.id,
         "createdDate": credentialSchema.createdDate,
         "lastModified": credentialSchema.lastModified,
         "name": credentialSchema.name,
-        "organisationId": credentialSchema.organisationId,
-        "format": serializeEnumValue(value: credentialSchema.format),
-        "revocationMethod": serializeEnumValue(value: credentialSchema.revocationMethod),
+        "format": credentialSchema.format,
+        "revocationMethod": credentialSchema.revocationMethod,
     ]
 }
 
-func serialize(claim: Claim) -> NSDictionary {
+func serialize(claim: ClaimBindingDto) -> NSDictionary {
     return [
         "id": claim.id,
         "key": claim.key,
@@ -54,20 +53,40 @@ func serialize(claim: Claim) -> NSDictionary {
     ]
 }
 
-func serialize(credential: Credential) -> NSDictionary {
+func serialize(credentialListItem: CredentialListItemBindingDto) -> NSDictionary {
     return [
-        "id": credential.id,
-        "createdDate": credential.createdDate,
-        "issuanceDate": credential.issuanceDate,
-        "lastModified": credential.lastModified,
-        "issuerDid": credential.issuerDid,
-        "state": serializeEnumValue(value: credential.state),
-        "claims": credential.claims.map { serialize(claim: $0) },
-        "schema": serialize(credentialSchema: credential.schema),
+        "id": credentialListItem.id,
+        "createdDate": credentialListItem.createdDate,
+        "issuanceDate": credentialListItem.issuanceDate,
+        "lastModified": credentialListItem.lastModified,
+        "issuerDid": credentialListItem.issuerDid,
+        "state": serializeEnumValue(value: credentialListItem.state),
+        "schema": serialize(credentialSchema: credentialListItem.schema),
     ]
 }
 
-func serialize(proofRequestClaim: ProofRequestClaim) -> NSDictionary {
+func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
+    return [
+        "id": credentialDetail.id,
+        "createdDate": credentialDetail.createdDate,
+        "issuanceDate": credentialDetail.issuanceDate,
+        "lastModified": credentialDetail.lastModified,
+        "issuerDid": credentialDetail.issuerDid,
+        "state": serializeEnumValue(value: credentialDetail.state),
+        "claims": credentialDetail.claims.map { serialize(claim: $0) },
+        "schema": serialize(credentialSchema: credentialDetail.schema),
+    ]
+}
+
+func serialize(credentialList: CredentialListBindingDto) -> NSDictionary {
+    return [
+        "totalItems": credentialList.totalItems,
+        "totalPages": credentialList.totalPages,
+        "values": credentialList.values.map { serialize(credentialListItem: $0) },
+    ]
+}
+
+func serialize(proofRequestClaim: ProofRequestClaimBindingDto) -> NSDictionary {
     return [
         "id": proofRequestClaim.id,
         "createdDate": proofRequestClaim.createdDate,
