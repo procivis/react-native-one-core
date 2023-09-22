@@ -75,11 +75,13 @@ export interface ItemList<Item> {
 }
 
 export interface InvitationResultCredentialIssuance {
-  issuedCredentialId: string;
+  interactionId: string;
+  credentials: CredentialDetail[];
 }
 
 export interface InvitationResultProofRequest {
   claims: ProofRequestClaim[];
+  verifierDid: string;
 }
 
 export type InvitationResult =
@@ -91,6 +93,8 @@ export interface ONECore {
   createOrganisation(uuid: string | undefined): Promise<string>;
   createLocalDid(did: string, organisationId: string): Promise<string>;
   handleInvitation(url: string, didId: string): Promise<InvitationResult>;
+  holderAcceptCredential(interactionId: string): Promise<void>;
+  holderRejectCredential(interactionId: string): Promise<void>;
   holderRejectProof(): Promise<void>;
   holderSubmitProof(credentialIds: string[]): Promise<void>;
   getCredentials(query: ListQuery): Promise<ItemList<CredentialListItem>>;
