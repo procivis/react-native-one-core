@@ -57,6 +57,22 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun holderAcceptCredential(interactionId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            oneCore.holderAcceptCredential(interactionId)
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun holderRejectCredential(interactionId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            oneCore.holderRejectCredential(interactionId)
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun holderRejectProof(promise: Promise) {
         Util.asyncCall(promise) {
             oneCore.holderRejectProof()

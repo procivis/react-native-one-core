@@ -52,16 +52,40 @@ class ProcivisOneCoreModule: NSObject {
                 let result = try core.handleInvitation(url: url, didId: didId);
                 
                 switch(result) {
-                case let .credentialIssuance(issuedCredentialId):
+                case let .credentialIssuance(interactionId, credentials):
                     return [
-                        "issuedCredentialId": issuedCredentialId
+                        "interactionId": interactionId,
+                        "credentials": credentials.map { serialize(credentialDetail: $0) }
                     ] as NSDictionary;
                     
                 case let .proofRequest(proofRequest):
                     return [
-                        "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) }
+                        "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) },
+                        "verifierDid": proofRequest.verifierDid
                     ] as NSDictionary;
                 }
+            }
+        }
+    
+    @objc(holderAcceptCredential:resolver:rejecter:)
+    func holderAcceptCredential(
+        interactionId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try core.holderAcceptCredential(interactionId: interactionId);
+                return nil as NSDictionary?;
+            }
+        }
+    
+    @objc(holderRejectCredential:resolver:rejecter:)
+    func holderRejectCredential(
+        interactionId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try core.holderRejectCredential(interactionId: interactionId);
+                return nil as NSDictionary?;
             }
         }
     
