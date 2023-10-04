@@ -4,6 +4,7 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.WritableMap
 
 object Util {
     // error handling
@@ -75,21 +76,31 @@ object Util {
 
     private fun convertObject(input: Any): ReadableMap {
         val result = Arguments.createMap()
-        input.javaClass.declaredFields.forEach { field ->
-            val name = field.name
-            field.isAccessible = true
-            val (type, value) = getRNType(field.get(input))
-            when (type) {
-                RNType.MAP -> result.putMap(name, value?.let { convertObject(it) })
-                RNType.ARRAY -> result.putArray(name, convertArray(value as Collection<*>))
-                RNType.NULL -> result.putNull(name)
-                RNType.INT -> result.putInt(name, value as Int)
-                RNType.DOUBLE -> result.putDouble(name, value as Double)
-                RNType.BOOLEAN -> result.putBoolean(name, value as Boolean)
-                RNType.STRING -> result.putString(name, value as String)
+
+        if (input is Map<*, *>) {
+            input.forEach { entry ->
+                convertObjectItem(result, entry.key.toString(), entry.value)
+            }
+        } else {
+            input.javaClass.declaredFields.forEach { field ->
+                field.isAccessible = true
+                convertObjectItem(result, field.name, field.get(input))
             }
         }
         return result
+    }
+
+    private fun convertObjectItem(map: WritableMap, itemName: String, itemValue: Any?) {
+        val (type, value) = getRNType(itemValue)
+        when (type) {
+            RNType.MAP -> map.putMap(itemName, value?.let { convertObject(it) })
+            RNType.ARRAY -> map.putArray(itemName, convertArray(value as Collection<*>))
+            RNType.NULL -> map.putNull(itemName)
+            RNType.INT -> map.putInt(itemName, value as Int)
+            RNType.DOUBLE -> map.putDouble(itemName, value as Double)
+            RNType.BOOLEAN -> map.putBoolean(itemName, value as Boolean)
+            RNType.STRING -> map.putString(itemName, value as String)
+        }
     }
 
     private fun convertArray(input: Collection<*>): ReadableArray {

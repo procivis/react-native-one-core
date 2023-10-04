@@ -52,16 +52,16 @@ class ProcivisOneCoreModule: NSObject {
                 let result = try core.handleInvitation(url: url, didId: didId);
                 
                 switch(result) {
-                case let .credentialIssuance(interactionId, credentials):
+                case let .credentialIssuance(interactionId, credentialIds):
                     return [
                         "interactionId": interactionId,
-                        "credentials": credentials.map { serialize(credentialDetail: $0) }
+                        "credentialIds": credentialIds
                     ] as NSDictionary;
                     
-                case let .proofRequest(proofRequest):
+                case let .proofRequest(interactionId, proofId):
                     return [
-                        "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) },
-                        "verifierDid": proofRequest.verifierDid
+                        "interactionId": interactionId,
+                        "proofId": proofId
                     ] as NSDictionary;
                 }
             }
@@ -89,23 +89,48 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(holderRejectProof:rejecter:)
-    func rejectProof(
+    @objc(getPresentationDefinition:resolver:rejecter:)
+    func getPresentationDefinition(
+        proofId: String,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try core.holderRejectProof();
+                let result = try core.getPresentationDefintion(proofId: proofId);
+                return serialize(presentationDefinition: result)
+            }
+        }
+    
+    @objc(holderRejectProof:resolver:rejecter:)
+    func rejectProof(
+        interactionId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try core.holderRejectProof(interactionId: interactionId);
                 return nil as NSDictionary?;
             }
         }
     
-    @objc(holderSubmitProof:resolver:rejecter:)
+    @objc(holderSubmitProof:credentials:resolver:rejecter:)
     func submitProof(
-        credentialIds: [String],
+        interactionId: String,
+        credentials: NSDictionary,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try core.holderSubmitProof(credentialIds: credentialIds);
+                var submitCredentials: [String: PresentationSubmitCredentialRequestBindingDto] = [:];
+                credentials.allKeys.forEach {
+                    let key = $0 as! String;
+                    let entry = credentials.value(forKey: key) as! NSDictionary;
+                    let claims = entry.value(forKey: "submitClaims") as! NSArray;
+                    var submitClaims: [String] = [];
+                    claims.forEach { claim in
+                        submitClaims.append(claim as! String);
+                    }
+                    submitCredentials[key] = PresentationSubmitCredentialRequestBindingDto (credentialId:  entry.value(forKey: "credentialId") as! String, submitClaims: submitClaims);
+                }
+                
+                try core.holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials);
                 return nil as NSDictionary?;
             }
         }
@@ -136,4 +161,14 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
+    @objc(getProof:resolver:rejecter:)
+    func getProof(
+        proofId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try core.getProof(proofId: proofId);
+                return serialize(proofRequest: result)
+            }
+        }
 }

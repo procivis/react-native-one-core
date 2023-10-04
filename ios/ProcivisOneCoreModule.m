@@ -39,10 +39,16 @@ RCT_EXTERN_METHOD(holderRejectCredential:(NSString *)interactionId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(holderRejectProof:(RCTPromiseResolveBlock)resolve
+RCT_EXTERN_METHOD(getPresentationDefinition:(NSString *)proofId
+                  resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(holderSubmitProof:(NSArray *)credentialIds
+RCT_EXTERN_METHOD(holderRejectProof:(NSString *)interactionId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(holderSubmitProof:(NSString *)interactionId
+                  credentials:(NSDictionary *)credentials
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -51,6 +57,10 @@ RCT_EXTERN_METHOD(getCredentials:(NSDictionary *)query
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getCredential:(NSString *)credentialId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getProof:(NSString *)proofId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
