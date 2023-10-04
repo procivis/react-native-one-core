@@ -86,14 +86,68 @@ func serialize(credentialList: CredentialListBindingDto) -> NSDictionary {
     ]
 }
 
+func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
+    return [
+        "id": proofRequest.id,
+        "createdDate": proofRequest.createdDate,
+        "lastModified": proofRequest.lastModified,
+        "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) },
+        "verifierDid": proofRequest.verifierDid,
+        "transport": proofRequest.transport,
+    ]
+}
+
 func serialize(proofRequestClaim: ProofRequestClaimBindingDto) -> NSDictionary {
     return [
         "id": proofRequestClaim.id,
-        "createdDate": proofRequestClaim.createdDate,
-        "lastModified": proofRequestClaim.lastModified,
         "key": proofRequestClaim.key,
         "dataType": proofRequestClaim.dataType,
         "required": proofRequestClaim.required,
         "credentialSchema": serialize(credentialSchema: proofRequestClaim.credentialSchema),
+    ]
+}
+
+func serialize(presentationDefinition: PresentationDefinitionBindingDto) -> NSDictionary {
+    return [
+        "requestGroups": presentationDefinition.requestGroups.map { serialize(presentationDefinitionRequestGroup: $0) },
+    ]
+}
+
+func serialize(presentationDefinitionRequestGroup: PresentationDefinitionRequestGroupBindingDto) -> NSDictionary {
+    return [
+        "id": presentationDefinitionRequestGroup.id,
+        "name": presentationDefinitionRequestGroup.name,
+        "purpose": presentationDefinitionRequestGroup.purpose,
+        "rule": serialize(presentationDefinitionRule: presentationDefinitionRequestGroup.rule),
+        "requestedCredentials": presentationDefinitionRequestGroup.requestedCredentials.map { serialize(presentationDefinitionRequestedCredential: $0) },
+    ]
+}
+
+func serialize(presentationDefinitionRequestedCredential: PresentationDefinitionRequestedCredentialBindingDto) -> NSDictionary {
+    return [
+        "id": presentationDefinitionRequestedCredential.id,
+        "name": presentationDefinitionRequestedCredential.name,
+        "purpose": presentationDefinitionRequestedCredential.purpose,
+        "fields": presentationDefinitionRequestedCredential.fields.map { serialize(presentationDefinitionField: $0) },
+        "applicableCredentials": presentationDefinitionRequestedCredential.applicableCredentials,
+    ]
+}
+
+func serialize(presentationDefinitionField: PresentationDefinitionFieldBindingDto) -> NSDictionary {
+    return [
+        "id": presentationDefinitionField.id,
+        "name": presentationDefinitionField.name,
+        "purpose": presentationDefinitionField.purpose,
+        "required": presentationDefinitionField.required,
+        "keyMap": presentationDefinitionField.keyMap,
+    ]
+}
+
+func serialize(presentationDefinitionRule: PresentationDefinitionRuleBindingDto) -> NSDictionary {
+    return [
+        "type": serializeEnumValue(value: presentationDefinitionRule.type),
+        "min": presentationDefinitionRule.min,
+        "max": presentationDefinitionRule.max,
+        "count": presentationDefinitionRule.count,
     ]
 }

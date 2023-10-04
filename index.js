@@ -10,6 +10,11 @@ export var CredentialStateEnum;
     CredentialStateEnum["REVOKED"] = "REVOKED";
     CredentialStateEnum["ERROR"] = "ERROR";
 })(CredentialStateEnum || (CredentialStateEnum = {}));
+export var PresentationDefinitionRuleTypeEnum;
+(function (PresentationDefinitionRuleTypeEnum) {
+    PresentationDefinitionRuleTypeEnum["ALL"] = "ALL";
+    PresentationDefinitionRuleTypeEnum["PICK"] = "PICK";
+})(PresentationDefinitionRuleTypeEnum || (PresentationDefinitionRuleTypeEnum = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;

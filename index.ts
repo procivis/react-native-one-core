@@ -52,10 +52,17 @@ export interface CredentialDetail extends CredentialListItem {
   claims: Claim[];
 }
 
-export interface ProofRequestClaim {
+export interface ProofDetail {
   id: string;
   createdDate: string;
   lastModified: string;
+  claims: ProofRequestClaim[];
+  verifierDid: string;
+  transport: string;
+}
+
+export interface ProofRequestClaim {
+  id: string;
   key: string;
   dataType: string;
   required: boolean;
@@ -76,29 +83,92 @@ export interface ItemList<Item> {
 
 export interface InvitationResultCredentialIssuance {
   interactionId: string;
-  credentials: CredentialDetail[];
+  credentialIds: Array<CredentialListItem["id"]>;
 }
 
 export interface InvitationResultProofRequest {
-  claims: ProofRequestClaim[];
-  verifierDid: string;
+  interactionId: string;
+  proofId: ProofDetail["id"];
 }
 
 export type InvitationResult =
   | InvitationResultCredentialIssuance
   | InvitationResultProofRequest;
 
+export interface PresentationDefinition {
+  requestGroups: PresentationDefinitionRequestGroup[];
+}
+
+export interface PresentationDefinitionRequestGroup {
+  id: string;
+  name?: string | null;
+  purpose?: string | null;
+  rule: PresentationDefinitionRule;
+  requestedCredentials: PresentationDefinitionRequestedCredential[];
+}
+
+export interface PresentationDefinitionRule {
+  type: PresentationDefinitionRuleTypeEnum;
+  min?: number | null;
+  max?: number | null;
+  count?: number | null;
+}
+
+export enum PresentationDefinitionRuleTypeEnum {
+  ALL = "ALL",
+  PICK = "PICK",
+}
+
+export interface PresentationDefinitionRequestedCredential {
+  id: string;
+  name?: string | null;
+  purpose?: string | null;
+  fields: PresentationDefinitionField[];
+  applicableCredentials: Array<CredentialListItem["id"]>;
+}
+
+export interface PresentationDefinitionField {
+  id: string;
+  name?: string | null;
+  purpose?: string | null;
+  required: boolean;
+  keyMap: Record<string, string>;
+}
+
+export interface PresentationSubmitCredentialRequest {
+  credentialId: CredentialListItem["id"];
+  submitClaims: Array<PresentationDefinitionField["id"]>;
+}
+
 export interface ONECore {
   getVersion(): Promise<Version>;
   createOrganisation(uuid: string | undefined): Promise<string>;
   createLocalDid(did: string, organisationId: string): Promise<string>;
   handleInvitation(url: string, didId: string): Promise<InvitationResult>;
-  holderAcceptCredential(interactionId: string): Promise<void>;
-  holderRejectCredential(interactionId: string): Promise<void>;
-  holderRejectProof(): Promise<void>;
-  holderSubmitProof(credentialIds: string[]): Promise<void>;
+  holderAcceptCredential(
+    interactionId: InvitationResultCredentialIssuance["interactionId"]
+  ): Promise<void>;
+  holderRejectCredential(
+    interactionId: InvitationResultCredentialIssuance["interactionId"]
+  ): Promise<void>;
+  getPresentationDefinition(
+    proofId: ProofDetail["id"]
+  ): Promise<PresentationDefinition>;
+  holderRejectProof(
+    interactionId: InvitationResultProofRequest["interactionId"]
+  ): Promise<void>;
+  holderSubmitProof(
+    interactionId: InvitationResultProofRequest["interactionId"],
+    credentials: Record<
+      PresentationDefinitionRequestedCredential["id"],
+      PresentationSubmitCredentialRequest
+    >
+  ): Promise<void>;
   getCredentials(query: ListQuery): Promise<ItemList<CredentialListItem>>;
-  getCredential(credentialId: string): Promise<CredentialDetail>;
+  getCredential(
+    credentialId: CredentialListItem["id"]
+  ): Promise<CredentialDetail>;
+  getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
 }
 
 // Function call arguments/Error transformation
