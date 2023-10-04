@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import uniffi.one_core.HandleInvitationResponseBindingEnum
 import uniffi.one_core.ListQueryBindingDto
+import uniffi.one_core.PresentationSubmitCredentialRequestBindingDto
 
 class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -50,7 +51,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             return@asyncCall Util.convertToRN(
                 when (invitationResult) {
                     is HandleInvitationResponseBindingEnum.CredentialIssuance -> invitationResult
-                    is HandleInvitationResponseBindingEnum.ProofRequest -> invitationResult.proofRequest
+                    is HandleInvitationResponseBindingEnum.ProofRequest -> invitationResult
                 }
             )
         }
@@ -73,21 +74,41 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun holderRejectProof(promise: Promise) {
+    fun getPresentationDefinition(proofId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            oneCore.holderRejectProof()
+            val presentationDefinition = oneCore.getPresentationDefintion(proofId)
+            return@asyncCall Util.convertToRN(presentationDefinition)
+        }
+    }
+
+    @ReactMethod
+    fun holderRejectProof(interactionId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            oneCore.holderRejectProof(interactionId)
             return@asyncCall null
         }
     }
 
     @ReactMethod
-    fun holderSubmitProof(credentialIds: ReadableArray, promise: Promise) {
+    fun holderSubmitProof(interactionId: String, credentials: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val list = mutableListOf<String>()
-            for (n in 0 until credentialIds.size()) {
-                list.add(credentialIds.getString(n))
+            val submitCredentials =
+                mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
+            for (entry in credentials.entryIterator) {
+                val credential = entry.value as ReadableMap
+
+                val submitClaims = credential.getArray("submitClaims") as ReadableArray
+                val claims = mutableListOf<String>()
+                for (n in 0 until submitClaims.size()) {
+                    claims.add(submitClaims.getString(n))
+                }
+
+                submitCredentials[entry.key] = PresentationSubmitCredentialRequestBindingDto(
+                    credential.getString("credentialId").toString(),
+                    claims
+                )
             }
-            oneCore.holderSubmitProof(list)
+            oneCore.holderSubmitProof(interactionId, submitCredentials)
             return@asyncCall null
         }
     }
@@ -111,6 +132,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         Util.asyncCall(promise) {
             val credential = oneCore.getCredential(credentialId)
             return@asyncCall Util.convertToRN(credential)
+        }
+    }
+
+    @ReactMethod
+    fun getProof(proofId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val proof = oneCore.getProof(proofId)
+            return@asyncCall Util.convertToRN(proof)
         }
     }
 }
