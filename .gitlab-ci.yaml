@@ -1,0 +1,39 @@
+image: node:18.16.0-alpine
+
+variables:
+  NODE_OPTIONS: --max_old_space_size=1536
+  DOCKER_DRIVER: overlay2
+
+
+stages:
+  - prepare
+  - build
+
+
+.modules_setup:
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules/
+  before_script:
+    - apk add --update --no-cache --virtual .build-deps alpine-sdk libc6-compat gcompat
+    - yarn global add node-gyp @mapbox/node-pre-gyp --network-concurrency 1
+    - yarn install --frozen-lockfile --network-concurrency 1
+
+
+build_deps:
+  stage: prepare
+  extends:
+    - .modules_setup
+  script:
+    - ''
+
+
+build:
+  stage: build
+  extends:
+    - .modules_setup
+  script:
+    - yarn compile
