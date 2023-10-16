@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		339DE1342A4EB17E00F68DE2 /* one_core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339DE1332A4EB17E00F68DE2 /* one_core.swift */; };
 		339E6C092A7265970085D7EE /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339E6C082A7265970085D7EE /* Util.swift */; };
 		33A474252A86532B00C94287 /* Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A474242A86532B00C94287 /* Serialize.swift */; };
+		33AFE82E2ADD59F000137FCD /* Deserialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AFE82D2ADD59F000137FCD /* Deserialize.swift */; };
 		33F2711B292F97400090E4DB /* ProcivisOneCoreModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F27119292F97400090E4DB /* ProcivisOneCoreModule.m */; };
 		33F2711C292F97400090E4DB /* ProcivisOneCoreModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F2711A292F97400090E4DB /* ProcivisOneCoreModule.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		339DE1332A4EB17E00F68DE2 /* one_core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = one_core.swift; sourceTree = "<group>"; };
 		339E6C082A7265970085D7EE /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		33A474242A86532B00C94287 /* Serialize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialize.swift; sourceTree = "<group>"; };
+		33AFE82D2ADD59F000137FCD /* Deserialize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deserialize.swift; sourceTree = "<group>"; };
 		33F27119292F97400090E4DB /* ProcivisOneCoreModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProcivisOneCoreModule.m; sourceTree = "<group>"; };
 		33F2711A292F97400090E4DB /* ProcivisOneCoreModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcivisOneCoreModule.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,6 +68,7 @@
 				339DE1332A4EB17E00F68DE2 /* one_core.swift */,
 				33F2711A292F97400090E4DB /* ProcivisOneCoreModule.swift */,
 				339E6C082A7265970085D7EE /* Util.swift */,
+				33AFE82D2ADD59F000137FCD /* Deserialize.swift */,
 				33A474242A86532B00C94287 /* Serialize.swift */,
 				1542F7E72832BE9B005D3C06 /* react-native-one-core-Bridging-Header.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -133,6 +136,7 @@
 				33F2711C292F97400090E4DB /* ProcivisOneCoreModule.swift in Sources */,
 				33F2711B292F97400090E4DB /* ProcivisOneCoreModule.m in Sources */,
 				339DE1342A4EB17E00F68DE2 /* one_core.swift in Sources */,
+				33AFE82E2ADD59F000137FCD /* Deserialize.swift in Sources */,
 				339E6C092A7265970085D7EE /* Util.swift in Sources */,
 				33A474252A86532B00C94287 /* Serialize.swift in Sources */,
 			);
