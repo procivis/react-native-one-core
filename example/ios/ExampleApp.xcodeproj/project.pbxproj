@@ -310,7 +310,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = DYG93QCW9F;
+				DEVELOPMENT_TEAM = AGG3V6QN4G;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ExampleApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -323,7 +323,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.procivis.rn-one-core.example";
+				PRODUCT_BUNDLE_IDENTIFIER = ch.procivis.one.wallet.dev;
 				PRODUCT_NAME = ExampleApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -341,7 +341,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = DYG93QCW9F;
+				DEVELOPMENT_TEAM = AGG3V6QN4G;
 				INFOPLIST_FILE = ExampleApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -353,7 +353,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.procivis.rn-one-core.example";
+				PRODUCT_BUNDLE_IDENTIFIER = ch.procivis.one.wallet.dev;
 				PRODUCT_NAME = ExampleApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -434,9 +434,6 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					"-Wl",
-					"-ld_classic",
-					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -511,9 +508,6 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					"-Wl",
-					"-ld_classic",
-					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;

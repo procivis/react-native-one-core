@@ -15,6 +15,11 @@ export var PresentationDefinitionRuleTypeEnum;
     PresentationDefinitionRuleTypeEnum["ALL"] = "ALL";
     PresentationDefinitionRuleTypeEnum["PICK"] = "PICK";
 })(PresentationDefinitionRuleTypeEnum || (PresentationDefinitionRuleTypeEnum = {}));
+export var DidTypeEnum;
+(function (DidTypeEnum) {
+    DidTypeEnum["LOCAL"] = "LOCAL";
+    DidTypeEnum["REMOTE"] = "REMOTE";
+})(DidTypeEnum || (DidTypeEnum = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;
@@ -30,6 +35,7 @@ export var OneErrorCode;
     OneErrorCode["ConfigValidationError"] = "ConfigValidationError";
     OneErrorCode["TransportProtocolError"] = "TransportProtocolError";
     OneErrorCode["FormatterError"] = "FormatterError";
+    OneErrorCode["BitstringError"] = "BitstringError";
     OneErrorCode["Other"] = "Other";
 })(OneErrorCode || (OneErrorCode = {}));
 /**
