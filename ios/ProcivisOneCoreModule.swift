@@ -31,14 +31,23 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(createLocalDid:organisationId:resolver:rejecter:)
-    func createLocalDid(
-        did: String,
-        organisationId: String,
+    @objc(generateKey:resolver:rejecter:)
+    func generateKey(
+        keyRequest: NSDictionary,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try core.createLocalDid(did: did, organisationId: organisationId);
+                return try core.generateKey(request: deserializeKeyRequest(keyRequest: keyRequest));
+            }
+        }
+    
+    @objc(createDid:resolver:rejecter:)
+    func createLocalKeyDid(
+        didRequest: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                return try core.createDid(request: deserializeDidRequest(didRequest: didRequest));
             }
         }
     
