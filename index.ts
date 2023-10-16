@@ -140,10 +140,41 @@ export interface PresentationSubmitCredentialRequest {
   submitClaims: Array<PresentationDefinitionField["id"]>;
 }
 
+export interface KeyRequest {
+  organisationId: string;
+  keyType: string;
+  keyParams: Record<string, string>;
+  name: string;
+  storageType: string;
+  storageParams: Record<string, string>;
+}
+
+export enum DidTypeEnum {
+  LOCAL = "LOCAL",
+  REMOTE = "REMOTE",
+}
+
+export interface DidRequest {
+  organisationId: string;
+  name: string;
+  didType: DidTypeEnum;
+  didMethod: string;
+  keys: DidRequestKeys;
+}
+
+export interface DidRequestKeys {
+  authentication: string[];
+  assertion: string[];
+  keyAgreement: string[];
+  capabilityInvocation: string[];
+  capabilityDelegation: string[];
+}
+
 export interface ONECore {
   getVersion(): Promise<Version>;
   createOrganisation(uuid: string | undefined): Promise<string>;
-  createLocalDid(did: string, organisationId: string): Promise<string>;
+  generateKey(keyRequest: KeyRequest): Promise<string>;
+  createDid(didRequest: DidRequest): Promise<string>;
   handleInvitation(url: string, didId: string): Promise<InvitationResult>;
   holderAcceptCredential(
     interactionId: InvitationResultCredentialIssuance["interactionId"]
@@ -186,6 +217,7 @@ export enum OneErrorCode {
   ConfigValidationError = "ConfigValidationError",
   TransportProtocolError = "TransportProtocolError",
   FormatterError = "FormatterError",
+  BitstringError = "BitstringError",
   Other = "Other",
 }
 

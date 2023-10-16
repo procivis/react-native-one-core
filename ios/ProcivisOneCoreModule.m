@@ -21,8 +21,11 @@ RCT_EXTERN_METHOD(createOrganisation:(NSString *)uuid
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(createLocalDid:(NSString *)did
-                  organisationId:(NSString *)organisationId
+RCT_EXTERN_METHOD(generateKey:(NSDictionary *)keyRequest
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(createDid:(NSDictionary *)didRequest
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

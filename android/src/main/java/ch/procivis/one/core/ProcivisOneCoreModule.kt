@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import uniffi.one_core.HandleInvitationResponseBindingEnum
+import uniffi.one_core.KeyRequestBindingDto
 import uniffi.one_core.ListQueryBindingDto
 import uniffi.one_core.PresentationSubmitCredentialRequestBindingDto
 
@@ -38,9 +39,18 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun createLocalDid(did: String, organisationId: String, promise: Promise) {
+    fun generateKey(keyRequest: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            return@asyncCall oneCore.createLocalDid(did, organisationId)
+            return@asyncCall oneCore.generateKey(
+                Deserialize.keyRequest(keyRequest)
+            )
+        }
+    }
+
+    @ReactMethod
+    fun createDid(didRequest: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            return@asyncCall oneCore.createDid(Deserialize.didRequest(didRequest))
         }
     }
 
