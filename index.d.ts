@@ -35,6 +35,7 @@ export interface CredentialListItem {
     createdDate: string;
     issuanceDate: string;
     lastModified: string;
+    revocationDate?: string | null;
     issuerDid?: string | null;
     state: CredentialStateEnum;
     schema: CredentialSchema;
