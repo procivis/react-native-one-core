@@ -132,6 +132,7 @@ export interface DidRequest {
     didType: DidTypeEnum;
     didMethod: string;
     keys: DidRequestKeys;
+    params: Record<string, string>;
 }
 export interface DidRequestKeys {
     authentication: string[];
@@ -139,6 +140,12 @@ export interface DidRequestKeys {
     keyAgreement: string[];
     capabilityInvocation: string[];
     capabilityDelegation: string[];
+}
+export interface CredentialRevocationCheckResponse {
+    credentialId: string;
+    status: CredentialStateEnum;
+    success: boolean;
+    reason?: string | null;
 }
 export interface ONECore {
     getVersion(): Promise<Version>;
@@ -154,6 +161,7 @@ export interface ONECore {
     getCredentials(query: ListQuery): Promise<ItemList<CredentialListItem>>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
+    checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
 }
 export declare enum OneErrorCode {
     GeneralRuntimeError = "GeneralRuntimeError",
@@ -167,6 +175,9 @@ export declare enum OneErrorCode {
     TransportProtocolError = "TransportProtocolError",
     FormatterError = "FormatterError",
     BitstringError = "BitstringError",
+    MissingSigner = "MissingSigner",
+    MissingAlgorithm = "MissingAlgorithm",
+    DidMethodError = "DidMethodError",
     Other = "Other"
 }
 /**

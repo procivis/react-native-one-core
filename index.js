@@ -36,6 +36,9 @@ export var OneErrorCode;
     OneErrorCode["TransportProtocolError"] = "TransportProtocolError";
     OneErrorCode["FormatterError"] = "FormatterError";
     OneErrorCode["BitstringError"] = "BitstringError";
+    OneErrorCode["MissingSigner"] = "MissingSigner";
+    OneErrorCode["MissingAlgorithm"] = "MissingAlgorithm";
+    OneErrorCode["DidMethodError"] = "DidMethodError";
     OneErrorCode["Other"] = "Other";
 })(OneErrorCode || (OneErrorCode = {}));
 /**
