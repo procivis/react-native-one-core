@@ -67,4 +67,8 @@ RCT_EXTERN_METHOD(getProof:(NSString *)proofId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(checkRevocation:(NSArray *)credentialIds
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 @end

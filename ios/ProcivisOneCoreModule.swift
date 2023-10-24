@@ -180,4 +180,20 @@ class ProcivisOneCoreModule: NSObject {
                 return serialize(proofRequest: result)
             }
         }
+    
+    @objc(checkRevocation:resolver:rejecter:)
+    func checkRevocation(
+        credentialIds: NSArray,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                var ids: [String] = [];
+                credentialIds.forEach { id in
+                    ids.append(id as! String);
+                }
+                
+                let result = try core.checkRevocation(credentialIds: ids);
+                return result.map { serialize(credentialRevocationCheckResponse: $0) }
+            }
+        }
 }

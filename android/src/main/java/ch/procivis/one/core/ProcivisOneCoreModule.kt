@@ -152,4 +152,17 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             return@asyncCall Util.convertToRN(proof)
         }
     }
+
+    @ReactMethod
+    fun checkRevocation(credentialIds: ReadableArray, promise: Promise) {
+        Util.asyncCall(promise) {
+            val ids = mutableListOf<String>()
+            for (n in 0 until credentialIds.size()) {
+                ids.add(credentialIds.getString(n))
+            }
+
+            val results = oneCore.checkRevocation(ids)
+            return@asyncCall Util.convertToRN(results)
+        }
+    }
 }
