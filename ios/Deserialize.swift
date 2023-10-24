@@ -48,7 +48,15 @@ func deserializeDidRequest(didRequest: NSDictionary) throws -> DidRequestBinding
     let didMethod = didRequest.value(forKey: "didMethod") as! String;
     let didType = try deserializeDidType(input: didRequest.value(forKey: "didType") as! String);
     let keys = deserializeDidRequestKeys(didRequestKeys: didRequest.value(forKey: "keys") as! NSDictionary);
-    return DidRequestBindingDto(organisationId: organisationId, name: name, didMethod: didMethod, didType: didType, keys: keys);
+    
+    let paramsRaw = didRequest.value(forKey: "params") as! NSDictionary;
+    var params: [String: String] = [:];
+    paramsRaw.allKeys.forEach {
+        let key = $0 as! String;
+        params[key] = paramsRaw.value(forKey: key) as? String;
+    }
+    
+    return DidRequestBindingDto(organisationId: organisationId, name: name, didMethod: didMethod, didType: didType, keys: keys, params: params);
 }
 
 func deserializeDidRequestKeys(didRequestKeys: NSDictionary) -> DidRequestKeysBindingDto {
