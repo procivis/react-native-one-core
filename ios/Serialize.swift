@@ -151,3 +151,12 @@ func serialize(presentationDefinitionRule: PresentationDefinitionRuleBindingDto)
         "count": presentationDefinitionRule.count,
     ]
 }
+
+func serialize(credentialRevocationCheckResponse: CredentialRevocationCheckResponseBindingDto) -> NSDictionary {
+    return [
+        "credentialId": credentialRevocationCheckResponse.credentialId,
+        "status": serializeEnumValue(value: credentialRevocationCheckResponse.status),
+        "success": credentialRevocationCheckResponse.success,
+        "reason": credentialRevocationCheckResponse.reason,
+    ]
+}
