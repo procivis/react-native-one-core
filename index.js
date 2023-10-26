@@ -38,6 +38,7 @@ export var OneErrorCode;
     OneErrorCode["BitstringError"] = "BitstringError";
     OneErrorCode["MissingSigner"] = "MissingSigner";
     OneErrorCode["MissingAlgorithm"] = "MissingAlgorithm";
+    OneErrorCode["MissingKey"] = "MissingKey";
     OneErrorCode["DidMethodError"] = "DidMethodError";
     OneErrorCode["Other"] = "Other";
 })(OneErrorCode || (OneErrorCode = {}));
