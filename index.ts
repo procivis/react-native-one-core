@@ -232,6 +232,7 @@ export enum OneErrorCode {
   BitstringError = "BitstringError",
   MissingSigner = "MissingSigner",
   MissingAlgorithm = "MissingAlgorithm",
+  MissingKey = "MissingKey",
   DidMethodError = "DidMethodError",
   Other = "Other",
 }
