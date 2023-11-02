@@ -172,6 +172,7 @@ export declare enum OneErrorCode {
     NotFound = "NotFound",
     NotUpdated = "NotUpdated",
     ValidationError = "ValidationError",
+    OpenID4VCError = "OpenID4VCError",
     ConfigValidationError = "ConfigValidationError",
     TransportProtocolError = "TransportProtocolError",
     FormatterError = "FormatterError",

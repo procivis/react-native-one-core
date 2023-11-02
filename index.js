@@ -32,6 +32,7 @@ export var OneErrorCode;
     OneErrorCode["NotFound"] = "NotFound";
     OneErrorCode["NotUpdated"] = "NotUpdated";
     OneErrorCode["ValidationError"] = "ValidationError";
+    OneErrorCode["OpenID4VCError"] = "OpenID4VCError";
     OneErrorCode["ConfigValidationError"] = "ConfigValidationError";
     OneErrorCode["TransportProtocolError"] = "TransportProtocolError";
     OneErrorCode["FormatterError"] = "FormatterError";
