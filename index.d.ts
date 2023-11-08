@@ -165,25 +165,12 @@ export interface ONECore {
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
 }
 export declare enum OneErrorCode {
-    GeneralRuntimeError = "GeneralRuntimeError",
-    MappingError = "MappingError",
     AlreadyExists = "AlreadyExists",
-    IncorrectParameters = "IncorrectParameters",
     NotFound = "NotFound",
-    NotUpdated = "NotUpdated",
+    NotSupported = "NotSupported",
     ValidationError = "ValidationError",
-    OpenID4VCError = "OpenID4VCError",
     ConfigValidationError = "ConfigValidationError",
-    TransportProtocolError = "TransportProtocolError",
-    FormatterError = "FormatterError",
-    BitstringError = "BitstringError",
-    MissingSigner = "MissingSigner",
-    MissingAlgorithm = "MissingAlgorithm",
-    MissingKey = "MissingKey",
-    DidMethodError = "DidMethodError",
-    AlreadyShared = "AlreadyShared",
-    MissingTransportProtocol = "MissingTransportProtocol",
-    Other = "Other"
+    Unknown = "Unknown"
 }
 /**
  * Specific errors being throw from the {@link ONECore} functions

@@ -24,26 +24,13 @@ export var DidTypeEnum;
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;
 (function (OneErrorCode) {
-    // ServiceError
-    OneErrorCode["GeneralRuntimeError"] = "GeneralRuntimeError";
-    OneErrorCode["MappingError"] = "MappingError";
+    // BindingError
     OneErrorCode["AlreadyExists"] = "AlreadyExists";
-    OneErrorCode["IncorrectParameters"] = "IncorrectParameters";
     OneErrorCode["NotFound"] = "NotFound";
-    OneErrorCode["NotUpdated"] = "NotUpdated";
+    OneErrorCode["NotSupported"] = "NotSupported";
     OneErrorCode["ValidationError"] = "ValidationError";
-    OneErrorCode["OpenID4VCError"] = "OpenID4VCError";
     OneErrorCode["ConfigValidationError"] = "ConfigValidationError";
-    OneErrorCode["TransportProtocolError"] = "TransportProtocolError";
-    OneErrorCode["FormatterError"] = "FormatterError";
-    OneErrorCode["BitstringError"] = "BitstringError";
-    OneErrorCode["MissingSigner"] = "MissingSigner";
-    OneErrorCode["MissingAlgorithm"] = "MissingAlgorithm";
-    OneErrorCode["MissingKey"] = "MissingKey";
-    OneErrorCode["DidMethodError"] = "DidMethodError";
-    OneErrorCode["AlreadyShared"] = "AlreadyShared";
-    OneErrorCode["MissingTransportProtocol"] = "MissingTransportProtocol";
-    OneErrorCode["Other"] = "Other";
+    OneErrorCode["Unknown"] = "Unknown";
 })(OneErrorCode || (OneErrorCode = {}));
 /**
  * Specific errors being throw from the {@link ONECore} functions
