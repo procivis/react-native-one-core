@@ -375,7 +375,7 @@ PODS:
   - React-jsinspector (0.72.5)
   - React-logger (0.72.5):
     - glog
-  - react-native-one-core (1.0.9822):
+  - react-native-one-core (1.0.10084):
     - React-Core
   - React-NativeModulesApple (0.72.5):
     - hermes-engine
@@ -692,7 +692,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: ff70a72027dea5cc7d71cfcc6fad7f599f63987a
   React-jsinspector: aef73cbd43b70675f572214d10fa438c89bf11ba
   React-logger: 2e4aee3e11b3ec4fa6cfd8004610bbb3b8d6cca4
-  react-native-one-core: 58ed433d6d4f78aea91c3169e1fffb052e9733d8
+  react-native-one-core: 6b92de2ec0839d1f377da0c9e3fa7e9c2f766f9a
   React-NativeModulesApple: 797bc6078d566eef3fb3f74127e6e1d2e945a15f
   React-perflogger: cd8886513f68e1c135a1e79d20575c6489641597
   React-RCTActionSheet: 726d2615ca62a77ce3e2c13d87f65379cdc73498
@@ -714,6 +714,6 @@ SPEC CHECKSUMS:
   Yoga: 86fed2e4d425ee4c6eab3813ba1791101ee153c6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 5e123d954071c1d72f7f3f8d4ce57a07243d43bc
+PODFILE CHECKSUM: ee4c2ef7c04cde1681be85a139e9e2accea3300a
 
 COCOAPODS: 1.12.0

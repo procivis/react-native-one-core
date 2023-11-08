@@ -41,6 +41,8 @@ export var OneErrorCode;
     OneErrorCode["MissingAlgorithm"] = "MissingAlgorithm";
     OneErrorCode["MissingKey"] = "MissingKey";
     OneErrorCode["DidMethodError"] = "DidMethodError";
+    OneErrorCode["AlreadyShared"] = "AlreadyShared";
+    OneErrorCode["MissingTransportProtocol"] = "MissingTransportProtocol";
     OneErrorCode["Other"] = "Other";
 })(OneErrorCode || (OneErrorCode = {}));
 /**

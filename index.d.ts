@@ -181,6 +181,8 @@ export declare enum OneErrorCode {
     MissingAlgorithm = "MissingAlgorithm",
     MissingKey = "MissingKey",
     DidMethodError = "DidMethodError",
+    AlreadyShared = "AlreadyShared",
+    MissingTransportProtocol = "MissingTransportProtocol",
     Other = "Other"
 }
 /**
