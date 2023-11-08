@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.authors                 = package['author']
   s.homepage                = package['homepage']
 
-  s.platform                = :ios, "10.0"
+  s.platform                = :ios, "13.0"
   s.source                  = { :git => "https://gitlab.procivis.ch/procivis/one/react-native-one-core.git" }
   s.source_files            = "ios/**/*.{h,m,swift}"
   s.requires_arc            = true
