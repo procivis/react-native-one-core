@@ -218,26 +218,13 @@ export interface ONECore {
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 
 export enum OneErrorCode {
-  // ServiceError
-  GeneralRuntimeError = "GeneralRuntimeError",
-  MappingError = "MappingError",
+  // BindingError
   AlreadyExists = "AlreadyExists",
-  IncorrectParameters = "IncorrectParameters",
   NotFound = "NotFound",
-  NotUpdated = "NotUpdated",
+  NotSupported = "NotSupported",
   ValidationError = "ValidationError",
-  OpenID4VCError = "OpenID4VCError",
   ConfigValidationError = "ConfigValidationError",
-  TransportProtocolError = "TransportProtocolError",
-  FormatterError = "FormatterError",
-  BitstringError = "BitstringError",
-  MissingSigner = "MissingSigner",
-  MissingAlgorithm = "MissingAlgorithm",
-  MissingKey = "MissingKey",
-  DidMethodError = "DidMethodError",
-  AlreadyShared = "AlreadyShared",
-  MissingTransportProtocol = "MissingTransportProtocol",
-  Other = "Other",
+  Unknown = "Unknown",
 }
 
 /**
