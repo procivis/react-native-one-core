@@ -48,7 +48,7 @@ export interface ProofDetail {
     createdDate: string;
     lastModified: string;
     claims: ProofRequestClaim[];
-    verifierDid: string;
+    verifierDid?: string | null;
     transport: string;
 }
 export interface ProofRequestClaim {
