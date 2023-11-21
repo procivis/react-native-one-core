@@ -9,7 +9,7 @@ import Foundation
 @objc(ProcivisOneCoreModule)
 class ProcivisOneCoreModule: NSObject {
     private static let TAG = "ProcivisOneCoreModule";
-    private let core = try! initializeCore(dataDirPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!);
+    private let core = try! initializeCore(dataDirPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!, keyStorage: SecureEnclaveKeyStorage());
     
     @objc(getVersion:rejecter:)
     func getVersion(

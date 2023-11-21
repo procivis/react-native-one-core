@@ -20,7 +20,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     private val oneCore: uniffi.one_core.OneCoreBindingInterface
 
     init {
-        oneCore = uniffi.one_core.initializeCore(this.reactApplicationContext.filesDir.absolutePath)
+        oneCore = uniffi.one_core.initializeCore(this.reactApplicationContext.filesDir.absolutePath, AndroidKeyStoreKeyStorage())
     }
 
     @ReactMethod
