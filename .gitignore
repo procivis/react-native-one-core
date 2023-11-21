@@ -21,4 +21,5 @@ local.properties
 build/
 ios/one_coreFFI.xcframework
 ios/one_core.swift
+ios/SecureEnclaveKeyStorage.swift
 android/libs/
