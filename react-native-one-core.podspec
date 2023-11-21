@@ -34,9 +34,7 @@ Pod::Spec.new do |s|
                                 fi
                                 popd >/dev/null
                                 unzip ./ios/deploy.zip "ios/one_core/Sources/*" >/dev/null
-                                mv ./ios/one_core/Sources/one_core/one_core.swift ./ios/one_core.swift
-                                mkdir ./ios/one_coreFFI.xcframework
-                                mv ./ios/one_core/Sources/one_coreFFI.xcframework/* ./ios/one_coreFFI.xcframework
+                                mv ./ios/one_core/Sources/* ./ios
                                 rm -rf ./ios/one_core ./ios/deploy.zip
                               fi
                               CMD
