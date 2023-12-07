@@ -9,14 +9,39 @@ import Foundation
 @objc(ProcivisOneCoreModule)
 class ProcivisOneCoreModule: NSObject {
     private static let TAG = "ProcivisOneCoreModule";
-    private let core = try! initializeCore(dataDirPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!, keyStorage: SecureEnclaveKeyStorage());
+    private var core: OneCoreBindingProtocol? = nil;
+    
+    @objc(initialize:rejecter:)
+    func initialize(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                guard let dataDirPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else {
+                    throw BindingError.Unknown(message: "invalid DataDir")
+                }
+                
+                if (core != nil) {
+                    throw BindingError.Unknown(message: "core already initialized")
+                }
+                
+                core = try initializeCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage());
+                return nil as NSDictionary?;
+            }
+        }
+    
+    private func getCore() throws -> OneCoreBindingProtocol {
+        guard let result = core else {
+            throw BindingError.Uninitialized(message: "core not initialized")
+        }
+        return result
+    }
     
     @objc(getVersion:rejecter:)
     func getVersion(
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let version = core.version();
+                let version = try getCore().version();
                 return serialize(version: version)
             }
         }
@@ -27,7 +52,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try core.createOrganisation(uuid: uuid);
+                return try getCore().createOrganisation(uuid: uuid);
             }
         }
     
@@ -37,7 +62,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try core.generateKey(request: deserializeKeyRequest(keyRequest: keyRequest));
+                return try getCore().generateKey(request: deserializeKeyRequest(keyRequest: keyRequest));
             }
         }
     
@@ -47,7 +72,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try core.createDid(request: deserializeDidRequest(didRequest: didRequest));
+                return try getCore().createDid(request: deserializeDidRequest(didRequest: didRequest));
             }
         }
     
@@ -58,7 +83,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try core.handleInvitation(url: url, didId: didId);
+                let result = try getCore().handleInvitation(url: url, didId: didId);
                 
                 switch(result) {
                 case let .credentialIssuance(interactionId, credentialIds):
@@ -82,7 +107,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try core.holderAcceptCredential(interactionId: interactionId);
+                try getCore().holderAcceptCredential(interactionId: interactionId);
                 return nil as NSDictionary?;
             }
         }
@@ -93,7 +118,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try core.holderRejectCredential(interactionId: interactionId);
+                try getCore().holderRejectCredential(interactionId: interactionId);
                 return nil as NSDictionary?;
             }
         }
@@ -104,7 +129,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try core.getPresentationDefintion(proofId: proofId);
+                let result = try getCore().getPresentationDefintion(proofId: proofId);
                 return serialize(presentationDefinition: result)
             }
         }
@@ -115,7 +140,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try core.holderRejectProof(interactionId: interactionId);
+                try getCore().holderRejectProof(interactionId: interactionId);
                 return nil as NSDictionary?;
             }
         }
@@ -139,7 +164,7 @@ class ProcivisOneCoreModule: NSObject {
                     submitCredentials[key] = PresentationSubmitCredentialRequestBindingDto (credentialId:  entry.value(forKey: "credentialId") as! String, submitClaims: submitClaims);
                 }
                 
-                try core.holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials);
+                try getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials);
                 return nil as NSDictionary?;
             }
         }
@@ -154,7 +179,7 @@ class ProcivisOneCoreModule: NSObject {
                     page: query.value(forKey: "page") as! UInt32,
                     pageSize: query.value(forKey: "pageSize") as! UInt32,
                     organisationId: query.value(forKey: "organisationId") as! String)
-                let result = try core.getCredentials(query: listQuery);
+                let result = try getCore().getCredentials(query: listQuery);
                 return serialize(credentialList: result)
             }
         }
@@ -165,7 +190,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try core.getCredential(credentialId: credentialId);
+                let result = try getCore().getCredential(credentialId: credentialId);
                 return serialize(credentialDetail: result)
             }
         }
@@ -176,7 +201,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try core.getProof(proofId: proofId);
+                let result = try getCore().getProof(proofId: proofId);
                 return serialize(proofRequest: result)
             }
         }
@@ -192,8 +217,20 @@ class ProcivisOneCoreModule: NSObject {
                     ids.append(id as! String);
                 }
                 
-                let result = try core.checkRevocation(credentialIds: ids);
+                let result = try getCore().checkRevocation(credentialIds: ids);
                 return result.map { serialize(credentialRevocationCheckResponse: $0) }
+            }
+        }
+    
+    @objc(uninitialize:resolver:rejecter:)
+    func uninitialize(
+        deleteData: Bool,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try getCore().uninitialize(deleteData: deleteData);
+                core = nil
+                return nil as NSDictionary?;
             }
         }
 }

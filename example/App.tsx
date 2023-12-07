@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, Text } from "react-native";
-import ONE from "react-native-one-core";
+import { initializeCore } from "react-native-one-core";
 
 function App(): JSX.Element {
-  const [version, setVersion] = useState<string>();
+  const [text, setText] = useState<string>("N/A");
   useEffect(() => {
-    ONE.getVersion()
-      .then((version) => setVersion(JSON.stringify(version, undefined, 2)))
-      .catch((e) => setVersion(e.toString()));
+    initializeCore()
+      .then((ONE) => ONE.getVersion())
+      .then((version) =>
+        setText(`ONE version: ${JSON.stringify(version, undefined, 2)}`)
+      )
+      .catch((e) => setText(`Error: ${e}`));
   }, []);
 
   return (
     <SafeAreaView>
-      <Text>{`ONE version: ${version || "N/A"}`}</Text>
+      <Text>{text}</Text>
     </SafeAreaView>
   );
 }

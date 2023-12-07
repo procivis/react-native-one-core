@@ -6,9 +6,10 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import uniffi.one_core.BindingException
 import uniffi.one_core.HandleInvitationResponseBindingEnum
-import uniffi.one_core.KeyRequestBindingDto
 import uniffi.one_core.ListQueryBindingDto
+import uniffi.one_core.OneCoreBindingInterface
 import uniffi.one_core.PresentationSubmitCredentialRequestBindingDto
 
 class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
@@ -17,16 +18,25 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     override fun getName() = "ProcivisOneCoreModule"
 
-    private val oneCore: uniffi.one_core.OneCoreBindingInterface
+    private var oneCore: OneCoreBindingInterface? = null;
 
-    init {
-        oneCore = uniffi.one_core.initializeCore(this.reactApplicationContext.filesDir.absolutePath, AndroidKeyStoreKeyStorage())
+    private fun getCore(): OneCoreBindingInterface {
+        return oneCore ?: throw BindingException.Uninitialized("core not initialized")
+    }
+
+    @ReactMethod
+    fun initialize(promise: Promise) {
+        Util.asyncCall(promise) {
+            val dataDirPath = this.reactApplicationContext.filesDir.absolutePath;
+            oneCore = uniffi.one_core.initializeCore(dataDirPath, AndroidKeyStoreKeyStorage())
+            return@asyncCall null
+        }
     }
 
     @ReactMethod
     fun getVersion(promise: Promise) {
         Util.asyncCall(promise) {
-            val version = oneCore.version()
+            val version = getCore().version()
             return@asyncCall Util.convertToRN(version)
         }
     }
@@ -34,14 +44,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun createOrganisation(uuid: String?, promise: Promise) {
         Util.asyncCall(promise) {
-            return@asyncCall oneCore.createOrganisation(uuid)
+            return@asyncCall getCore().createOrganisation(uuid)
         }
     }
 
     @ReactMethod
     fun generateKey(keyRequest: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            return@asyncCall oneCore.generateKey(
+            return@asyncCall getCore().generateKey(
                 Deserialize.keyRequest(keyRequest)
             )
         }
@@ -50,14 +60,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun createDid(didRequest: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            return@asyncCall oneCore.createDid(Deserialize.didRequest(didRequest))
+            return@asyncCall getCore().createDid(Deserialize.didRequest(didRequest))
         }
     }
 
     @ReactMethod
     fun handleInvitation(url: String, holderDidId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val invitationResult = oneCore.handleInvitation(url, holderDidId)
+            val invitationResult = getCore().handleInvitation(url, holderDidId)
             return@asyncCall Util.convertToRN(
                 when (invitationResult) {
                     is HandleInvitationResponseBindingEnum.CredentialIssuance -> invitationResult
@@ -70,7 +80,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun holderAcceptCredential(interactionId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            oneCore.holderAcceptCredential(interactionId)
+            getCore().holderAcceptCredential(interactionId)
             return@asyncCall null
         }
     }
@@ -78,7 +88,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun holderRejectCredential(interactionId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            oneCore.holderRejectCredential(interactionId)
+            getCore().holderRejectCredential(interactionId)
             return@asyncCall null
         }
     }
@@ -86,7 +96,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getPresentationDefinition(proofId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val presentationDefinition = oneCore.getPresentationDefintion(proofId)
+            val presentationDefinition = getCore().getPresentationDefintion(proofId)
             return@asyncCall Util.convertToRN(presentationDefinition)
         }
     }
@@ -94,7 +104,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun holderRejectProof(interactionId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            oneCore.holderRejectProof(interactionId)
+            getCore().holderRejectProof(interactionId)
             return@asyncCall null
         }
     }
@@ -118,7 +128,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                     claims
                 )
             }
-            oneCore.holderSubmitProof(interactionId, submitCredentials)
+            getCore().holderSubmitProof(interactionId, submitCredentials)
             return@asyncCall null
         }
     }
@@ -132,7 +142,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 query.getString("organisationId").toString()
             )
 
-            val credentials = oneCore.getCredentials(listQuery)
+            val credentials = getCore().getCredentials(listQuery)
             return@asyncCall Util.convertToRN(credentials)
         }
     }
@@ -140,7 +150,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getCredential(credentialId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val credential = oneCore.getCredential(credentialId)
+            val credential = getCore().getCredential(credentialId)
             return@asyncCall Util.convertToRN(credential)
         }
     }
@@ -148,7 +158,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getProof(proofId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val proof = oneCore.getProof(proofId)
+            val proof = getCore().getProof(proofId)
             return@asyncCall Util.convertToRN(proof)
         }
     }
@@ -161,8 +171,17 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 ids.add(credentialIds.getString(n))
             }
 
-            val results = oneCore.checkRevocation(ids)
+            val results = getCore().checkRevocation(ids)
             return@asyncCall Util.convertToRN(results)
+        }
+    }
+
+    @ReactMethod
+    fun uninitialize(deleteData: Boolean, promise: Promise) {
+        Util.asyncCall(promise) {
+            getCore().uninitialize(deleteData)
+            oneCore = null
+            return@asyncCall null
         }
     }
 }
