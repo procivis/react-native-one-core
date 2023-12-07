@@ -212,6 +212,15 @@ export interface ONECore {
   checkRevocation(
     credentialIds: Array<CredentialListItem["id"]>
   ): Promise<CredentialRevocationCheckResponse[]>;
+
+  /**
+   * Uninitialize the core instance
+   *
+   * Any following calls on this instance will fail.
+   * A new core instance has to be initialized after.
+   * @param {boolean} deleteData If true, also delete all data from the DB, otherwise data will be persisted for the next core instance
+   */
+  uninitialize(deleteData: boolean): Promise<void>;
 }
 
 // Function call arguments/Error transformation
@@ -224,6 +233,7 @@ export enum OneErrorCode {
   NotSupported = "NotSupported",
   ValidationError = "ValidationError",
   ConfigValidationError = "ConfigValidationError",
+  Uninitialized = "Uninitialized",
   Unknown = "Unknown",
 }
 
@@ -286,5 +296,12 @@ function wrapObj<T extends Record<string, (...args: any[]) => Promise<any>>>(
   );
 }
 
-const rnONE: ONECore = wrapObj(ONE);
-export default rnONE;
+/**
+ * Initialize the ONE Core
+ * @note Beware that only one instance can be initialized at a time, repeated calls will fail
+ * @returns ONE Core instance
+ */
+export async function initializeCore(): Promise<ONECore> {
+  await wrapFn(ONE.initialize, "initializeCore")();
+  return wrapObj(ONE);
+}

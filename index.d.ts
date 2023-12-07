@@ -163,6 +163,14 @@ export interface ONECore {
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
+    /**
+     * Uninitialize the core instance
+     *
+     * Any following calls on this instance will fail.
+     * A new core instance has to be initialized after.
+     * @param {boolean} deleteData If true, also delete all data from the DB, otherwise data will be persisted for the next core instance
+     */
+    uninitialize(deleteData: boolean): Promise<void>;
 }
 export declare enum OneErrorCode {
     AlreadyExists = "AlreadyExists",
@@ -170,6 +178,7 @@ export declare enum OneErrorCode {
     NotSupported = "NotSupported",
     ValidationError = "ValidationError",
     ConfigValidationError = "ConfigValidationError",
+    Uninitialized = "Uninitialized",
     Unknown = "Unknown"
 }
 /**
@@ -184,5 +193,9 @@ export declare class OneError extends Error {
         message?: string;
     });
 }
-declare const rnONE: ONECore;
-export default rnONE;
+/**
+ * Initialize the ONE Core
+ * @note Beware that only one instance can be initialized at a time, repeated calls will fail
+ * @returns ONE Core instance
+ */
+export declare function initializeCore(): Promise<ONECore>;
