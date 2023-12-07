@@ -30,6 +30,7 @@ export var OneErrorCode;
     OneErrorCode["NotSupported"] = "NotSupported";
     OneErrorCode["ValidationError"] = "ValidationError";
     OneErrorCode["ConfigValidationError"] = "ConfigValidationError";
+    OneErrorCode["Uninitialized"] = "Uninitialized";
     OneErrorCode["Unknown"] = "Unknown";
 })(OneErrorCode || (OneErrorCode = {}));
 /**
@@ -72,5 +73,12 @@ function wrapObj(obj) {
         [key]: typeof fn === "function" ? wrapFn(fn, key) : fn,
     }), {});
 }
-const rnONE = wrapObj(ONE);
-export default rnONE;
+/**
+ * Initialize the ONE Core
+ * @note Beware that only one instance can be initialized at a time, repeated calls will fail
+ * @returns ONE Core instance
+ */
+export async function initializeCore() {
+    await wrapFn(ONE.initialize, "initializeCore")();
+    return wrapObj(ONE);
+}
