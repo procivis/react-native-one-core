@@ -51,6 +51,7 @@ export interface CredentialListItem {
 
 export interface CredentialDetail extends CredentialListItem {
   claims: Claim[];
+  redirectUri?: string | null;
 }
 
 export interface ProofDetail {
@@ -60,6 +61,7 @@ export interface ProofDetail {
   claims: ProofRequestClaim[];
   verifierDid?: string | null;
   transport: string;
+  redirectUri?: string | null;
 }
 
 export interface ProofRequestClaim {
