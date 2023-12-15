@@ -77,6 +77,7 @@ func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
         "state": serializeEnumValue(value: credentialDetail.state),
         "claims": credentialDetail.claims.map { serialize(claim: $0) },
         "schema": serialize(credentialSchema: credentialDetail.schema),
+        "redirectUri": credentialDetail.redirectUri,
     ]
 }
 
@@ -96,6 +97,7 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
         "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) },
         "verifierDid": proofRequest.verifierDid,
         "transport": proofRequest.transport,
+        "redirectUri": proofRequest.redirectUri,
     ]
 }
 
