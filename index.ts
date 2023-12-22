@@ -210,6 +210,7 @@ export interface ONECore {
   getCredential(
     credentialId: CredentialListItem["id"]
   ): Promise<CredentialDetail>;
+  deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
   checkRevocation(
     credentialIds: Array<CredentialListItem["id"]>
