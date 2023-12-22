@@ -156,6 +156,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun deleteCredential(credentialId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            getCore().deleteCredential(credentialId)
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun getProof(proofId: String, promise: Promise) {
         Util.asyncCall(promise) {
             val proof = getCore().getProof(proofId)
