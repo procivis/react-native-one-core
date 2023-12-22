@@ -163,6 +163,7 @@ export interface ONECore {
     holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>): Promise<void>;
     getCredentials(query: ListQuery): Promise<ItemList<CredentialListItem>>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
+    deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     /**

@@ -195,6 +195,17 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
+    @objc(deleteCredential:resolver:rejecter:)
+    func deleteCredential(
+        credentialId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try getCore().deleteCredential(credentialId: credentialId);
+                return nil as NSDictionary?;
+            }
+        }
+    
     @objc(getProof:resolver:rejecter:)
     func getProof(
         proofId: String,
