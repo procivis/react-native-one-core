@@ -1,0 +1,12 @@
+const fs = require('fs');
+const childProcess = require('child_process');
+
+if (fs.existsSync('node_modules/husky')) {
+  try {
+    childProcess.execSync('yarn husky install', {
+      stdio: 'inherit',
+    });
+  } catch (error) {
+    process.exit(error.status);
+  }
+}
