@@ -18,11 +18,12 @@
     "core-sdk.json",
     "android",
     "ios",
-    "react-native-one-core.podspec"
+    "react-native-one-core.podspec",
+    "bin"
   ],
   "scripts": {
     "compile": "tsc",
-    "postinstall": "if [ -e node_modules/husky ]; then husky install; fi",
+    "postinstall": "node ./bin/postinstall",
     "test": "jest"
   },
   "peerDependencies": {
