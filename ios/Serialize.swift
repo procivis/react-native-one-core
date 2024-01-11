@@ -33,6 +33,19 @@ func serialize(version: VersionBindingDto) -> NSDictionary {
     ]
 }
 
+func serialize(config: ConfigBindingDto) -> NSDictionary {
+    return [
+        "format": config.format,
+        "exchange": config.exchange,
+        "transport": config.transport,
+        "revocation": config.revocation,
+        "did": config.did,
+        "datatype": config.datatype,
+        "keyAlgorithm": config.keyAlgorithm,
+        "keyStorage": config.keyStorage,
+    ]
+}
+
 func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
     return [
         "id": credentialSchema.id,

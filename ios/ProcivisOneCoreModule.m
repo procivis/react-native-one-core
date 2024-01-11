@@ -20,6 +20,9 @@ RCT_EXTERN_METHOD(initialize:(RCTPromiseResolveBlock)resolve
 RCT_EXTERN_METHOD(getVersion:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getConfig:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(createOrganisation:(NSString *)uuid
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
