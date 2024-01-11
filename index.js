@@ -20,6 +20,15 @@ export var DidTypeEnum;
     DidTypeEnum["LOCAL"] = "LOCAL";
     DidTypeEnum["REMOTE"] = "REMOTE";
 })(DidTypeEnum || (DidTypeEnum = {}));
+export var KeyStorageSecurityEnum;
+(function (KeyStorageSecurityEnum) {
+    KeyStorageSecurityEnum["HARDWARE"] = "HARDWARE";
+    KeyStorageSecurityEnum["SOFTWARE"] = "SOFTWARE";
+})(KeyStorageSecurityEnum || (KeyStorageSecurityEnum = {}));
+export var FormatFeatureEnum;
+(function (FormatFeatureEnum) {
+    FormatFeatureEnum["SelectiveDisclosure"] = "SELECTIVE_DISCLOSURE";
+})(FormatFeatureEnum || (FormatFeatureEnum = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;
@@ -73,6 +82,9 @@ function wrapObj(obj) {
         [key]: typeof fn === "function" ? wrapFn(fn, key) : fn,
     }), {});
 }
+// Config entities are exposed as serialized JSON, here conversion to structs
+const originalGetConfig = ONE.getConfig;
+ONE.getConfig = () => originalGetConfig().then((config) => objectMap(config, (entities) => objectMap(entities, (json) => JSON.parse(json))));
 /**
  * Initialize the ONE Core
  * @note Beware that only one instance can be initialized at a time, repeated calls will fail
@@ -82,3 +94,6 @@ export async function initializeCore() {
     await wrapFn(ONE.initialize, "initializeCore")();
     return wrapObj(ONE);
 }
+// UTILS
+// returns a new object with the values at each key mapped using fn(value)
+const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, fn(v)]));
