@@ -46,6 +46,16 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
+    @objc(getConfig:rejecter:)
+    func getConfig(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let config = try getCore().getConfig();
+                return serialize(config: config)
+            }
+        }
+    
     @objc(createOrganisation:resolver:rejecter:)
     func createOrganisation(
         uuid: String?,

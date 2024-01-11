@@ -181,8 +181,56 @@ export interface CredentialRevocationCheckResponse {
   reason?: string | null;
 }
 
+export enum KeyStorageSecurityEnum {
+  HARDWARE = "HARDWARE",
+  SOFTWARE = "SOFTWARE",
+}
+
+export interface KeyStorageCapabilities {
+  algorithms: string[];
+  security: KeyStorageSecurityEnum[];
+}
+
+export interface DidCapabilities {
+  operations: string[];
+}
+
+export enum FormatFeatureEnum {
+  SelectiveDisclosure = "SELECTIVE_DISCLOSURE",
+}
+
+export interface FormatCapabilities {
+  features: FormatFeatureEnum[];
+}
+
+export interface ConfigEntity<Capabilities, Params> {
+  type: string;
+  disabled?: boolean | null;
+  params?: Params;
+  capabilities?: Capabilities;
+  display: string;
+  order: number;
+}
+
+export type ConfigEntities<
+  Capabilities = undefined,
+  Params = undefined
+> = Record<string, ConfigEntity<Capabilities, Params>>;
+
+export interface Config {
+  format: ConfigEntities<FormatCapabilities>;
+  exchange: ConfigEntities;
+  transport: ConfigEntities;
+  revocation: ConfigEntities;
+  did: ConfigEntities<DidCapabilities>;
+  datatype: ConfigEntities;
+  keyAlgorithm: ConfigEntities;
+  keyStorage: ConfigEntities<KeyStorageCapabilities>;
+}
+
 export interface ONECore {
   getVersion(): Promise<Version>;
+  getConfig(): Promise<Config>;
   createOrganisation(uuid: string | undefined): Promise<string>;
   generateKey(keyRequest: KeyRequest): Promise<string>;
   createDid(didRequest: DidRequest): Promise<string>;
@@ -299,6 +347,20 @@ function wrapObj<T extends Record<string, (...args: any[]) => Promise<any>>>(
   );
 }
 
+// Config entities are exposed as serialized JSON, here conversion to structs
+const originalGetConfig: () => Promise<
+  Record<
+    string /* entity type */,
+    Record<string /* entity identifier */, string /* json */>
+  >
+> = ONE.getConfig;
+ONE.getConfig = () =>
+  originalGetConfig().then((config) =>
+    objectMap(config, (entities) =>
+      objectMap(entities, (json) => JSON.parse(json))
+    )
+  );
+
 /**
  * Initialize the ONE Core
  * @note Beware that only one instance can be initialized at a time, repeated calls will fail
@@ -308,3 +370,11 @@ export async function initializeCore(): Promise<ONECore> {
   await wrapFn(ONE.initialize, "initializeCore")();
   return wrapObj(ONE);
 }
+
+// UTILS
+// returns a new object with the values at each key mapped using fn(value)
+const objectMap = <Source, Result>(
+  obj: Record<string, Source>,
+  fn: (value: Source) => Result
+): Record<string, Result> =>
+  Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, fn(v)]));

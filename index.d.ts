@@ -150,8 +150,45 @@ export interface CredentialRevocationCheckResponse {
     success: boolean;
     reason?: string | null;
 }
+export declare enum KeyStorageSecurityEnum {
+    HARDWARE = "HARDWARE",
+    SOFTWARE = "SOFTWARE"
+}
+export interface KeyStorageCapabilities {
+    algorithms: string[];
+    security: KeyStorageSecurityEnum[];
+}
+export interface DidCapabilities {
+    operations: string[];
+}
+export declare enum FormatFeatureEnum {
+    SelectiveDisclosure = "SELECTIVE_DISCLOSURE"
+}
+export interface FormatCapabilities {
+    features: FormatFeatureEnum[];
+}
+export interface ConfigEntity<Capabilities, Params> {
+    type: string;
+    disabled?: boolean | null;
+    params?: Params;
+    capabilities?: Capabilities;
+    display: string;
+    order: number;
+}
+export type ConfigEntities<Capabilities = undefined, Params = undefined> = Record<string, ConfigEntity<Capabilities, Params>>;
+export interface Config {
+    format: ConfigEntities<FormatCapabilities>;
+    exchange: ConfigEntities;
+    transport: ConfigEntities;
+    revocation: ConfigEntities;
+    did: ConfigEntities<DidCapabilities>;
+    datatype: ConfigEntities;
+    keyAlgorithm: ConfigEntities;
+    keyStorage: ConfigEntities<KeyStorageCapabilities>;
+}
 export interface ONECore {
     getVersion(): Promise<Version>;
+    getConfig(): Promise<Config>;
     createOrganisation(uuid: string | undefined): Promise<string>;
     generateKey(keyRequest: KeyRequest): Promise<string>;
     createDid(didRequest: DidRequest): Promise<string>;

@@ -14,8 +14,6 @@ import uniffi.one_core.PresentationSubmitCredentialRequestBindingDto
 
 class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
-    private val TAG = "ProcivisOneCoreModule"
-
     override fun getName() = "ProcivisOneCoreModule"
 
     private var oneCore: OneCoreBindingInterface? = null;
@@ -38,6 +36,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         Util.asyncCall(promise) {
             val version = getCore().version()
             return@asyncCall Util.convertToRN(version)
+        }
+    }
+
+    @ReactMethod
+    fun getConfig(promise: Promise) {
+        Util.asyncCall(promise) {
+            val config = getCore().getConfig()
+            return@asyncCall Util.convertToRN(config)
         }
     }
 
