@@ -1,0 +1,5 @@
+.npmignore
+.gitlab-ci.yml
+babel.config.js
+README.md
+example

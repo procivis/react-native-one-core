@@ -3,20 +3,32 @@ image: node:18.16.0-alpine
 variables:
   NODE_OPTIONS: --max_old_space_size=1536
   DOCKER_DRIVER: overlay2
+  YARN_CACHE_FOLDER: "./.yarn/cache"
+  YARN_ENABLE_GLOBAL_CACHE: "false"
 
 
 stages:
   - prepare
   - build
+  - deploy
 
 
-.modules_setup:
-  cache:
+.only_tag:
+  rules:
+    - if: $CI_COMMIT_TAG
+
+.yarn-cache: &yarn-cache
     key:
       files:
         - yarn.lock
     paths:
       - node_modules/
+      - ${YARN_CACHE_FOLDER}
+    policy: pull
+
+.modules_setup:
+  cache:
+    <<: *yarn-cache
   before_script:
     - apk add --update --no-cache --virtual .build-deps alpine-sdk libc6-compat gcompat
     - yarn global add node-gyp @mapbox/node-pre-gyp --network-concurrency 1
@@ -29,11 +41,23 @@ build_deps:
     - .modules_setup
   script:
     - ''
-
+  cache:
+    policy: pull-push
 
 build:
   stage: build
-  extends:
-    - .modules_setup
+  extends: .modules_setup
   script:
     - yarn compile
+
+
+publish-npm:
+  stage: deploy
+  needs: [build]
+  script:
+    - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/npm/
+    - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
+    - npm publish --verbose --access restricted --tag stable
+  extends:
+    - .modules_setup
+    - .only_tag
