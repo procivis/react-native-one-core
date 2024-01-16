@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, Text } from "react-native";
-import { initializeCore } from "react-native-one-core";
+import { initializeCore } from "@procivis/react-native-one-core";
 
 function App(): JSX.Element {
   const [text, setText] = useState<string>("N/A");

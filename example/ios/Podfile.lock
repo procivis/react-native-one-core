@@ -375,7 +375,7 @@ PODS:
   - React-jsinspector (0.72.5)
   - React-logger (0.72.5):
     - glog
-  - react-native-one-core (1.0.12685):
+  - react-native-one-core (1.0.12870):
     - React-Core
   - React-NativeModulesApple (0.72.5):
     - hermes-engine
@@ -538,7 +538,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-  - react-native-one-core (from `../node_modules/react-native-one-core`)
+  - "react-native-one-core (from `../node_modules/@procivis/react-native-one-core`)"
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -620,7 +620,7 @@ EXTERNAL SOURCES:
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-one-core:
-    :path: "../node_modules/react-native-one-core"
+    :path: "../node_modules/@procivis/react-native-one-core"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-perflogger:
@@ -692,7 +692,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: ff70a72027dea5cc7d71cfcc6fad7f599f63987a
   React-jsinspector: aef73cbd43b70675f572214d10fa438c89bf11ba
   React-logger: 2e4aee3e11b3ec4fa6cfd8004610bbb3b8d6cca4
-  react-native-one-core: be1a5f4669b71fea93aaf53f3fe3961e85870984
+  react-native-one-core: 6194de69493100229314a7218c7845d0f0ddeb8f
   React-NativeModulesApple: 797bc6078d566eef3fb3f74127e6e1d2e945a15f
   React-perflogger: cd8886513f68e1c135a1e79d20575c6489641597
   React-RCTActionSheet: 726d2615ca62a77ce3e2c13d87f65379cdc73498

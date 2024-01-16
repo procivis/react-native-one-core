@@ -10,9 +10,9 @@
     "adb": "adb reverse tcp:9090 tcp:9090 && adb reverse tcp:3000 tcp:3000 && adb reverse tcp:9001 tcp:9001 && adb reverse tcp:8081 tcp:8081"
   },
   "dependencies": {
+    "@procivis/react-native-one-core": "link:../",
     "react": "18.2.0",
-    "react-native": "0.72.5",
-    "react-native-one-core": "link:../"
+    "react-native": "0.72.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
