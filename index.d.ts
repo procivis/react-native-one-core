@@ -167,22 +167,66 @@ export declare enum FormatFeatureEnum {
 export interface FormatCapabilities {
     features: FormatFeatureEnum[];
 }
-export interface ConfigEntity<Capabilities, Params> {
-    type: string;
+export interface ConfigEntity<Capabilities> {
     disabled?: boolean | null;
-    params?: Params;
     capabilities?: Capabilities;
     display: string;
     order: number;
 }
-export type ConfigEntities<Capabilities = undefined, Params = undefined> = Record<string, ConfigEntity<Capabilities, Params>>;
+export interface FormatCapabilities {
+    features: FormatFeatureEnum[];
+}
+export type ConfigEntities<Capabilities = undefined, Params = {
+    type: string;
+}> = Record<string, ConfigEntity<Capabilities> & Params>;
+export declare enum DataTypeEnum {
+    String = "STRING",
+    Number = "NUMBER",
+    Date = "DATE",
+    File = "FILE"
+}
+type DataTypeError = string | Record<string, string>;
+export interface StringDataTypeParams {
+    autocomplete: boolean;
+    error?: DataTypeError;
+    pattern: string;
+    placeholder: string;
+}
+export interface NumberDataTypeParams {
+    error?: DataTypeError;
+    max?: number;
+    min?: number;
+}
+export interface DateDataTypeParams {
+    error?: DataTypeError;
+    max?: string;
+    min?: string;
+}
+export interface FileDataTypeParams {
+    accept?: string[];
+    fileSize?: number;
+    showAs: "IMAGE" | "VIDEO" | "FILE";
+}
+export type DataTypeParams = {
+    type: DataTypeEnum.String;
+    params?: StringDataTypeParams;
+} | {
+    type: DataTypeEnum.Number;
+    params?: NumberDataTypeParams;
+} | {
+    type: DataTypeEnum.Date;
+    params?: DateDataTypeParams;
+} | {
+    type: DataTypeEnum.File;
+    params?: FileDataTypeParams;
+};
 export interface Config {
     format: ConfigEntities<FormatCapabilities>;
     exchange: ConfigEntities;
     transport: ConfigEntities;
     revocation: ConfigEntities;
     did: ConfigEntities<DidCapabilities>;
-    datatype: ConfigEntities;
+    datatype: ConfigEntities<undefined, DataTypeParams>;
     keyAlgorithm: ConfigEntities;
     keyStorage: ConfigEntities<KeyStorageCapabilities>;
 }
@@ -239,3 +283,4 @@ export declare class OneError extends Error {
  * @returns ONE Core instance
  */
 export declare function initializeCore(): Promise<ONECore>;
+export {};

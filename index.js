@@ -29,6 +29,13 @@ export var FormatFeatureEnum;
 (function (FormatFeatureEnum) {
     FormatFeatureEnum["SelectiveDisclosure"] = "SELECTIVE_DISCLOSURE";
 })(FormatFeatureEnum || (FormatFeatureEnum = {}));
+export var DataTypeEnum;
+(function (DataTypeEnum) {
+    DataTypeEnum["String"] = "STRING";
+    DataTypeEnum["Number"] = "NUMBER";
+    DataTypeEnum["Date"] = "DATE";
+    DataTypeEnum["File"] = "FILE";
+})(DataTypeEnum || (DataTypeEnum = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;
