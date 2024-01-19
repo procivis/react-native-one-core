@@ -49,6 +49,7 @@ export interface ProofDetail {
     createdDate: string;
     lastModified: string;
     claims: ProofRequestClaim[];
+    credentials: CredentialDetail[];
     verifierDid?: string | null;
     transport: string;
     redirectUri?: string | null;

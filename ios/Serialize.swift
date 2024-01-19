@@ -108,6 +108,7 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
         "createdDate": proofRequest.createdDate,
         "lastModified": proofRequest.lastModified,
         "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) },
+        "credentials": proofRequest.credentials.map { serialize(credentialDetail: $0) },
         "verifierDid": proofRequest.verifierDid,
         "transport": proofRequest.transport,
         "redirectUri": proofRequest.redirectUri,
