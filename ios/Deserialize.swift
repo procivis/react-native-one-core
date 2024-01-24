@@ -84,3 +84,19 @@ func deserializeDidType(input: String) throws -> DidTypeBindingEnum {
     default: throw SerializationError("Invalid did type: " + input);
     }
 }
+
+func deserializeCredentialRole(input: String) throws -> CredentialRoleBindingDto {
+    switch input.lowercased() {
+    case "holder": return .holder;
+    case "issuer": return .issuer;
+    case "verifier": return .verifier;
+    default: throw SerializationError("Invalid credential role: " + input);
+    }
+}
+
+func deserializeCredentialRoleOpt(input: String?) throws -> CredentialRoleBindingDto? {
+    if (input != nil) {
+        return try deserializeCredentialRole(input: input!);
+    }
+    return nil
+}

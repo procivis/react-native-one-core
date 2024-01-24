@@ -188,7 +188,8 @@ class ProcivisOneCoreModule: NSObject {
                 let listQuery = ListQueryBindingDto (
                     page: query.value(forKey: "page") as! UInt32,
                     pageSize: query.value(forKey: "pageSize") as! UInt32,
-                    organisationId: query.value(forKey: "organisationId") as! String)
+                    organisationId: query.value(forKey: "organisationId") as! String,
+                    role: try deserializeCredentialRoleOpt(input: query.value(forKey: "role") as! String?))
                 let result = try getCore().getCredentials(query: listQuery);
                 return serialize(credentialList: result)
             }
