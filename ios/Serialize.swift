@@ -76,6 +76,7 @@ func serialize(credentialListItem: CredentialListItemBindingDto) -> NSDictionary
         "issuerDid": credentialListItem.issuerDid,
         "state": serializeEnumValue(value: credentialListItem.state),
         "schema": serialize(credentialSchema: credentialListItem.schema),
+        "role": serializeEnumValue(value: credentialListItem.role),
     ]
 }
 
@@ -91,6 +92,7 @@ func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
         "claims": credentialDetail.claims.map { serialize(claim: $0) },
         "schema": serialize(credentialSchema: credentialDetail.schema),
         "redirectUri": credentialDetail.redirectUri,
+        "role": serializeEnumValue(value: credentialDetail.role),
     ]
 }
 

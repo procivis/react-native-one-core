@@ -39,6 +39,7 @@ export interface CredentialListItem {
     issuerDid?: string | null;
     state: CredentialStateEnum;
     schema: CredentialSchema;
+    role: CredentialRoleEnum;
 }
 export interface CredentialDetail extends CredentialListItem {
     claims: Claim[];
@@ -65,6 +66,14 @@ export interface ListQuery {
     page: number;
     pageSize: number;
     organisationId: string;
+}
+export declare enum CredentialRoleEnum {
+    HOLDER = "HOLDER",
+    ISSUER = "ISSUER",
+    VERIFIER = "VERIFIER"
+}
+export interface CredentialListQuery extends ListQuery {
+    role?: CredentialRoleEnum;
 }
 export interface ItemList<Item> {
     totalItems: number;
@@ -243,7 +252,7 @@ export interface ONECore {
     getPresentationDefinition(proofId: ProofDetail["id"]): Promise<PresentationDefinition>;
     holderRejectProof(interactionId: InvitationResultProofRequest["interactionId"]): Promise<void>;
     holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>): Promise<void>;
-    getCredentials(query: ListQuery): Promise<ItemList<CredentialListItem>>;
+    getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
