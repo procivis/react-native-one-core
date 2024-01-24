@@ -47,6 +47,7 @@ export interface CredentialListItem {
   issuerDid?: string | null;
   state: CredentialStateEnum;
   schema: CredentialSchema;
+  role: CredentialRoleEnum;
 }
 
 export interface CredentialDetail extends CredentialListItem {
@@ -77,6 +78,16 @@ export interface ListQuery {
   page: number;
   pageSize: number;
   organisationId: string;
+}
+
+export enum CredentialRoleEnum {
+  HOLDER = "HOLDER",
+  ISSUER = "ISSUER",
+  VERIFIER = "VERIFIER",
+}
+
+export interface CredentialListQuery extends ListQuery {
+  role?: CredentialRoleEnum;
 }
 
 export interface ItemList<Item> {
@@ -306,7 +317,9 @@ export interface ONECore {
       PresentationSubmitCredentialRequest
     >
   ): Promise<void>;
-  getCredentials(query: ListQuery): Promise<ItemList<CredentialListItem>>;
+  getCredentials(
+    query: CredentialListQuery
+  ): Promise<ItemList<CredentialListItem>>;
   getCredential(
     credentialId: CredentialListItem["id"]
   ): Promise<CredentialDetail>;
