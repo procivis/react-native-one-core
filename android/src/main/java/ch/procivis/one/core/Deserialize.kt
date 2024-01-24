@@ -2,6 +2,7 @@ package ch.procivis.one.core
 
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import uniffi.one_core.CredentialRoleBindingDto
 import uniffi.one_core.DidRequestBindingDto
 import uniffi.one_core.DidRequestKeysBindingDto
 import uniffi.one_core.DidTypeBindingEnum
@@ -81,5 +82,23 @@ object Deserialize {
             result.add(roleKeys.getString(n))
         }
         return result
+    }
+
+    private fun credentialRole(role: String): CredentialRoleBindingDto {
+        return when (role.lowercase()) {
+            "holder" -> CredentialRoleBindingDto.HOLDER;
+            "issuer" -> CredentialRoleBindingDto.ISSUER;
+            "verifier" -> CredentialRoleBindingDto.VERIFIER;
+            else -> {
+                throw IllegalArgumentException("Invalid credential role: $role")
+            }
+        }
+    }
+
+    fun credentialRoleOpt(role: String?): CredentialRoleBindingDto? {
+        if (role == null) {
+            return null
+        }
+        return credentialRole(role);
     }
 }

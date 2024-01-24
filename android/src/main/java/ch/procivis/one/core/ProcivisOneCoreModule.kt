@@ -145,7 +145,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             val listQuery = ListQueryBindingDto(
                 query.getInt("page").toUInt(),
                 query.getInt("pageSize").toUInt(),
-                query.getString("organisationId").toString()
+                query.getString("organisationId").toString(),
+                Deserialize.credentialRoleOpt(query.getString("role"))
             )
 
             val credentials = getCore().getCredentials(listQuery)

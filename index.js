@@ -10,6 +10,12 @@ export var CredentialStateEnum;
     CredentialStateEnum["REVOKED"] = "REVOKED";
     CredentialStateEnum["ERROR"] = "ERROR";
 })(CredentialStateEnum || (CredentialStateEnum = {}));
+export var CredentialRoleEnum;
+(function (CredentialRoleEnum) {
+    CredentialRoleEnum["HOLDER"] = "HOLDER";
+    CredentialRoleEnum["ISSUER"] = "ISSUER";
+    CredentialRoleEnum["VERIFIER"] = "VERIFIER";
+})(CredentialRoleEnum || (CredentialRoleEnum = {}));
 export var PresentationDefinitionRuleTypeEnum;
 (function (PresentationDefinitionRuleTypeEnum) {
     PresentationDefinitionRuleTypeEnum["ALL"] = "ALL";
