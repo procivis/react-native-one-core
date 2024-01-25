@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import uniffi.one_core.BindingException
+import uniffi.one_core.CredentialListQueryBindingDto
 import uniffi.one_core.HandleInvitationResponseBindingEnum
 import uniffi.one_core.ListQueryBindingDto
 import uniffi.one_core.OneCoreBindingInterface
@@ -142,7 +143,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getCredentials(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val listQuery = ListQueryBindingDto(
+            val listQuery = CredentialListQueryBindingDto(
                 query.getInt("page").toUInt(),
                 query.getInt("pageSize").toUInt(),
                 query.getString("organisationId").toString(),
@@ -167,6 +168,20 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         Util.asyncCall(promise) {
             getCore().deleteCredential(credentialId)
             return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun getCredentialSchemas(query: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val listQuery = ListQueryBindingDto(
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                query.getString("organisationId").toString()
+            )
+
+            val schemas = getCore().getCredentialSchemas(listQuery)
+            return@asyncCall Util.convertToRN(schemas)
         }
     }
 
