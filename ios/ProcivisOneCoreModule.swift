@@ -185,7 +185,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let listQuery = ListQueryBindingDto (
+                let listQuery = CredentialListQueryBindingDto (
                     page: query.value(forKey: "page") as! UInt32,
                     pageSize: query.value(forKey: "pageSize") as! UInt32,
                     organisationId: query.value(forKey: "organisationId") as! String,
@@ -214,6 +214,21 @@ class ProcivisOneCoreModule: NSObject {
             asyncCall(resolve, reject) {
                 try getCore().deleteCredential(credentialId: credentialId);
                 return nil as NSDictionary?;
+            }
+        }
+    
+    @objc(getCredentialSchemas:resolver:rejecter:)
+    func getCredentialSchemas(
+        query: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let listQuery = ListQueryBindingDto (
+                    page: query.value(forKey: "page") as! UInt32,
+                    pageSize: query.value(forKey: "pageSize") as! UInt32,
+                    organisationId: query.value(forKey: "organisationId") as! String)
+                let result = try getCore().getCredentialSchemas(query: listQuery);
+                return serialize(credentialSchemaList: result)
             }
         }
     
