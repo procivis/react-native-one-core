@@ -16,6 +16,28 @@ export var CredentialRoleEnum;
     CredentialRoleEnum["ISSUER"] = "ISSUER";
     CredentialRoleEnum["VERIFIER"] = "VERIFIER";
 })(CredentialRoleEnum || (CredentialRoleEnum = {}));
+export var HistoryActionEnum;
+(function (HistoryActionEnum) {
+    HistoryActionEnum["ACCEPTED"] = "ACCEPTED";
+    HistoryActionEnum["CREATED"] = "CREATED";
+    HistoryActionEnum["DEACTIVATED"] = "DEACTIVATED";
+    HistoryActionEnum["DELETED"] = "DELETED";
+    HistoryActionEnum["ISSUED"] = "ISSUED";
+    HistoryActionEnum["OFFERED"] = "OFFERED";
+    HistoryActionEnum["REJECTED"] = "REJECTED";
+    HistoryActionEnum["REQUESTED"] = "REQUESTED";
+    HistoryActionEnum["REVOKED"] = "REVOKED";
+})(HistoryActionEnum || (HistoryActionEnum = {}));
+export var HistoryEntityTypeEnum;
+(function (HistoryEntityTypeEnum) {
+    HistoryEntityTypeEnum["KEY"] = "KEY";
+    HistoryEntityTypeEnum["DID"] = "DID";
+    HistoryEntityTypeEnum["CREDENTIAL"] = "CREDENTIAL";
+    HistoryEntityTypeEnum["CREDENTIAL_SCHEMA"] = "CREDENTIAL_SCHEMA";
+    HistoryEntityTypeEnum["PROOF"] = "PROOF";
+    HistoryEntityTypeEnum["PROOF_SCHEMA"] = "PROOF_SCHEMA";
+    HistoryEntityTypeEnum["ORGANISATION"] = "ORGANISATION";
+})(HistoryEntityTypeEnum || (HistoryEntityTypeEnum = {}));
 export var PresentationDefinitionRuleTypeEnum;
 (function (PresentationDefinitionRuleTypeEnum) {
     PresentationDefinitionRuleTypeEnum["ALL"] = "ALL";

@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReadableMap
 import uniffi.one_core.BindingException
 import uniffi.one_core.CredentialListQueryBindingDto
 import uniffi.one_core.HandleInvitationResponseBindingEnum
+import uniffi.one_core.HistoryListQueryBindingDto
 import uniffi.one_core.ListQueryBindingDto
 import uniffi.one_core.OneCoreBindingInterface
 import uniffi.one_core.PresentationSubmitCredentialRequestBindingDto
@@ -147,7 +148,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 query.getInt("page").toUInt(),
                 query.getInt("pageSize").toUInt(),
                 query.getString("organisationId").toString(),
-                Deserialize.credentialRoleOpt(query.getString("role"))
+                Deserialize.opt(query.getString("role"), Deserialize::credentialRole)
             )
 
             val credentials = getCore().getCredentials(listQuery)
@@ -203,6 +204,28 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
             val results = getCore().checkRevocation(ids)
             return@asyncCall Util.convertToRN(results)
+        }
+    }
+
+    @ReactMethod
+    fun getHistory(query: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val listQuery = HistoryListQueryBindingDto(
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                query.getString("organisationId").toString(),
+                query.getString("entityId"),
+                Deserialize.opt(query.getString("action"), Deserialize::historyAction),
+                Deserialize.opt(query.getString("entityType"), Deserialize::historyEntityType),
+                query.getString("createdDateFrom"),
+                query.getString("createdDateTo"),
+                query.getString("didId"),
+                query.getString("credentialId"),
+                query.getString("credentialSchemaId"),
+            )
+
+            val history = getCore().getHistoryList(listQuery)
+            return@asyncCall Util.convertToRN(history)
         }
     }
 

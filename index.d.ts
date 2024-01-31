@@ -75,6 +75,46 @@ export declare enum CredentialRoleEnum {
 export interface CredentialListQuery extends ListQuery {
     role?: CredentialRoleEnum;
 }
+export declare enum HistoryActionEnum {
+    ACCEPTED = "ACCEPTED",
+    CREATED = "CREATED",
+    DEACTIVATED = "DEACTIVATED",
+    DELETED = "DELETED",
+    ISSUED = "ISSUED",
+    OFFERED = "OFFERED",
+    REJECTED = "REJECTED",
+    REQUESTED = "REQUESTED",
+    REVOKED = "REVOKED"
+}
+export declare enum HistoryEntityTypeEnum {
+    KEY = "KEY",
+    DID = "DID",
+    CREDENTIAL = "CREDENTIAL",
+    CREDENTIAL_SCHEMA = "CREDENTIAL_SCHEMA",
+    PROOF = "PROOF",
+    PROOF_SCHEMA = "PROOF_SCHEMA",
+    ORGANISATION = "ORGANISATION"
+}
+export interface HistoryListQuery extends ListQuery {
+    entityId?: string;
+    action?: HistoryActionEnum;
+    entityType?: HistoryEntityTypeEnum;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateFrom?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateTo?: string;
+    didId?: string;
+    credentialId?: string;
+    credentialSchemaId?: string;
+}
+export interface HistoryListItem {
+    id: string;
+    createdDate: string;
+    action: HistoryActionEnum;
+    entityId: string;
+    entityType: HistoryEntityTypeEnum;
+    organisationId: string;
+}
 export interface ItemList<Item> {
     totalItems: number;
     totalPages: number;
@@ -258,6 +298,7 @@ export interface ONECore {
     getCredentialSchemas(query: ListQuery): Promise<ItemList<CredentialSchema>>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
+    getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
     /**
      * Uninitialize the core instance
      *
