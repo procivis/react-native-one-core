@@ -94,9 +94,37 @@ func deserializeCredentialRole(input: String) throws -> CredentialRoleBindingDto
     }
 }
 
-func deserializeCredentialRoleOpt(input: String?) throws -> CredentialRoleBindingDto? {
+func deserializeHistoryAction(input: String) throws -> HistoryActionBindingEnum {
+    switch input.lowercased() {
+    case "accepted": return .accepted;
+    case "created": return .created;
+    case "deactivated": return .deactivated;
+    case "deleted": return .deleted;
+    case "issued": return .issued;
+    case "offered": return .offered;
+    case "rejected": return .rejected;
+    case "requested": return .requested;
+    case "revoked": return .revoked;
+    default: throw SerializationError("Invalid history action: " + input);
+    }
+}
+
+func deserializeHistoryEntityType(input: String) throws -> HistoryEntityTypeBindingEnum {
+    switch input.lowercased() {
+    case "key": return .key;
+    case "did": return .did;
+    case "credential_schema": return .credentialSchema;
+    case "credential": return .credential;
+    case "proof_schema": return .proofSchema;
+    case "proof": return .proof;
+    case "organisation": return .organisation;
+    default: throw SerializationError("Invalid history entityType: " + input);
+    }
+}
+
+func deserializeOpt<T>(_ input: String?, _ deserialize: @escaping (_ input: String) throws -> T) throws -> T? {
     if (input != nil) {
-        return try deserializeCredentialRole(input: input!);
+        return try deserialize(input!);
     }
     return nil
 }
