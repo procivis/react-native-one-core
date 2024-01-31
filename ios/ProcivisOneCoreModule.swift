@@ -189,7 +189,7 @@ class ProcivisOneCoreModule: NSObject {
                     page: query.value(forKey: "page") as! UInt32,
                     pageSize: query.value(forKey: "pageSize") as! UInt32,
                     organisationId: query.value(forKey: "organisationId") as! String,
-                    role: try deserializeCredentialRoleOpt(input: query.value(forKey: "role") as! String?))
+                    role: try deserializeOpt(query.value(forKey: "role") as! String?, deserializeCredentialRole))
                 let result = try getCore().getCredentials(query: listQuery);
                 return serialize(credentialList: result)
             }
@@ -256,6 +256,30 @@ class ProcivisOneCoreModule: NSObject {
                 
                 let result = try getCore().checkRevocation(credentialIds: ids);
                 return result.map { serialize(credentialRevocationCheckResponse: $0) }
+            }
+        }
+    
+    @objc(getHistory:resolver:rejecter:)
+    func getHistory(
+        query: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let listQuery = HistoryListQueryBindingDto (
+                    page: query.value(forKey: "page") as! UInt32,
+                    pageSize: query.value(forKey: "pageSize") as! UInt32,
+                    organisationId: query.value(forKey: "organisationId") as! String,
+                    entityId: query.value(forKey: "entityId") as! String?,
+                    action: try deserializeOpt(query.value(forKey: "action") as! String?,  deserializeHistoryAction),
+                    entityType: try deserializeOpt(query.value(forKey: "entityType") as! String?,  deserializeHistoryEntityType),
+                    createdDateFrom: query.value(forKey: "createdDateFrom") as! String?,
+                    createdDateTo: query.value(forKey: "createdDateTo") as! String?,
+                    didId: query.value(forKey: "didId") as! String?,
+                    credentialId: query.value(forKey: "credentialId") as! String?,
+                    credentialSchemaId: query.value(forKey: "credentialSchemaId") as! String?
+                )
+                let result = try getCore().getHistoryList(query: listQuery);
+                return serialize(historyList: result)
             }
         }
     

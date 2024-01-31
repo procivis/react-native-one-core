@@ -6,6 +6,8 @@ import uniffi.one_core.CredentialRoleBindingDto
 import uniffi.one_core.DidRequestBindingDto
 import uniffi.one_core.DidRequestKeysBindingDto
 import uniffi.one_core.DidTypeBindingEnum
+import uniffi.one_core.HistoryActionBindingEnum
+import uniffi.one_core.HistoryEntityTypeBindingEnum
 import uniffi.one_core.KeyRequestBindingDto
 
 object Deserialize {
@@ -84,7 +86,7 @@ object Deserialize {
         return result
     }
 
-    private fun credentialRole(role: String): CredentialRoleBindingDto {
+    fun credentialRole(role: String): CredentialRoleBindingDto {
         return when (role.lowercase()) {
             "holder" -> CredentialRoleBindingDto.HOLDER;
             "issuer" -> CredentialRoleBindingDto.ISSUER;
@@ -95,10 +97,42 @@ object Deserialize {
         }
     }
 
-    fun credentialRoleOpt(role: String?): CredentialRoleBindingDto? {
-        if (role == null) {
+    fun historyAction(action: String): HistoryActionBindingEnum {
+        return when (action.lowercase()) {
+            "accepted" -> HistoryActionBindingEnum.ACCEPTED;
+            "created" -> HistoryActionBindingEnum.CREATED;
+            "deactivated" -> HistoryActionBindingEnum.DEACTIVATED;
+            "deleted" -> HistoryActionBindingEnum.DELETED;
+            "issued" -> HistoryActionBindingEnum.ISSUED;
+            "offered" -> HistoryActionBindingEnum.OFFERED;
+            "rejected" -> HistoryActionBindingEnum.REJECTED;
+            "requested" -> HistoryActionBindingEnum.REQUESTED;
+            "revoked" -> HistoryActionBindingEnum.REVOKED;
+            else -> {
+                throw IllegalArgumentException("Invalid history action: $action")
+            }
+        }
+    }
+
+    fun historyEntityType(entityType: String): HistoryEntityTypeBindingEnum {
+        return when (entityType.lowercase()) {
+            "key" -> HistoryEntityTypeBindingEnum.KEY;
+            "did" -> HistoryEntityTypeBindingEnum.DID;
+            "credential_schema" -> HistoryEntityTypeBindingEnum.CREDENTIAL_SCHEMA;
+            "credential" -> HistoryEntityTypeBindingEnum.CREDENTIAL;
+            "proof_schema" -> HistoryEntityTypeBindingEnum.PROOF_SCHEMA;
+            "proof" -> HistoryEntityTypeBindingEnum.PROOF;
+            "organisation" -> HistoryEntityTypeBindingEnum.ORGANISATION;
+            else -> {
+                throw IllegalArgumentException("Invalid history entityType: $entityType")
+            }
+        }
+    }
+
+    fun <T> opt(input: String?, fn: (String) -> T): T? {
+        if (input == null) {
             return null
         }
-        return credentialRole(role);
+        return fn(input);
     }
 }

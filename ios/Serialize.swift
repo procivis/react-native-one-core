@@ -188,3 +188,22 @@ func serialize(credentialRevocationCheckResponse: CredentialRevocationCheckRespo
         "reason": credentialRevocationCheckResponse.reason,
     ]
 }
+
+func serialize(historyList: HistoryListBindingDto) -> NSDictionary {
+    return [
+        "totalItems": historyList.totalItems,
+        "totalPages": historyList.totalPages,
+        "values": historyList.values.map { serialize(historyListItem: $0) },
+    ]
+}
+
+func serialize(historyListItem: HistoryListItemBindingDto) -> NSDictionary {
+    return [
+        "id": historyListItem.id,
+        "createdDate": historyListItem.createdDate,
+        "action": serializeEnumValue(value: historyListItem.action),
+        "entityId": historyListItem.entityId,
+        "entityType": serializeEnumValue(value: historyListItem.entityType),
+        "organisationId": historyListItem.organisationId,
+    ]
+}
