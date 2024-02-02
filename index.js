@@ -27,6 +27,7 @@ export var HistoryActionEnum;
     HistoryActionEnum["REJECTED"] = "REJECTED";
     HistoryActionEnum["REQUESTED"] = "REQUESTED";
     HistoryActionEnum["REVOKED"] = "REVOKED";
+    HistoryActionEnum["PENDING"] = "PENDING";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {

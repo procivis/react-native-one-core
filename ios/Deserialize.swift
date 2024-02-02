@@ -105,6 +105,7 @@ func deserializeHistoryAction(input: String) throws -> HistoryActionBindingEnum 
     case "rejected": return .rejected;
     case "requested": return .requested;
     case "revoked": return .revoked;
+    case "pending": return .pending;
     default: throw SerializationError("Invalid history action: " + input);
     }
 }
