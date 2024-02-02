@@ -222,6 +222,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 query.getString("didId"),
                 query.getString("credentialId"),
                 query.getString("credentialSchemaId"),
+                Deserialize.opt(query.getString("search"), Deserialize::historySearch),
             )
 
             val history = getCore().getHistoryList(listQuery)

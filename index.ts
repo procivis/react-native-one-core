@@ -113,6 +113,16 @@ export enum HistoryEntityTypeEnum {
   ORGANISATION = "ORGANISATION",
 }
 
+export enum HistorySearchTypeEnum {
+  CLAIM_NAME = "CLAIM_NAME",
+  CLAIM_VALUE = "CLAIM_VALUE",
+  CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME",
+  ISSUER_DID = "ISSUER_DID",
+  ISSUER_NAME = "ISSUER_NAME",
+  VERIFIER_DID = "VERIFIER_DID",
+  VERIFIER_NAME = "VERIFIER_NAME",
+}
+
 export interface HistoryListQuery extends ListQuery {
   entityId?: string;
   action?: HistoryActionEnum;
@@ -124,6 +134,7 @@ export interface HistoryListQuery extends ListQuery {
   didId?: string;
   credentialId?: string;
   credentialSchemaId?: string;
+  search?: HistorySearchQuery;
 }
 
 export interface HistoryListItem {
@@ -133,6 +144,11 @@ export interface HistoryListItem {
   entityId: string;
   entityType: HistoryEntityTypeEnum;
   organisationId: string;
+}
+
+export interface HistorySearchQuery {
+  text: string;
+  type?: HistorySearchTypeEnum;
 }
 
 export interface ItemList<Item> {

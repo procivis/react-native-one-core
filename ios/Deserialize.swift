@@ -110,6 +110,26 @@ func deserializeHistoryAction(input: String) throws -> HistoryActionBindingEnum 
     }
 }
 
+func deserializeHistorySearch(input: String) throws -> HistorySearchBindingDto {
+   return HistorySearchBindingDto(
+      text: query.value(forKey: "text") as! String,
+      search: try deserializeOpt(query.value(forKey: "type") as! String?, deserializeHistorySearchType)
+   ) 
+}
+
+func deserializeHistorySearchType(input: String) throws -> HistorySearchEnumBindingEnum {
+    switch input.lowercased() {
+        case "claim_name": return .claimName; 
+        case "claim_value": return .claimValue; 
+        case "credential_schema_name": return .credentialSchemaName; 
+        case "issuer_did": return .issuerDid; 
+        case "issuer_name": return .issuerName; 
+        case "verifier_did": return .verifierDid; 
+        case "verifier_name": return .verifierName; 
+        default: throw SerializationError("Invalid history search type: " + input);
+    }
+}
+
 func deserializeHistoryEntityType(input: String) throws -> HistoryEntityTypeBindingEnum {
     switch input.lowercased() {
     case "key": return .key;
