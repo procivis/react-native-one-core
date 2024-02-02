@@ -115,10 +115,14 @@ object Deserialize {
         }
     }
 
-    fun historySearch(query: ReadableMap): HistoryActionBindingEnum {
+    fun historySearch(text: String?, type: String?): HistoryActionBindingEnum? {
+        if text == null {
+            return null
+        }
+
         return HistorySearchBindingDto(
-            query.getString("text"),
-            Deserialize.opt(query.getString("type"), Deserialize::historySearchType),
+            text,
+            Deserialize.opt(type, Deserialize::historySearchType),
         ) 
     }
 
