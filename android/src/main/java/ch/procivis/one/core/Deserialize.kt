@@ -115,6 +115,28 @@ object Deserialize {
         }
     }
 
+    fun historySearch(search: String): HistoryActionBindingEnum {
+        return HistorySearchBindingDto(
+            query.getString("text"),
+            Deserialize.opt(query.getString("type"), Deserialize::historySearchType),
+        ) 
+    }
+
+    fun historySearchType(searchType: String): HistoryActionBindingEnum {
+        return when (searchType.lowercase()) {
+            "claim_name" -> HistorySearchEnumBindingEnum.CLAIM_NAME
+            "claim_value" -> HistorySearchEnumBindingEnum.CLAIM_VALUE
+            "credential_schema_name" -> HistorySearchEnumBindingEnum.CREDENTIAL_SCHEMA_NAME
+            "issuer_did" -> HistorySearchEnumBindingEnum.ISSUER_DID
+            "issuer_name" -> HistorySearchEnumBindingEnum.ISSUER_NAME
+            "verifier_did" -> HistorySearchEnumBindingEnum.VERIFIER_DID
+            "verifier_name"  -> HistorySearchEnumBindingEnum.VERIFIER_NAME
+            else -> {
+                throw IllegalArgumentException("Invalid history search type: $searchType")
+            }
+        }
+    }
+
     fun historyEntityType(entityType: String): HistoryEntityTypeBindingEnum {
         return when (entityType.lowercase()) {
             "key" -> HistoryEntityTypeBindingEnum.KEY;
