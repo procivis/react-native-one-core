@@ -84,7 +84,8 @@ export declare enum HistoryActionEnum {
     OFFERED = "OFFERED",
     REJECTED = "REJECTED",
     REQUESTED = "REQUESTED",
-    REVOKED = "REVOKED"
+    REVOKED = "REVOKED",
+    PENDING = "PENDING"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
