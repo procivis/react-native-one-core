@@ -100,6 +100,7 @@ export enum HistoryActionEnum {
   REJECTED = "REJECTED",
   REQUESTED = "REQUESTED",
   REVOKED = "REVOKED",
+  PENDING = "PENDING",
 }
 
 export enum HistoryEntityTypeEnum {
@@ -308,21 +309,21 @@ export interface FileDataTypeParams {
 
 export type DataTypeParams =
   | {
-      type: DataTypeEnum.String;
-      params?: StringDataTypeParams;
-    }
+    type: DataTypeEnum.String;
+    params?: StringDataTypeParams;
+  }
   | {
-      type: DataTypeEnum.Number;
-      params?: NumberDataTypeParams;
-    }
+    type: DataTypeEnum.Number;
+    params?: NumberDataTypeParams;
+  }
   | {
-      type: DataTypeEnum.Date;
-      params?: DateDataTypeParams;
-    }
+    type: DataTypeEnum.Date;
+    params?: DateDataTypeParams;
+  }
   | {
-      type: DataTypeEnum.File;
-      params?: FileDataTypeParams;
-    };
+    type: DataTypeEnum.File;
+    params?: FileDataTypeParams;
+  };
 
 export interface Config {
   format: ConfigEntities<FormatCapabilities>;
