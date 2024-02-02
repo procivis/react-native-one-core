@@ -134,7 +134,8 @@ export interface HistoryListQuery extends ListQuery {
   didId?: string;
   credentialId?: string;
   credentialSchemaId?: string;
-  search?: HistorySearchQuery;
+  searchText?: string;
+  searchType?: HistorySearchTypeEnum;
 }
 
 export interface HistoryListItem {
@@ -144,11 +145,6 @@ export interface HistoryListItem {
   entityId: string;
   entityType: HistoryEntityTypeEnum;
   organisationId: string;
-}
-
-export interface HistorySearchQuery {
-  text: string;
-  type?: HistorySearchTypeEnum;
 }
 
 export interface ItemList<Item> {
