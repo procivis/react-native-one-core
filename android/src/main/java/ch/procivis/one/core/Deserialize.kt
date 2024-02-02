@@ -108,6 +108,7 @@ object Deserialize {
             "rejected" -> HistoryActionBindingEnum.REJECTED;
             "requested" -> HistoryActionBindingEnum.REQUESTED;
             "revoked" -> HistoryActionBindingEnum.REVOKED;
+            "pending" -> HistoryActionBindingEnum.PENDING; 
             else -> {
                 throw IllegalArgumentException("Invalid history action: $action")
             }
