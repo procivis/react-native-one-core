@@ -110,10 +110,14 @@ func deserializeHistoryAction(input: String) throws -> HistoryActionBindingEnum 
     }
 }
 
-func deserializeHistorySearch(query: NSDictionary) throws -> HistorySearchBindingDto {
+func deserializeHistorySearch(text: String?, type: String?) throws -> HistorySearchBindingDto? {
+   if text == nil {
+     return nil
+   } 
+
    return HistorySearchBindingDto(
-      text: query.value(forKey: "text") as! String,
-      search: try deserializeOpt(query.value(forKey: "type") as! String?, deserializeHistorySearchType)
+      text: text as! String,
+      type: try deserializeOpt(type, deserializeHistorySearchType)
    ) 
 }
 

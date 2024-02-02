@@ -210,6 +210,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getHistory(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
+
             val listQuery = HistoryListQueryBindingDto(
                 query.getInt("page").toUInt(),
                 query.getInt("pageSize").toUInt(),
@@ -222,7 +223,10 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 query.getString("didId"),
                 query.getString("credentialId"),
                 query.getString("credentialSchemaId"),
-                Deserialize.opt(query.getMap("search"), Deserialize::historySearch),
+                Deserialize::historySearch(
+                    query.getString("searchText"), 
+                    query.getString("searchType"), 
+                ),
             )
 
             val history = getCore().getHistoryList(listQuery)
