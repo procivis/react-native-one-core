@@ -115,7 +115,7 @@ object Deserialize {
         }
     }
 
-    fun historySearch(search: String): HistoryActionBindingEnum {
+    fun historySearch(query: ReadableMap): HistoryActionBindingEnum {
         return HistorySearchBindingDto(
             query.getString("text"),
             Deserialize.opt(query.getString("type"), Deserialize::historySearchType),
