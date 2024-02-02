@@ -39,6 +39,16 @@ export var HistoryEntityTypeEnum;
     HistoryEntityTypeEnum["PROOF_SCHEMA"] = "PROOF_SCHEMA";
     HistoryEntityTypeEnum["ORGANISATION"] = "ORGANISATION";
 })(HistoryEntityTypeEnum || (HistoryEntityTypeEnum = {}));
+export var HistorySearchTypeEnum;
+(function (HistorySearchTypeEnum) {
+    HistorySearchTypeEnum["CLAIM_NAME"] = "CLAIM_NAME";
+    HistorySearchTypeEnum["CLAIM_VALUE"] = "CLAIM_VALUE";
+    HistorySearchTypeEnum["CREDENTIAL_SCHEMA_NAME"] = "CREDENTIAL_SCHEMA_NAME";
+    HistorySearchTypeEnum["ISSUER_DID"] = "ISSUER_DID";
+    HistorySearchTypeEnum["ISSUER_NAME"] = "ISSUER_NAME";
+    HistorySearchTypeEnum["VERIFIER_DID"] = "VERIFIER_DID";
+    HistorySearchTypeEnum["VERIFIER_NAME"] = "VERIFIER_NAME";
+})(HistorySearchTypeEnum || (HistorySearchTypeEnum = {}));
 export var PresentationDefinitionRuleTypeEnum;
 (function (PresentationDefinitionRuleTypeEnum) {
     PresentationDefinitionRuleTypeEnum["ALL"] = "ALL";
