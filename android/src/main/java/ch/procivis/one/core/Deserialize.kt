@@ -1,6 +1,5 @@
 package ch.procivis.one.core
 
-import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import uniffi.one_core.CredentialRoleBindingDto
 import uniffi.one_core.DidRequestBindingDto
@@ -8,6 +7,8 @@ import uniffi.one_core.DidRequestKeysBindingDto
 import uniffi.one_core.DidTypeBindingEnum
 import uniffi.one_core.HistoryActionBindingEnum
 import uniffi.one_core.HistoryEntityTypeBindingEnum
+import uniffi.one_core.HistorySearchBindingDto
+import uniffi.one_core.HistorySearchEnumBindingEnum
 import uniffi.one_core.KeyRequestBindingDto
 
 object Deserialize {
@@ -108,25 +109,25 @@ object Deserialize {
             "rejected" -> HistoryActionBindingEnum.REJECTED;
             "requested" -> HistoryActionBindingEnum.REQUESTED;
             "revoked" -> HistoryActionBindingEnum.REVOKED;
-            "pending" -> HistoryActionBindingEnum.PENDING; 
+            "pending" -> HistoryActionBindingEnum.PENDING;
             else -> {
                 throw IllegalArgumentException("Invalid history action: $action")
             }
         }
     }
 
-    fun historySearch(text: String?, type: String?): HistoryActionBindingEnum? {
-        if text == null {
+    fun historySearch(text: String?, type: String?): HistorySearchBindingDto? {
+        if (text == null) {
             return null
         }
 
         return HistorySearchBindingDto(
             text,
-            Deserialize.opt(type, Deserialize::historySearchType),
-        ) 
+            opt(type, Deserialize::historySearchType),
+        )
     }
 
-    fun historySearchType(searchType: String): HistoryActionBindingEnum {
+    private fun historySearchType(searchType: String): HistorySearchEnumBindingEnum {
         return when (searchType.lowercase()) {
             "claim_name" -> HistorySearchEnumBindingEnum.CLAIM_NAME
             "claim_value" -> HistorySearchEnumBindingEnum.CLAIM_VALUE
@@ -134,7 +135,7 @@ object Deserialize {
             "issuer_did" -> HistorySearchEnumBindingEnum.ISSUER_DID
             "issuer_name" -> HistorySearchEnumBindingEnum.ISSUER_NAME
             "verifier_did" -> HistorySearchEnumBindingEnum.VERIFIER_DID
-            "verifier_name"  -> HistorySearchEnumBindingEnum.VERIFIER_NAME
+            "verifier_name" -> HistorySearchEnumBindingEnum.VERIFIER_NAME
             else -> {
                 throw IllegalArgumentException("Invalid history search type: $searchType")
             }
