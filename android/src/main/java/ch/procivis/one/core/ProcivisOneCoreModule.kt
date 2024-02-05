@@ -223,9 +223,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 query.getString("didId"),
                 query.getString("credentialId"),
                 query.getString("credentialSchemaId"),
-                Deserialize::historySearch(
-                    query.getString("searchText"), 
-                    query.getString("searchType"), 
+                Deserialize.historySearch(
+                    query.getString("searchText"),
+                    query.getString("searchType"),
                 ),
             )
 

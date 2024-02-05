@@ -278,8 +278,8 @@ class ProcivisOneCoreModule: NSObject {
                     credentialId: query.value(forKey: "credentialId") as! String?,
                     credentialSchemaId: query.value(forKey: "credentialSchemaId") as! String?,
                     search: try deserializeHistorySearch(
-                        query.value(forKey: "searchText") as! String?, 
-                        query.value(forKey: "searchType") as! String?  
+                        text: query.value(forKey: "searchText") as! String?,
+                        type: query.value(forKey: "searchType") as! String?
                     )
                 )
                 let result = try getCore().getHistoryList(query: listQuery);
