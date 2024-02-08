@@ -217,7 +217,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 query.getString("organisationId").toString(),
                 query.getString("entityId"),
                 Deserialize.opt(query.getString("action"), Deserialize::historyAction),
-                Deserialize.opt(query.getString("entityType"), Deserialize::historyEntityType),
+                Deserialize.historyEntityTypes(query.getArray("entityTypes")),
                 query.getString("createdDateFrom"),
                 query.getString("createdDateTo"),
                 query.getString("didId"),
