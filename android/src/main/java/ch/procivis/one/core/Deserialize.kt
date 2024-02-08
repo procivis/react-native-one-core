@@ -1,5 +1,6 @@
 package ch.procivis.one.core
 
+import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import uniffi.one_core.CredentialRoleBindingDto
 import uniffi.one_core.DidRequestBindingDto
@@ -142,7 +143,7 @@ object Deserialize {
         }
     }
 
-    fun historyEntityType(entityType: String): HistoryEntityTypeBindingEnum {
+    private fun historyEntityType(entityType: String): HistoryEntityTypeBindingEnum {
         return when (entityType.lowercase()) {
             "key" -> HistoryEntityTypeBindingEnum.KEY;
             "did" -> HistoryEntityTypeBindingEnum.DID;
@@ -155,6 +156,18 @@ object Deserialize {
                 throw IllegalArgumentException("Invalid history entityType: $entityType")
             }
         }
+    }
+
+    fun historyEntityTypes(entityTypes: ReadableArray?): List<HistoryEntityTypeBindingEnum>? {
+        if (entityTypes == null) {
+            return null
+        }
+
+        val result = mutableListOf<HistoryEntityTypeBindingEnum>()
+        for (n in 0 until entityTypes.size()) {
+            result.add(historyEntityType(entityTypes.getString(n)))
+        }
+        return result
     }
 
     fun <T> opt(input: String?, fn: (String) -> T): T? {
