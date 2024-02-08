@@ -147,6 +147,18 @@ func deserializeHistoryEntityType(input: String) throws -> HistoryEntityTypeBind
     }
 }
 
+func deserializeHistoryEntityTypes(_ input: NSArray?) throws -> [HistoryEntityTypeBindingEnum]? {
+    if (input == nil) {
+        return nil;
+    }
+    
+    var result: [HistoryEntityTypeBindingEnum] = [];
+    try input!.forEach { entityType in
+        result.append(try deserializeHistoryEntityType(input: entityType as! String));
+    }
+    return result
+}
+
 func deserializeOpt<T>(_ input: String?, _ deserialize: @escaping (_ input: String) throws -> T) throws -> T? {
     if (input != nil) {
         return try deserialize(input!);

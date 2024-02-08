@@ -126,7 +126,7 @@ export enum HistorySearchTypeEnum {
 export interface HistoryListQuery extends ListQuery {
   entityId?: string;
   action?: HistoryActionEnum;
-  entityType?: HistoryEntityTypeEnum;
+  entityTypes?: HistoryEntityTypeEnum[];
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
   createdDateFrom?: string;
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
@@ -321,21 +321,21 @@ export interface FileDataTypeParams {
 
 export type DataTypeParams =
   | {
-    type: DataTypeEnum.String;
-    params?: StringDataTypeParams;
-  }
+      type: DataTypeEnum.String;
+      params?: StringDataTypeParams;
+    }
   | {
-    type: DataTypeEnum.Number;
-    params?: NumberDataTypeParams;
-  }
+      type: DataTypeEnum.Number;
+      params?: NumberDataTypeParams;
+    }
   | {
-    type: DataTypeEnum.Date;
-    params?: DateDataTypeParams;
-  }
+      type: DataTypeEnum.Date;
+      params?: DateDataTypeParams;
+    }
   | {
-    type: DataTypeEnum.File;
-    params?: FileDataTypeParams;
-  };
+      type: DataTypeEnum.File;
+      params?: FileDataTypeParams;
+    };
 
 export interface Config {
   format: ConfigEntities<FormatCapabilities>;

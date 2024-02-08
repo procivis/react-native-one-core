@@ -271,7 +271,7 @@ class ProcivisOneCoreModule: NSObject {
                     organisationId: query.value(forKey: "organisationId") as! String,
                     entityId: query.value(forKey: "entityId") as! String?,
                     action: try deserializeOpt(query.value(forKey: "action") as! String?,  deserializeHistoryAction),
-                    entityType: try deserializeOpt(query.value(forKey: "entityType") as! String?,  deserializeHistoryEntityType),
+                    entityTypes: try deserializeHistoryEntityTypes(query.value(forKey: "entityTypes") as! NSArray?),
                     createdDateFrom: query.value(forKey: "createdDateFrom") as! String?,
                     createdDateTo: query.value(forKey: "createdDateTo") as! String?,
                     didId: query.value(forKey: "didId") as! String?,
