@@ -11,6 +11,7 @@ import uniffi.one_core.HistoryEntityTypeBindingEnum
 import uniffi.one_core.HistorySearchBindingDto
 import uniffi.one_core.HistorySearchEnumBindingEnum
 import uniffi.one_core.KeyRequestBindingDto
+import java.lang.Readable
 
 object Deserialize {
     fun keyRequest(request: ReadableMap): KeyRequestBindingDto {
@@ -30,12 +31,12 @@ object Deserialize {
         }
 
         return KeyRequestBindingDto(
-            organisationId,
-            keyType,
-            keyParams,
-            name,
-            storageType,
-            storageParams
+                organisationId,
+                keyType,
+                keyParams,
+                name,
+                storageType,
+                storageParams
         )
     }
 
@@ -71,11 +72,11 @@ object Deserialize {
         val capabilityInvocation = didRequestRoleKeys(requestKeys, "capabilityInvocation")
         val capabilityDelegation = didRequestRoleKeys(requestKeys, "capabilityDelegation")
         return DidRequestKeysBindingDto(
-            authentication,
-            assertion,
-            keyAgreement,
-            capabilityInvocation,
-            capabilityDelegation
+                authentication,
+                assertion,
+                keyAgreement,
+                capabilityInvocation,
+                capabilityDelegation
         )
     }
 
@@ -97,6 +98,18 @@ object Deserialize {
                 throw IllegalArgumentException("Invalid credential role: $role")
             }
         }
+    }
+
+    fun credentialIds(ids: ReadableArray?): List<String>? {
+        if (ids == null) {
+            return null
+        }
+
+        val result = mutableListOf<String>()
+        for (n in 0 until ids.size()) {
+            result.add(ids.getString(n))
+        }
+        return result
     }
 
     fun historyAction(action: String): HistoryActionBindingEnum {
@@ -123,8 +136,8 @@ object Deserialize {
         }
 
         return HistorySearchBindingDto(
-            text,
-            opt(type, Deserialize::historySearchType),
+                text,
+                opt(type, Deserialize::historySearchType),
         )
     }
 
