@@ -74,6 +74,7 @@ export declare enum CredentialRoleEnum {
 }
 export interface CredentialListQuery extends ListQuery {
     role?: CredentialRoleEnum;
+    ids?: string[];
 }
 export declare enum HistoryActionEnum {
     ACCEPTED = "ACCEPTED",
