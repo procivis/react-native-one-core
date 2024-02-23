@@ -48,6 +48,7 @@ export interface CredentialListItem {
     state: CredentialStateEnum;
     schema: CredentialSchema;
     role: CredentialRoleEnum;
+    lvvcIssuanceDate?: string | null;
 }
 
 export interface CredentialDetail extends CredentialListItem {
