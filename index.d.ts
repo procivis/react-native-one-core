@@ -203,7 +203,7 @@ export interface DidRequest {
 }
 export interface DidRequestKeys {
     authentication: string[];
-    assertion: string[];
+    assertionMethod: string[];
     keyAgreement: string[];
     capabilityInvocation: string[];
     capabilityDelegation: string[];

@@ -67,13 +67,13 @@ object Deserialize {
 
     private fun didRequestKeys(requestKeys: ReadableMap): DidRequestKeysBindingDto {
         val authentication = didRequestRoleKeys(requestKeys, "authentication")
-        val assertion = didRequestRoleKeys(requestKeys, "assertion")
+        val assertionMethod = didRequestRoleKeys(requestKeys, "assertionMethod")
         val keyAgreement = didRequestRoleKeys(requestKeys, "keyAgreement")
         val capabilityInvocation = didRequestRoleKeys(requestKeys, "capabilityInvocation")
         val capabilityDelegation = didRequestRoleKeys(requestKeys, "capabilityDelegation")
         return DidRequestKeysBindingDto(
                 authentication,
-                assertion,
+                assertionMethod,
                 keyAgreement,
                 capabilityInvocation,
                 capabilityDelegation
