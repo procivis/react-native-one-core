@@ -290,6 +290,28 @@ class ProcivisOneCoreModule: NSObject {
         }
     }
 
+    @objc(createBackup:resolver:rejecter:)
+    func createBackup(
+        password: String,
+        outputPath: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+        asyncCall(resolve, reject) {
+            let result = try getCore().createBackup(password: password, outputPath: outputPath);
+            return serialize(backupCreate: result)
+        }
+    }
+
+    @objc(backupInfo:resolver:rejecter:)
+    func backupInfo(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+        asyncCall(resolve, reject) {
+            let result = try getCore().backupInfo(password: password, outputPath: outputPath);
+            return serialize(unexportableEntities: result)
+        }
+    }
+
     @objc(uninitialize:resolver:rejecter:)
     func uninitialize(
         deleteData: Bool,

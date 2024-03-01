@@ -87,6 +87,7 @@ export var OneErrorCode;
     OneErrorCode["ConfigValidationError"] = "ConfigValidationError";
     OneErrorCode["Uninitialized"] = "Uninitialized";
     OneErrorCode["Unknown"] = "Unknown";
+    OneErrorCode["DbErr"] = "DbErr";
 })(OneErrorCode || (OneErrorCode = {}));
 /**
  * Specific errors being throw from the {@link ONECore} functions
