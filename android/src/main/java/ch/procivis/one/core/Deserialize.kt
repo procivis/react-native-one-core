@@ -11,7 +11,6 @@ import uniffi.one_core.HistoryEntityTypeBindingEnum
 import uniffi.one_core.HistorySearchBindingDto
 import uniffi.one_core.HistorySearchEnumBindingEnum
 import uniffi.one_core.KeyRequestBindingDto
-import java.lang.Readable
 
 object Deserialize {
     fun keyRequest(request: ReadableMap): KeyRequestBindingDto {
@@ -57,8 +56,8 @@ object Deserialize {
 
     private fun didType(type: String): DidTypeBindingEnum {
         return when (type.lowercase()) {
-            "local" -> DidTypeBindingEnum.LOCAL;
-            "remote" -> DidTypeBindingEnum.REMOTE;
+            "local" -> DidTypeBindingEnum.LOCAL
+            "remote" -> DidTypeBindingEnum.REMOTE
             else -> {
                 throw IllegalArgumentException("Invalid did type: $type")
             }
@@ -91,9 +90,9 @@ object Deserialize {
 
     fun credentialRole(role: String): CredentialRoleBindingDto {
         return when (role.lowercase()) {
-            "holder" -> CredentialRoleBindingDto.HOLDER;
-            "issuer" -> CredentialRoleBindingDto.ISSUER;
-            "verifier" -> CredentialRoleBindingDto.VERIFIER;
+            "holder" -> CredentialRoleBindingDto.HOLDER
+            "issuer" -> CredentialRoleBindingDto.ISSUER
+            "verifier" -> CredentialRoleBindingDto.VERIFIER
             else -> {
                 throw IllegalArgumentException("Invalid credential role: $role")
             }
@@ -114,16 +113,16 @@ object Deserialize {
 
     fun historyAction(action: String): HistoryActionBindingEnum {
         return when (action.lowercase()) {
-            "accepted" -> HistoryActionBindingEnum.ACCEPTED;
-            "created" -> HistoryActionBindingEnum.CREATED;
-            "deactivated" -> HistoryActionBindingEnum.DEACTIVATED;
-            "deleted" -> HistoryActionBindingEnum.DELETED;
-            "issued" -> HistoryActionBindingEnum.ISSUED;
-            "offered" -> HistoryActionBindingEnum.OFFERED;
-            "rejected" -> HistoryActionBindingEnum.REJECTED;
-            "requested" -> HistoryActionBindingEnum.REQUESTED;
-            "revoked" -> HistoryActionBindingEnum.REVOKED;
-            "pending" -> HistoryActionBindingEnum.PENDING;
+            "accepted" -> HistoryActionBindingEnum.ACCEPTED
+            "created" -> HistoryActionBindingEnum.CREATED
+            "deactivated" -> HistoryActionBindingEnum.DEACTIVATED
+            "deleted" -> HistoryActionBindingEnum.DELETED
+            "issued" -> HistoryActionBindingEnum.ISSUED
+            "offered" -> HistoryActionBindingEnum.OFFERED
+            "rejected" -> HistoryActionBindingEnum.REJECTED
+            "requested" -> HistoryActionBindingEnum.REQUESTED
+            "revoked" -> HistoryActionBindingEnum.REVOKED
+            "pending" -> HistoryActionBindingEnum.PENDING
             else -> {
                 throw IllegalArgumentException("Invalid history action: $action")
             }
@@ -158,13 +157,14 @@ object Deserialize {
 
     private fun historyEntityType(entityType: String): HistoryEntityTypeBindingEnum {
         return when (entityType.lowercase()) {
-            "key" -> HistoryEntityTypeBindingEnum.KEY;
-            "did" -> HistoryEntityTypeBindingEnum.DID;
-            "credential_schema" -> HistoryEntityTypeBindingEnum.CREDENTIAL_SCHEMA;
-            "credential" -> HistoryEntityTypeBindingEnum.CREDENTIAL;
-            "proof_schema" -> HistoryEntityTypeBindingEnum.PROOF_SCHEMA;
-            "proof" -> HistoryEntityTypeBindingEnum.PROOF;
-            "organisation" -> HistoryEntityTypeBindingEnum.ORGANISATION;
+            "key" -> HistoryEntityTypeBindingEnum.KEY
+            "did" -> HistoryEntityTypeBindingEnum.DID
+            "credential_schema" -> HistoryEntityTypeBindingEnum.CREDENTIAL_SCHEMA
+            "credential" -> HistoryEntityTypeBindingEnum.CREDENTIAL
+            "proof_schema" -> HistoryEntityTypeBindingEnum.PROOF_SCHEMA
+            "proof" -> HistoryEntityTypeBindingEnum.PROOF
+            "organisation" -> HistoryEntityTypeBindingEnum.ORGANISATION
+            "backup" -> HistoryEntityTypeBindingEnum.BACKUP
             else -> {
                 throw IllegalArgumentException("Invalid history entityType: $entityType")
             }
@@ -187,6 +187,6 @@ object Deserialize {
         if (input == null) {
             return null
         }
-        return fn(input);
+        return fn(input)
     }
 }

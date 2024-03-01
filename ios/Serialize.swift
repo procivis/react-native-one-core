@@ -207,3 +207,46 @@ func serialize(historyListItem: HistoryListItemBindingDto) -> NSDictionary {
         "organisationId": historyListItem.organisationId,
     ]
 }
+
+func serialize(keyListItem: KeyListItemBindingDto) -> NSDictionary {
+    return [
+        "id": keyListItem.id,
+        "createdDate": keyListItem.createdDate,
+        "lastModified": keyListItem.lastModified,
+        "name": keyListItem.name,
+        "publicKey": keyListItem.publicKey,
+        "storageType": keyListItem.storageType,
+        "keyType": keyListItem.keyType,
+    ]
+}
+
+func serialize(didListItem: DidListItemBindingDto) -> NSDictionary {
+    return [
+        "id": didListItem.id,
+        "createdDate": didListItem.createdDate,
+        "lastModified": didListItem.lastModified,
+        "name": didListItem.name,
+        "did": didListItem.did,
+        "didType": serializeEnumValue(value: didListItem.didType),
+        "didMethod": didListItem.didMethod,
+        "deactivated": didListItem.deactivated,
+    ]
+}
+
+func serialize(unexportableEntities: UnexportableEntitiesBindingDto) -> NSDictionary {
+    return [
+        "credentials": unexportableEntities.credentials.map { serialize(credentialDetail: $0) },
+         "keys": unexportableEntities.keys.map { serialize(keyListItem: $0) },
+         "dids": unexportableEntities.dids.map { serialize(didListItem: $0) },
+         "totalCredentials": unexportableEntities.totalCredentials,
+         "totalKeys": unexportableEntities.totalKeys,
+         "totalDids": unexportableEntities.totalDids,
+    ]
+}
+
+func serialize(backupCreate: BackupCreateBindingDto) -> NSDictionary {
+    return [
+        "file": backupCreate.file,
+         "unexportable": serialize(unexportableEntities: backupCreate.unexportable),
+    ]
+}
