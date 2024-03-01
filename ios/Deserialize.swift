@@ -143,6 +143,7 @@ func deserializeHistoryEntityType(input: String) throws -> HistoryEntityTypeBind
     case "proof_schema": return .proofSchema;
     case "proof": return .proof;
     case "organisation": return .organisation;
+    case "backup": return .backup;
     default: throw SerializationError("Invalid history entityType: " + input);
     }
 }

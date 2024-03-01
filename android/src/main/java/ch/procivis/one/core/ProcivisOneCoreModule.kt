@@ -18,7 +18,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         ReactContextBaseJavaModule(reactContext) {
     override fun getName() = "ProcivisOneCoreModule"
 
-    private var oneCore: OneCoreBindingInterface? = null;
+    private var oneCore: OneCoreBindingInterface? = null
 
     private fun getCore(): OneCoreBindingInterface {
         return oneCore ?: throw BindingException.Uninitialized("core not initialized")
@@ -27,7 +27,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun initialize(promise: Promise) {
         Util.asyncCall(promise) {
-            val dataDirPath = this.reactApplicationContext.filesDir.absolutePath;
+            val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
             oneCore = uniffi.one_core.initializeCore(dataDirPath, AndroidKeyStoreKeyStorage())
             return@asyncCall null
         }
@@ -59,9 +59,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun generateKey(keyRequest: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            return@asyncCall getCore().generateKey(
-                    Deserialize.keyRequest(keyRequest)
-            )
+            return@asyncCall getCore().generateKey(Deserialize.keyRequest(keyRequest))
         }
     }
 
@@ -78,7 +76,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             val invitationResult = getCore().handleInvitation(url, holderDidId)
             return@asyncCall Util.convertToRN(
                     when (invitationResult) {
-                        is HandleInvitationResponseBindingEnum.CredentialIssuance -> invitationResult
+                        is HandleInvitationResponseBindingEnum.CredentialIssuance ->
+                                invitationResult
                         is HandleInvitationResponseBindingEnum.ProofRequest -> invitationResult
                     }
             )
@@ -131,10 +130,11 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                     claims.add(submitClaims.getString(n))
                 }
 
-                submitCredentials[entry.key] = PresentationSubmitCredentialRequestBindingDto(
-                        credential.getString("credentialId").toString(),
-                        claims
-                )
+                submitCredentials[entry.key] =
+                        PresentationSubmitCredentialRequestBindingDto(
+                                credential.getString("credentialId").toString(),
+                                claims
+                        )
             }
             getCore().holderSubmitProof(interactionId, submitCredentials)
             return@asyncCall null
@@ -144,13 +144,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getCredentials(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val listQuery = CredentialListQueryBindingDto(
-                    query.getInt("page").toUInt(),
-                    query.getInt("pageSize").toUInt(),
-                    query.getString("organisationId").toString(),
-                    Deserialize.opt(query.getString("role"), Deserialize::credentialRole),
-                    Deserialize.credentialIds(query.getArray("ids"))
-            )
+            val listQuery =
+                    CredentialListQueryBindingDto(
+                            query.getInt("page").toUInt(),
+                            query.getInt("pageSize").toUInt(),
+                            query.getString("organisationId").toString(),
+                            Deserialize.opt(query.getString("role"), Deserialize::credentialRole),
+                            Deserialize.credentialIds(query.getArray("ids"))
+                    )
 
             val credentials = getCore().getCredentials(listQuery)
             return@asyncCall Util.convertToRN(credentials)
@@ -176,11 +177,12 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getCredentialSchemas(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val listQuery = ListQueryBindingDto(
-                    query.getInt("page").toUInt(),
-                    query.getInt("pageSize").toUInt(),
-                    query.getString("organisationId").toString()
-            )
+            val listQuery =
+                    ListQueryBindingDto(
+                            query.getInt("page").toUInt(),
+                            query.getInt("pageSize").toUInt(),
+                            query.getString("organisationId").toString()
+                    )
 
             val schemas = getCore().getCredentialSchemas(listQuery)
             return@asyncCall Util.convertToRN(schemas)
@@ -211,27 +213,43 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getHistory(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-
-            val listQuery = HistoryListQueryBindingDto(
-                    query.getInt("page").toUInt(),
-                    query.getInt("pageSize").toUInt(),
-                    query.getString("organisationId").toString(),
-                    query.getString("entityId"),
-                    Deserialize.opt(query.getString("action"), Deserialize::historyAction),
-                    Deserialize.historyEntityTypes(query.getArray("entityTypes")),
-                    query.getString("createdDateFrom"),
-                    query.getString("createdDateTo"),
-                    query.getString("didId"),
-                    query.getString("credentialId"),
-                    query.getString("credentialSchemaId"),
-                    Deserialize.historySearch(
-                            query.getString("searchText"),
-                            query.getString("searchType"),
-                    ),
-            )
+            val listQuery =
+                    HistoryListQueryBindingDto(
+                            query.getInt("page").toUInt(),
+                            query.getInt("pageSize").toUInt(),
+                            query.getString("organisationId").toString(),
+                            query.getString("entityId"),
+                            Deserialize.opt(query.getString("action"), Deserialize::historyAction),
+                            Deserialize.historyEntityTypes(query.getArray("entityTypes")),
+                            query.getString("createdDateFrom"),
+                            query.getString("createdDateTo"),
+                            query.getString("didId"),
+                            query.getString("credentialId"),
+                            query.getString("credentialSchemaId"),
+                            Deserialize.historySearch(
+                                    query.getString("searchText"),
+                                    query.getString("searchType"),
+                            ),
+                    )
 
             val history = getCore().getHistoryList(listQuery)
             return@asyncCall Util.convertToRN(history)
+        }
+    }
+
+    @ReactMethod
+    fun createBackup(password: String, outputPath: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val createBackup = getCore().createBackup(password, outputPath)
+            return@asyncCall Util.convertToRN(createBackup)
+        }
+    }
+
+    @ReactMethod
+    fun backupInfo(promise: Promise) {
+        Util.asyncCall(promise) {
+            val backupInfo = getCore().backupInfo()
+            return@asyncCall Util.convertToRN(backupInfo)
         }
     }
 
