@@ -445,7 +445,7 @@ export interface ONECore {
 
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
 
-    createBackup(password: string, output_path: string): Promise<BackupCreate>;
+    createBackup(password: string, outputPath: string): Promise<BackupCreate>;
 
     backupInfo(): Promise<UnexportableEntities>;
 

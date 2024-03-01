@@ -344,7 +344,7 @@ export interface ONECore {
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
-    createBackup(password: string, output_path: string): Promise<BackupCreate>;
+    createBackup(password: string, outputPath: string): Promise<BackupCreate>;
     backupInfo(): Promise<UnexportableEntities>;
     /**
      * Uninitialize the core instance
