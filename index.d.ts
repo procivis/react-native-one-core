@@ -125,7 +125,7 @@ export interface HistoryListItem {
     id: string;
     createdDate: string;
     action: HistoryActionEnum;
-    entityId: string;
+    entityId?: string;
     entityType: HistoryEntityTypeEnum;
     organisationId: string;
 }
@@ -294,6 +294,37 @@ export interface Config {
     keyAlgorithm: ConfigEntities;
     keyStorage: ConfigEntities<KeyStorageCapabilities>;
 }
+export interface KeyListItem {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    publicKey: number[];
+    keyType: string;
+    storageType: string;
+}
+export interface DidListItem {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    did: string;
+    didType: DidTypeEnum;
+    didMethod: string;
+    deactivated: boolean;
+}
+export interface UnexportableEntities {
+    credentials: CredentialDetail[];
+    keys: KeyListItem[];
+    dids: DidListItem[];
+    totalCredentials: number;
+    totalKeys: number;
+    totalDids: number;
+}
+export interface BackupCreate {
+    file: string;
+    unexportable: UnexportableEntities;
+}
 export interface ONECore {
     getVersion(): Promise<Version>;
     getConfig(): Promise<Config>;
@@ -313,6 +344,8 @@ export interface ONECore {
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
+    createBackup(password: string, output_path: string): Promise<BackupCreate>;
+    backupInfo(): Promise<UnexportableEntities>;
     /**
      * Uninitialize the core instance
      *
@@ -329,7 +362,8 @@ export declare enum OneErrorCode {
     ValidationError = "ValidationError",
     ConfigValidationError = "ConfigValidationError",
     Uninitialized = "Uninitialized",
-    Unknown = "Unknown"
+    Unknown = "Unknown",
+    DbErr = "DbErr"
 }
 /**
  * Specific errors being throw from the {@link ONECore} functions
