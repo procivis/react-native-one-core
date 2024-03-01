@@ -290,7 +290,7 @@ class ProcivisOneCoreModule: NSObject {
         }
     }
 
-    @objc(createBackup:resolver:rejecter:)
+    @objc(createBackup:outputPath:resolver:rejecter:)
     func createBackup(
         password: String,
         outputPath: String,
@@ -302,7 +302,7 @@ class ProcivisOneCoreModule: NSObject {
         }
     }
 
-    @objc(backupInfo:resolver:rejecter:)
+    @objc(backupInfo:rejecter:)
     func backupInfo(
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
