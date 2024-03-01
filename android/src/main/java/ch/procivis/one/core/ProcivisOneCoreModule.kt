@@ -240,8 +240,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun createBackup(password: String, outputPath: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val createBackup = getCore().createBackup(password, outputPath)
-            return@asyncCall Util.convertToRN(createBackup)
+            val result = getCore().createBackup(password, outputPath)
+            return@asyncCall Util.convertToRN(result)
         }
     }
 
