@@ -307,7 +307,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
         asyncCall(resolve, reject) {
-            let result = try getCore().backupInfo(password: password, outputPath: outputPath);
+            let result = try getCore().backupInfo();
             return serialize(unexportableEntities: result)
         }
     }
