@@ -236,17 +236,25 @@ func serialize(didListItem: DidListItemBindingDto) -> NSDictionary {
 func serialize(unexportableEntities: UnexportableEntitiesBindingDto) -> NSDictionary {
     return [
         "credentials": unexportableEntities.credentials.map { serialize(credentialDetail: $0) },
-         "keys": unexportableEntities.keys.map { serialize(keyListItem: $0) },
-         "dids": unexportableEntities.dids.map { serialize(didListItem: $0) },
-         "totalCredentials": unexportableEntities.totalCredentials,
-         "totalKeys": unexportableEntities.totalKeys,
-         "totalDids": unexportableEntities.totalDids,
+        "keys": unexportableEntities.keys.map { serialize(keyListItem: $0) },
+        "dids": unexportableEntities.dids.map { serialize(didListItem: $0) },
+        "totalCredentials": unexportableEntities.totalCredentials,
+        "totalKeys": unexportableEntities.totalKeys,
+        "totalDids": unexportableEntities.totalDids,
     ]
 }
 
 func serialize(backupCreate: BackupCreateBindingDto) -> NSDictionary {
     return [
         "file": backupCreate.file,
-         "unexportable": serialize(unexportableEntities: backupCreate.unexportable),
+        "unexportable": serialize(unexportableEntities: backupCreate.unexportable),
+    ]
+}
+
+func serialize(importBackupMetadata: MetadataBindingDto) -> NSDictionary {
+    return [
+        "dbVersion": importBackupMetadata.dbVersion,
+        "dbHash": importBackupMetadata.dbHash,
+        "createdAt": importBackupMetadata.createdAt,
     ]
 }
