@@ -87,7 +87,8 @@ export declare enum HistoryActionEnum {
     REJECTED = "REJECTED",
     REQUESTED = "REQUESTED",
     REVOKED = "REVOKED",
-    PENDING = "PENDING"
+    PENDING = "PENDING",
+    RESTORED = "RESTORED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
@@ -325,6 +326,11 @@ export interface BackupCreate {
     file: string;
     unexportable: UnexportableEntities;
 }
+export interface ImportBackupMetadata {
+    dbVersion: string;
+    dbHash: string;
+    createdAt: string;
+}
 export interface ONECore {
     getVersion(): Promise<Version>;
     getConfig(): Promise<Config>;
@@ -347,6 +353,27 @@ export interface ONECore {
     createBackup(password: string, outputPath: string): Promise<BackupCreate>;
     backupInfo(): Promise<UnexportableEntities>;
     /**
+     * Start import procedure
+     *
+     * This call will open the provided backup file, other subsequent function calls like {@link getCredentials} will return data from the imported package
+     * After this successful call, either {@link finalizeImport} (to persist the changes) or {@link rollbackImport} (to revert to old data) must be called
+     * @param {string} password User password matching selected during creation of the backup file
+     * @param {string} inputPath Path to the stored backup file
+     */
+    unpackBackup(password: string, inputPath: string): Promise<ImportBackupMetadata>;
+    /**
+     * Persist unpacked backup
+     *
+     * This call will delete/overwrite the previously stored entries
+     */
+    finalizeImport(): Promise<void>;
+    /**
+     * Close unpacked backup
+     *
+     * This call will restore the old entries prior calling {@link unpackBackup}
+     */
+    rollbackImport(): Promise<void>;
+    /**
      * Uninitialize the core instance
      *
      * Any following calls on this instance will fail.
@@ -362,8 +389,9 @@ export declare enum OneErrorCode {
     ValidationError = "ValidationError",
     ConfigValidationError = "ConfigValidationError",
     Uninitialized = "Uninitialized",
-    Unknown = "Unknown",
-    DbErr = "DbErr"
+    DbErr = "DbErr",
+    IOError = "IOError",
+    Unknown = "Unknown"
 }
 /**
  * Specific errors being throw from the {@link ONECore} functions
