@@ -28,6 +28,7 @@ export var HistoryActionEnum;
     HistoryActionEnum["REQUESTED"] = "REQUESTED";
     HistoryActionEnum["REVOKED"] = "REVOKED";
     HistoryActionEnum["PENDING"] = "PENDING";
+    HistoryActionEnum["RESTORED"] = "RESTORED";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
@@ -86,8 +87,9 @@ export var OneErrorCode;
     OneErrorCode["ValidationError"] = "ValidationError";
     OneErrorCode["ConfigValidationError"] = "ConfigValidationError";
     OneErrorCode["Uninitialized"] = "Uninitialized";
-    OneErrorCode["Unknown"] = "Unknown";
     OneErrorCode["DbErr"] = "DbErr";
+    OneErrorCode["IOError"] = "IOError";
+    OneErrorCode["Unknown"] = "Unknown";
 })(OneErrorCode || (OneErrorCode = {}));
 /**
  * Specific errors being throw from the {@link ONECore} functions
