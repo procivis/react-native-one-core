@@ -158,6 +158,7 @@ func serialize(presentationDefinitionRequestedCredential: PresentationDefinition
         "purpose": presentationDefinitionRequestedCredential.purpose,
         "fields": presentationDefinitionRequestedCredential.fields.map { serialize(presentationDefinitionField: $0) },
         "applicableCredentials": presentationDefinitionRequestedCredential.applicableCredentials,
+        "validityCredentialNbf": presentationDefinitionRequestedCredential.validityCredentialNbf,
     ]
 }
 
