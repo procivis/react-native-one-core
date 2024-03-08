@@ -170,6 +170,7 @@ export interface PresentationDefinitionRequestedCredential {
     purpose?: string | null;
     fields: PresentationDefinitionField[];
     applicableCredentials: Array<CredentialListItem["id"]>;
+    validityCredentialNbf?: string | null;
 }
 export interface PresentationDefinitionField {
     id: string;
