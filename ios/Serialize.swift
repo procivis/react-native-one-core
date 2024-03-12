@@ -247,6 +247,7 @@ func serialize(unexportableEntities: UnexportableEntitiesBindingDto) -> NSDictio
 
 func serialize(backupCreate: BackupCreateBindingDto) -> NSDictionary {
     return [
+        "historyId": backupCreate.historyId,
         "file": backupCreate.file,
         "unexportable": serialize(unexportableEntities: backupCreate.unexportable),
     ]
