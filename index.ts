@@ -19,6 +19,7 @@ export enum CredentialStateEnum {
   ACCEPTED = "ACCEPTED",
   REJECTED = "REJECTED",
   REVOKED = "REVOKED",
+  SUSPENDED = "SUSPENDED",
   ERROR = "ERROR",
 }
 
@@ -99,10 +100,12 @@ export enum HistoryActionEnum {
   DELETED = "DELETED",
   ISSUED = "ISSUED",
   OFFERED = "OFFERED",
+  REACTIVATED = "REACTIVATED",
   REJECTED = "REJECTED",
   REQUESTED = "REQUESTED",
   REVOKED = "REVOKED",
   PENDING = "PENDING",
+  SUSPENDED = "SUSPENDED",
   RESTORED = "RESTORED",
 }
 
@@ -386,6 +389,7 @@ export interface UnexportableEntities {
 }
 
 export interface BackupCreate {
+  historyId: HistoryListItem["id"];
   file: string;
   unexportable: UnexportableEntities;
 }
@@ -410,7 +414,9 @@ export interface ONECore {
   handleInvitation(url: string, didId: string): Promise<InvitationResult>;
 
   holderAcceptCredential(
-    interactionId: InvitationResultCredentialIssuance["interactionId"]
+    interactionId: InvitationResultCredentialIssuance["interactionId"],
+    didId: string,
+    keyId: string | undefined
   ): Promise<void>;
 
   holderRejectCredential(
@@ -430,7 +436,9 @@ export interface ONECore {
     credentials: Record<
       PresentationDefinitionRequestedCredential["id"],
       PresentationSubmitCredentialRequest
-    >
+    >,
+    didId: string,
+    keyId: string | undefined
   ): Promise<void>;
 
   getCredentials(

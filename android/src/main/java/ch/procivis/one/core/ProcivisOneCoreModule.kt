@@ -86,9 +86,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun holderAcceptCredential(interactionId: String, promise: Promise) {
+    fun holderAcceptCredential(interactionId: String, didId: String, keyId: String?, promise: Promise) {
         Util.asyncCall(promise) {
-            getCore().holderAcceptCredential(interactionId)
+            getCore().holderAcceptCredential(interactionId, didId, keyId)
             return@asyncCall null
         }
     }
@@ -118,7 +118,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun holderSubmitProof(interactionId: String, credentials: ReadableMap, promise: Promise) {
+    fun holderSubmitProof(interactionId: String, credentials: ReadableMap, didId: String, keyId: String?, promise: Promise) {
         Util.asyncCall(promise) {
             val submitCredentials =
                 mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
@@ -137,7 +137,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                         claims
                     )
             }
-            getCore().holderSubmitProof(interactionId, submitCredentials)
+            getCore().holderSubmitProof(interactionId, submitCredentials, didId, keyId)
             return@asyncCall null
         }
     }
