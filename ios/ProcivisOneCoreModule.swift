@@ -111,13 +111,15 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(holderAcceptCredential:resolver:rejecter:)
+    @objc(holderAcceptCredential:didId:keyId:resolver:rejecter:)
     func holderAcceptCredential(
         interactionId: String,
+        didId: String,
+        keyId: String?,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().holderAcceptCredential(interactionId: interactionId);
+                try getCore().holderAcceptCredential(interactionId: interactionId, didId: didId, keyId: keyId);
                 return nil as NSDictionary?;
             }
         }
@@ -155,10 +157,12 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(holderSubmitProof:credentials:resolver:rejecter:)
+    @objc(holderSubmitProof:credentials:didId:keyId:resolver:rejecter:)
     func submitProof(
         interactionId: String,
         credentials: NSDictionary,
+        didId: String,
+        keyId: String?,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
@@ -174,7 +178,7 @@ class ProcivisOneCoreModule: NSObject {
                     submitCredentials[key] = PresentationSubmitCredentialRequestBindingDto(credentialId: entry.value(forKey: "credentialId") as! String, submitClaims: submitClaims);
                 }
                 
-                try getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials);
+                try getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials, didId: didId, keyId: keyId);
                 return nil as NSDictionary?;
             }
         }

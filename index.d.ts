@@ -14,6 +14,7 @@ export declare enum CredentialStateEnum {
     ACCEPTED = "ACCEPTED",
     REJECTED = "REJECTED",
     REVOKED = "REVOKED",
+    SUSPENDED = "SUSPENDED",
     ERROR = "ERROR"
 }
 export interface CredentialSchema {
@@ -84,10 +85,12 @@ export declare enum HistoryActionEnum {
     DELETED = "DELETED",
     ISSUED = "ISSUED",
     OFFERED = "OFFERED",
+    REACTIVATED = "REACTIVATED",
     REJECTED = "REJECTED",
     REQUESTED = "REQUESTED",
     REVOKED = "REVOKED",
     PENDING = "PENDING",
+    SUSPENDED = "SUSPENDED",
     RESTORED = "RESTORED"
 }
 export declare enum HistoryEntityTypeEnum {
@@ -324,6 +327,7 @@ export interface UnexportableEntities {
     totalDids: number;
 }
 export interface BackupCreate {
+    historyId: HistoryListItem["id"];
     file: string;
     unexportable: UnexportableEntities;
 }
@@ -339,11 +343,11 @@ export interface ONECore {
     generateKey(keyRequest: KeyRequest): Promise<string>;
     createDid(didRequest: DidRequest): Promise<string>;
     handleInvitation(url: string, didId: string): Promise<InvitationResult>;
-    holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
+    holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: string, keyId: string | undefined): Promise<void>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
     getPresentationDefinition(proofId: ProofDetail["id"]): Promise<PresentationDefinition>;
     holderRejectProof(interactionId: InvitationResultProofRequest["interactionId"]): Promise<void>;
-    holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>): Promise<void>;
+    holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: string, keyId: string | undefined): Promise<void>;
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
