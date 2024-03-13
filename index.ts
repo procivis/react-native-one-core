@@ -55,12 +55,12 @@ export interface CredentialListItem {
   state: CredentialStateEnum;
   schema: CredentialSchema;
   role: CredentialRoleEnum;
-  lvvcIssuanceDate?: string | null;
 }
 
 export interface CredentialDetail extends CredentialListItem {
   claims: Claim[];
   redirectUri?: string | null;
+  lvvcIssuanceDate?: string | null;
 }
 
 export interface ProofDetail {
@@ -123,6 +123,7 @@ export enum HistoryEntityTypeEnum {
   PROOF = "PROOF",
   PROOF_SCHEMA = "PROOF_SCHEMA",
   ORGANISATION = "ORGANISATION",
+  BACKUP = "BACKUP",
 }
 
 export enum HistorySearchTypeEnum {
