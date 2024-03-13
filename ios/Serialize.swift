@@ -101,6 +101,7 @@ func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
         "schema": serialize(credentialSchema: credentialDetail.schema),
         "redirectUri": credentialDetail.redirectUri,
         "role": serializeEnumValue(value: credentialDetail.role),
+        "lvvcIssuanceDate": credentialDetail.lvvcIssuanceDate,
     ]
 }
 
