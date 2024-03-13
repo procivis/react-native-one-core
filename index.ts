@@ -23,6 +23,11 @@ export enum CredentialStateEnum {
   ERROR = "ERROR",
 }
 
+export enum WalletStorageType {
+  HARDWARE = "HARDWARE",
+  SOFTWARE = "SOFTWARE",
+}
+
 export interface CredentialSchema {
   id: string;
   createdDate: string;
@@ -30,6 +35,7 @@ export interface CredentialSchema {
   name: string;
   format: string;
   revocationMethod: string;
+  walletStorageType?: WalletStorageType;
 }
 
 export interface Claim {
@@ -90,7 +96,7 @@ export enum CredentialRoleEnum {
 
 export interface CredentialListQuery extends ListQuery {
   role?: CredentialRoleEnum;
-  ids?: string[];
+  ids?: Array<CredentialListItem["id"]>;
 }
 
 export enum HistoryActionEnum {

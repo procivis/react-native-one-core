@@ -12,6 +12,13 @@ func serializeEnumValue<T>(value: T) -> String {
     return String(describing: value).snakeCased()
 }
 
+func serializeEnumValueOpt<T>(value: T?) -> String? {
+    if (value == nil) {
+        return nil;
+    }
+    return serializeEnumValue(value: value)
+}
+
 private let snakeCaseRegex = try! NSRegularExpression(pattern: "([a-z0-9])([A-Z])", options: [])
 extension String {
     func snakeCased() -> String {
@@ -54,6 +61,7 @@ func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
         "name": credentialSchema.name,
         "format": credentialSchema.format,
         "revocationMethod": credentialSchema.revocationMethod,
+        "walletStorageType": serializeEnumValueOpt(value: credentialSchema.walletStorageType),
     ]
 }
 
