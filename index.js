@@ -11,6 +11,11 @@ export var CredentialStateEnum;
     CredentialStateEnum["SUSPENDED"] = "SUSPENDED";
     CredentialStateEnum["ERROR"] = "ERROR";
 })(CredentialStateEnum || (CredentialStateEnum = {}));
+export var WalletStorageType;
+(function (WalletStorageType) {
+    WalletStorageType["HARDWARE"] = "HARDWARE";
+    WalletStorageType["SOFTWARE"] = "SOFTWARE";
+})(WalletStorageType || (WalletStorageType = {}));
 export var CredentialRoleEnum;
 (function (CredentialRoleEnum) {
     CredentialRoleEnum["HOLDER"] = "HOLDER";
