@@ -47,6 +47,7 @@ export var HistoryEntityTypeEnum;
     HistoryEntityTypeEnum["PROOF"] = "PROOF";
     HistoryEntityTypeEnum["PROOF_SCHEMA"] = "PROOF_SCHEMA";
     HistoryEntityTypeEnum["ORGANISATION"] = "ORGANISATION";
+    HistoryEntityTypeEnum["BACKUP"] = "BACKUP";
 })(HistoryEntityTypeEnum || (HistoryEntityTypeEnum = {}));
 export var HistorySearchTypeEnum;
 (function (HistorySearchTypeEnum) {
