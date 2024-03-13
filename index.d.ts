@@ -17,6 +17,10 @@ export declare enum CredentialStateEnum {
     SUSPENDED = "SUSPENDED",
     ERROR = "ERROR"
 }
+export declare enum WalletStorageType {
+    HARDWARE = "HARDWARE",
+    SOFTWARE = "SOFTWARE"
+}
 export interface CredentialSchema {
     id: string;
     createdDate: string;
@@ -24,6 +28,7 @@ export interface CredentialSchema {
     name: string;
     format: string;
     revocationMethod: string;
+    walletStorageType?: WalletStorageType;
 }
 export interface Claim {
     id: string;
@@ -76,7 +81,7 @@ export declare enum CredentialRoleEnum {
 }
 export interface CredentialListQuery extends ListQuery {
     role?: CredentialRoleEnum;
-    ids?: string[];
+    ids?: Array<CredentialListItem["id"]>;
 }
 export declare enum HistoryActionEnum {
     ACCEPTED = "ACCEPTED",
