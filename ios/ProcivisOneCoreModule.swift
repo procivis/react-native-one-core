@@ -86,14 +86,14 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(handleInvitation:didId:resolver:rejecter:)
+    @objc(handleInvitation:organisationId:resolver:rejecter:)
     func handleInvitation(
         url: String,
-        didId: String,
+        organisationId: String,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().handleInvitation(url: url, didId: didId);
+                let result = try getCore().handleInvitation(url: url, organisationId: organisationId);
                 
                 switch (result) {
                 case let .credentialIssuance(interactionId, credentialIds):
@@ -291,6 +291,17 @@ class ProcivisOneCoreModule: NSObject {
                 )
                 let result = try getCore().getHistoryList(query: listQuery);
                 return serialize(historyList: result)
+            }
+        }
+    
+    @objc(getHistoryEntry:resolver:rejecter:)
+    func getHistoryEntry(
+        historyId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try getCore().getHistoryEntry(historyId: historyId);
+                return serialize(historyListItem: result)
             }
         }
     

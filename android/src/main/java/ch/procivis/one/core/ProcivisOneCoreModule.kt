@@ -71,9 +71,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun handleInvitation(url: String, holderDidId: String, promise: Promise) {
+    fun handleInvitation(url: String, organisationId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val invitationResult = getCore().handleInvitation(url, holderDidId)
+            val invitationResult = getCore().handleInvitation(url, organisationId)
             return@asyncCall Util.convertToRN(
                 when (invitationResult) {
                     is HandleInvitationResponseBindingEnum.CredentialIssuance ->
@@ -235,6 +235,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
             val history = getCore().getHistoryList(listQuery)
             return@asyncCall Util.convertToRN(history)
+        }
+    }
+
+    @ReactMethod
+    fun getHistoryEntry(historyId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val result = getCore().getHistoryEntry(historyId)
+            return@asyncCall Util.convertToRN(result)
         }
     }
 
