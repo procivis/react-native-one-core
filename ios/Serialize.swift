@@ -85,6 +85,7 @@ func serialize(credentialListItem: CredentialListItemBindingDto) -> NSDictionary
         "state": serializeEnumValue(value: credentialListItem.state),
         "schema": serialize(credentialSchema: credentialListItem.schema),
         "role": serializeEnumValue(value: credentialListItem.role),
+        "suspendEndDate": credentialListItem.suspendEndDate,
     ]
 }
 
@@ -102,6 +103,7 @@ func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
         "redirectUri": credentialDetail.redirectUri,
         "role": serializeEnumValue(value: credentialDetail.role),
         "lvvcIssuanceDate": credentialDetail.lvvcIssuanceDate,
+        "suspendEndDate": credentialDetail.suspendEndDate,
     ]
 }
 
@@ -215,7 +217,15 @@ func serialize(historyListItem: HistoryListItemBindingDto) -> NSDictionary {
         "entityId": historyListItem.entityId,
         "entityType": serializeEnumValue(value: historyListItem.entityType),
         "organisationId": historyListItem.organisationId,
+        "metadata": (historyListItem.metadata == nil) ? nil : serialize(historyMetadata: historyListItem.metadata!),
     ]
+}
+
+func serialize(historyMetadata: HistoryMetadataBinding) -> NSDictionary {
+    switch (historyMetadata) {
+    case let .unexportableEntities(value):
+        return serialize(unexportableEntities: value);
+    }
 }
 
 func serialize(keyListItem: KeyListItemBindingDto) -> NSDictionary {
