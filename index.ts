@@ -55,6 +55,7 @@ export interface CredentialListItem {
   state: CredentialStateEnum;
   schema: CredentialSchema;
   role: CredentialRoleEnum;
+  suspendEndDate?: string | null;
 }
 
 export interface CredentialDetail extends CredentialListItem {
@@ -151,6 +152,8 @@ export interface HistoryListQuery extends ListQuery {
   searchType?: HistorySearchTypeEnum;
 }
 
+export type HistoryMetadata = UnexportableEntities;
+
 export interface HistoryListItem {
   id: string;
   createdDate: string;
@@ -158,6 +161,8 @@ export interface HistoryListItem {
   entityId?: string;
   entityType: HistoryEntityTypeEnum;
   organisationId: string;
+  // TODO: handle serialization properly
+  // metadata?: HistoryMetadata | null;
 }
 
 export interface ItemList<Item> {
@@ -418,7 +423,10 @@ export interface ONECore {
 
   createDid(didRequest: DidRequest): Promise<string>;
 
-  handleInvitation(url: string, didId: string): Promise<InvitationResult>;
+  handleInvitation(
+    url: string,
+    organisationId: string
+  ): Promise<InvitationResult>;
 
   holderAcceptCredential(
     interactionId: InvitationResultCredentialIssuance["interactionId"],
@@ -467,6 +475,8 @@ export interface ONECore {
   ): Promise<CredentialRevocationCheckResponse[]>;
 
   getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
+
+  getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;
 
   createBackup(password: string, outputPath: string): Promise<BackupCreate>;
 
