@@ -7,10 +7,6 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import uniffi.one_core.BindingException
-import uniffi.one_core.CredentialListQueryBindingDto
-import uniffi.one_core.HandleInvitationResponseBindingEnum
-import uniffi.one_core.HistoryListQueryBindingDto
-import uniffi.one_core.ListQueryBindingDto
 import uniffi.one_core.OneCoreBindingInterface
 import uniffi.one_core.PresentationSubmitCredentialRequestBindingDto
 
@@ -79,7 +75,12 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun holderAcceptCredential(interactionId: String, didId: String, keyId: String?, promise: Promise) {
+    fun holderAcceptCredential(
+        interactionId: String,
+        didId: String,
+        keyId: String?,
+        promise: Promise
+    ) {
         Util.asyncCall(promise) {
             getCore().holderAcceptCredential(interactionId, didId, keyId)
             return@asyncCall null
@@ -111,24 +112,20 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun holderSubmitProof(interactionId: String, credentials: ReadableMap, didId: String, keyId: String?, promise: Promise) {
+    fun holderSubmitProof(
+        interactionId: String,
+        credentials: ReadableMap,
+        didId: String,
+        keyId: String?,
+        promise: Promise
+    ) {
         Util.asyncCall(promise) {
             val submitCredentials =
                 mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
             for (entry in credentials.entryIterator) {
                 val credential = entry.value as ReadableMap
-
-                val submitClaims = credential.getArray("submitClaims") as ReadableArray
-                val claims = mutableListOf<String>()
-                for (n in 0 until submitClaims.size()) {
-                    claims.add(submitClaims.getString(n))
-                }
-
                 submitCredentials[entry.key] =
-                    PresentationSubmitCredentialRequestBindingDto(
-                        credential.getString("credentialId").toString(),
-                        claims
-                    )
+                    Deserialize.presentationSubmitCredentialRequest(credential)
             }
             getCore().holderSubmitProof(interactionId, submitCredentials, didId, keyId)
             return@asyncCall null
@@ -138,15 +135,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getCredentials(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val listQuery =
-                CredentialListQueryBindingDto(
-                    query.getInt("page").toUInt(),
-                    query.getInt("pageSize").toUInt(),
-                    query.getString("organisationId").toString(),
-                    Deserialize.opt(query.getString("role"), Deserialize::credentialRole),
-                    Deserialize.credentialIds(query.getArray("ids"))
-                )
-
+            val listQuery = Deserialize.credentialListQuery(query)
             val credentials = getCore().getCredentials(listQuery)
             return@asyncCall Util.convertToRN(credentials)
         }
@@ -171,13 +160,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getCredentialSchemas(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val listQuery =
-                ListQueryBindingDto(
-                    query.getInt("page").toUInt(),
-                    query.getInt("pageSize").toUInt(),
-                    query.getString("organisationId").toString()
-                )
-
+            val listQuery = Deserialize.listQuery(query)
             val schemas = getCore().getCredentialSchemas(listQuery)
             return@asyncCall Util.convertToRN(schemas)
         }
@@ -194,11 +177,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun checkRevocation(credentialIds: ReadableArray, promise: Promise) {
         Util.asyncCall(promise) {
-            val ids = mutableListOf<String>()
-            for (n in 0 until credentialIds.size()) {
-                ids.add(credentialIds.getString(n))
-            }
-
+            val ids = Deserialize.ids(credentialIds)
             val results = getCore().checkRevocation(ids)
             return@asyncCall Util.convertToRN(results)
         }
@@ -207,25 +186,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getHistory(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val listQuery =
-                HistoryListQueryBindingDto(
-                    query.getInt("page").toUInt(),
-                    query.getInt("pageSize").toUInt(),
-                    query.getString("organisationId").toString(),
-                    query.getString("entityId"),
-                    Deserialize.opt(query.getString("action"), Deserialize::historyAction),
-                    Deserialize.historyEntityTypes(query.getArray("entityTypes")),
-                    query.getString("createdDateFrom"),
-                    query.getString("createdDateTo"),
-                    query.getString("didId"),
-                    query.getString("credentialId"),
-                    query.getString("credentialSchemaId"),
-                    Deserialize.historySearch(
-                        query.getString("searchText"),
-                        query.getString("searchType"),
-                    ),
-                )
-
+            val listQuery = Deserialize.historyListQuery(query)
             val history = getCore().getHistoryList(listQuery)
             return@asyncCall Util.convertToRN(history)
         }
