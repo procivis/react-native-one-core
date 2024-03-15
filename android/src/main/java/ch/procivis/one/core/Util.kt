@@ -45,7 +45,7 @@ object Util {
             return Pair(RNType.NULL, null)
         }
 
-        val type = input!!.javaClass
+        val type = input.javaClass
 
         if (Collection::class.java.isAssignableFrom(type)) {
             return Pair(RNType.ARRAY, input as Collection<*>)
@@ -75,8 +75,11 @@ object Util {
     }
 
     private fun convertObject(input: Any): ReadableMap {
-        val result = Arguments.createMap()
+        if (Serialize.isCustomConversionType(input)) {
+            return Serialize.convertCustom(input)
+        }
 
+        val result = Arguments.createMap()
         if (input is Map<*, *>) {
             input.forEach { entry ->
                 convertObjectItem(result, entry.key.toString(), entry.value)

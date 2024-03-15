@@ -161,8 +161,7 @@ export interface HistoryListItem {
   entityId?: string;
   entityType: HistoryEntityTypeEnum;
   organisationId: string;
-  // TODO: handle serialization properly
-  // metadata?: HistoryMetadata | null;
+  metadata?: HistoryMetadata | null;
 }
 
 export interface ItemList<Item> {
