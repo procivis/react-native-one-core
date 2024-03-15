@@ -279,3 +279,21 @@ func serialize(importBackupMetadata: MetadataBindingDto) -> NSDictionary {
         "createdAt": importBackupMetadata.createdAt,
     ]
 }
+
+func serialize(invitationResponse: HandleInvitationResponseBindingEnum) -> NSDictionary {
+    switch (invitationResponse) {
+    case let .credentialIssuance(interactionId, credentialIds):
+        return [
+            "interactionId": interactionId,
+            "credentialIds": credentialIds
+        ] as NSDictionary;
+        
+    case let .proofRequest(interactionId, proofId):
+        return [
+            "interactionId": interactionId,
+            "proofId": proofId
+        ] as NSDictionary;
+    }
+}
+
+

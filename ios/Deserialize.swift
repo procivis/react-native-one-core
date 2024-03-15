@@ -9,11 +9,11 @@ import Foundation
 
 struct SerializationError: LocalizedError {
     let description: String
-
+    
     init(_ description: String) {
         self.description = description
     }
-
+    
     var errorDescription: String? {
         description
     }
@@ -24,21 +24,21 @@ func deserializeKeyRequest(keyRequest: NSDictionary) -> KeyRequestBindingDto {
     let name = keyRequest.value(forKey: "name") as! String;
     let storageType = keyRequest.value(forKey: "storageType") as! String;
     let organisationId = keyRequest.value(forKey: "organisationId") as! String;
-
+    
     let keyParamsRaw = keyRequest.value(forKey: "keyParams") as! NSDictionary;
     var keyParams: [String: String] = [:];
     keyParamsRaw.allKeys.forEach {
         let key = $0 as! String;
         keyParams[key] = keyParamsRaw.value(forKey: key) as? String;
     }
-
+    
     let storageParamsRaw = keyRequest.value(forKey: "storageParams") as! NSDictionary;
     var storageParams: [String: String] = [:];
     storageParamsRaw.allKeys.forEach {
         let key = $0 as! String;
         storageParams[key] = storageParamsRaw.value(forKey: key) as? String;
     }
-
+    
     return KeyRequestBindingDto(organisationId: organisationId, keyType: keyType, keyParams: keyParams, name: name, storageType: storageType, storageParams: storageParams);
 }
 
@@ -48,14 +48,14 @@ func deserializeDidRequest(didRequest: NSDictionary) throws -> DidRequestBinding
     let didMethod = didRequest.value(forKey: "didMethod") as! String;
     let didType = try deserializeDidType(input: didRequest.value(forKey: "didType") as! String);
     let keys = deserializeDidRequestKeys(didRequestKeys: didRequest.value(forKey: "keys") as! NSDictionary);
-
+    
     let paramsRaw = didRequest.value(forKey: "params") as! NSDictionary;
     var params: [String: String] = [:];
     paramsRaw.allKeys.forEach {
         let key = $0 as! String;
         params[key] = paramsRaw.value(forKey: key) as? String;
     }
-
+    
     return DidRequestBindingDto(organisationId: organisationId, name: name, didMethod: didMethod, didType: didType, keys: keys, params: params);
 }
 
@@ -114,7 +114,7 @@ func deserializeHistorySearch(text: String?, type: String?) throws -> HistorySea
     if text == nil {
         return nil
     }
-
+    
     return HistorySearchBindingDto(
         text: text!,
         type: try deserializeOpt(type, deserializeHistorySearchType)
@@ -152,7 +152,7 @@ func deserializeHistoryEntityTypes(_ input: NSArray?) throws -> [HistoryEntityTy
     if (input == nil) {
         return nil;
     }
-
+    
     var result: [HistoryEntityTypeBindingEnum] = [];
     try input!.forEach { entityType in
         result.append(try deserializeHistoryEntityType(input: entityType as! String));
@@ -160,19 +160,62 @@ func deserializeHistoryEntityTypes(_ input: NSArray?) throws -> [HistoryEntityTy
     return result
 }
 
-func deserializeCredentialIds(_ ids: NSArray?) throws -> [String]? {
-    if (ids == nil) {
-        return nil;
-    }
-
+func deserializeIds(_ ids: NSArray) -> [String] {
     var result: [String] = [];
-    try ids!.forEach { id in
+    ids.forEach { id in
         result.append(id as! String);
     }
     return result
 }
 
-func deserializeOpt<T>(_ input: String?, _ deserialize: @escaping (_ input: String) throws -> T) throws -> T? {
+func deserializePresentationSubmitCredentialRequest(_ input: NSDictionary) -> PresentationSubmitCredentialRequestBindingDto {
+    let claims = input.value(forKey: "submitClaims") as! NSArray;
+    var submitClaims: [String] = [];
+    claims.forEach { claim in
+        submitClaims.append(claim as! String);
+    }
+    return PresentationSubmitCredentialRequestBindingDto(credentialId: input.value(forKey: "credentialId") as! String, submitClaims: submitClaims);
+}
+
+func deserializeListQuery(_ query: NSDictionary) -> ListQueryBindingDto {
+    return ListQueryBindingDto(
+        page: query.value(forKey: "page") as! UInt32,
+        pageSize: query.value(forKey: "pageSize") as! UInt32,
+        organisationId: query.value(forKey: "organisationId") as! String
+    )
+}
+
+func deserializeCredentialListQuery(_ query: NSDictionary) throws -> CredentialListQueryBindingDto {
+    return CredentialListQueryBindingDto(
+        page: query.value(forKey: "page") as! UInt32,
+        pageSize: query.value(forKey: "pageSize") as! UInt32,
+        organisationId: query.value(forKey: "organisationId") as! String,
+        role: try deserializeOpt(query.value(forKey: "role") as! String?, deserializeCredentialRole),
+        ids: try deserializeOpt(query.value(forKey: "ids") as! NSArray?, deserializeIds)
+    )
+}
+
+func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQueryBindingDto {
+    return HistoryListQueryBindingDto(
+        page: query.value(forKey: "page") as! UInt32,
+        pageSize: query.value(forKey: "pageSize") as! UInt32,
+        organisationId: query.value(forKey: "organisationId") as! String,
+        entityId: query.value(forKey: "entityId") as! String?,
+        action: try deserializeOpt(query.value(forKey: "action") as! String?, deserializeHistoryAction),
+        entityTypes: try deserializeHistoryEntityTypes(query.value(forKey: "entityTypes") as! NSArray?),
+        createdDateFrom: query.value(forKey: "createdDateFrom") as! String?,
+        createdDateTo: query.value(forKey: "createdDateTo") as! String?,
+        didId: query.value(forKey: "didId") as! String?,
+        credentialId: query.value(forKey: "credentialId") as! String?,
+        credentialSchemaId: query.value(forKey: "credentialSchemaId") as! String?,
+        search: try deserializeHistorySearch(
+            text: query.value(forKey: "searchText") as! String?,
+            type: query.value(forKey: "searchType") as! String?
+        )
+    )
+}
+
+private func deserializeOpt<F, T>(_ input: F?, _ deserialize: @escaping (_ input: F) throws -> T) throws -> T? {
     if (input != nil) {
         return try deserialize(input!);
     }

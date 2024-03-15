@@ -1,7 +1,7 @@
 package ch.procivis.one.core
 
 import com.facebook.react.bridge.ReadableMap
-import uniffi.one_core.HistoryMetadataBinding
+import uniffi.one_core.*
 
 object Serialize {
     private val CustomConversionTypes =
