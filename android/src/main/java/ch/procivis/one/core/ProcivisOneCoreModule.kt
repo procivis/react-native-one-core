@@ -74,14 +74,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun handleInvitation(url: String, organisationId: String, promise: Promise) {
         Util.asyncCall(promise) {
             val invitationResult = getCore().handleInvitation(url, organisationId)
-            return@asyncCall Util.convertToRN(
-                when (invitationResult) {
-                    is HandleInvitationResponseBindingEnum.CredentialIssuance ->
-                        invitationResult
-
-                    is HandleInvitationResponseBindingEnum.ProofRequest -> invitationResult
-                }
-            )
+            return@asyncCall Util.convertToRN(invitationResult)
         }
     }
 

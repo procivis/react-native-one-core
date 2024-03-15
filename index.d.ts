@@ -140,6 +140,7 @@ export interface HistoryListItem {
     entityId?: string;
     entityType: HistoryEntityTypeEnum;
     organisationId: string;
+    metadata?: HistoryMetadata | null;
 }
 export interface ItemList<Item> {
     totalItems: number;
