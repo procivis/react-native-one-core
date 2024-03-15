@@ -94,20 +94,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let result = try getCore().handleInvitation(url: url, organisationId: organisationId);
-                
-                switch (result) {
-                case let .credentialIssuance(interactionId, credentialIds):
-                    return [
-                        "interactionId": interactionId,
-                        "credentialIds": credentialIds
-                    ] as NSDictionary;
-                    
-                case let .proofRequest(interactionId, proofId):
-                    return [
-                        "interactionId": interactionId,
-                        "proofId": proofId
-                    ] as NSDictionary;
-                }
+                return serialize(invitationResponse: result)
             }
         }
     
@@ -170,12 +157,7 @@ class ProcivisOneCoreModule: NSObject {
                 credentials.allKeys.forEach {
                     let key = $0 as! String;
                     let entry = credentials.value(forKey: key) as! NSDictionary;
-                    let claims = entry.value(forKey: "submitClaims") as! NSArray;
-                    var submitClaims: [String] = [];
-                    claims.forEach { claim in
-                        submitClaims.append(claim as! String);
-                    }
-                    submitCredentials[key] = PresentationSubmitCredentialRequestBindingDto(credentialId: entry.value(forKey: "credentialId") as! String, submitClaims: submitClaims);
+                    submitCredentials[key] = deserializePresentationSubmitCredentialRequest(entry)
                 }
                 
                 try getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials, didId: didId, keyId: keyId);
@@ -189,12 +171,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let listQuery = CredentialListQueryBindingDto(
-                    page: query.value(forKey: "page") as! UInt32,
-                    pageSize: query.value(forKey: "pageSize") as! UInt32,
-                    organisationId: query.value(forKey: "organisationId") as! String,
-                    role: try deserializeOpt(query.value(forKey: "role") as! String?, deserializeCredentialRole),
-                    ids: try deserializeCredentialIds(query.value(forKey: "ids") as! NSArray?))
+                let listQuery = try deserializeCredentialListQuery(query);
                 let result = try getCore().getCredentials(query: listQuery);
                 return serialize(credentialList: result)
             }
@@ -228,10 +205,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let listQuery = ListQueryBindingDto(
-                    page: query.value(forKey: "page") as! UInt32,
-                    pageSize: query.value(forKey: "pageSize") as! UInt32,
-                    organisationId: query.value(forKey: "organisationId") as! String)
+                let listQuery = deserializeListQuery(query)
                 let result = try getCore().getCredentialSchemas(query: listQuery);
                 return serialize(credentialSchemaList: result)
             }
@@ -254,11 +228,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                var ids: [String] = [];
-                credentialIds.forEach { id in
-                    ids.append(id as! String);
-                }
-                
+                let ids = deserializeIds(credentialIds);
                 let result = try getCore().checkRevocation(credentialIds: ids);
                 return result.map {
                     serialize(credentialRevocationCheckResponse: $0)
@@ -272,23 +242,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let listQuery = HistoryListQueryBindingDto(
-                    page: query.value(forKey: "page") as! UInt32,
-                    pageSize: query.value(forKey: "pageSize") as! UInt32,
-                    organisationId: query.value(forKey: "organisationId") as! String,
-                    entityId: query.value(forKey: "entityId") as! String?,
-                    action: try deserializeOpt(query.value(forKey: "action") as! String?, deserializeHistoryAction),
-                    entityTypes: try deserializeHistoryEntityTypes(query.value(forKey: "entityTypes") as! NSArray?),
-                    createdDateFrom: query.value(forKey: "createdDateFrom") as! String?,
-                    createdDateTo: query.value(forKey: "createdDateTo") as! String?,
-                    didId: query.value(forKey: "didId") as! String?,
-                    credentialId: query.value(forKey: "credentialId") as! String?,
-                    credentialSchemaId: query.value(forKey: "credentialSchemaId") as! String?,
-                    search: try deserializeHistorySearch(
-                        text: query.value(forKey: "searchText") as! String?,
-                        type: query.value(forKey: "searchType") as! String?
-                    )
-                )
+                let listQuery = try deserializeHistoryListQuery(query)
                 let result = try getCore().getHistoryList(query: listQuery);
                 return serialize(historyList: result)
             }

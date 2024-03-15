@@ -2,15 +2,7 @@ package ch.procivis.one.core
 
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import uniffi.one_core.CredentialRoleBindingDto
-import uniffi.one_core.DidRequestBindingDto
-import uniffi.one_core.DidRequestKeysBindingDto
-import uniffi.one_core.DidTypeBindingEnum
-import uniffi.one_core.HistoryActionBindingEnum
-import uniffi.one_core.HistoryEntityTypeBindingEnum
-import uniffi.one_core.HistorySearchBindingDto
-import uniffi.one_core.HistorySearchEnumBindingEnum
-import uniffi.one_core.KeyRequestBindingDto
+import uniffi.one_core.*
 
 object Deserialize {
     fun keyRequest(request: ReadableMap): KeyRequestBindingDto {
@@ -30,12 +22,12 @@ object Deserialize {
         }
 
         return KeyRequestBindingDto(
-                organisationId,
-                keyType,
-                keyParams,
-                name,
-                storageType,
-                storageParams
+            organisationId,
+            keyType,
+            keyParams,
+            name,
+            storageType,
+            storageParams
         )
     }
 
@@ -71,11 +63,11 @@ object Deserialize {
         val capabilityInvocation = didRequestRoleKeys(requestKeys, "capabilityInvocation")
         val capabilityDelegation = didRequestRoleKeys(requestKeys, "capabilityDelegation")
         return DidRequestKeysBindingDto(
-                authentication,
-                assertionMethod,
-                keyAgreement,
-                capabilityInvocation,
-                capabilityDelegation
+            authentication,
+            assertionMethod,
+            keyAgreement,
+            capabilityInvocation,
+            capabilityDelegation
         )
     }
 
@@ -88,7 +80,7 @@ object Deserialize {
         return result
     }
 
-    fun credentialRole(role: String): CredentialRoleBindingDto {
+    private fun credentialRole(role: String): CredentialRoleBindingDto {
         return when (role.lowercase()) {
             "holder" -> CredentialRoleBindingDto.HOLDER
             "issuer" -> CredentialRoleBindingDto.ISSUER
@@ -99,11 +91,7 @@ object Deserialize {
         }
     }
 
-    fun credentialIds(ids: ReadableArray?): List<String>? {
-        if (ids == null) {
-            return null
-        }
-
+    fun ids(ids: ReadableArray): List<String> {
         val result = mutableListOf<String>()
         for (n in 0 until ids.size()) {
             result.add(ids.getString(n))
@@ -111,7 +99,7 @@ object Deserialize {
         return result
     }
 
-    fun historyAction(action: String): HistoryActionBindingEnum {
+    private fun historyAction(action: String): HistoryActionBindingEnum {
         return when (action.lowercase()) {
             "accepted" -> HistoryActionBindingEnum.ACCEPTED
             "created" -> HistoryActionBindingEnum.CREATED
@@ -129,14 +117,14 @@ object Deserialize {
         }
     }
 
-    fun historySearch(text: String?, type: String?): HistorySearchBindingDto? {
+    private fun historySearch(text: String?, type: String?): HistorySearchBindingDto? {
         if (text == null) {
             return null
         }
 
         return HistorySearchBindingDto(
-                text,
-                opt(type, Deserialize::historySearchType),
+            text,
+            opt(type, Deserialize::historySearchType),
         )
     }
 
@@ -171,7 +159,7 @@ object Deserialize {
         }
     }
 
-    fun historyEntityTypes(entityTypes: ReadableArray?): List<HistoryEntityTypeBindingEnum>? {
+    private fun historyEntityTypes(entityTypes: ReadableArray?): List<HistoryEntityTypeBindingEnum>? {
         if (entityTypes == null) {
             return null
         }
@@ -183,7 +171,57 @@ object Deserialize {
         return result
     }
 
-    fun <T> opt(input: String?, fn: (String) -> T): T? {
+    fun presentationSubmitCredentialRequest(credential: ReadableMap): PresentationSubmitCredentialRequestBindingDto {
+        val submitClaims = credential.getArray("submitClaims") as ReadableArray
+        val claims = mutableListOf<String>()
+        for (n in 0 until submitClaims.size()) {
+            claims.add(submitClaims.getString(n))
+        }
+        return PresentationSubmitCredentialRequestBindingDto(
+            credential.getString("credentialId").toString(),
+            claims
+        )
+    }
+
+    fun listQuery(query: ReadableMap): ListQueryBindingDto {
+        return ListQueryBindingDto(
+            query.getInt("page").toUInt(),
+            query.getInt("pageSize").toUInt(),
+            query.getString("organisationId").toString()
+        )
+    }
+
+    fun credentialListQuery(query: ReadableMap): CredentialListQueryBindingDto {
+        return CredentialListQueryBindingDto(
+            query.getInt("page").toUInt(),
+            query.getInt("pageSize").toUInt(),
+            query.getString("organisationId").toString(),
+            opt(query.getString("role"), Deserialize::credentialRole),
+            opt(query.getArray("ids"), Deserialize::ids)
+        )
+    }
+
+    fun historyListQuery(query: ReadableMap): HistoryListQueryBindingDto {
+        return HistoryListQueryBindingDto(
+            query.getInt("page").toUInt(),
+            query.getInt("pageSize").toUInt(),
+            query.getString("organisationId").toString(),
+            query.getString("entityId"),
+            opt(query.getString("action"), Deserialize::historyAction),
+            historyEntityTypes(query.getArray("entityTypes")),
+            query.getString("createdDateFrom"),
+            query.getString("createdDateTo"),
+            query.getString("didId"),
+            query.getString("credentialId"),
+            query.getString("credentialSchemaId"),
+            historySearch(
+                query.getString("searchText"),
+                query.getString("searchType"),
+            ),
+        )
+    }
+
+    private fun <F, T> opt(input: F?, fn: (F) -> T): T? {
         if (input == null) {
             return null
         }
