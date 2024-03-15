@@ -16,7 +16,7 @@ func serializeEnumValueOpt<T>(value: T?) -> String? {
     if (value == nil) {
         return nil;
     }
-    return serializeEnumValue(value: value)
+    return serializeEnumValue(value: value!)
 }
 
 private let snakeCaseRegex = try! NSRegularExpression(pattern: "([a-z0-9])([A-Z])", options: [])
