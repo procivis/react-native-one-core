@@ -35,7 +35,6 @@ object Deserialize {
         val organisationId = request.getString("organisationId")!!
         val name = request.getString("name")!!
         val didMethod = request.getString("didMethod")!!
-        val didType = didType(request.getString("didType")!!)
         val keys = didRequestKeys(request.getMap("keys")!!)
 
         val params = mutableMapOf<String, String>()
@@ -43,7 +42,7 @@ object Deserialize {
             params[entry.key] = entry.value as String
         }
 
-        return DidRequestBindingDto(organisationId, name, didMethod, didType, keys, params)
+        return DidRequestBindingDto(organisationId, name, didMethod, keys, params)
     }
 
     private fun didType(type: String): DidTypeBindingEnum {
