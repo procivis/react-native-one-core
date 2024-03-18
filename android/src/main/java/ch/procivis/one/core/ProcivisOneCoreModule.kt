@@ -98,7 +98,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getPresentationDefinition(proofId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val presentationDefinition = getCore().getPresentationDefintion(proofId)
+            val presentationDefinition = getCore().getPresentationDefinition(proofId)
             return@asyncCall Util.convertToRN(presentationDefinition)
         }
     }

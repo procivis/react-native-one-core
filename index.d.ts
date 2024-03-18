@@ -210,7 +210,6 @@ export declare enum DidTypeEnum {
 export interface DidRequest {
     organisationId: string;
     name: string;
-    didType: DidTypeEnum;
     didMethod: string;
     keys: DidRequestKeys;
     params: Record<string, string>;
