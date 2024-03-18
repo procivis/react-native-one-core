@@ -128,7 +128,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().getPresentationDefintion(proofId: proofId);
+                let result = try getCore().getPresentationDefinition(proofId: proofId);
                 return serialize(presentationDefinition: result)
             }
         }
