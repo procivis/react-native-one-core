@@ -158,18 +158,6 @@ object Deserialize {
         }
     }
 
-    private fun historyEntityTypes(entityTypes: ReadableArray?): List<HistoryEntityTypeBindingEnum>? {
-        if (entityTypes == null) {
-            return null
-        }
-
-        val result = mutableListOf<HistoryEntityTypeBindingEnum>()
-        for (n in 0 until entityTypes.size()) {
-            result.add(historyEntityType(entityTypes.getString(n)))
-        }
-        return result
-    }
-
     fun presentationSubmitCredentialRequest(credential: ReadableMap): PresentationSubmitCredentialRequestBindingDto {
         val submitClaims = credential.getArray("submitClaims") as ReadableArray
         val claims = mutableListOf<String>()
@@ -194,10 +182,73 @@ object Deserialize {
         return CredentialListQueryBindingDto(
             query.getInt("page").toUInt(),
             query.getInt("pageSize").toUInt(),
+            opt(query.getString("sort"), Deserialize::sortableCredentialColumn),
+            opt(query.getString("sortDirection"), Deserialize::sortDirection),
             query.getString("organisationId").toString(),
+            query.getString("name"),
+            opt(query.getArray("exact")
+            ) { columns ->
+                enumList(
+                    columns,
+                    Deserialize::credentialListQueryExactColumn
+                )
+            },
             opt(query.getString("role"), Deserialize::credentialRole),
-            opt(query.getArray("ids"), Deserialize::ids)
+            opt(query.getArray("ids"), Deserialize::ids),
+            opt(query.getArray("status")) { states ->
+                enumList(
+                    states,
+                    Deserialize::credentialState
+                )
+            }
         )
+    }
+
+    private fun credentialListQueryExactColumn(column: String): CredentialListQueryExactColumnBindingEnum {
+        return when (column.lowercase()) {
+            "name" -> CredentialListQueryExactColumnBindingEnum.NAME
+            else -> {
+                throw IllegalArgumentException("Invalid credential list query exact column: $column")
+            }
+        }
+    }
+
+    private fun sortableCredentialColumn(column: String): SortableCredentialColumnBindingEnum {
+        return when (column.lowercase()) {
+            "created_date" -> SortableCredentialColumnBindingEnum.CREATED_DATE
+            "schema_name" -> SortableCredentialColumnBindingEnum.SCHEMA_NAME
+            "issuer_did" -> SortableCredentialColumnBindingEnum.ISSUER_DID
+            "state" -> SortableCredentialColumnBindingEnum.STATE
+            else -> {
+                throw IllegalArgumentException("Invalid sortable credential column: $column")
+            }
+        }
+    }
+
+    private fun sortDirection(direction: String): SortDirection {
+        return when (direction.lowercase()) {
+            "ascending" -> SortDirection.ASCENDING
+            "descending" -> SortDirection.DESCENDING
+            else -> {
+                throw IllegalArgumentException("Invalid sort direction: $direction")
+            }
+        }
+    }
+
+    private fun credentialState(state: String): CredentialStateBindingEnum {
+        return when (state.lowercase()) {
+            "created" -> CredentialStateBindingEnum.CREATED
+            "pending" -> CredentialStateBindingEnum.PENDING
+            "offered" -> CredentialStateBindingEnum.OFFERED
+            "accepted" -> CredentialStateBindingEnum.ACCEPTED
+            "rejected" -> CredentialStateBindingEnum.REJECTED
+            "revoked" -> CredentialStateBindingEnum.REVOKED
+            "error" -> CredentialStateBindingEnum.ERROR
+            "suspended" -> CredentialStateBindingEnum.SUSPENDED
+            else -> {
+                throw IllegalArgumentException("Invalid credential state: $state")
+            }
+        }
     }
 
     fun historyListQuery(query: ReadableMap): HistoryListQueryBindingDto {
@@ -207,7 +258,12 @@ object Deserialize {
             query.getString("organisationId").toString(),
             query.getString("entityId"),
             opt(query.getString("action"), Deserialize::historyAction),
-            historyEntityTypes(query.getArray("entityTypes")),
+            opt(query.getArray("entityTypes")) { types ->
+                enumList(
+                    types,
+                    Deserialize::historyEntityType
+                )
+            },
             query.getString("createdDateFrom"),
             query.getString("createdDateTo"),
             query.getString("didId"),
@@ -225,5 +281,13 @@ object Deserialize {
             return null
         }
         return fn(input)
+    }
+
+    private fun <T> enumList(entries: ReadableArray, fn: (String) -> T): List<T> {
+        val result = mutableListOf<T>()
+        for (n in 0 until entries.size()) {
+            result.add(fn(entries.getString(n)))
+        }
+        return result
     }
 }
