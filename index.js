@@ -22,6 +22,22 @@ export var CredentialRoleEnum;
     CredentialRoleEnum["ISSUER"] = "ISSUER";
     CredentialRoleEnum["VERIFIER"] = "VERIFIER";
 })(CredentialRoleEnum || (CredentialRoleEnum = {}));
+export var CredentialListQueryExactColumnEnum;
+(function (CredentialListQueryExactColumnEnum) {
+    CredentialListQueryExactColumnEnum["NAME"] = "NAME";
+})(CredentialListQueryExactColumnEnum || (CredentialListQueryExactColumnEnum = {}));
+export var SortDirection;
+(function (SortDirection) {
+    SortDirection["ASCENDING"] = "ASCENDING";
+    SortDirection["DESCENDING"] = "DESCENDING";
+})(SortDirection || (SortDirection = {}));
+export var SortableCredentialColumnEnum;
+(function (SortableCredentialColumnEnum) {
+    SortableCredentialColumnEnum["CREATED_DATE"] = "CREATED_DATE";
+    SortableCredentialColumnEnum["SCHEMA_NAME"] = "SCHEMA_NAME";
+    SortableCredentialColumnEnum["ISSUER_DID"] = "ISSUER_DID";
+    SortableCredentialColumnEnum["STATE"] = "STATE";
+})(SortableCredentialColumnEnum || (SortableCredentialColumnEnum = {}));
 export var HistoryActionEnum;
 (function (HistoryActionEnum) {
     HistoryActionEnum["ACCEPTED"] = "ACCEPTED";
