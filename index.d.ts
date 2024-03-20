@@ -80,9 +80,27 @@ export declare enum CredentialRoleEnum {
     ISSUER = "ISSUER",
     VERIFIER = "VERIFIER"
 }
+export declare enum CredentialListQueryExactColumnEnum {
+    NAME = "NAME"
+}
+export declare enum SortDirection {
+    ASCENDING = "ASCENDING",
+    DESCENDING = "DESCENDING"
+}
+export declare enum SortableCredentialColumnEnum {
+    CREATED_DATE = "CREATED_DATE",
+    SCHEMA_NAME = "SCHEMA_NAME",
+    ISSUER_DID = "ISSUER_DID",
+    STATE = "STATE"
+}
 export interface CredentialListQuery extends ListQuery {
+    sort?: SortableCredentialColumnEnum;
+    sortDirection?: SortDirection;
+    name?: string;
+    exact?: CredentialListQueryExactColumnEnum[];
     role?: CredentialRoleEnum;
     ids?: Array<CredentialListItem["id"]>;
+    status?: CredentialStateEnum[];
 }
 export declare enum HistoryActionEnum {
     ACCEPTED = "ACCEPTED",
