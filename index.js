@@ -16,6 +16,17 @@ export var WalletStorageType;
     WalletStorageType["HARDWARE"] = "HARDWARE";
     WalletStorageType["SOFTWARE"] = "SOFTWARE";
 })(WalletStorageType || (WalletStorageType = {}));
+export var CredentialSchemaType;
+(function (CredentialSchemaType) {
+    CredentialSchemaType["PROCIVIS_ONE_SCHEMA_2024"] = "PROCIVIS_ONE_SCHEMA_2024";
+    CredentialSchemaType["FALLBACK_SCHEMA_2024"] = "FALLBACK_SCHEMA_2024";
+})(CredentialSchemaType || (CredentialSchemaType = {}));
+export var LayoutType;
+(function (LayoutType) {
+    LayoutType["CARD"] = "CARD";
+    LayoutType["DOCUMENT"] = "DOCUMENT";
+    LayoutType["SINGLE_ATTRIBUTE"] = "SINGLE_ATTRIBUTE";
+})(LayoutType || (LayoutType = {}));
 export var CredentialRoleEnum;
 (function (CredentialRoleEnum) {
     CredentialRoleEnum["HOLDER"] = "HOLDER";
