@@ -111,6 +111,7 @@ export var DataTypeEnum;
     DataTypeEnum["Number"] = "NUMBER";
     DataTypeEnum["Date"] = "DATE";
     DataTypeEnum["File"] = "FILE";
+    DataTypeEnum["Object"] = "OBJECT";
 })(DataTypeEnum || (DataTypeEnum = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
