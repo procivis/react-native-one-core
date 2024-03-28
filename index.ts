@@ -28,7 +28,18 @@ export enum WalletStorageType {
   SOFTWARE = "SOFTWARE",
 }
 
-export interface CredentialSchema {
+export enum CredentialSchemaType {
+  PROCIVIS_ONE_SCHEMA_2024 = "PROCIVIS_ONE_SCHEMA_2024",
+  FALLBACK_SCHEMA_2024 = "FALLBACK_SCHEMA_2024",
+}
+
+export enum LayoutType {
+  CARD = "CARD",
+  DOCUMENT = "DOCUMENT",
+  SINGLE_ATTRIBUTE = "SINGLE_ATTRIBUTE",
+}
+
+export interface CredentialSchemaListItem {
   id: string;
   createdDate: string;
   lastModified: string;
@@ -36,6 +47,22 @@ export interface CredentialSchema {
   format: string;
   revocationMethod: string;
   walletStorageType?: WalletStorageType;
+  schemaId: string;
+  schemaType: CredentialSchemaType;
+  layoutType?: LayoutType;
+}
+
+export interface CredentialSchemaDetail extends CredentialSchemaListItem {
+  layoutProperties?: CredentialSchemaLayoutProperties;
+}
+
+export interface CredentialSchemaLayoutProperties {
+  backgroundColor?: string;
+  backgroundImage?: string;
+  labelColor?: string;
+  labelImage?: string;
+  primaryAttribute?: string;
+  secondaryAttribute?: string;
 }
 
 export interface Claim {
@@ -53,12 +80,13 @@ export interface CredentialListItem {
   revocationDate?: string | null;
   issuerDid?: string | null;
   state: CredentialStateEnum;
-  schema: CredentialSchema;
+  schema: CredentialSchemaListItem;
   role: CredentialRoleEnum;
   suspendEndDate?: string | null;
 }
 
 export interface CredentialDetail extends CredentialListItem {
+  schema: CredentialSchemaDetail;
   claims: Claim[];
   redirectUri?: string | null;
   lvvcIssuanceDate?: string | null;
@@ -80,7 +108,7 @@ export interface ProofRequestClaim {
   key: string;
   dataType: string;
   required: boolean;
-  credentialSchema: CredentialSchema;
+  credentialSchema: CredentialSchemaDetail;
 }
 
 export interface ListQuery {
@@ -485,7 +513,9 @@ export interface ONECore {
 
   deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
 
-  getCredentialSchemas(query: ListQuery): Promise<ItemList<CredentialSchema>>;
+  getCredentialSchemas(
+    query: ListQuery
+  ): Promise<ItemList<CredentialSchemaListItem>>;
 
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
 
