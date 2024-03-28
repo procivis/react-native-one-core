@@ -20,6 +20,9 @@ class ProcivisOneCoreModule: NSObject {
                     throw BindingError.Unknown(message: "invalid DataDir")
                 }
                 
+                // create folder if not exists
+                try FileManager.default.createDirectory(atPath: dataDirPath, withIntermediateDirectories: true)
+                
                 if (core != nil) {
                     throw BindingError.Unknown(message: "core already initialized")
                 }
