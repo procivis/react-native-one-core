@@ -53,12 +53,17 @@ export interface CredentialSchemaLayoutProperties {
     primaryAttribute?: string;
     secondaryAttribute?: string;
 }
-export interface Claim {
+export type ClaimValue = {
+    dataType: DataTypeEnum.String | DataTypeEnum.Number | DataTypeEnum.Date | DataTypeEnum.File | string;
+    value: string;
+} | {
+    dataType: DataTypeEnum.Object;
+    value: Claim[];
+};
+export type Claim = ClaimValue & {
     id: string;
     key: string;
-    dataType: string;
-    value: string;
-}
+};
 export interface CredentialListItem {
     id: string;
     createdDate: string;
@@ -302,7 +307,8 @@ export declare enum DataTypeEnum {
     String = "STRING",
     Number = "NUMBER",
     Date = "DATE",
-    File = "FILE"
+    File = "FILE",
+    Object = "OBJECT"
 }
 type DataTypeError = string | Record<string, string>;
 export interface StringDataTypeParams {
@@ -338,6 +344,9 @@ export type DataTypeParams = {
 } | {
     type: DataTypeEnum.File;
     params?: FileDataTypeParams;
+} | {
+    type: DataTypeEnum.Object;
+    params?: undefined;
 };
 export interface Config {
     format: ConfigEntities<FormatCapabilities>;
