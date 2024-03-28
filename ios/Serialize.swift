@@ -12,19 +12,19 @@ func serializeEnumValue<T>(value: T) -> String {
     return String(describing: value).snakeCased()
 }
 
-func serializeEnumValueOpt<T>(value: T?) -> String? {
-    if (value == nil) {
-        return nil;
-    }
-    return serializeEnumValue(value: value!)
-}
-
 private let snakeCaseRegex = try! NSRegularExpression(pattern: "([a-z0-9])([A-Z])", options: [])
 extension String {
     func snakeCased() -> String {
         let range = NSRange(location: 0, length: count)
         return snakeCaseRegex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$1_$2").uppercased()
     }
+}
+
+private func opt<F, T>(_ value: F?, _ serialize: @escaping (_ input: F) -> T) -> T? {
+    if (value == nil) {
+        return nil;
+    }
+    return serialize(value!)
 }
 
 // Business objects serialization
@@ -61,11 +61,11 @@ func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
         "name": credentialSchema.name,
         "format": credentialSchema.format,
         "revocationMethod": credentialSchema.revocationMethod,
-        "walletStorageType": serializeEnumValueOpt(value: credentialSchema.walletStorageType),
+        "walletStorageType": opt(credentialSchema.walletStorageType, serializeEnumValue),
         "schemaId": credentialSchema.schemaId,
-        "schemaType": serializeEnumValue(value: credentialSchema.schemaType),
-        "layoutType": serializeEnumValueOpt(value: credentialSchema.layoutType),
-        "layoutProperties": (credentialSchema.layoutProperties == nil) ? nil : serialize(layoutProperties: credentialSchema.layoutProperties!),
+        "schemaType": opt(credentialSchema.schemaType, serializeEnumValue),
+        "layoutType": opt(credentialSchema.layoutType, serializeEnumValue),
+        "layoutProperties": opt(credentialSchema.layoutProperties, {properties in serialize(layoutProperties: properties)}),
     ]
 }
 
@@ -89,10 +89,10 @@ func serialize(credentialSchemaListItem: CredentialSchemaListItemBindingDto) -> 
         "name": credentialSchemaListItem.name,
         "format": credentialSchemaListItem.format,
         "revocationMethod": credentialSchemaListItem.revocationMethod,
-        "walletStorageType": serializeEnumValueOpt(value: credentialSchemaListItem.walletStorageType),
+        "walletStorageType": opt(credentialSchemaListItem.walletStorageType, serializeEnumValue),
         "schemaId": credentialSchemaListItem.schemaId,
         "schemaType": serializeEnumValue(value: credentialSchemaListItem.schemaType),
-        "layoutType": serializeEnumValueOpt(value: credentialSchemaListItem.layoutType),
+        "layoutType": opt(credentialSchemaListItem.layoutType, serializeEnumValue),
     ]
 }
 
@@ -102,8 +102,17 @@ func serialize(claim: ClaimBindingDto) -> NSDictionary {
         "id": claim.id,
         "key": claim.key,
         "dataType": claim.dataType,
-        "value": claim.value,
+        "value": serialize(claimValue: claim.value),
     ]
+}
+
+func serialize(claimValue: ClaimValueBindingDto) -> Any {
+    switch (claimValue) {
+    case let .value(value):
+        return value;
+    case .nested(value: let values):
+        return values.map { serialize(claim: $0) }
+    }
 }
 
 func serialize(credentialListItem: CredentialListItemBindingDto) -> NSDictionary {
