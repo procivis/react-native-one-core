@@ -18,8 +18,8 @@ export var WalletStorageType;
 })(WalletStorageType || (WalletStorageType = {}));
 export var CredentialSchemaType;
 (function (CredentialSchemaType) {
-    CredentialSchemaType["PROCIVIS_ONE_SCHEMA_2024"] = "PROCIVIS_ONE_SCHEMA_2024";
-    CredentialSchemaType["FALLBACK_SCHEMA_2024"] = "FALLBACK_SCHEMA_2024";
+    CredentialSchemaType["PROCIVIS_ONE_SCHEMA2024"] = "PROCIVIS_ONE_SCHEMA2024";
+    CredentialSchemaType["FALLBACK_SCHEMA2024"] = "FALLBACK_SCHEMA2024";
 })(CredentialSchemaType || (CredentialSchemaType = {}));
 export var LayoutType;
 (function (LayoutType) {
