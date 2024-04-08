@@ -22,8 +22,8 @@ export declare enum WalletStorageType {
     SOFTWARE = "SOFTWARE"
 }
 export declare enum CredentialSchemaType {
-    PROCIVIS_ONE_SCHEMA_2024 = "PROCIVIS_ONE_SCHEMA_2024",
-    FALLBACK_SCHEMA_2024 = "FALLBACK_SCHEMA_2024"
+    PROCIVIS_ONE_SCHEMA2024 = "PROCIVIS_ONE_SCHEMA2024",
+    FALLBACK_SCHEMA2024 = "FALLBACK_SCHEMA2024"
 }
 export declare enum LayoutType {
     CARD = "CARD",
