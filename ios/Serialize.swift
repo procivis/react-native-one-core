@@ -69,15 +69,36 @@ func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
     ]
 }
 
-
 func serialize(layoutProperties: CredentialSchemaLayoutPropertiesBindingDto) -> NSDictionary {
     return [
-        "backgroundColor": layoutProperties.backgroundColor, 
-        "backgroundImage": layoutProperties.backgroundImage, 
-        "labelColor": layoutProperties.labelColor, 
-        "labelImage": layoutProperties.labelImage, 
-        "primaryAttribute": layoutProperties.primaryAttribute, 
-        "secondaryAttribute": layoutProperties.secondaryAttribute, 
+        "background": opt(layoutProperties.background, {background in serialize(backgroundProperties: background)}),
+        "logo": opt(layoutProperties.logo, {logo in serialize(logoProperties: logo)}),
+        "primaryAttribute": layoutProperties.primaryAttribute,
+        "secondaryAttribute": layoutProperties.secondaryAttribute,
+        "pictureAttribute": layoutProperties.pictureAttribute,
+        "code": opt(layoutProperties.code, {code in serialize(codeProperties: code)}),
+    ]
+}
+
+func serialize(backgroundProperties: CredentialSchemaBackgroundPropertiesBindingDto) -> NSDictionary {
+    return [
+        "color": backgroundProperties.color,
+        "image": backgroundProperties.image,
+    ]
+}
+
+func serialize(logoProperties: CredentialSchemaLogoPropertiesBindingDto) -> NSDictionary {
+    return [
+        "fontColor": logoProperties.fontColor,
+        "backgroundColor": logoProperties.backgroundColor,
+        "image": logoProperties.image,
+    ]
+}
+
+func serialize(codeProperties: CredentialSchemaCodePropertiesBindingDto) -> NSDictionary {
+    return [
+        "attribute": codeProperties.attribute,
+        "type": serializeEnumValue(value: codeProperties.type),
     ]
 }
 
@@ -95,7 +116,6 @@ func serialize(credentialSchemaListItem: CredentialSchemaListItemBindingDto) -> 
         "layoutType": opt(credentialSchemaListItem.layoutType, serializeEnumValue),
     ]
 }
-
 
 func serialize(claim: ClaimBindingDto) -> NSDictionary {
     return [

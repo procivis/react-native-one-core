@@ -20,6 +20,7 @@ export var CredentialSchemaType;
 (function (CredentialSchemaType) {
     CredentialSchemaType["PROCIVIS_ONE_SCHEMA2024"] = "PROCIVIS_ONE_SCHEMA2024";
     CredentialSchemaType["FALLBACK_SCHEMA2024"] = "FALLBACK_SCHEMA2024";
+    CredentialSchemaType["MDOC"] = "MDOC";
 })(CredentialSchemaType || (CredentialSchemaType = {}));
 export var LayoutType;
 (function (LayoutType) {
@@ -27,6 +28,12 @@ export var LayoutType;
     LayoutType["DOCUMENT"] = "DOCUMENT";
     LayoutType["SINGLE_ATTRIBUTE"] = "SINGLE_ATTRIBUTE";
 })(LayoutType || (LayoutType = {}));
+export var CredentialSchemaCodeType;
+(function (CredentialSchemaCodeType) {
+    CredentialSchemaCodeType["BARCODE"] = "BARCODE";
+    CredentialSchemaCodeType["MRZ"] = "MRZ";
+    CredentialSchemaCodeType["QR_CODE"] = "QR_CODE";
+})(CredentialSchemaCodeType || (CredentialSchemaCodeType = {}));
 export var CredentialRoleEnum;
 (function (CredentialRoleEnum) {
     CredentialRoleEnum["HOLDER"] = "HOLDER";
