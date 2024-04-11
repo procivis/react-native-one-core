@@ -23,7 +23,8 @@ export declare enum WalletStorageType {
 }
 export declare enum CredentialSchemaType {
     PROCIVIS_ONE_SCHEMA2024 = "PROCIVIS_ONE_SCHEMA2024",
-    FALLBACK_SCHEMA2024 = "FALLBACK_SCHEMA2024"
+    FALLBACK_SCHEMA2024 = "FALLBACK_SCHEMA2024",
+    MDOC = "MDOC"
 }
 export declare enum LayoutType {
     CARD = "CARD",
@@ -46,12 +47,30 @@ export interface CredentialSchemaDetail extends CredentialSchemaListItem {
     layoutProperties?: CredentialSchemaLayoutProperties;
 }
 export interface CredentialSchemaLayoutProperties {
-    backgroundColor?: string;
-    backgroundImage?: string;
-    labelColor?: string;
-    labelImage?: string;
+    background?: CredentialSchemaBackgroundProperties;
+    logo?: CredentialSchemaLogoProperties;
     primaryAttribute?: string;
     secondaryAttribute?: string;
+    pictureAttribute?: string;
+    code?: CredentialSchemaCodeProperties;
+}
+export interface CredentialSchemaBackgroundProperties {
+    color?: string;
+    image?: string;
+}
+export interface CredentialSchemaLogoProperties {
+    fontColor?: string;
+    backgroundColor?: string;
+    image?: string;
+}
+export interface CredentialSchemaCodeProperties {
+    attribute: string;
+    type: CredentialSchemaCodeType;
+}
+export declare enum CredentialSchemaCodeType {
+    BARCODE = "BARCODE",
+    MRZ = "MRZ",
+    QR_CODE = "QR_CODE"
 }
 export type ClaimValue = {
     dataType: DataTypeEnum.String | DataTypeEnum.Number | DataTypeEnum.Date | DataTypeEnum.File | string;

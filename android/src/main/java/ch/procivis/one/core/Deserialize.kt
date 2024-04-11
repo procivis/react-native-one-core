@@ -200,7 +200,8 @@ object Deserialize {
                     states,
                     Deserialize::credentialState
                 )
-            }
+            },
+            null
         )
     }
 

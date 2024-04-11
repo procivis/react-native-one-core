@@ -222,7 +222,8 @@ func deserializeCredentialListQuery(_ query: NSDictionary) throws -> CredentialL
         exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns, deserializeCredentialListQueryExactColumn) } ),
         role: try opt(query.value(forKey: "role") as! String?, deserializeCredentialRole),
         ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
-        status: try opt(query.value(forKey: "status") as! NSArray?, { states in try enumList(states, deserializeCredentialState) })
+        status: try opt(query.value(forKey: "status") as! NSArray?, { states in try enumList(states, deserializeCredentialState) }),
+        include: nil
     )
 }
 
