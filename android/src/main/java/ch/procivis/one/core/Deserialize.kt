@@ -201,7 +201,12 @@ object Deserialize {
                     Deserialize::credentialState
                 )
             },
-            null
+            opt(query.getArray("include")) { types ->
+                enumList(
+                    types,
+                    Deserialize::credentialListIncludeEntityType
+                )
+            },
         )
     }
 
@@ -248,6 +253,15 @@ object Deserialize {
             "suspended" -> CredentialStateBindingEnum.SUSPENDED
             else -> {
                 throw IllegalArgumentException("Invalid credential state: $state")
+            }
+        }
+    }
+
+    private fun credentialListIncludeEntityType(type: String): CredentialListIncludeEntityTypeBindingEnum {
+        return when (type.lowercase()) {
+            "layout_properties" -> CredentialListIncludeEntityTypeBindingEnum.LAYOUT_PROPERTIES
+            else -> {
+                throw IllegalArgumentException("Invalid credential list include entity type: $type")
             }
         }
     }
