@@ -102,21 +102,6 @@ func serialize(codeProperties: CredentialSchemaCodePropertiesBindingDto) -> NSDi
     ]
 }
 
-func serialize(credentialSchemaListItem: CredentialSchemaListItemBindingDto) -> NSDictionary {
-    return [
-        "id": credentialSchemaListItem.id,
-        "createdDate": credentialSchemaListItem.createdDate,
-        "lastModified": credentialSchemaListItem.lastModified,
-        "name": credentialSchemaListItem.name,
-        "format": credentialSchemaListItem.format,
-        "revocationMethod": credentialSchemaListItem.revocationMethod,
-        "walletStorageType": opt(credentialSchemaListItem.walletStorageType, serializeEnumValue),
-        "schemaId": credentialSchemaListItem.schemaId,
-        "schemaType": serializeEnumValue(value: credentialSchemaListItem.schemaType),
-        "layoutType": opt(credentialSchemaListItem.layoutType, serializeEnumValue),
-    ]
-}
-
 func serialize(claim: ClaimBindingDto) -> NSDictionary {
     return [
         "id": claim.id,
@@ -144,7 +129,7 @@ func serialize(credentialListItem: CredentialListItemBindingDto) -> NSDictionary
         "revocationDate": credentialListItem.revocationDate,
         "issuerDid": credentialListItem.issuerDid,
         "state": serializeEnumValue(value: credentialListItem.state),
-        "schema": serialize(credentialSchemaListItem: credentialListItem.schema),
+        "schema": serialize(credentialSchema: credentialListItem.schema),
         "role": serializeEnumValue(value: credentialListItem.role),
         "suspendEndDate": credentialListItem.suspendEndDate,
     ]
@@ -180,7 +165,7 @@ func serialize(credentialSchemaList: CredentialSchemaListBindingDto) -> NSDictio
     return [
         "totalItems": credentialSchemaList.totalItems,
         "totalPages": credentialSchemaList.totalPages,
-        "values": credentialSchemaList.values.map { serialize(credentialSchemaListItem: $0) },
+        "values": credentialSchemaList.values.map { serialize(credentialSchema: $0) },
     ]
 }
 
