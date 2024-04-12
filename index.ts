@@ -40,7 +40,7 @@ export enum LayoutType {
   SINGLE_ATTRIBUTE = "SINGLE_ATTRIBUTE",
 }
 
-export interface CredentialSchemaListItem {
+export interface CredentialSchema {
   id: string;
   createdDate: string;
   lastModified: string;
@@ -51,9 +51,6 @@ export interface CredentialSchemaListItem {
   schemaId: string;
   schemaType: CredentialSchemaType;
   layoutType?: LayoutType;
-}
-
-export interface CredentialSchemaDetail extends CredentialSchemaListItem {
   layoutProperties?: CredentialSchemaLayoutProperties;
 }
 
@@ -113,13 +110,12 @@ export interface CredentialListItem {
   revocationDate?: string | null;
   issuerDid?: string | null;
   state: CredentialStateEnum;
-  schema: CredentialSchemaListItem;
+  schema: CredentialSchema;
   role: CredentialRoleEnum;
   suspendEndDate?: string | null;
 }
 
 export interface CredentialDetail extends CredentialListItem {
-  schema: CredentialSchemaDetail;
   claims: Claim[];
   redirectUri?: string | null;
   lvvcIssuanceDate?: string | null;
@@ -141,7 +137,7 @@ export interface ProofRequestClaim {
   key: string;
   dataType: string;
   required: boolean;
-  credentialSchema: CredentialSchemaDetail;
+  credentialSchema: CredentialSchema;
 }
 
 export interface ListQuery {
@@ -172,6 +168,10 @@ export enum SortableCredentialColumnEnum {
   STATE = "STATE",
 }
 
+export enum CredentialListIncludeEntityType {
+  LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES",
+}
+
 export interface CredentialListQuery extends ListQuery {
   sort?: SortableCredentialColumnEnum;
   sortDirection?: SortDirection;
@@ -180,6 +180,7 @@ export interface CredentialListQuery extends ListQuery {
   role?: CredentialRoleEnum;
   ids?: Array<CredentialListItem["id"]>;
   status?: CredentialStateEnum[];
+  include?: CredentialListIncludeEntityType[];
 }
 
 export enum HistoryActionEnum {
@@ -551,9 +552,7 @@ export interface ONECore {
 
   deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
 
-  getCredentialSchemas(
-    query: ListQuery
-  ): Promise<ItemList<CredentialSchemaListItem>>;
+  getCredentialSchemas(query: ListQuery): Promise<ItemList<CredentialSchema>>;
 
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
 

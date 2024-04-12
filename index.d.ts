@@ -31,7 +31,7 @@ export declare enum LayoutType {
     DOCUMENT = "DOCUMENT",
     SINGLE_ATTRIBUTE = "SINGLE_ATTRIBUTE"
 }
-export interface CredentialSchemaListItem {
+export interface CredentialSchema {
     id: string;
     createdDate: string;
     lastModified: string;
@@ -42,8 +42,6 @@ export interface CredentialSchemaListItem {
     schemaId: string;
     schemaType: CredentialSchemaType;
     layoutType?: LayoutType;
-}
-export interface CredentialSchemaDetail extends CredentialSchemaListItem {
     layoutProperties?: CredentialSchemaLayoutProperties;
 }
 export interface CredentialSchemaLayoutProperties {
@@ -91,12 +89,11 @@ export interface CredentialListItem {
     revocationDate?: string | null;
     issuerDid?: string | null;
     state: CredentialStateEnum;
-    schema: CredentialSchemaListItem;
+    schema: CredentialSchema;
     role: CredentialRoleEnum;
     suspendEndDate?: string | null;
 }
 export interface CredentialDetail extends CredentialListItem {
-    schema: CredentialSchemaDetail;
     claims: Claim[];
     redirectUri?: string | null;
     lvvcIssuanceDate?: string | null;
@@ -116,7 +113,7 @@ export interface ProofRequestClaim {
     key: string;
     dataType: string;
     required: boolean;
-    credentialSchema: CredentialSchemaDetail;
+    credentialSchema: CredentialSchema;
 }
 export interface ListQuery {
     page: number;
@@ -141,6 +138,9 @@ export declare enum SortableCredentialColumnEnum {
     ISSUER_DID = "ISSUER_DID",
     STATE = "STATE"
 }
+export declare enum CredentialListIncludeEntityType {
+    LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES"
+}
 export interface CredentialListQuery extends ListQuery {
     sort?: SortableCredentialColumnEnum;
     sortDirection?: SortDirection;
@@ -149,6 +149,7 @@ export interface CredentialListQuery extends ListQuery {
     role?: CredentialRoleEnum;
     ids?: Array<CredentialListItem["id"]>;
     status?: CredentialStateEnum[];
+    include?: CredentialListIncludeEntityType[];
 }
 export declare enum HistoryActionEnum {
     ACCEPTED = "ACCEPTED",
@@ -429,7 +430,7 @@ export interface ONECore {
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
-    getCredentialSchemas(query: ListQuery): Promise<ItemList<CredentialSchemaListItem>>;
+    getCredentialSchemas(query: ListQuery): Promise<ItemList<CredentialSchema>>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
