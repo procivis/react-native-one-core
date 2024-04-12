@@ -193,6 +193,13 @@ func deserializeCredentialState(_ input: String) throws -> CredentialStateBindin
     }
 }
 
+func deserializeCredentialListIncludeEntityType(_ input: String) throws -> CredentialListIncludeEntityTypeBindingEnum {
+    switch input.lowercased() {
+    case "layout_properties": return .layoutProperties
+    default: throw SerializationError("Invalid credential list include entity type: " + input);
+    }
+}
+
 func deserializeSortableCredentialColumn(_ input: String) throws -> SortableCredentialColumnBindingEnum {
     switch input.lowercased() {
     case "created_date": return .createdDate
@@ -223,7 +230,7 @@ func deserializeCredentialListQuery(_ query: NSDictionary) throws -> CredentialL
         role: try opt(query.value(forKey: "role") as! String?, deserializeCredentialRole),
         ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
         status: try opt(query.value(forKey: "status") as! NSArray?, { states in try enumList(states, deserializeCredentialState) }),
-        include: nil
+        include: try opt(query.value(forKey: "include") as! NSArray?, { types in try enumList(types, deserializeCredentialListIncludeEntityType) })
     )
 }
 

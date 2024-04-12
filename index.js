@@ -56,6 +56,10 @@ export var SortableCredentialColumnEnum;
     SortableCredentialColumnEnum["ISSUER_DID"] = "ISSUER_DID";
     SortableCredentialColumnEnum["STATE"] = "STATE";
 })(SortableCredentialColumnEnum || (SortableCredentialColumnEnum = {}));
+export var CredentialListIncludeEntityType;
+(function (CredentialListIncludeEntityType) {
+    CredentialListIncludeEntityType["LAYOUT_PROPERTIES"] = "LAYOUT_PROPERTIES";
+})(CredentialListIncludeEntityType || (CredentialListIncludeEntityType = {}));
 export var HistoryActionEnum;
 (function (HistoryActionEnum) {
     HistoryActionEnum["ACCEPTED"] = "ACCEPTED";
