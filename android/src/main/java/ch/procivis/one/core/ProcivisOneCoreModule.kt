@@ -24,7 +24,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun initialize(promise: Promise) {
         Util.asyncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
-            oneCore = uniffi.one_core.initializeCore(dataDirPath, AndroidKeyStoreKeyStorage())
+            oneCore = uniffi.one_core.initializeCore(dataDirPath, AndroidKeyStoreKeyStorage(this.reactApplicationContext))
             return@asyncCall null
         }
     }
