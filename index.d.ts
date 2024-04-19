@@ -151,6 +151,36 @@ export interface CredentialListQuery extends ListQuery {
     status?: CredentialStateEnum[];
     include?: CredentialListIncludeEntityType[];
 }
+export declare enum SortableDidColumnEnum {
+    NAME = "NAME",
+    CREATED_DATE = "CREATED_DATE",
+    METHOD = "METHOD",
+    TYPE = "TYPE",
+    DID = "DID",
+    DEACTIVATED = "DEACTIVATED"
+}
+export declare enum ExactDidFilterColumnEnum {
+    NAME = "NAME",
+    DID = "DID"
+}
+export declare enum KeyRoleEnum {
+    AUTHENTICATION = "AUTHENTICATION",
+    ASSERTION_METHOD = "ASSERTION_METHOD",
+    KEY_AGREEMENT = "KEY_AGREEMENT",
+    CAPABILITY_INVOCATION = "CAPABILITY_INVOCATION",
+    CAPABILITY_DELEGATION = "CAPABILITY_DELEGATION"
+}
+export interface DidListQuery extends ListQuery {
+    sort?: SortableDidColumnEnum;
+    sortDirection?: SortDirection;
+    name?: string;
+    did?: string;
+    type?: DidTypeEnum;
+    deactivated?: boolean;
+    exact?: ExactDidFilterColumnEnum[];
+    keyAlgorithms?: string[];
+    keyRoles?: KeyRoleEnum[];
+}
 export declare enum HistoryActionEnum {
     ACCEPTED = "ACCEPTED",
     CREATED = "CREATED",
@@ -421,6 +451,7 @@ export interface ONECore {
     createOrganisation(uuid: string | undefined): Promise<string>;
     generateKey(keyRequest: KeyRequest): Promise<string>;
     createDid(didRequest: DidRequest): Promise<string>;
+    getDids(query: DidListQuery): Promise<ItemList<DidListItem>>;
     handleInvitation(url: string, organisationId: string): Promise<InvitationResult>;
     holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: string, keyId: string | undefined): Promise<void>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;

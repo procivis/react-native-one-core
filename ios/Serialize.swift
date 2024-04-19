@@ -161,6 +161,14 @@ func serialize(credentialList: CredentialListBindingDto) -> NSDictionary {
     ]
 }
 
+func serialize(didList: DidListBindingDto) -> NSDictionary {
+    return [
+        "totalItems": didList.totalItems,
+        "totalPages": didList.totalPages,
+        "values": didList.values.map { serialize(didListItem: $0) },
+    ]
+}
+
 func serialize(credentialSchemaList: CredentialSchemaListBindingDto) -> NSDictionary {
     return [
         "totalItems": credentialSchemaList.totalItems,
