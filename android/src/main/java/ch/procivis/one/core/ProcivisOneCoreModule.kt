@@ -67,6 +67,15 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getDids(query: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val listQuery = Deserialize.didListQuery(query)
+            val dids = getCore().getDids(listQuery)
+            return@asyncCall Util.convertToRN(dids)
+        }
+    }
+
+    @ReactMethod
     fun handleInvitation(url: String, organisationId: String, promise: Promise) {
         Util.asyncCall(promise) {
             val invitationResult = getCore().handleInvitation(url, organisationId)
