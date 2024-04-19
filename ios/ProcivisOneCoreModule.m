@@ -35,6 +35,10 @@ RCT_EXTERN_METHOD(createDid:(NSDictionary *)didRequest
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getDids:(NSDictionary *)query
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(handleInvitation:(NSString *)url
                   organisationId:(NSString *)organisationId
                   resolver:(RCTPromiseResolveBlock)resolve

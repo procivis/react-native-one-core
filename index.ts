@@ -183,6 +183,40 @@ export interface CredentialListQuery extends ListQuery {
   include?: CredentialListIncludeEntityType[];
 }
 
+export enum SortableDidColumnEnum {
+  NAME = "NAME",
+  CREATED_DATE = "CREATED_DATE",
+  METHOD = "METHOD",
+  TYPE = "TYPE",
+  DID = "DID",
+  DEACTIVATED = "DEACTIVATED",
+}
+
+export enum ExactDidFilterColumnEnum {
+  NAME = "NAME",
+  DID = "DID",
+}
+
+export enum KeyRoleEnum {
+  AUTHENTICATION = "AUTHENTICATION",
+  ASSERTION_METHOD = "ASSERTION_METHOD",
+  KEY_AGREEMENT = "KEY_AGREEMENT",
+  CAPABILITY_INVOCATION = "CAPABILITY_INVOCATION",
+  CAPABILITY_DELEGATION = "CAPABILITY_DELEGATION",
+}
+
+export interface DidListQuery extends ListQuery {
+  sort?: SortableDidColumnEnum;
+  sortDirection?: SortDirection;
+  name?: string;
+  did?: string;
+  type?: DidTypeEnum;
+  deactivated?: boolean;
+  exact?: ExactDidFilterColumnEnum[];
+  keyAlgorithms?: string[];
+  keyRoles?: KeyRoleEnum[];
+}
+
 export enum HistoryActionEnum {
   ACCEPTED = "ACCEPTED",
   CREATED = "CREATED",
@@ -508,6 +542,8 @@ export interface ONECore {
   generateKey(keyRequest: KeyRequest): Promise<string>;
 
   createDid(didRequest: DidRequest): Promise<string>;
+
+  getDids(query: DidListQuery): Promise<ItemList<DidListItem>>;
 
   handleInvitation(
     url: string,

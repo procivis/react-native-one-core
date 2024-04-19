@@ -89,6 +89,18 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
+    @objc(getDids:resolver:rejecter:)
+    func getDids(
+        query: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let listQuery = try deserializeDidListQuery(query);
+                let result = try getCore().getDids(query: listQuery);
+                return serialize(didList: result)
+            }
+        }
+    
     @objc(handleInvitation:organisationId:resolver:rejecter:)
     func handleInvitation(
         url: String,

@@ -186,7 +186,8 @@ object Deserialize {
             opt(query.getString("sortDirection"), Deserialize::sortDirection),
             query.getString("organisationId").toString(),
             query.getString("name"),
-            opt(query.getArray("exact")
+            opt(
+                query.getArray("exact")
             ) { columns ->
                 enumList(
                     columns,
@@ -210,6 +211,35 @@ object Deserialize {
         )
     }
 
+    fun didListQuery(query: ReadableMap): DidListQueryBindingDto {
+        return DidListQueryBindingDto(
+            query.getInt("page").toUInt(),
+            query.getInt("pageSize").toUInt(),
+            opt(query.getString("sort"), Deserialize::sortableDidColumn),
+            opt(query.getString("sortDirection"), Deserialize::sortDirection),
+            query.getString("organisationId").toString(),
+            query.getString("name"),
+            query.getString("did"),
+            opt(query.getString("type"), Deserialize::didType),
+            query.getBoolean("deactivated"),
+            opt(
+                query.getArray("exact")
+            ) { columns ->
+                enumList(
+                    columns,
+                    Deserialize::didListQueryExactColumn
+                )
+            },
+            opt(query.getArray("keyAlgorithms"), Deserialize::ids),
+            opt(query.getArray("keyRoles")) { types ->
+                enumList(
+                    types,
+                    Deserialize::keyRole
+                )
+            },
+        )
+    }
+
     private fun credentialListQueryExactColumn(column: String): CredentialListQueryExactColumnBindingEnum {
         return when (column.lowercase()) {
             "name" -> CredentialListQueryExactColumnBindingEnum.NAME
@@ -227,6 +257,43 @@ object Deserialize {
             "state" -> SortableCredentialColumnBindingEnum.STATE
             else -> {
                 throw IllegalArgumentException("Invalid sortable credential column: $column")
+            }
+        }
+    }
+
+    private fun didListQueryExactColumn(column: String): ExactDidFilterColumnBindingEnum {
+        return when (column.lowercase()) {
+            "name" -> ExactDidFilterColumnBindingEnum.NAME
+            "did" -> ExactDidFilterColumnBindingEnum.DID
+            else -> {
+                throw IllegalArgumentException("Invalid did list query exact column: $column")
+            }
+        }
+    }
+
+    private fun keyRole(role: String): KeyRoleBindingEnum {
+        return when (role.lowercase()) {
+            "authentication" -> KeyRoleBindingEnum.AUTHENTICATION
+            "assertion_method" -> KeyRoleBindingEnum.ASSERTION_METHOD
+            "key_agreement" -> KeyRoleBindingEnum.KEY_AGREEMENT
+            "capability_invocation" -> KeyRoleBindingEnum.CAPABILITY_INVOCATION
+            "capability_delegation" -> KeyRoleBindingEnum.CAPABILITY_DELEGATION
+            else -> {
+                throw IllegalArgumentException("Invalid key role: $role")
+            }
+        }
+    }
+
+    private fun sortableDidColumn(column: String): SortableDidColumnBindingEnum {
+        return when (column.lowercase()) {
+            "name" -> SortableDidColumnBindingEnum.NAME
+            "created_date" -> SortableDidColumnBindingEnum.CREATED_DATE
+            "method" -> SortableDidColumnBindingEnum.METHOD
+            "type" -> SortableDidColumnBindingEnum.TYPE
+            "did" -> SortableDidColumnBindingEnum.DID
+            "deactivated" -> SortableDidColumnBindingEnum.DEACTIVATED
+            else -> {
+                throw IllegalArgumentException("Invalid sortable did column: $column")
             }
         }
     }
