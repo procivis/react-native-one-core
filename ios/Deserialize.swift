@@ -76,39 +76,6 @@ func deserializeDidRequestKeySet(didRequestKeys: NSDictionary, keyRole: String) 
     return result;
 }
 
-func deserializeDidType(input: String) throws -> DidTypeBindingEnum {
-    switch input.lowercased() {
-    case "local": return .local;
-    case "remote": return .remote;
-    default: throw SerializationError("Invalid did type: " + input);
-    }
-}
-
-func deserializeCredentialRole(input: String) throws -> CredentialRoleBindingDto {
-    switch input.lowercased() {
-    case "holder": return .holder;
-    case "issuer": return .issuer;
-    case "verifier": return .verifier;
-    default: throw SerializationError("Invalid credential role: " + input);
-    }
-}
-
-func deserializeHistoryAction(input: String) throws -> HistoryActionBindingEnum {
-    switch input.lowercased() {
-    case "accepted": return .accepted;
-    case "created": return .created;
-    case "deactivated": return .deactivated;
-    case "deleted": return .deleted;
-    case "issued": return .issued;
-    case "offered": return .offered;
-    case "rejected": return .rejected;
-    case "requested": return .requested;
-    case "revoked": return .revoked;
-    case "pending": return .pending;
-    default: throw SerializationError("Invalid history action: " + input);
-    }
-}
-
 func deserializeHistorySearch(text: String?, type: String?) throws -> HistorySearchBindingDto? {
     if text == nil {
         return nil
@@ -116,35 +83,8 @@ func deserializeHistorySearch(text: String?, type: String?) throws -> HistorySea
     
     return HistorySearchBindingDto(
         text: text!,
-        type: try opt(type, deserializeHistorySearchType)
+        type: try opt(type, deserializeEnum)
     )
-}
-
-func deserializeHistorySearchType(input: String) throws -> HistorySearchEnumBindingEnum {
-    switch input.lowercased() {
-    case "claim_name": return .claimName;
-    case "claim_value": return .claimValue;
-    case "credential_schema_name": return .credentialSchemaName;
-    case "issuer_did": return .issuerDid;
-    case "issuer_name": return .issuerName;
-    case "verifier_did": return .verifierDid;
-    case "verifier_name": return .verifierName;
-    default: throw SerializationError("Invalid history search type: " + input);
-    }
-}
-
-func deserializeHistoryEntityType(input: String) throws -> HistoryEntityTypeBindingEnum {
-    switch input.lowercased() {
-    case "key": return .key;
-    case "did": return .did;
-    case "credential_schema": return .credentialSchema;
-    case "credential": return .credential;
-    case "proof_schema": return .proofSchema;
-    case "proof": return .proof;
-    case "organisation": return .organisation;
-    case "backup": return .backup;
-    default: throw SerializationError("Invalid history entityType: " + input);
-    }
 }
 
 func deserializeIds(_ ids: NSArray) -> [String] {
@@ -172,96 +112,19 @@ func deserializeListQuery(_ query: NSDictionary) -> ListQueryBindingDto {
     )
 }
 
-func deserializeCredentialListQueryExactColumn(_ input: String) throws -> CredentialListQueryExactColumnBindingEnum {
-    switch input.lowercased() {
-    case "name": return .name;
-    default: throw SerializationError("Invalid credential list exact column: " + input);
-    }
-}
-
-func deserializeDidListQueryExactColumn(_ input: String) throws -> ExactDidFilterColumnBindingEnum {
-    switch input.lowercased() {
-    case "name": return .name;
-    case "did": return .did;
-    default: throw SerializationError("Invalid did list exact column: " + input);
-    }
-}
-
-func deserializeCredentialState(_ input: String) throws -> CredentialStateBindingEnum {
-    switch input.lowercased() {
-    case "created": return .created
-    case "pending": return .pending
-    case "offered": return .offered
-    case "accepted": return .accepted
-    case "rejected": return .rejected
-    case "revoked": return .revoked
-    case "error": return .error
-    case "suspended": return .suspended
-    default: throw SerializationError("Invalid credential state: " + input);
-    }
-}
-
-func deserializeCredentialListIncludeEntityType(_ input: String) throws -> CredentialListIncludeEntityTypeBindingEnum {
-    switch input.lowercased() {
-    case "layout_properties": return .layoutProperties
-    default: throw SerializationError("Invalid credential list include entity type: " + input);
-    }
-}
-
-func deserializeSortableCredentialColumn(_ input: String) throws -> SortableCredentialColumnBindingEnum {
-    switch input.lowercased() {
-    case "created_date": return .createdDate
-    case "schema_name": return .schemaName
-    case "issuer_did": return .issuerDid
-    case "state": return .state
-    default: throw SerializationError("Invalid credential column: " + input);
-    }
-}
-
-func deserializeSortableDidColumn(_ input: String) throws -> SortableDidColumnBindingEnum {
-    switch input.lowercased() {
-    case "name": return .name
-    case "created_date": return .createdDate
-    case "method": return .method
-    case "type": return .type
-    case "did": return .did
-    case "deactivated": return .deactivated
-    default: throw SerializationError("Invalid did column: " + input);
-    }
-}
-
-func deserializeKeyRole(_ input: String) throws -> KeyRoleBindingEnum {
-    switch input.lowercased() {
-    case "authentication": return .authentication
-    case "assertion_method": return .assertionMethod
-    case "key_agreement": return .keyAgreement
-    case "capability_invocation": return .capabilityInvocation
-    case "capability_delegation": return .capabilityDelegation
-    default: throw SerializationError("Invalid key role: " + input);
-    }
-}
-
-func deserializeSortDirection(_ input: String) throws -> SortDirection {
-    switch input.lowercased() {
-    case "ascending": return .ascending
-    case "descending": return .descending
-    default: throw SerializationError("Invalid sort direction: " + input);
-    }
-}
-
 func deserializeCredentialListQuery(_ query: NSDictionary) throws -> CredentialListQueryBindingDto {
     return CredentialListQueryBindingDto(
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
-        sort: try opt(query.value(forKey: "sort") as! String?, deserializeSortableCredentialColumn),
-        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeSortDirection),
+        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
         organisationId: query.value(forKey: "organisationId") as! String,
         name: query.value(forKey: "name") as! String?,
-        exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns, deserializeCredentialListQueryExactColumn) } ),
-        role: try opt(query.value(forKey: "role") as! String?, deserializeCredentialRole),
+        exact: try opt(query.value(forKey: "exact") as! NSArray?, enumList ),
+        role: try opt(query.value(forKey: "role") as! String?, deserializeEnum),
         ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
-        status: try opt(query.value(forKey: "status") as! NSArray?, { states in try enumList(states, deserializeCredentialState) }),
-        include: try opt(query.value(forKey: "include") as! NSArray?, { types in try enumList(types, deserializeCredentialListIncludeEntityType) })
+        status: try opt(query.value(forKey: "status") as! NSArray?, enumList),
+        include: try opt(query.value(forKey: "include") as! NSArray?, enumList)
     )
 }
 
@@ -269,16 +132,16 @@ func deserializeDidListQuery(_ query: NSDictionary) throws -> DidListQueryBindin
     return DidListQueryBindingDto(
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
-        sort: try opt(query.value(forKey: "sort") as! String?, deserializeSortableDidColumn),
-        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeSortDirection),
+        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
         organisationId: query.value(forKey: "organisationId") as! String,
         name: query.value(forKey: "name") as! String?,
         did: query.value(forKey: "did") as! String?,
-        type: try opt(query.value(forKey: "type") as! String?, deserializeDidType),
+        type: try opt(query.value(forKey: "type") as! String?, deserializeEnum),
         deactivated: query.value(forKey: "deactivated") as! Bool?,
-        exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns, deserializeDidListQueryExactColumn) } ),
+        exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns) } ),
         keyAlgorithms: try opt(query.value(forKey: "keyAlgorithms") as! NSArray?, deserializeIds),
-        keyRoles: try opt(query.value(forKey: "keyRoles") as! NSArray?, { roles in try enumList(roles, deserializeKeyRole) })
+        keyRoles: try opt(query.value(forKey: "keyRoles") as! NSArray?, { roles in try enumList(roles) })
     )
 }
 
@@ -288,8 +151,8 @@ func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQue
         pageSize: query.value(forKey: "pageSize") as! UInt32,
         organisationId: query.value(forKey: "organisationId") as! String,
         entityId: query.value(forKey: "entityId") as! String?,
-        action: try opt(query.value(forKey: "action") as! String?, deserializeHistoryAction),
-        entityTypes: try opt(query.value(forKey: "entityTypes") as! NSArray?, { types in try enumList(types, deserializeHistoryEntityType) }),
+        action: try opt(query.value(forKey: "action") as! String?, deserializeEnum),
+        entityTypes: try opt(query.value(forKey: "entityTypes") as! NSArray?, enumList),
         createdDateFrom: query.value(forKey: "createdDateFrom") as! String?,
         createdDateTo: query.value(forKey: "createdDateTo") as! String?,
         didId: query.value(forKey: "didId") as! String?,
@@ -302,6 +165,94 @@ func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQue
     )
 }
 
+extension KeyRoleBindingEnum: CaseIterable {
+    public static var allCases: [KeyRoleBindingEnum] {
+        return [.authentication, .assertionMethod, .keyAgreement, .capabilityInvocation, .capabilityDelegation]
+    }
+}
+
+extension DidTypeBindingEnum: CaseIterable {
+    public static var allCases: [DidTypeBindingEnum] {
+        return [.local, .remote]
+    }
+}
+
+extension SortDirection: CaseIterable {
+    public static var allCases: [SortDirection] {
+        return [.ascending, .descending]
+    }
+}
+
+extension SortableDidColumnBindingEnum: CaseIterable {
+    public static var allCases: [SortableDidColumnBindingEnum] {
+        return [.name, .createdDate, .method, .type, .did, .deactivated]
+    }
+}
+
+extension SortableCredentialColumnBindingEnum: CaseIterable {
+    public static var allCases: [SortableCredentialColumnBindingEnum] {
+        return [.createdDate, .schemaName, .issuerDid, .state]
+    }
+}
+
+extension CredentialListIncludeEntityTypeBindingEnum: CaseIterable {
+    public static var allCases: [CredentialListIncludeEntityTypeBindingEnum] {
+        return [.layoutProperties]
+    }
+}
+
+extension CredentialStateBindingEnum: CaseIterable {
+    public static var allCases: [CredentialStateBindingEnum] {
+        return [.created, .pending, .offered, .accepted, .rejected, .revoked, .error, .suspended]
+    }
+}
+
+extension ExactDidFilterColumnBindingEnum: CaseIterable {
+    public static var allCases: [ExactDidFilterColumnBindingEnum] {
+        return [.name, .did]
+    }
+}
+
+extension CredentialListQueryExactColumnBindingEnum: CaseIterable {
+    public static var allCases: [CredentialListQueryExactColumnBindingEnum] {
+        return [.name]
+    }
+}
+
+extension HistoryEntityTypeBindingEnum: CaseIterable {
+    public static var allCases: [HistoryEntityTypeBindingEnum] {
+        return [.key, .did, .credentialSchema, .credential, .proofSchema, .proof, .organisation, .backup]
+    }
+}
+
+extension HistorySearchEnumBindingEnum: CaseIterable {
+    public static var allCases: [HistorySearchEnumBindingEnum] {
+        return [.claimName, .claimValue, .credentialSchemaName, .issuerDid, .issuerName, .verifierDid, .verifierName]
+    }
+}
+
+extension HistoryActionBindingEnum: CaseIterable {
+    public static var allCases: [HistoryActionBindingEnum] {
+        return [.accepted, .created, .deactivated, .deleted, .issued, .offered, .reactivated, .rejected, .requested, .revoked, .pending, .suspended, .restored]
+    }
+}
+
+extension CredentialRoleBindingDto: CaseIterable {
+    public static var allCases: [CredentialRoleBindingDto] {
+        return [.holder, .issuer, .verifier]
+    }
+}
+
+private func deserializeEnum<T: CaseIterable>(_ input: String) throws -> T {
+    if let entry = T.allCases.first(where: { value in
+        serializeEnumValue(value: value) == input
+    }) {
+        return entry;
+    } else {
+        throw SerializationError("Invalid enum value for \(T.self): " + input);
+    }
+}
+
 private func opt<F, T>(_ input: F?, _ deserialize: @escaping (_ input: F) throws -> T) throws -> T? {
     if (input != nil) {
         return try deserialize(input!);
@@ -309,10 +260,10 @@ private func opt<F, T>(_ input: F?, _ deserialize: @escaping (_ input: F) throws
     return nil
 }
 
-private func enumList<T>(_ entries: NSArray, _ deserialize: @escaping (_ input: String) throws -> T) throws -> [T] {
+private func enumList<T: CaseIterable>(_ entries: NSArray) throws -> [T] {
     var result: [T] = [];
     try entries.forEach { entry in
-        result.append(try deserialize(entry as! String));
+        result.append(try deserializeEnum(entry as! String));
     }
     return result
 }

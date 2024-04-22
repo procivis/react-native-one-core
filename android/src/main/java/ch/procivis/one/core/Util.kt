@@ -101,7 +101,7 @@ object Util {
         when (type) {
             RNType.MAP -> map.putMap(itemName, value?.let { convertObject(it) })
             RNType.ARRAY -> map.putArray(itemName, convertArray(value as Collection<*>))
-            RNType.NULL -> map.putNull(itemName)
+            RNType.NULL -> {} // null fields are not present in the final JSON object
             RNType.INT -> map.putInt(itemName, value as Int)
             RNType.DOUBLE -> map.putDouble(itemName, value as Double)
             RNType.BOOLEAN -> map.putBoolean(itemName, value as Boolean)
