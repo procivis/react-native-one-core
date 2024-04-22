@@ -107,18 +107,18 @@ export interface CredentialListItem {
   createdDate: string;
   issuanceDate: string;
   lastModified: string;
-  revocationDate?: string | null;
-  issuerDid?: string | null;
+  revocationDate?: string;
+  issuerDid?: string;
   state: CredentialStateEnum;
   schema: CredentialSchema;
   role: CredentialRoleEnum;
-  suspendEndDate?: string | null;
+  suspendEndDate?: string;
 }
 
 export interface CredentialDetail extends CredentialListItem {
   claims: Claim[];
-  redirectUri?: string | null;
-  lvvcIssuanceDate?: string | null;
+  redirectUri?: string;
+  lvvcIssuanceDate?: string;
 }
 
 export interface ProofDetail {
@@ -127,9 +127,9 @@ export interface ProofDetail {
   lastModified: string;
   claims: ProofRequestClaim[];
   credentials: CredentialDetail[];
-  verifierDid?: string | null;
+  verifierDid?: string;
   transport: string;
-  redirectUri?: string | null;
+  redirectUri?: string;
 }
 
 export interface ProofRequestClaim {
@@ -278,7 +278,7 @@ export interface HistoryListItem {
   entityId?: string;
   entityType: HistoryEntityTypeEnum;
   organisationId: string;
-  metadata?: HistoryMetadata | null;
+  metadata?: HistoryMetadata;
 }
 
 export interface ItemList<Item> {
@@ -307,17 +307,17 @@ export interface PresentationDefinition {
 
 export interface PresentationDefinitionRequestGroup {
   id: string;
-  name?: string | null;
-  purpose?: string | null;
+  name?: string;
+  purpose?: string;
   rule: PresentationDefinitionRule;
   requestedCredentials: PresentationDefinitionRequestedCredential[];
 }
 
 export interface PresentationDefinitionRule {
   type: PresentationDefinitionRuleTypeEnum;
-  min?: number | null;
-  max?: number | null;
-  count?: number | null;
+  min?: number;
+  max?: number;
+  count?: number;
 }
 
 export enum PresentationDefinitionRuleTypeEnum {
@@ -327,17 +327,17 @@ export enum PresentationDefinitionRuleTypeEnum {
 
 export interface PresentationDefinitionRequestedCredential {
   id: string;
-  name?: string | null;
-  purpose?: string | null;
+  name?: string;
+  purpose?: string;
   fields: PresentationDefinitionField[];
   applicableCredentials: Array<CredentialListItem["id"]>;
-  validityCredentialNbf?: string | null;
+  validityCredentialNbf?: string;
 }
 
 export interface PresentationDefinitionField {
   id: string;
-  name?: string | null;
-  purpose?: string | null;
+  name?: string;
+  purpose?: string;
   required: boolean;
   keyMap: Record<string, string>;
 }
@@ -381,7 +381,7 @@ export interface CredentialRevocationCheckResponse {
   credentialId: string;
   status: CredentialStateEnum;
   success: boolean;
-  reason?: string | null;
+  reason?: string;
 }
 
 export enum KeyStorageSecurityEnum {
@@ -407,7 +407,7 @@ export interface FormatCapabilities {
 }
 
 export interface ConfigEntity<Capabilities> {
-  disabled?: boolean | null;
+  disabled?: boolean;
   capabilities?: Capabilities;
   display: string;
   order: number;
