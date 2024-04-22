@@ -27,6 +27,14 @@ private func opt<F, T>(_ value: F?, _ serialize: @escaping (_ input: F) -> T) ->
     return serialize(value!)
 }
 
+extension Dictionary where Key: ExpressibleByStringLiteral {
+    mutating func addOpt<T>(_ field: String, _ value: T?) {
+        if (value != nil) {
+            self[field as! Key] = value! as? Value
+        }
+    }
+}
+
 // Business objects serialization
 func serialize(version: VersionBindingDto) -> NSDictionary {
     return [
@@ -54,45 +62,46 @@ func serialize(config: ConfigBindingDto) -> NSDictionary {
 }
 
 func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": credentialSchema.id,
         "createdDate": credentialSchema.createdDate,
         "lastModified": credentialSchema.lastModified,
         "name": credentialSchema.name,
         "format": credentialSchema.format,
         "revocationMethod": credentialSchema.revocationMethod,
-        "walletStorageType": opt(credentialSchema.walletStorageType, serializeEnumValue),
         "schemaId": credentialSchema.schemaId,
-        "schemaType": opt(credentialSchema.schemaType, serializeEnumValue),
-        "layoutType": opt(credentialSchema.layoutType, serializeEnumValue),
-        "layoutProperties": opt(credentialSchema.layoutProperties, {properties in serialize(layoutProperties: properties)}),
     ]
+    result.addOpt("walletStorageType", opt(credentialSchema.walletStorageType, serializeEnumValue))
+    result.addOpt("schemaType", opt(credentialSchema.schemaType, serializeEnumValue))
+    result.addOpt("layoutType", opt(credentialSchema.layoutType, serializeEnumValue))
+    result.addOpt("layoutProperties", opt(credentialSchema.layoutProperties, {properties in serialize(layoutProperties: properties)}))
+    return result as NSDictionary
 }
 
 func serialize(layoutProperties: CredentialSchemaLayoutPropertiesBindingDto) -> NSDictionary {
-    return [
-        "background": opt(layoutProperties.background, {background in serialize(backgroundProperties: background)}),
-        "logo": opt(layoutProperties.logo, {logo in serialize(logoProperties: logo)}),
-        "primaryAttribute": layoutProperties.primaryAttribute,
-        "secondaryAttribute": layoutProperties.secondaryAttribute,
-        "pictureAttribute": layoutProperties.pictureAttribute,
-        "code": opt(layoutProperties.code, {code in serialize(codeProperties: code)}),
-    ]
+    var result: [String: Any] = [:]
+    result.addOpt("background", opt(layoutProperties.background, {background in serialize(backgroundProperties: background)}))
+    result.addOpt("logo", opt(layoutProperties.logo, {logo in serialize(logoProperties: logo)}))
+    result.addOpt("primaryAttribute", layoutProperties.primaryAttribute)
+    result.addOpt("secondaryAttribute", layoutProperties.secondaryAttribute)
+    result.addOpt("pictureAttribute", layoutProperties.pictureAttribute)
+    result.addOpt("code", opt(layoutProperties.code, {code in serialize(codeProperties: code)}))
+    return result as NSDictionary
 }
 
 func serialize(backgroundProperties: CredentialSchemaBackgroundPropertiesBindingDto) -> NSDictionary {
-    return [
-        "color": backgroundProperties.color,
-        "image": backgroundProperties.image,
-    ]
+    var result: [String: Any] = [:]
+    result.addOpt("color", backgroundProperties.color)
+    result.addOpt("image", backgroundProperties.image)
+    return result as NSDictionary
 }
 
 func serialize(logoProperties: CredentialSchemaLogoPropertiesBindingDto) -> NSDictionary {
-    return [
-        "fontColor": logoProperties.fontColor,
-        "backgroundColor": logoProperties.backgroundColor,
-        "image": logoProperties.image,
-    ]
+    var result: [String: Any] = [:]
+    result.addOpt("fontColor", logoProperties.fontColor)
+    result.addOpt("backgroundColor", logoProperties.backgroundColor)
+    result.addOpt("image", logoProperties.image)
+    return result as NSDictionary
 }
 
 func serialize(codeProperties: CredentialSchemaCodePropertiesBindingDto) -> NSDictionary {
@@ -121,36 +130,38 @@ func serialize(claimValue: ClaimValueBindingDto) -> Any {
 }
 
 func serialize(credentialListItem: CredentialListItemBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": credentialListItem.id,
         "createdDate": credentialListItem.createdDate,
         "issuanceDate": credentialListItem.issuanceDate,
         "lastModified": credentialListItem.lastModified,
-        "revocationDate": credentialListItem.revocationDate,
-        "issuerDid": credentialListItem.issuerDid,
         "state": serializeEnumValue(value: credentialListItem.state),
         "schema": serialize(credentialSchema: credentialListItem.schema),
         "role": serializeEnumValue(value: credentialListItem.role),
-        "suspendEndDate": credentialListItem.suspendEndDate,
     ]
+    result.addOpt("revocationDate", credentialListItem.revocationDate)
+    result.addOpt("issuerDid", credentialListItem.issuerDid)
+    result.addOpt("suspendEndDate", credentialListItem.suspendEndDate)
+    return result as NSDictionary
 }
 
 func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": credentialDetail.id,
         "createdDate": credentialDetail.createdDate,
         "issuanceDate": credentialDetail.issuanceDate,
         "lastModified": credentialDetail.lastModified,
-        "revocationDate": credentialDetail.revocationDate,
-        "issuerDid": credentialDetail.issuerDid,
         "state": serializeEnumValue(value: credentialDetail.state),
         "claims": credentialDetail.claims.map { serialize(claim: $0) },
         "schema": serialize(credentialSchema: credentialDetail.schema),
-        "redirectUri": credentialDetail.redirectUri,
         "role": serializeEnumValue(value: credentialDetail.role),
-        "lvvcIssuanceDate": credentialDetail.lvvcIssuanceDate,
-        "suspendEndDate": credentialDetail.suspendEndDate,
     ]
+    result.addOpt("revocationDate", credentialDetail.revocationDate)
+    result.addOpt("issuerDid", credentialDetail.issuerDid)
+    result.addOpt("redirectUri", credentialDetail.redirectUri)
+    result.addOpt("lvvcIssuanceDate", credentialDetail.lvvcIssuanceDate)
+    result.addOpt("suspendEndDate", credentialDetail.suspendEndDate)
+    return result as NSDictionary
 }
 
 func serialize(credentialList: CredentialListBindingDto) -> NSDictionary {
@@ -178,16 +189,17 @@ func serialize(credentialSchemaList: CredentialSchemaListBindingDto) -> NSDictio
 }
 
 func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": proofRequest.id,
         "createdDate": proofRequest.createdDate,
         "lastModified": proofRequest.lastModified,
         "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) },
         "credentials": proofRequest.credentials.map { serialize(credentialDetail: $0) },
-        "verifierDid": proofRequest.verifierDid,
         "transport": proofRequest.transport,
-        "redirectUri": proofRequest.redirectUri,
     ]
+    result.addOpt("verifierDid", proofRequest.verifierDid)
+    result.addOpt("redirectUri", proofRequest.redirectUri)
+    return result as NSDictionary
 }
 
 func serialize(proofRequestClaim: ProofRequestClaimBindingDto) -> NSDictionary {
@@ -207,52 +219,57 @@ func serialize(presentationDefinition: PresentationDefinitionBindingDto) -> NSDi
 }
 
 func serialize(presentationDefinitionRequestGroup: PresentationDefinitionRequestGroupBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": presentationDefinitionRequestGroup.id,
-        "name": presentationDefinitionRequestGroup.name,
-        "purpose": presentationDefinitionRequestGroup.purpose,
         "rule": serialize(presentationDefinitionRule: presentationDefinitionRequestGroup.rule),
         "requestedCredentials": presentationDefinitionRequestGroup.requestedCredentials.map { serialize(presentationDefinitionRequestedCredential: $0) },
     ]
+    result.addOpt("name", presentationDefinitionRequestGroup.name)
+    result.addOpt("purpose", presentationDefinitionRequestGroup.purpose)
+    return result as NSDictionary
 }
 
 func serialize(presentationDefinitionRequestedCredential: PresentationDefinitionRequestedCredentialBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": presentationDefinitionRequestedCredential.id,
-        "name": presentationDefinitionRequestedCredential.name,
-        "purpose": presentationDefinitionRequestedCredential.purpose,
         "fields": presentationDefinitionRequestedCredential.fields.map { serialize(presentationDefinitionField: $0) },
         "applicableCredentials": presentationDefinitionRequestedCredential.applicableCredentials,
-        "validityCredentialNbf": presentationDefinitionRequestedCredential.validityCredentialNbf,
     ]
+    result.addOpt("name", presentationDefinitionRequestedCredential.name)
+    result.addOpt("purpose", presentationDefinitionRequestedCredential.purpose)
+    result.addOpt("validityCredentialNbf", presentationDefinitionRequestedCredential.validityCredentialNbf)
+    return result as NSDictionary
 }
 
 func serialize(presentationDefinitionField: PresentationDefinitionFieldBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": presentationDefinitionField.id,
-        "name": presentationDefinitionField.name,
-        "purpose": presentationDefinitionField.purpose,
         "required": presentationDefinitionField.required,
         "keyMap": presentationDefinitionField.keyMap,
     ]
+    result.addOpt("name", presentationDefinitionField.name)
+    result.addOpt("purpose", presentationDefinitionField.purpose)
+    return result as NSDictionary
 }
 
 func serialize(presentationDefinitionRule: PresentationDefinitionRuleBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "type": serializeEnumValue(value: presentationDefinitionRule.type),
-        "min": presentationDefinitionRule.min,
-        "max": presentationDefinitionRule.max,
-        "count": presentationDefinitionRule.count,
     ]
+    result.addOpt("min", presentationDefinitionRule.min)
+    result.addOpt("max", presentationDefinitionRule.max)
+    result.addOpt("count", presentationDefinitionRule.count)
+    return result as NSDictionary
 }
 
 func serialize(credentialRevocationCheckResponse: CredentialRevocationCheckResponseBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "credentialId": credentialRevocationCheckResponse.credentialId,
         "status": serializeEnumValue(value: credentialRevocationCheckResponse.status),
         "success": credentialRevocationCheckResponse.success,
-        "reason": credentialRevocationCheckResponse.reason,
     ]
+    result.addOpt("reason", credentialRevocationCheckResponse.reason)
+    return result as NSDictionary
 }
 
 func serialize(historyList: HistoryListBindingDto) -> NSDictionary {
@@ -264,15 +281,16 @@ func serialize(historyList: HistoryListBindingDto) -> NSDictionary {
 }
 
 func serialize(historyListItem: HistoryListItemBindingDto) -> NSDictionary {
-    return [
+    var result = [
         "id": historyListItem.id,
         "createdDate": historyListItem.createdDate,
         "action": serializeEnumValue(value: historyListItem.action),
-        "entityId": historyListItem.entityId,
         "entityType": serializeEnumValue(value: historyListItem.entityType),
         "organisationId": historyListItem.organisationId,
-        "metadata": (historyListItem.metadata == nil) ? nil : serialize(historyMetadata: historyListItem.metadata!),
     ]
+    result.addOpt("entityId", historyListItem.entityId)
+    result.addOpt("metadata", opt(historyListItem.metadata, {data in serialize(historyMetadata: data)}))
+    return result as NSDictionary
 }
 
 func serialize(historyMetadata: HistoryMetadataBinding) -> NSDictionary {
@@ -340,13 +358,13 @@ func serialize(invitationResponse: HandleInvitationResponseBindingEnum) -> NSDic
         return [
             "interactionId": interactionId,
             "credentialIds": credentialIds
-        ] as NSDictionary;
+        ];
         
     case let .proofRequest(interactionId, proofId):
         return [
             "interactionId": interactionId,
             "proofId": proofId
-        ] as NSDictionary;
+        ];
     }
 }
 
