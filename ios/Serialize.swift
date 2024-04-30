@@ -52,13 +52,25 @@ func serialize(config: ConfigBindingDto) -> NSDictionary {
     return [
         "format": config.format,
         "exchange": config.exchange,
-        "transport": config.transport,
         "revocation": config.revocation,
         "did": config.did,
         "datatype": config.datatype,
         "keyAlgorithm": config.keyAlgorithm,
         "keyStorage": config.keyStorage,
     ]
+}
+
+func serialize(credentialSchemaType: CredentialSchemaTypeBindingEnum) -> String {
+    switch (credentialSchemaType) {
+    case .procivisOneSchema2024:
+        return "PROCIVIS_ONE_SCHEMA2024";
+    case .fallbackSchema2024:
+        return "FALLBACK_SCHEMA2024";
+    case .mdoc:
+        return "MDOC";
+    case let .other(value):
+        return value;
+    }
 }
 
 func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
@@ -72,7 +84,7 @@ func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
         "schemaId": credentialSchema.schemaId,
     ]
     result.addOpt("walletStorageType", opt(credentialSchema.walletStorageType, serializeEnumValue))
-    result.addOpt("schemaType", opt(credentialSchema.schemaType, serializeEnumValue))
+    result.addOpt("schemaType", opt(credentialSchema.schemaType, {type in serialize(credentialSchemaType: type)}))
     result.addOpt("layoutType", opt(credentialSchema.layoutType, serializeEnumValue))
     result.addOpt("layoutProperties", opt(credentialSchema.layoutProperties, {properties in serialize(layoutProperties: properties)}))
     return result as NSDictionary
