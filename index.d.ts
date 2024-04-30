@@ -21,11 +21,12 @@ export declare enum WalletStorageType {
     HARDWARE = "HARDWARE",
     SOFTWARE = "SOFTWARE"
 }
-export declare enum CredentialSchemaType {
+export declare enum KnownCredentialSchemaType {
     PROCIVIS_ONE_SCHEMA2024 = "PROCIVIS_ONE_SCHEMA2024",
     FALLBACK_SCHEMA2024 = "FALLBACK_SCHEMA2024",
     MDOC = "MDOC"
 }
+export type CredentialSchemaType = KnownCredentialSchemaType | string;
 export declare enum LayoutType {
     CARD = "CARD",
     DOCUMENT = "DOCUMENT",
@@ -401,7 +402,6 @@ export type DataTypeParams = {
 export interface Config {
     format: ConfigEntities<FormatCapabilities>;
     exchange: ConfigEntities;
-    transport: ConfigEntities;
     revocation: ConfigEntities;
     did: ConfigEntities<DidCapabilities>;
     datatype: ConfigEntities<undefined, DataTypeParams>;

@@ -69,14 +69,16 @@ object Util {
             return Pair(RNType.DOUBLE, input as Double)
         } else if (type == Char::class.java || type == java.lang.Character::class.java) {
             return Pair(RNType.STRING, (input as Char).toString())
+        } else if (Serialize.Str.isCustomConversionType(input)) {
+            return Pair(RNType.STRING, Serialize.Str.convertCustom(input))
         } else {
             return Pair(RNType.MAP, input)
         }
     }
 
     private fun convertObject(input: Any): ReadableMap {
-        if (Serialize.isCustomConversionType(input)) {
-            return Serialize.convertCustom(input)
+        if (Serialize.Obj.isCustomConversionType(input)) {
+            return Serialize.Obj.convertCustom(input)
         }
 
         val result = Arguments.createMap()
