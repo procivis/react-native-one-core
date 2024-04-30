@@ -16,12 +16,12 @@ export var WalletStorageType;
     WalletStorageType["HARDWARE"] = "HARDWARE";
     WalletStorageType["SOFTWARE"] = "SOFTWARE";
 })(WalletStorageType || (WalletStorageType = {}));
-export var CredentialSchemaType;
-(function (CredentialSchemaType) {
-    CredentialSchemaType["PROCIVIS_ONE_SCHEMA2024"] = "PROCIVIS_ONE_SCHEMA2024";
-    CredentialSchemaType["FALLBACK_SCHEMA2024"] = "FALLBACK_SCHEMA2024";
-    CredentialSchemaType["MDOC"] = "MDOC";
-})(CredentialSchemaType || (CredentialSchemaType = {}));
+export var KnownCredentialSchemaType;
+(function (KnownCredentialSchemaType) {
+    KnownCredentialSchemaType["PROCIVIS_ONE_SCHEMA2024"] = "PROCIVIS_ONE_SCHEMA2024";
+    KnownCredentialSchemaType["FALLBACK_SCHEMA2024"] = "FALLBACK_SCHEMA2024";
+    KnownCredentialSchemaType["MDOC"] = "MDOC";
+})(KnownCredentialSchemaType || (KnownCredentialSchemaType = {}));
 export var LayoutType;
 (function (LayoutType) {
     LayoutType["CARD"] = "CARD";
