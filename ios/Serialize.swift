@@ -205,8 +205,7 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
         "id": proofRequest.id,
         "createdDate": proofRequest.createdDate,
         "lastModified": proofRequest.lastModified,
-        "claims": proofRequest.claims.map { serialize(proofRequestClaim: $0) },
-        "credentials": proofRequest.credentials.map { serialize(credentialDetail: $0) },
+        "proofInputs": proofRequest.proofInputs.map { serialize(proofInput: $0) },
         "transport": proofRequest.transport,
     ]
     result.addOpt("verifierDid", proofRequest.verifierDid)
@@ -214,13 +213,41 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
     return result as NSDictionary
 }
 
+func serialize(proofInput: ProofInputBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+        "claims": proofInput.claims.map { serialize(proofRequestClaim: $0) },
+        "credentialSchema": serialize(credentialSchema: proofInput.credentialSchema),
+    ]
+    result.addOpt("credential", opt(proofInput.credential, { credential in serialize(credentialDetail: credential) }))
+    result.addOpt("validityConstraint", proofInput.validityConstraint)
+    return result as NSDictionary
+}
+
 func serialize(proofRequestClaim: ProofRequestClaimBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+        "schema": serialize(proofClaimSchema: proofRequestClaim.schema),
+    ]
+    
+    result.addOpt("value", opt(proofRequestClaim.value, { claim in serialize(proofRequestClaimValue: claim) }))
+    return result as NSDictionary
+}
+
+func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto) -> Any {
+    switch (proofRequestClaimValue) {
+    case let .value(value):
+        return value;
+    case .claims(value: let values):
+        return values.map { serialize(proofRequestClaim: $0)}
+    }
+}
+
+func serialize(proofClaimSchema: ProofClaimSchemaBindingDto) -> NSDictionary {
     return [
-        "id": proofRequestClaim.id,
-        "key": proofRequestClaim.key,
-        "dataType": proofRequestClaim.dataType,
-        "required": proofRequestClaim.required,
-        "credentialSchema": serialize(credentialSchema: proofRequestClaim.credentialSchema),
+        "id": proofClaimSchema.id,
+        "required": proofClaimSchema.required,
+        "key": proofClaimSchema.key,
+        "dataType": proofClaimSchema.dataType,
+        "claims": proofClaimSchema.claims.map { serialize(proofClaimSchema: $0)}
     ]
 }
 
