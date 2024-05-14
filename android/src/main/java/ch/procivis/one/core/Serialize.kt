@@ -11,6 +11,7 @@ object Serialize {
             arrayOf(
                 HistoryMetadataBinding::class.java,
                 ClaimBindingDto::class.java,
+                ProofRequestClaimBindingDto::class.java,
             )
 
         fun isCustomConversionType(input: Any?): Boolean {
@@ -28,6 +29,9 @@ object Serialize {
             }
             if (input is ClaimBindingDto) {
                 return claim(input)
+            }
+            if (input is ProofRequestClaimBindingDto) {
+                return proofClaim(input)
             }
             throw IllegalArgumentException("Invalid map conversion: $input")
         }
@@ -51,6 +55,22 @@ object Serialize {
 
                 is ClaimValueBindingDto.Nested ->
                     result.putArray("value", Util.convertToRN(value.value) as ReadableArray)
+            }
+
+            return result
+        }
+
+        private fun proofClaim(c: ProofRequestClaimBindingDto): ReadableMap {
+            var result = Arguments.createMap()
+            result.putMap("schema", Util.convertToRN(c.schema) as ReadableMap)
+
+            c.value?.let {
+                when (val value = it) {
+                    is ProofRequestClaimValueBindingDto.Value ->
+                        result.putString("value", value.value)
+                    is ProofRequestClaimValueBindingDto.Claims ->
+                        result.putArray("value", Util.convertToRN(value.value) as ReadableArray)
+                }
             }
 
             return result

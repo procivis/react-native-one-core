@@ -99,22 +99,31 @@ export interface CredentialDetail extends CredentialListItem {
     redirectUri?: string;
     lvvcIssuanceDate?: string;
 }
+export interface ProofInput {
+    claims: ProofInputClaim[];
+    credential?: CredentialDetail;
+    credentialSchema: CredentialSchema;
+    validityConstraint: number;
+}
+export interface ProofInputClaim {
+    schema: ProofInputClaimSchema;
+    value?: string | ProofInputClaim[];
+}
+export interface ProofInputClaimSchema {
+    id: string;
+    required: boolean;
+    key: string;
+    dataType: string;
+    claims: ProofInputClaimSchema[];
+}
 export interface ProofDetail {
     id: string;
     createdDate: string;
     lastModified: string;
-    claims: ProofRequestClaim[];
-    credentials: CredentialDetail[];
+    proofInputs: ProofInput[];
     verifierDid?: string;
     transport: string;
     redirectUri?: string;
-}
-export interface ProofRequestClaim {
-    id: string;
-    key: string;
-    dataType: string;
-    required: boolean;
-    credentialSchema: CredentialSchema;
 }
 export interface ListQuery {
     page: number;
