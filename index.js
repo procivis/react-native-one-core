@@ -11,6 +11,15 @@ export var CredentialStateEnum;
     CredentialStateEnum["SUSPENDED"] = "SUSPENDED";
     CredentialStateEnum["ERROR"] = "ERROR";
 })(CredentialStateEnum || (CredentialStateEnum = {}));
+export var ProofStateEnum;
+(function (ProofStateEnum) {
+    ProofStateEnum["CREATED"] = "CREATED";
+    ProofStateEnum["PENDING"] = "PENDING";
+    ProofStateEnum["REQUESTED"] = "REQUESTED";
+    ProofStateEnum["ACCEPTED"] = "ACCEPTED";
+    ProofStateEnum["REJECTED"] = "REJECTED";
+    ProofStateEnum["ERROR"] = "ERROR";
+})(ProofStateEnum || (ProofStateEnum = {}));
 export var WalletStorageType;
 (function (WalletStorageType) {
     WalletStorageType["HARDWARE"] = "HARDWARE";
@@ -97,6 +106,7 @@ export var HistoryActionEnum;
     HistoryActionEnum["PENDING"] = "PENDING";
     HistoryActionEnum["SUSPENDED"] = "SUSPENDED";
     HistoryActionEnum["RESTORED"] = "RESTORED";
+    HistoryActionEnum["ERRORED"] = "ERRORED";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
