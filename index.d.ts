@@ -17,6 +17,14 @@ export declare enum CredentialStateEnum {
     SUSPENDED = "SUSPENDED",
     ERROR = "ERROR"
 }
+export declare enum ProofStateEnum {
+    CREATED = "CREATED",
+    PENDING = "PENDING",
+    REQUESTED = "REQUESTED",
+    ACCEPTED = "ACCEPTED",
+    REJECTED = "REJECTED",
+    ERROR = "ERROR"
+}
 export declare enum WalletStorageType {
     HARDWARE = "HARDWARE",
     SOFTWARE = "SOFTWARE"
@@ -121,6 +129,7 @@ export interface ProofDetail {
     createdDate: string;
     lastModified: string;
     proofInputs: ProofInput[];
+    state: ProofStateEnum;
     verifierDid?: string;
     transport: string;
     redirectUri?: string;
@@ -204,7 +213,8 @@ export declare enum HistoryActionEnum {
     REVOKED = "REVOKED",
     PENDING = "PENDING",
     SUSPENDED = "SUSPENDED",
-    RESTORED = "RESTORED"
+    RESTORED = "RESTORED",
+    ERRORED = "ERRORED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
