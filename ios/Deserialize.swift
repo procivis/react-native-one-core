@@ -233,7 +233,7 @@ extension HistorySearchEnumBindingEnum: CaseIterable {
 
 extension HistoryActionBindingEnum: CaseIterable {
     public static var allCases: [HistoryActionBindingEnum] {
-        return [.accepted, .created, .deactivated, .deleted, .issued, .offered, .reactivated, .rejected, .requested, .revoked, .pending, .suspended, .restored]
+        return [.accepted, .created, .deactivated, .deleted, .issued, .offered, .reactivated, .rejected, .requested, .revoked, .pending, .suspended, .restored, .errored]
     }
 }
 
