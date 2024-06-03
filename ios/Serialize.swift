@@ -207,7 +207,7 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
         "lastModified": proofRequest.lastModified,
         "proofInputs": proofRequest.proofInputs.map { serialize(proofInput: $0) },
         "state": serializeEnumValue(value: proofRequest.state),
-        "transport": proofRequest.transport,
+        "exchange": proofRequest.exchange,
     ]
     result.addOpt("verifierDid", proofRequest.verifierDid)
     result.addOpt("redirectUri", proofRequest.redirectUri)
