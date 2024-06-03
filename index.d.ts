@@ -131,7 +131,7 @@ export interface ProofDetail {
     proofInputs: ProofInput[];
     state: ProofStateEnum;
     verifierDid?: string;
-    transport: string;
+    exchange: string;
     redirectUri?: string;
 }
 export interface ListQuery {
