@@ -184,6 +184,26 @@ object Deserialize {
         )
     }
 
+    fun proofSchemaListQuery(query: ReadableMap): ListProofSchamasFiltersBindingDto {
+        return ListProofSchamasFiltersBindingDto(
+            query.getInt("page").toUInt(),
+            query.getInt("pageSize").toUInt(),
+            opt(query.getString("sort"), SortableProofSchemaColumnBinding::valueOf),
+            opt(query.getString("sortDirection"), SortDirection::valueOf),
+            query.getString("organisationId").toString(),
+            query.getString("name"),
+            opt(
+                query.getArray("exact")
+            ) { columns ->
+                enumList(
+                    columns,
+                    ProofSchemaListQueryExactColumnBinding::valueOf
+                )
+            },
+            opt(query.getArray("ids"), Deserialize::ids),
+        )
+    }
+
     private fun historySearch(text: String?, type: String?): HistorySearchBindingDto? {
         if (text == null) {
             return null
