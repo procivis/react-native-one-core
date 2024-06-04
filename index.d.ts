@@ -134,6 +134,14 @@ export interface ProofDetail {
     exchange: string;
     redirectUri?: string;
 }
+export interface ProofSchemaListItem {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    deletedAt: string;
+    name: string;
+    expireDuration: number;
+}
 export interface ListQuery {
     page: number;
     pageSize: number;
@@ -189,6 +197,13 @@ export declare enum KeyRoleEnum {
     CAPABILITY_INVOCATION = "CAPABILITY_INVOCATION",
     CAPABILITY_DELEGATION = "CAPABILITY_DELEGATION"
 }
+export declare enum SortableProofSchemasColumnEnum {
+    NAME = "NAME",
+    CREATED_DATE = "CREATED_DATE"
+}
+export declare enum ExactProofSchemaFilterColumnEnum {
+    NAME = "NAME"
+}
 export interface DidListQuery extends ListQuery {
     sort?: SortableDidColumnEnum;
     sortDirection?: SortDirection;
@@ -199,6 +214,13 @@ export interface DidListQuery extends ListQuery {
     exact?: ExactDidFilterColumnEnum[];
     keyAlgorithms?: string[];
     keyRoles?: KeyRoleEnum[];
+}
+export interface ProofSchemaListQuery extends ListQuery {
+    sort?: SortableProofSchemasColumnEnum;
+    sortDirection?: SortDirection;
+    name?: string;
+    exact?: ExactProofSchemaFilterColumnEnum;
+    ids?: string[];
 }
 export declare enum HistoryActionEnum {
     ACCEPTED = "ACCEPTED",
@@ -482,6 +504,7 @@ export interface ONECore {
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
     getCredentialSchemas(query: ListQuery): Promise<ItemList<CredentialSchema>>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
+    getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
     getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;

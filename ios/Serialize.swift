@@ -214,6 +214,25 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
     return result as NSDictionary
 }
 
+func serialize(proofSchemaList: ProofSchemaListBindingDto) -> NSDictionary {
+    return [
+        "totalItems": proofSchemaList.totalItems,
+        "totalPages": proofSchemaList.totalPages,
+        "values": proofSchemaList.values.map { serialize(proofSchemaListItem: $0) },
+    ]
+}
+
+func serialize(proofSchemaListItem: GetProofSchemaListItemBindingDto) -> NSDictionary {
+    return [
+        "id": proofSchemaListItem.id,
+        "createdDate": proofSchemaListItem.createdDate,
+        "lastModified": proofSchemaListItem.lastModified,
+        "deletedAt": proofSchemaListItem.deletedAt,
+        "name": proofSchemaListItem.name,
+        "expireDuration": proofSchemaListItem.expireDuration
+    ]
+}
+
 func serialize(proofInput: ProofInputBindingDto) -> NSDictionary {
     var result: [String: Any] = [
         "claims": proofInput.claims.map { serialize(proofRequestClaim: $0) },
