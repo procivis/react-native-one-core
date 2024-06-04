@@ -165,6 +165,19 @@ func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQue
     )
 }
 
+func deserializeProofSchemaListQuery(_ query: NSDictionary) throws -> ListProofSchamasFiltersBindingDto {
+    return ListProofSchamasFiltersBindingDto(
+        page: query.value(forKey: "page") as! UInt32,
+        pageSize: query.value(forKey: "pageSize") as! UInt32,
+        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
+        organisationId: query.value(forKey: "organisationId") as! String,
+        name: query.value(forKey: "name") as! String?,
+        exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns) } ),
+        ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds)
+    )
+}
+
 extension KeyRoleBindingEnum: CaseIterable {
     public static var allCases: [KeyRoleBindingEnum] {
         return [.authentication, .assertionMethod, .keyAgreement, .capabilityInvocation, .capabilityDelegation]
@@ -243,6 +256,17 @@ extension CredentialRoleBindingDto: CaseIterable {
     }
 }
 
+extension SortableProofSchemaColumnBinding: CaseIterable {
+    public static var allCases: [SortableProofSchemaColumnBinding] {
+        return [.name, .createdDate]
+    }
+}
+
+extension ProofSchemaListQueryExactColumnBinding: CaseIterable {
+    public static var allCases: [ProofSchemaListQueryExactColumnBinding] {
+        return [.name]
+    }
+}
 private func deserializeEnum<T: CaseIterable>(_ input: String) throws -> T {
     if let entry = T.allCases.first(where: { value in
         serializeEnumValue(value: value) == input

@@ -184,6 +184,16 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getProofSchemas(query: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val listQuery = Deserialize.proofSchemaListQuery(query)
+            val schemas = getCore().getProofSchemas(listQuery)
+            return@asyncCall Util.convertToRN(schemas)
+        }
+    }
+
+
+    @ReactMethod
     fun checkRevocation(credentialIds: ReadableArray, promise: Promise) {
         Util.asyncCall(promise) {
             val ids = Deserialize.ids(credentialIds)

@@ -91,6 +91,15 @@ export var KeyRoleEnum;
     KeyRoleEnum["CAPABILITY_INVOCATION"] = "CAPABILITY_INVOCATION";
     KeyRoleEnum["CAPABILITY_DELEGATION"] = "CAPABILITY_DELEGATION";
 })(KeyRoleEnum || (KeyRoleEnum = {}));
+export var SortableProofSchemasColumnEnum;
+(function (SortableProofSchemasColumnEnum) {
+    SortableProofSchemasColumnEnum["NAME"] = "NAME";
+    SortableProofSchemasColumnEnum["CREATED_DATE"] = "CREATED_DATE";
+})(SortableProofSchemasColumnEnum || (SortableProofSchemasColumnEnum = {}));
+export var ExactProofSchemaFilterColumnEnum;
+(function (ExactProofSchemaFilterColumnEnum) {
+    ExactProofSchemaFilterColumnEnum["NAME"] = "NAME";
+})(ExactProofSchemaFilterColumnEnum || (ExactProofSchemaFilterColumnEnum = {}));
 export var HistoryActionEnum;
 (function (HistoryActionEnum) {
     HistoryActionEnum["ACCEPTED"] = "ACCEPTED";
