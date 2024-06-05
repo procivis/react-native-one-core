@@ -140,7 +140,7 @@ export interface ProofInput {
 
 export interface ProofInputClaim {
   schema: ProofInputClaimSchema;
-  value?: string |  ProofInputClaim[];
+  value?: string | ProofInputClaim[];
 }
 
 export interface ProofInputClaimSchema {
@@ -155,7 +155,7 @@ export interface ProofDetail {
   id: string;
   createdDate: string;
   lastModified: string;
-  proofInputs: ProofInput[]
+  proofInputs: ProofInput[];
   state: ProofStateEnum;
   verifierDid?: string;
   exchange: string;
@@ -280,6 +280,8 @@ export enum HistoryActionEnum {
   SUSPENDED = "SUSPENDED",
   RESTORED = "RESTORED",
   ERRORED = "ERRORED",
+  SHARED = "SHARED",
+  IMPORTED = "IMPORTED",
 }
 
 export enum HistoryEntityTypeEnum {
@@ -640,7 +642,9 @@ export interface ONECore {
 
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
 
-  getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
+  getProofSchemas(
+    query: ProofSchemaListQuery
+  ): Promise<ItemList<ProofSchemaListItem>>;
 
   checkRevocation(
     credentialIds: Array<CredentialListItem["id"]>

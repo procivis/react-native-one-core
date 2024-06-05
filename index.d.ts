@@ -236,7 +236,9 @@ export declare enum HistoryActionEnum {
     PENDING = "PENDING",
     SUSPENDED = "SUSPENDED",
     RESTORED = "RESTORED",
-    ERRORED = "ERRORED"
+    ERRORED = "ERRORED",
+    SHARED = "SHARED",
+    IMPORTED = "IMPORTED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
