@@ -116,6 +116,8 @@ export var HistoryActionEnum;
     HistoryActionEnum["SUSPENDED"] = "SUSPENDED";
     HistoryActionEnum["RESTORED"] = "RESTORED";
     HistoryActionEnum["ERRORED"] = "ERRORED";
+    HistoryActionEnum["SHARED"] = "SHARED";
+    HistoryActionEnum["IMPORTED"] = "IMPORTED";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
