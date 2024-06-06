@@ -222,6 +222,10 @@ export interface ProofSchemaListQuery extends ListQuery {
     exact?: ExactProofSchemaFilterColumnEnum;
     ids?: string[];
 }
+export interface ProofSchemaImportRequest {
+    url: string;
+    organisationId: string;
+}
 export declare enum HistoryActionEnum {
     ACCEPTED = "ACCEPTED",
     CREATED = "CREATED",
@@ -507,6 +511,7 @@ export interface ONECore {
     getCredentialSchemas(query: ListQuery): Promise<ItemList<CredentialSchema>>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
+    importProofSchema(request: ProofSchemaImportRequest): Promise<void>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
     getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;

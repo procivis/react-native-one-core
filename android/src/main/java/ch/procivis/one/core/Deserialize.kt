@@ -204,6 +204,13 @@ object Deserialize {
         )
     }
 
+    fun proofSchemaImportRequest(request: ReadableMap): ProofSchemaImportRequestDto {
+        return ProofSchemaImportRequestDto(
+            request.getString("url")!!,
+            request.getString("organisationId")!!,
+        )
+    }
+
     private fun historySearch(text: String?, type: String?): HistorySearchBindingDto? {
         if (text == null) {
             return null

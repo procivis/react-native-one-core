@@ -11,7 +11,7 @@ import uniffi.one_core.OneCoreBindingInterface
 import uniffi.one_core.PresentationSubmitCredentialRequestBindingDto
 
 class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
+        ReactContextBaseJavaModule(reactContext) {
     override fun getName() = "ProcivisOneCoreModule"
 
     private var oneCore: OneCoreBindingInterface? = null
@@ -24,7 +24,11 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun initialize(promise: Promise) {
         Util.asyncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
-            oneCore = uniffi.one_core.initializeCore(dataDirPath, AndroidKeyStoreKeyStorage(this.reactApplicationContext))
+            oneCore =
+                    uniffi.one_core.initializeCore(
+                            dataDirPath,
+                            AndroidKeyStoreKeyStorage(this.reactApplicationContext)
+                    )
             return@asyncCall null
         }
     }
@@ -85,10 +89,10 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun holderAcceptCredential(
-        interactionId: String,
-        didId: String,
-        keyId: String?,
-        promise: Promise
+            interactionId: String,
+            didId: String,
+            keyId: String?,
+            promise: Promise
     ) {
         Util.asyncCall(promise) {
             getCore().holderAcceptCredential(interactionId, didId, keyId)
@@ -122,19 +126,19 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun holderSubmitProof(
-        interactionId: String,
-        credentials: ReadableMap,
-        didId: String,
-        keyId: String?,
-        promise: Promise
+            interactionId: String,
+            credentials: ReadableMap,
+            didId: String,
+            keyId: String?,
+            promise: Promise
     ) {
         Util.asyncCall(promise) {
             val submitCredentials =
-                mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
+                    mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
             for (entry in credentials.entryIterator) {
                 val credential = entry.value as ReadableMap
                 submitCredentials[entry.key] =
-                    Deserialize.presentationSubmitCredentialRequest(credential)
+                        Deserialize.presentationSubmitCredentialRequest(credential)
             }
             getCore().holderSubmitProof(interactionId, submitCredentials, didId, keyId)
             return@asyncCall null
@@ -192,6 +196,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         }
     }
 
+    @ReactMethod
+    fun importProofSchema(request: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val request = Deserialize.proofSchemaImportRequest(request)
+            getCore().importProofSchema(request)
+            return@asyncCall null
+        }
+    }
 
     @ReactMethod
     fun checkRevocation(credentialIds: ReadableArray, promise: Promise) {
