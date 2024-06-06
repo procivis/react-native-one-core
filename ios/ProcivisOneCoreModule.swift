@@ -238,6 +238,19 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
+    @objc(importProofSchema:resolver:rejecter:)
+    func importProofSchema(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let request = try deserializeProofSchemaImportRequest(request);
+                try getCore().importProofSchema(request: request);
+                
+                return nil as NSDictionary?;
+            }
+        }
+
     @objc(getProof:resolver:rejecter:)
     func getProof(
         proofId: String,

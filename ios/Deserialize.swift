@@ -178,6 +178,13 @@ func deserializeProofSchemaListQuery(_ query: NSDictionary) throws -> ListProofS
     )
 }
 
+func deserializeProofSchemaImportRequest(_ request: NSDictionary) throws -> ProofSchemaImportRequestDto {
+    return ProofSchemaImportRequestDto(
+        url: request.value(forKey: "url") as! String,
+        organisationId: request.value(forKey: "organisationId") as! String
+    )
+}
+
 extension KeyRoleBindingEnum: CaseIterable {
     public static var allCases: [KeyRoleBindingEnum] {
         return [.authentication, .assertionMethod, .keyAgreement, .capabilityInvocation, .capabilityDelegation]
