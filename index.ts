@@ -97,14 +97,14 @@ export enum CredentialSchemaCodeType {
 
 export type ClaimValue =
   | {
-      dataType:
-        | DataTypeEnum.String
-        | DataTypeEnum.Number
-        | DataTypeEnum.Date
-        | DataTypeEnum.File
-        | string;
-      value: string;
-    }
+    dataType:
+    | DataTypeEnum.String
+    | DataTypeEnum.Number
+    | DataTypeEnum.Date
+    | DataTypeEnum.File
+    | string;
+    value: string;
+  }
   | { dataType: DataTypeEnum.Object; value: Claim[] };
 
 export type Claim = ClaimValue & {
@@ -263,6 +263,11 @@ export interface ProofSchemaListQuery extends ListQuery {
   name?: string;
   exact?: ExactProofSchemaFilterColumnEnum;
   ids?: string[];
+}
+
+export interface ProofSchemaImportRequest {
+  url: string;
+  organisationId: string;
 }
 
 export enum HistoryActionEnum {
@@ -510,25 +515,25 @@ export interface FileDataTypeParams {
 
 export type DataTypeParams =
   | {
-      type: DataTypeEnum.String;
-      params?: StringDataTypeParams;
-    }
+    type: DataTypeEnum.String;
+    params?: StringDataTypeParams;
+  }
   | {
-      type: DataTypeEnum.Number;
-      params?: NumberDataTypeParams;
-    }
+    type: DataTypeEnum.Number;
+    params?: NumberDataTypeParams;
+  }
   | {
-      type: DataTypeEnum.Date;
-      params?: DateDataTypeParams;
-    }
+    type: DataTypeEnum.Date;
+    params?: DateDataTypeParams;
+  }
   | {
-      type: DataTypeEnum.File;
-      params?: FileDataTypeParams;
-    }
+    type: DataTypeEnum.File;
+    params?: FileDataTypeParams;
+  }
   | {
-      type: DataTypeEnum.Object;
-      params?: undefined;
-    };
+    type: DataTypeEnum.Object;
+    params?: undefined;
+  };
 
 export interface Config {
   format: ConfigEntities<FormatCapabilities>;
@@ -645,6 +650,10 @@ export interface ONECore {
   getProofSchemas(
     query: ProofSchemaListQuery
   ): Promise<ItemList<ProofSchemaListItem>>;
+
+  importProofSchema(
+    request: ProofSchemaImportRequest
+  ): Promise<void>;
 
   checkRevocation(
     credentialIds: Array<CredentialListItem["id"]>
