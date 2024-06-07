@@ -43,6 +43,16 @@ export var CredentialSchemaCodeType;
     CredentialSchemaCodeType["MRZ"] = "MRZ";
     CredentialSchemaCodeType["QR_CODE"] = "QR_CODE";
 })(CredentialSchemaCodeType || (CredentialSchemaCodeType = {}));
+export var SortableCredentialSchemaColumnEnum;
+(function (SortableCredentialSchemaColumnEnum) {
+    SortableCredentialSchemaColumnEnum["NAME"] = "NAME";
+    SortableCredentialSchemaColumnEnum["FORMAT"] = "FORMAT";
+    SortableCredentialSchemaColumnEnum["CREATED_DATE"] = "CREATED_DATE";
+})(SortableCredentialSchemaColumnEnum || (SortableCredentialSchemaColumnEnum = {}));
+export var ExactCredentialSchemaFilterColumnEnum;
+(function (ExactCredentialSchemaFilterColumnEnum) {
+    ExactCredentialSchemaFilterColumnEnum["NAME"] = "NAME";
+})(ExactCredentialSchemaFilterColumnEnum || (ExactCredentialSchemaFilterColumnEnum = {}));
 export var CredentialRoleEnum;
 (function (CredentialRoleEnum) {
     CredentialRoleEnum["HOLDER"] = "HOLDER";
@@ -139,6 +149,7 @@ export var HistorySearchTypeEnum;
     HistorySearchTypeEnum["ISSUER_NAME"] = "ISSUER_NAME";
     HistorySearchTypeEnum["VERIFIER_DID"] = "VERIFIER_DID";
     HistorySearchTypeEnum["VERIFIER_NAME"] = "VERIFIER_NAME";
+    HistorySearchTypeEnum["PROOF_SCHEMA_NAME"] = "PROOF_SCHEMA_NAME";
 })(HistorySearchTypeEnum || (HistorySearchTypeEnum = {}));
 export var PresentationDefinitionRuleTypeEnum;
 (function (PresentationDefinitionRuleTypeEnum) {

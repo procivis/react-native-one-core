@@ -220,7 +220,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let listQuery = deserializeListQuery(query)
+                let listQuery = try deserializeCredentialSchemaListQuery(query)
                 let result = try getCore().getCredentialSchemas(query: listQuery);
                 return serialize(credentialSchemaList: result)
             }
