@@ -147,6 +147,21 @@ export interface ListQuery {
     pageSize: number;
     organisationId: string;
 }
+export interface CredentialSchemaListQuery extends ListQuery {
+    sort?: SortableCredentialSchemaColumnEnum;
+    sortDirection?: SortDirection;
+    name?: string;
+    exact?: ExactCredentialSchemaFilterColumnEnum;
+    ids?: string[];
+}
+export declare enum SortableCredentialSchemaColumnEnum {
+    NAME = "NAME",
+    FORMAT = "FORMAT",
+    CREATED_DATE = "CREATED_DATE"
+}
+export declare enum ExactCredentialSchemaFilterColumnEnum {
+    NAME = "NAME"
+}
 export declare enum CredentialRoleEnum {
     HOLDER = "HOLDER",
     ISSUER = "ISSUER",
@@ -261,7 +276,8 @@ export declare enum HistorySearchTypeEnum {
     ISSUER_DID = "ISSUER_DID",
     ISSUER_NAME = "ISSUER_NAME",
     VERIFIER_DID = "VERIFIER_DID",
-    VERIFIER_NAME = "VERIFIER_NAME"
+    VERIFIER_NAME = "VERIFIER_NAME",
+    PROOF_SCHEMA_NAME = "PROOF_SCHEMA_NAME"
 }
 export interface HistoryListQuery extends ListQuery {
     entityId?: string;
@@ -274,6 +290,7 @@ export interface HistoryListQuery extends ListQuery {
     didId?: string;
     credentialId?: string;
     credentialSchemaId?: string;
+    proofSchemaId?: string;
     searchText?: string;
     searchType?: HistorySearchTypeEnum;
 }
@@ -508,7 +525,7 @@ export interface ONECore {
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
-    getCredentialSchemas(query: ListQuery): Promise<ItemList<CredentialSchema>>;
+    getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
     importProofSchema(request: ProofSchemaImportRequest): Promise<void>;
