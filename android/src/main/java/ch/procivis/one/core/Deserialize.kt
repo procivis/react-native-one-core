@@ -22,12 +22,12 @@ object Deserialize {
         }
 
         return KeyRequestBindingDto(
-            organisationId,
-            keyType,
-            keyParams,
-            name,
-            storageType,
-            storageParams
+                organisationId,
+                keyType,
+                keyParams,
+                name,
+                storageType,
+                storageParams
         )
     }
 
@@ -52,11 +52,11 @@ object Deserialize {
         val capabilityInvocation = didRequestRoleKeys(requestKeys, "capabilityInvocation")
         val capabilityDelegation = didRequestRoleKeys(requestKeys, "capabilityDelegation")
         return DidRequestKeysBindingDto(
-            authentication,
-            assertionMethod,
-            keyAgreement,
-            capabilityInvocation,
-            capabilityDelegation
+                authentication,
+                assertionMethod,
+                keyAgreement,
+                capabilityInvocation,
+                capabilityDelegation
         )
     }
 
@@ -77,137 +77,120 @@ object Deserialize {
         return result
     }
 
-    fun presentationSubmitCredentialRequest(credential: ReadableMap): PresentationSubmitCredentialRequestBindingDto {
+    fun presentationSubmitCredentialRequest(
+            credential: ReadableMap
+    ): PresentationSubmitCredentialRequestBindingDto {
         val submitClaims = credential.getArray("submitClaims") as ReadableArray
         val claims = mutableListOf<String>()
         for (n in 0 until submitClaims.size()) {
             claims.add(submitClaims.getString(n))
         }
         return PresentationSubmitCredentialRequestBindingDto(
-            credential.getString("credentialId").toString(),
-            claims
+                credential.getString("credentialId").toString(),
+                claims
         )
     }
 
-    fun listQuery(query: ReadableMap): ListQueryBindingDto {
-        return ListQueryBindingDto(
-            query.getInt("page").toUInt(),
-            query.getInt("pageSize").toUInt(),
-            query.getString("organisationId").toString()
+    fun credentialSchemaListQuery(query: ReadableMap): CredentialSchemaListQueryBindingDto {
+        return CredentialSchemaListQueryBindingDto(
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                query.getString("organisationId").toString(),
+                opt(query.getString("sort"), SortableCredentialSchemaColumnBindingEnum::valueOf),
+                opt(query.getString("sortDirection"), SortDirection::valueOf),
+                query.getString("name"),
+                opt(query.getArray("ids"), Deserialize::ids),
+                opt(query.getArray("exact")) { columns ->
+                    enumList(columns, CredentialSchemaListQueryExactColumnBindingEnum::valueOf)
+                },
         )
     }
 
     fun credentialListQuery(query: ReadableMap): CredentialListQueryBindingDto {
         return CredentialListQueryBindingDto(
-            query.getInt("page").toUInt(),
-            query.getInt("pageSize").toUInt(),
-            opt(query.getString("sort"), SortableCredentialColumnBindingEnum::valueOf),
-            opt(query.getString("sortDirection"), SortDirection::valueOf),
-            query.getString("organisationId").toString(),
-            query.getString("name"),
-            opt(
-                query.getArray("exact")
-            ) { columns ->
-                enumList(
-                    columns,
-                    CredentialListQueryExactColumnBindingEnum::valueOf
-                )
-            },
-            opt(query.getString("role"), CredentialRoleBindingDto::valueOf),
-            opt(query.getArray("ids"), Deserialize::ids),
-            opt(query.getArray("status")) { states ->
-                enumList(
-                    states,
-                    CredentialStateBindingEnum::valueOf
-                )
-            },
-            opt(query.getArray("include")) { types ->
-                enumList(
-                    types,
-                    CredentialListIncludeEntityTypeBindingEnum::valueOf
-                )
-            },
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                opt(query.getString("sort"), SortableCredentialColumnBindingEnum::valueOf),
+                opt(query.getString("sortDirection"), SortDirection::valueOf),
+                query.getString("organisationId").toString(),
+                query.getString("name"),
+                opt(query.getArray("exact")) { columns ->
+                    enumList(columns, CredentialListQueryExactColumnBindingEnum::valueOf)
+                },
+                opt(query.getString("role"), CredentialRoleBindingDto::valueOf),
+                opt(query.getArray("ids"), Deserialize::ids),
+                opt(query.getArray("status")) { states ->
+                    enumList(states, CredentialStateBindingEnum::valueOf)
+                },
+                opt(query.getArray("include")) { types ->
+                    enumList(types, CredentialListIncludeEntityTypeBindingEnum::valueOf)
+                },
         )
     }
 
     fun didListQuery(query: ReadableMap): DidListQueryBindingDto {
         return DidListQueryBindingDto(
-            query.getInt("page").toUInt(),
-            query.getInt("pageSize").toUInt(),
-            opt(query.getString("sort"), SortableDidColumnBindingEnum::valueOf),
-            opt(query.getString("sortDirection"), SortDirection::valueOf),
-            query.getString("organisationId").toString(),
-            query.getString("name"),
-            query.getString("did"),
-            opt(query.getString("type"), DidTypeBindingEnum::valueOf),
-            if(query.hasKey("deactivated")) query.getBoolean("deactivated") else null,
-            opt(
-                query.getArray("exact")
-            ) { columns ->
-                enumList(
-                    columns,
-                    ExactDidFilterColumnBindingEnum::valueOf
-                )
-            },
-            opt(query.getArray("keyAlgorithms"), Deserialize::ids),
-            opt(query.getArray("keyRoles")) { roles ->
-                enumList(
-                    roles,
-                    KeyRoleBindingEnum::valueOf
-                )
-            },
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                opt(query.getString("sort"), SortableDidColumnBindingEnum::valueOf),
+                opt(query.getString("sortDirection"), SortDirection::valueOf),
+                query.getString("organisationId").toString(),
+                query.getString("name"),
+                query.getString("did"),
+                opt(query.getString("type"), DidTypeBindingEnum::valueOf),
+                if (query.hasKey("deactivated")) query.getBoolean("deactivated") else null,
+                opt(query.getArray("exact")) { columns ->
+                    enumList(columns, ExactDidFilterColumnBindingEnum::valueOf)
+                },
+                opt(query.getArray("keyAlgorithms"), Deserialize::ids),
+                opt(query.getArray("keyRoles")) { roles ->
+                    enumList(roles, KeyRoleBindingEnum::valueOf)
+                },
         )
     }
 
     fun historyListQuery(query: ReadableMap): HistoryListQueryBindingDto {
         return HistoryListQueryBindingDto(
-            query.getInt("page").toUInt(),
-            query.getInt("pageSize").toUInt(),
-            query.getString("organisationId").toString(),
-            query.getString("entityId"),
-            opt(query.getString("action"), HistoryActionBindingEnum::valueOf),
-            opt(query.getArray("entityTypes")) { types ->
-                enumList(
-                    types,
-                    HistoryEntityTypeBindingEnum::valueOf
-                )
-            },
-            query.getString("createdDateFrom"),
-            query.getString("createdDateTo"),
-            query.getString("didId"),
-            query.getString("credentialId"),
-            query.getString("credentialSchemaId"),
-            historySearch(
-                query.getString("searchText"),
-                query.getString("searchType"),
-            ),
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                query.getString("organisationId").toString(),
+                query.getString("entityId"),
+                opt(query.getString("action"), HistoryActionBindingEnum::valueOf),
+                opt(query.getArray("entityTypes")) { types ->
+                    enumList(types, HistoryEntityTypeBindingEnum::valueOf)
+                },
+                query.getString("createdDateFrom"),
+                query.getString("createdDateTo"),
+                query.getString("didId"),
+                query.getString("credentialId"),
+                query.getString("credentialSchemaId"),
+                historySearch(
+                        query.getString("searchText"),
+                        query.getString("searchType"),
+                ),
+                query.getString("proofSchemaId"),
         )
     }
 
     fun proofSchemaListQuery(query: ReadableMap): ListProofSchamasFiltersBindingDto {
         return ListProofSchamasFiltersBindingDto(
-            query.getInt("page").toUInt(),
-            query.getInt("pageSize").toUInt(),
-            opt(query.getString("sort"), SortableProofSchemaColumnBinding::valueOf),
-            opt(query.getString("sortDirection"), SortDirection::valueOf),
-            query.getString("organisationId").toString(),
-            query.getString("name"),
-            opt(
-                query.getArray("exact")
-            ) { columns ->
-                enumList(
-                    columns,
-                    ProofSchemaListQueryExactColumnBinding::valueOf
-                )
-            },
-            opt(query.getArray("ids"), Deserialize::ids),
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                opt(query.getString("sort"), SortableProofSchemaColumnBinding::valueOf),
+                opt(query.getString("sortDirection"), SortDirection::valueOf),
+                query.getString("organisationId").toString(),
+                query.getString("name"),
+                opt(query.getArray("exact")) { columns ->
+                    enumList(columns, ProofSchemaListQueryExactColumnBinding::valueOf)
+                },
+                opt(query.getArray("ids"), Deserialize::ids),
         )
     }
 
     fun proofSchemaImportRequest(request: ReadableMap): ProofSchemaImportRequestDto {
         return ProofSchemaImportRequestDto(
-            request.getString("url")!!,
-            request.getString("organisationId")!!,
+                request.getString("url")!!,
+                request.getString("organisationId")!!,
         )
     }
 
@@ -217,8 +200,8 @@ object Deserialize {
         }
 
         return HistorySearchBindingDto(
-            text,
-            opt(type, HistorySearchEnumBindingEnum::valueOf),
+                text,
+                opt(type, HistorySearchEnumBindingEnum::valueOf),
         )
     }
 

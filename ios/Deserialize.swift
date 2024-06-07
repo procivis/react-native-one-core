@@ -104,11 +104,16 @@ func deserializePresentationSubmitCredentialRequest(_ input: NSDictionary) -> Pr
     return PresentationSubmitCredentialRequestBindingDto(credentialId: input.value(forKey: "credentialId") as! String, submitClaims: submitClaims);
 }
 
-func deserializeListQuery(_ query: NSDictionary) -> ListQueryBindingDto {
-    return ListQueryBindingDto(
+func deserializeCredentialSchemaListQuery(_ query: NSDictionary) throws -> CredentialSchemaListQueryBindingDto {
+    return CredentialSchemaListQueryBindingDto(
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
-        organisationId: query.value(forKey: "organisationId") as! String
+        organisationId: query.value(forKey: "organisationId") as! String,
+        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
+        name: query.value(forKey: "name") as! String?,
+        ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
+        exact: try opt(query.value(forKey: "exact") as! NSArray?, enumList)
     )
 }
 
@@ -161,7 +166,8 @@ func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQue
         search: try deserializeHistorySearch(
             text: query.value(forKey: "searchText") as! String?,
             type: query.value(forKey: "searchType") as! String?
-        )
+        ),
+        proofSchemaId: query.value(forKey: "proofSchemaId") as! String?
     )
 }
 
@@ -247,13 +253,13 @@ extension HistoryEntityTypeBindingEnum: CaseIterable {
 
 extension HistorySearchEnumBindingEnum: CaseIterable {
     public static var allCases: [HistorySearchEnumBindingEnum] {
-        return [.claimName, .claimValue, .credentialSchemaName, .issuerDid, .issuerName, .verifierDid, .verifierName]
+        return [.claimName, .claimValue, .credentialSchemaName, .issuerDid, .issuerName, .verifierDid, .verifierName, .proofSchemaName]
     }
 }
 
 extension HistoryActionBindingEnum: CaseIterable {
     public static var allCases: [HistoryActionBindingEnum] {
-        return [.accepted, .created, .deactivated, .deleted, .issued, .offered, .reactivated, .rejected, .requested, .revoked, .pending, .suspended, .restored, .errored]
+        return [.accepted, .created, .deactivated, .deleted, .issued, .offered, .reactivated, .rejected, .requested, .revoked, .pending, .suspended, .restored, .errored, .shared, .imported]
     }
 }
 
@@ -274,6 +280,19 @@ extension ProofSchemaListQueryExactColumnBinding: CaseIterable {
         return [.name]
     }
 }
+
+extension SortableCredentialSchemaColumnBindingEnum: CaseIterable {
+    public static var allCases: [SortableCredentialSchemaColumnBindingEnum] {
+        return [.name, .format, .createdDate]
+    }
+}
+
+extension CredentialSchemaListQueryExactColumnBindingEnum: CaseIterable {
+    public static var allCases: [CredentialSchemaListQueryExactColumnBindingEnum] {
+        return [.name]
+    }
+}
+
 private func deserializeEnum<T: CaseIterable>(_ input: String) throws -> T {
     if let entry = T.allCases.first(where: { value in
         serializeEnumValue(value: value) == input
