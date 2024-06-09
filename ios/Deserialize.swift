@@ -184,6 +184,19 @@ func deserializeProofSchemaListQuery(_ query: NSDictionary) throws -> ListProofS
     )
 }
 
+func deserializeProofListQuery(_ query: NSDictionary) throws -> ProofListQueryBindingDto {
+    return ProofListQueryBindingDto(
+        page: query.value(forKey: "page") as! UInt32,
+        pageSize: query.value(forKey: "pageSize") as! UInt32,
+        organisationId: query.value(forKey: "organisationId") as! String,
+        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
+        name: query.value(forKey: "name") as! String?,
+        ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
+        exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns) } )
+    )
+}
+
 func deserializeProofSchemaImportRequest(_ request: NSDictionary) throws -> ProofSchemaImportRequestDto {
     return ProofSchemaImportRequestDto(
         url: request.value(forKey: "url") as! String,
@@ -289,6 +302,18 @@ extension SortableCredentialSchemaColumnBindingEnum: CaseIterable {
 
 extension CredentialSchemaListQueryExactColumnBindingEnum: CaseIterable {
     public static var allCases: [CredentialSchemaListQueryExactColumnBindingEnum] {
+        return [.name]
+    }
+}
+
+extension SortableProofListColumnBinding: CaseIterable {
+    public static var allCases: [SortableProofListColumnBinding] {
+        return [.createdDate, .schemaName, .state, .verifierDid]
+    }
+}
+    
+extension ProofListQueryExactColumnBindingEnum: CaseIterable {
+    public static var allCases: [ProofListQueryExactColumnBindingEnum] {
         return [.name]
     }
 }
