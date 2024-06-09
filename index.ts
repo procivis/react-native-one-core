@@ -283,6 +283,38 @@ export interface ProofSchemaListQuery extends ListQuery {
   ids?: string[];
 }
 
+export enum SortableProofColumnEnum {
+  SCHEMA_NAME = "SCHEMA_NAME",
+  VERIFIER_DID = "VERIFIER_DID",
+  CREATED_DATE = "CREATED_DATE",
+  STATE = "STATE"
+}
+
+export enum ExactProofFilterColumnEnum {
+  NAME = "NAME",
+}
+
+export interface ProofListQuery extends ListQuery {
+  sort?: SortableProofColumnEnum;
+  sortDirection?: SortDirection;
+  name?: string;
+  exact?: ExactProofFilterColumnEnum;
+  ids?: string[];
+}
+
+export interface ProofListItem {
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  issuanceDate: string;
+  requestedDate?: string;
+  completedDate?: string;
+  verifierDid?: string;
+  exchange: string;
+  state: ProofStateEnum;
+  schema: ProofSchemaListItem;
+}
+
 export interface ProofSchemaImportRequest {
   url: string;
   organisationId: string;
@@ -666,6 +698,8 @@ export interface ONECore {
   getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
 
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
+
+  getProofs(proofId: ProofListQuery): Promise<ItemList<ProofListItem>>;
 
   getProofSchemas(
     query: ProofSchemaListQuery

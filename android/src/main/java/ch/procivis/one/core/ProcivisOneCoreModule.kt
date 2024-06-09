@@ -188,6 +188,15 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getProofs(query: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val listQuery = Deserialize.credentialSchemaListQuery(query)
+            val proofs = getCore().getProofs(listQuery)
+            return@asyncCall Util.convertToRN(proofs)
+        }
+    }
+
+    @ReactMethod
     fun getProofSchemas(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
             val listQuery = Deserialize.proofSchemaListQuery(query)
