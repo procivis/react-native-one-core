@@ -110,6 +110,17 @@ export var ExactProofSchemaFilterColumnEnum;
 (function (ExactProofSchemaFilterColumnEnum) {
     ExactProofSchemaFilterColumnEnum["NAME"] = "NAME";
 })(ExactProofSchemaFilterColumnEnum || (ExactProofSchemaFilterColumnEnum = {}));
+export var SortableProofColumnEnum;
+(function (SortableProofColumnEnum) {
+    SortableProofColumnEnum["SCHEMA_NAME"] = "SCHEMA_NAME";
+    SortableProofColumnEnum["VERIFIER_DID"] = "VERIFIER_DID";
+    SortableProofColumnEnum["CREATED_DATE"] = "CREATED_DATE";
+    SortableProofColumnEnum["STATE"] = "STATE";
+})(SortableProofColumnEnum || (SortableProofColumnEnum = {}));
+export var ExactProofFilterColumnEnum;
+(function (ExactProofFilterColumnEnum) {
+    ExactProofFilterColumnEnum["NAME"] = "NAME";
+})(ExactProofFilterColumnEnum || (ExactProofFilterColumnEnum = {}));
 export var HistoryActionEnum;
 (function (HistoryActionEnum) {
     HistoryActionEnum["ACCEPTED"] = "ACCEPTED";

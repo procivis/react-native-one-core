@@ -200,6 +200,32 @@ func serialize(credentialSchemaList: CredentialSchemaListBindingDto) -> NSDictio
     ]
 }
 
+func serialize(proofList: ProofListBindingDto) -> NSDictionary {
+    return [
+        "totalItems": proofList.totalItems,
+        "totalPages": proofList.totalPages,
+        "values": proofList.values.map { serialize(proofListItem: $0) },
+    ]
+}
+
+func serialize(proofListItem: ProofListItemBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+        "id": proofListItem.id,
+        "createdDate": proofListItem.createdDate,
+        "lastModified": proofListItem.lastModified,
+        "issuanceDate": proofListItem.issuanceDate,
+        "exchange": proofListItem.exchange,
+        "state": serializeEnumValue(value: proofListItem.state),
+    ]
+    
+    result.addOpt("requestedDate", proofListItem.requestedDate)
+    result.addOpt("completedDate", proofListItem.completedDate)
+    result.addOpt("schema", opt(proofListItem.schema, {proofSchema in serialize(proofSchemaListItem: proofSchema) }))
+    result.addOpt("verifierDid", proofListItem.verifierDid)
+    
+    return result as NSDictionary
+}
+
 func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
     var result: [String: Any] = [
         "id": proofRequest.id,
@@ -209,6 +235,7 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
         "state": serializeEnumValue(value: proofRequest.state),
         "exchange": proofRequest.exchange,
     ]
+    result.addOpt("proofSchema", opt(proofRequest.proofSchema, {proofSchema in serialize(proofSchemaListItem: proofSchema) }))
     result.addOpt("verifierDid", proofRequest.verifierDid)
     result.addOpt("redirectUri", proofRequest.redirectUri)
     return result as NSDictionary
@@ -223,14 +250,16 @@ func serialize(proofSchemaList: ProofSchemaListBindingDto) -> NSDictionary {
 }
 
 func serialize(proofSchemaListItem: GetProofSchemaListItemBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": proofSchemaListItem.id,
         "createdDate": proofSchemaListItem.createdDate,
         "lastModified": proofSchemaListItem.lastModified,
-        "deletedAt": proofSchemaListItem.deletedAt,
         "name": proofSchemaListItem.name,
         "expireDuration": proofSchemaListItem.expireDuration
     ]
+    
+    result.addOpt("deletedAt", proofSchemaListItem.deletedAt)
+    return result as NSDictionary
 }
 
 func serialize(proofInput: ProofInputBindingDto) -> NSDictionary {
