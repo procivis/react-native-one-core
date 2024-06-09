@@ -187,6 +187,21 @@ object Deserialize {
         )
     }
 
+    fun proofListQuery(query: ReadableMap): ProofListQueryBindingDto {
+        return ProofListQueryBindingDto(
+            query.getInt("page").toUInt(),
+            query.getInt("pageSize").toUInt(),
+            query.getString("organisationId").toString(),
+            opt(query.getString("sort"), SortableProofListColumnBinding::valueOf),
+            opt(query.getString("sortDirection"), SortDirection::valueOf),
+            query.getString("name"),
+            opt(query.getArray("ids"), Deserialize::ids),
+            opt(query.getArray("exact")) { columns ->
+                enumList(columns, ProofListQueryExactColumnBindingEnum::valueOf)
+            },
+        )
+    }
+
     fun proofSchemaImportRequest(request: ReadableMap): ProofSchemaImportRequestDto {
         return ProofSchemaImportRequestDto(
                 request.getString("url")!!,

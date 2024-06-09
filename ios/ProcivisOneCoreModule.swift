@@ -262,6 +262,18 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
+    @objc(getProofs:resolver:rejecter:)
+    func getProofs(
+        query: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let listQuery = try deserializeProofListQuery(query);
+                let result = try getCore().getProofs(query: listQuery);
+                return serialize(proofList: result)
+            }
+        }
+    
     @objc(checkRevocation:resolver:rejecter:)
     func checkRevocation(
         credentialIds: NSArray,
