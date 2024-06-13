@@ -205,6 +205,34 @@ func deserializeProofSchemaImportRequest(_ request: NSDictionary) throws -> Proo
     )
 }
 
+func deserializeCreateProofSchemaRequest(_ request: NSDictionary) -> CreateProofSchemaRequestDto {
+    let proofInputSchemas = request.value(forKey: "proofInputSchemas") as! NSArray;
+
+    return CreateProofSchemaRequestDto(
+        name: request.value(forKey: "name") as! String,
+        organisationId: request.value(forKey: "organisationId") as! String,
+        expireDuration: request.value(forKey: "expireDuration") as! UInt32,
+        proofInputSchemas: proofInputSchemas.map { deserializeProofInputSchemaRequest($0 as! NSDictionary) }
+    )
+}
+
+func deserializeProofInputSchemaRequest(_ request: NSDictionary) -> ProofInputSchemaRequestDto {
+  let claimSchemas = request.value(forKey: "claimSchemas") as! NSArray;
+
+  return ProofInputSchemaRequestDto(
+    credentialSchemaId: request.value(forKey: "credentialSchemaId") as! String,
+    validityConstraint: request.value(forKey: "validityConstraint") as! Int64?,
+    claimSchemas: claimSchemas.map { deserializeProofClaimSchemaRequest($0 as! NSDictionary) }
+  )
+}
+
+func deserializeProofClaimSchemaRequest(_ request: NSDictionary) -> CreateProofSchemaClaimRequestDto {
+  return CreateProofSchemaClaimRequestDto(
+    id: request.value(forKey: "id") as! String,
+    required: request.value(forKey: "required") as! Bool  
+  )
+}
+
 extension KeyRoleBindingEnum: CaseIterable {
     public static var allCases: [KeyRoleBindingEnum] {
         return [.authentication, .assertionMethod, .keyAgreement, .capabilityInvocation, .capabilityDelegation]

@@ -236,7 +236,29 @@ class ProcivisOneCoreModule: NSObject {
                 return serialize(credentialSchemaList: result)
             }
         }
-    
+
+    @objc(deleteCredentialSchema:resolver:rejecter:)
+    func deleteCredentialSchema(
+        credentialSchemaId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try getCore().deleteCredentialSchema(credentialSchemaId: credentialSchemaId);
+                return nil as NSDictionary?;
+            }
+        }       
+
+    @objc(createProofSchema:resolver:rejecter:)
+    func createProofSchema(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let request = try deserializeCreateProofSchemaRequest(request)
+                try getCore().createProofSchema(request: request)
+            }
+        }
+
     @objc(getProofSchemas:resolver:rejecter:)
     func getProofSchemas(
         query: NSDictionary,
@@ -255,11 +277,21 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                // todo: rename proof_id to proof_schema_id in the one_core.udl file
-                let result = try getCore().getProofSchema(proofId: proofSchemaId);
+                let result = try getCore().getProofSchema(proofSchemaId: proofSchemaId);
                 return serialize(proofSchema: result)
             }
-        }    
+        }  
+
+    @objc(deleteProofSchema:resolver:rejecter:)
+    func deleteProofSchema(
+        proofSchemaId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try getCore().deleteProofSchema(proofSchemaId: proofSchemaId);
+                return nil as NSDictionary?;
+            }
+        }        
 
     @objc(importProofSchema:resolver:rejecter:)
     func importProofSchema(
@@ -268,9 +300,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeProofSchemaImportRequest(request);
-                try getCore().importProofSchema(request: request);
-                
-                return nil as NSDictionary?;
+                return try getCore().importProofSchema(request: request) 
             }
         }
 
