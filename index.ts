@@ -171,6 +171,22 @@ export interface ProofSchemaListItem {
   expireDuration: number;
 }
 
+export interface ProofSchema {
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  name: string;
+  organisationId: string;
+  expireDuration: number;
+  proofInputSchemas: ProofInputSchema[];
+}
+
+export interface ProofInputSchema {
+  claimSchemas: ProofInputClaimSchema[];
+  credentialSchema: CredentialSchema;
+  validityConstraint?: number;
+}
+
 export interface ListQuery {
   page: number;
   pageSize: number;
@@ -181,8 +197,13 @@ export interface CredentialSchemaListQuery extends ListQuery {
   sort?: SortableCredentialSchemaColumnEnum;
   sortDirection?: SortDirection;
   name?: string;
-  exact?: ExactCredentialSchemaFilterColumnEnum;
   ids?: string[];
+  exact?: ExactCredentialSchemaFilterColumnEnum[];
+  include?: CredentialSchemaListIncludeEntityType[];
+}
+
+export enum CredentialSchemaListIncludeEntityType {
+  LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES",
 }
 
 export enum SortableCredentialSchemaColumnEnum {
@@ -695,6 +716,8 @@ export interface ONECore {
 
   deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
 
+  getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchema>;
+
   getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
 
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
@@ -704,6 +727,10 @@ export interface ONECore {
   getProofSchemas(
     query: ProofSchemaListQuery
   ): Promise<ItemList<ProofSchemaListItem>>;
+
+  getProofSchema(
+    proofSchemaId: ProofSchema["id"]
+  ): Promise<ProofSchema>;
 
   importProofSchema(
     request: ProofSchemaImportRequest

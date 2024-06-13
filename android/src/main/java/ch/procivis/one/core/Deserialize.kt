@@ -103,6 +103,9 @@ object Deserialize {
                 opt(query.getArray("exact")) { columns ->
                     enumList(columns, CredentialSchemaListQueryExactColumnBindingEnum::valueOf)
                 },
+                opt(query.getArray("include")) { columns ->
+                    enumList(columns, CredentialSchemaListIncludeEntityType::valueOf)
+                },
         )
     }
 
@@ -172,8 +175,8 @@ object Deserialize {
         )
     }
 
-    fun proofSchemaListQuery(query: ReadableMap): ListProofSchamasFiltersBindingDto {
-        return ListProofSchamasFiltersBindingDto(
+    fun proofSchemaListQuery(query: ReadableMap): ListProofSchemasFiltersBindingDto {
+        return ListProofSchemasFiltersBindingDto(
                 query.getInt("page").toUInt(),
                 query.getInt("pageSize").toUInt(),
                 opt(query.getString("sort"), SortableProofSchemaColumnBinding::valueOf),
