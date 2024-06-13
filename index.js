@@ -43,6 +43,10 @@ export var CredentialSchemaCodeType;
     CredentialSchemaCodeType["MRZ"] = "MRZ";
     CredentialSchemaCodeType["QR_CODE"] = "QR_CODE";
 })(CredentialSchemaCodeType || (CredentialSchemaCodeType = {}));
+export var CredentialSchemaListIncludeEntityType;
+(function (CredentialSchemaListIncludeEntityType) {
+    CredentialSchemaListIncludeEntityType["LAYOUT_PROPERTIES"] = "LAYOUT_PROPERTIES";
+})(CredentialSchemaListIncludeEntityType || (CredentialSchemaListIncludeEntityType = {}));
 export var SortableCredentialSchemaColumnEnum;
 (function (SortableCredentialSchemaColumnEnum) {
     SortableCredentialSchemaColumnEnum["NAME"] = "NAME";
