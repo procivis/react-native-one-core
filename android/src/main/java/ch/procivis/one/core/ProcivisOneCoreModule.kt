@@ -188,6 +188,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun deleteCredentialSchema(credentialSchemaId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            getCore().deleteCredentialSchema(credentialSchemaId)
+            return@asyncCall null 
+        }
+    }
+
+    @ReactMethod
     fun getProof(proofId: String, promise: Promise) {
         Util.asyncCall(promise) {
             val proof = getCore().getProof(proofId)
@@ -201,6 +209,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             val listQuery = Deserialize.proofListQuery(query)
             val proofs = getCore().getProofs(listQuery)
             return@asyncCall Util.convertToRN(proofs)
+        }
+    }
+
+    @ReactMethod
+    fun createProofSchema(request: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val r = Deserialize.createProofSchemaRequest(request)
+            return@asyncCall getCore().createProofSchema(r)
         }
     }
 
@@ -222,11 +238,18 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun deleteProofSchema(proofSchemaId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            getCore().deleteProofSchema(proofSchemaId)
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun importProofSchema(request: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val request = Deserialize.proofSchemaImportRequest(request)
-            getCore().importProofSchema(request)
-            return@asyncCall null
+            val r = Deserialize.proofSchemaImportRequest(request)
+            return@asyncCall getCore().importProofSchema(r)
         }
     }
 

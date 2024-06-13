@@ -192,16 +192,16 @@ object Deserialize {
 
     fun proofListQuery(query: ReadableMap): ProofListQueryBindingDto {
         return ProofListQueryBindingDto(
-            query.getInt("page").toUInt(),
-            query.getInt("pageSize").toUInt(),
-            query.getString("organisationId").toString(),
-            opt(query.getString("sort"), SortableProofListColumnBinding::valueOf),
-            opt(query.getString("sortDirection"), SortDirection::valueOf),
-            query.getString("name"),
-            opt(query.getArray("ids"), Deserialize::ids),
-            opt(query.getArray("exact")) { columns ->
-                enumList(columns, ProofListQueryExactColumnBindingEnum::valueOf)
-            },
+                query.getInt("page").toUInt(),
+                query.getInt("pageSize").toUInt(),
+                query.getString("organisationId").toString(),
+                opt(query.getString("sort"), SortableProofListColumnBinding::valueOf),
+                opt(query.getString("sortDirection"), SortDirection::valueOf),
+                query.getString("name"),
+                opt(query.getArray("ids"), Deserialize::ids),
+                opt(query.getArray("exact")) { columns ->
+                    enumList(columns, ProofListQueryExactColumnBindingEnum::valueOf)
+                },
         )
     }
 
@@ -209,6 +209,51 @@ object Deserialize {
         return ProofSchemaImportRequestDto(
                 request.getString("url")!!,
                 request.getString("organisationId")!!,
+        )
+    }
+
+    fun createProofSchemaRequest(request: ReadableMap): CreateProofSchemaRequestDto {
+        val rawProofInputSchemas = request.getArray("proofInputSchemas")!!
+        
+        val proofInputSchemas = mutableListOf<ProofInputSchemaRequestDto>()
+        for (i in 0 until rawProofInputSchemas.size()) {
+            val rawInputSchema = rawProofInputSchemas.getMap(i)
+            proofInputSchemas.add(proofInputSchemaRequest(rawInputSchema))
+        }
+
+        return CreateProofSchemaRequestDto(
+                request.getString("name")!!,
+                request.getString("organisationId")!!,
+                request.getInt("expireDuration").toUInt(),
+                proofInputSchemas,
+        )
+    }
+
+    fun proofInputSchemaRequest(request: ReadableMap): ProofInputSchemaRequestDto {
+        val rawClaimSchemas = request.getArray("claimSchemas")!!
+        
+        val claimSchemas = mutableListOf<CreateProofSchemaClaimRequestDto>()
+        for (i in 0 until rawClaimSchemas.size()) {
+            val rawClaimSchema = rawClaimSchemas.getMap(i)
+            claimSchemas.add(proofSchemaClaimRequest(rawClaimSchema))
+        }
+
+        var validityConstraint: Long? = null;
+        if (request.hasKey("validityConstraint")) {
+            validityConstraint = request.getInt("validityConstraint").toLong()
+        }
+
+        return ProofInputSchemaRequestDto(
+                request.getString("credentialSchemaId")!!,
+                validityConstraint,
+                claimSchemas,
+        )
+    }
+
+    fun proofSchemaClaimRequest(request: ReadableMap): CreateProofSchemaClaimRequestDto {
+        return CreateProofSchemaClaimRequestDto(
+                request.getString("id")!!,
+                request.getBoolean("required"),
         )
     }
 
