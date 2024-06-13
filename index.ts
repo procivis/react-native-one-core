@@ -661,6 +661,24 @@ export interface ImportBackupMetadata {
   createdAt: string;
 }
 
+export interface CreateProofSchemaRequest {
+  name: string;
+  organisationId: string;
+  expireDuration: number;
+  proofInputSchemas: ProofInputSchemaRequest[];
+}
+
+export interface ProofInputSchemaRequest {
+  credentialSchemaId: string;
+  validityConstraint?: number;
+  claimSchemas: ProofSchemaClaimRequest[];
+}
+
+export interface ProofSchemaClaimRequest {
+  id: string,
+  required: boolean,
+}
+
 export interface ONECore {
   getVersion(): Promise<Version>;
 
@@ -721,9 +739,15 @@ export interface ONECore {
 
   getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
 
+  deleteCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<void>;
+
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
 
   getProofs(proofId: ProofListQuery): Promise<ItemList<ProofListItem>>;
+
+  createProofSchema(
+    request: CreateProofSchemaRequest
+  ): Promise<ProofSchema["id"]>;
 
   getProofSchemas(
     query: ProofSchemaListQuery
@@ -733,9 +757,13 @@ export interface ONECore {
     proofSchemaId: ProofSchema["id"]
   ): Promise<ProofSchema>;
 
+  deleteProofSchema(
+    proofSchemaId: ProofSchema["id"]
+  ): Promise<void>;
+
   importProofSchema(
     request: ProofSchemaImportRequest
-  ): Promise<void>;
+  ): Promise<string>;
 
   checkRevocation(
     credentialIds: Array<CredentialListItem["id"]>
