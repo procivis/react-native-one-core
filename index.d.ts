@@ -130,6 +130,7 @@ export interface ProofDetail {
     lastModified: string;
     proofInputs: ProofInput[];
     state: ProofStateEnum;
+    proofSchema?: ProofSchemaListItem;
     verifierDid?: string;
     exchange: string;
     redirectUri?: string;
