@@ -171,6 +171,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getCredentialSchema(credentialSchemaId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val schemas = getCore().getCredentialSchema(credentialSchemaId)
+            return@asyncCall Util.convertToRN(schemas)
+        }
+    }
+
+    @ReactMethod
     fun getCredentialSchemas(query: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
             val listQuery = Deserialize.credentialSchemaListQuery(query)
@@ -202,6 +210,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             val listQuery = Deserialize.proofSchemaListQuery(query)
             val schemas = getCore().getProofSchemas(listQuery)
             return@asyncCall Util.convertToRN(schemas)
+        }
+    }
+
+    @ReactMethod
+    fun getProofSchema(proofSchemaId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val schema = getCore().getProofSchema(proofSchemaId)
+            return@asyncCall Util.convertToRN(schema)
         }
     }
 

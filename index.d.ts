@@ -142,6 +142,20 @@ export interface ProofSchemaListItem {
     name: string;
     expireDuration: number;
 }
+export interface ProofSchema {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    organisationId: string;
+    expireDuration: number;
+    proofInputSchemas: ProofInputSchema[];
+}
+export interface ProofInputSchema {
+    claimSchemas: ProofInputClaimSchema[];
+    credentialSchema: CredentialSchema;
+    validityConstraint?: number;
+}
 export interface ListQuery {
     page: number;
     pageSize: number;
@@ -151,8 +165,12 @@ export interface CredentialSchemaListQuery extends ListQuery {
     sort?: SortableCredentialSchemaColumnEnum;
     sortDirection?: SortDirection;
     name?: string;
-    exact?: ExactCredentialSchemaFilterColumnEnum;
     ids?: string[];
+    exact?: ExactCredentialSchemaFilterColumnEnum[];
+    include?: CredentialSchemaListIncludeEntityType[];
+}
+export declare enum CredentialSchemaListIncludeEntityType {
+    LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES"
 }
 export declare enum SortableCredentialSchemaColumnEnum {
     NAME = "NAME",
@@ -553,10 +571,12 @@ export interface ONECore {
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
+    getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchema>;
     getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofs(proofId: ProofListQuery): Promise<ItemList<ProofListItem>>;
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
+    getProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ProofSchema>;
     importProofSchema(request: ProofSchemaImportRequest): Promise<void>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;

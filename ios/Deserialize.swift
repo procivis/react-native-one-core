@@ -113,7 +113,8 @@ func deserializeCredentialSchemaListQuery(_ query: NSDictionary) throws -> Crede
         sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
         name: query.value(forKey: "name") as! String?,
         ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
-        exact: try opt(query.value(forKey: "exact") as! NSArray?, enumList)
+        exact: try opt(query.value(forKey: "exact") as! NSArray?, enumList),
+        include: try opt(query.value(forKey: "include") as! NSArray?, enumList)
     )
 }
 
@@ -171,8 +172,8 @@ func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQue
     )
 }
 
-func deserializeProofSchemaListQuery(_ query: NSDictionary) throws -> ListProofSchamasFiltersBindingDto {
-    return ListProofSchamasFiltersBindingDto(
+func deserializeProofSchemaListQuery(_ query: NSDictionary) throws -> ListProofSchemasFiltersBindingDto {
+    return ListProofSchemasFiltersBindingDto(
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
         sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
@@ -303,6 +304,12 @@ extension SortableCredentialSchemaColumnBindingEnum: CaseIterable {
 extension CredentialSchemaListQueryExactColumnBindingEnum: CaseIterable {
     public static var allCases: [CredentialSchemaListQueryExactColumnBindingEnum] {
         return [.name]
+    }
+}
+
+extension CredentialSchemaListIncludeEntityType: CaseIterable {
+    public static var allCases: [CredentialSchemaListIncludeEntityType] {
+        return [.layoutProperties]
     }
 }
 
