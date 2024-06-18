@@ -233,6 +233,81 @@ func deserializeProofClaimSchemaRequest(_ request: NSDictionary) -> CreateProofS
   )
 }
 
+func deserializeImportCredentialSchemaRequest(_ request: NSDictionary) throws -> ImportCredentialSchemaRequestBindingDto {
+    return ImportCredentialSchemaRequestBindingDto(
+        organisationId: request.value(forKey: "organisationId") as! String,
+        schema: try deserializeImportCredentialSchemaRequestSchema(request.value(forKey: "schema") as! NSDictionary)
+    )
+}
+
+func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) throws -> ImportCredentialSchemaRequestSchemaBindingDto {
+    let claims = request.value(forKey: "claims") as! NSArray;
+
+    return ImportCredentialSchemaRequestSchemaBindingDto(
+        id: request.value(forKey: "id") as! String,
+        createdDate: request.value(forKey: "createdDate") as! String,
+        lastModified: request.value(forKey: "lastModified") as! String,
+        name: request.value(forKey: "name") as! String,
+        format: request.value(forKey: "format") as! String,
+        revocationMethod: request.value(forKey: "revocationMethod") as! String,
+        organisationId: request.value(forKey: "organisationId") as! String,
+        claims: try claims.map { try deserializeImportCredentialSchemaRequestClaim($0 as! NSDictionary) },
+        walletStorageType: try opt(request.value(forKey: "walletStorageType") as! String?, deserializeEnum),
+        schemaId: request.value(forKey: "schemaId") as! String,
+        schemaType: deserializeCredentialSchemaTypeBindingEnum(request.value(forKey: "schemaType") as! String),
+        layoutType: try opt(request.value(forKey: "layoutType") as! String?, deserializeEnum),
+        layoutProperties: try opt((request.value(forKey: "layoutProperties") as! NSDictionary?), deserializeImportCredentialSchemaRequestLayoutProperties)
+    )
+}
+
+func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) throws -> ImportCredentialSchemaClaimSchemaBindingDto {
+    let claims = request.value(forKey: "claims") as! NSArray;
+
+    return ImportCredentialSchemaClaimSchemaBindingDto(
+        id: request.value(forKey: "id") as! String,
+        createdDate: request.value(forKey: "createdDate") as! String,
+        lastModified: request.value(forKey: "lastModified") as! String,
+        required: request.value(forKey: "required") as! Bool,
+        key: request.value(forKey: "key") as! String,
+        array: request.value(forKey: "array") as! Bool?,
+        datatype: request.value(forKey: "datatype") as! String,
+        claims: try claims.map { try deserializeImportCredentialSchemaRequestClaim($0 as! NSDictionary) }
+    )
+} 
+
+func deserializeImportCredentialSchemaRequestLayoutProperties(_ request: NSDictionary) throws -> ImportCredentialSchemaLayoutPropertiesBindingDto {
+  return ImportCredentialSchemaLayoutPropertiesBindingDto(
+        background: try opt(request.value(forKey: "background") as! NSDictionary?, deserializeImportCredentialSchemaBackgroundProperties),
+        logo: try opt(request.value(forKey: "logo") as! NSDictionary?, deserializeImportCredentialSchemaLogoProperties), 
+        primaryAttribute: request.value(forKey: "primaryAttribute") as! String?,
+        secondaryAttribute: request.value(forKey: "secondaryAttribute") as! String?,
+        pictureAttribute: request.value(forKey: "pictureAttribute") as! String?,
+        code: try opt(request.value(forKey: "code") as! NSDictionary?, deserializeImportCredentialSchemaCodeProperties)
+  )
+} 
+
+func deserializeImportCredentialSchemaBackgroundProperties(_ request: NSDictionary) -> CredentialSchemaBackgroundPropertiesBindingDto {
+    return CredentialSchemaBackgroundPropertiesBindingDto(
+        color: request.value(forKey: "color") as! String?,
+        image: request.value(forKey: "image") as! String?
+    )
+}
+
+func deserializeImportCredentialSchemaLogoProperties(_ request: NSDictionary) -> CredentialSchemaLogoPropertiesBindingDto {
+    return CredentialSchemaLogoPropertiesBindingDto(
+        fontColor: request.value(forKey: "fontColor") as! String?, 
+        backgroundColor: request.value(forKey: "backgroundColor") as! String?,
+        image: request.value(forKey: "image") as! String?
+    )
+}
+
+func deserializeImportCredentialSchemaCodeProperties(_ request: NSDictionary) throws -> CredentialSchemaCodePropertiesBindingDto { 
+    return CredentialSchemaCodePropertiesBindingDto(
+        attribute: request.value(forKey: "attribute") as! String, 
+        type: try deserializeEnum(request.value(forKey: "type") as! String)  
+    )
+}
+
 extension KeyRoleBindingEnum: CaseIterable {
     public static var allCases: [KeyRoleBindingEnum] {
         return [.authentication, .assertionMethod, .keyAgreement, .capabilityInvocation, .capabilityDelegation]
@@ -353,6 +428,24 @@ extension ProofListQueryExactColumnBindingEnum: CaseIterable {
     }
 }
 
+extension CredentialSchemaCodeTypeBindingDto: CaseIterable {
+    public static var allCases: [CredentialSchemaCodeTypeBindingDto] {
+        return [.barcode, .mrz, .qrCode]
+    }
+}
+
+extension LayoutTypeBindingEnum: CaseIterable {
+    public static var allCases: [LayoutTypeBindingEnum] {
+        return [.card, .document, .singleAttribute]
+    }
+}
+
+extension WalletStorageTypeBindingEnum: CaseIterable {
+    public static var allCases: [WalletStorageTypeBindingEnum] {
+        return [.hardware, .software]
+    }
+}
+
 private func deserializeEnum<T: CaseIterable>(_ input: String) throws -> T {
     if let entry = T.allCases.first(where: { value in
         serializeEnumValue(value: value) == input
@@ -376,4 +469,18 @@ private func enumList<T: CaseIterable>(_ entries: NSArray) throws -> [T] {
         result.append(try deserializeEnum(entry as! String));
     }
     return result
+}
+
+private func deserializeCredentialSchemaTypeBindingEnum(_ credentialSchemaType: String) -> CredentialSchemaTypeBindingEnum {
+    switch (credentialSchemaType) {
+    case "PROCIVIS_ONE_SCHEMA2024": 
+        return .procivisOneSchema2024     
+    case "FALLBACK_SCHEMA2024": 
+        return .fallbackSchema2024
+    case "MDOC": 
+        return .mdoc         
+    case let other: 
+        return .other(value: other)
+    }
+     
 }

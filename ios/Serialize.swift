@@ -319,7 +319,8 @@ func serialize(proofClaimSchema: ProofClaimSchemaBindingDto) -> NSDictionary {
         "required": proofClaimSchema.required,
         "key": proofClaimSchema.key,
         "dataType": proofClaimSchema.dataType,
-        "claims": proofClaimSchema.claims.map { serialize(proofClaimSchema: $0)}
+        "claims": proofClaimSchema.claims.map { serialize(proofClaimSchema: $0)},
+        "array": proofClaimSchema.array, 
     ]
 }
 

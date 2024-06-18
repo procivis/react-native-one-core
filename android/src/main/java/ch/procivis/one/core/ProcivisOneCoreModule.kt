@@ -171,6 +171,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun importCredentialSchema(request: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val r = Deserialize.deserializeImportCredentialSchemaRequest(request)
+            return@asyncCall getCore().importCredentialSchema(r)
+        }
+    }
+
+    @ReactMethod
     fun getCredentialSchema(credentialSchemaId: String, promise: Promise) {
         Util.asyncCall(promise) {
             val schemas = getCore().getCredentialSchema(credentialSchemaId)
@@ -191,7 +199,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun deleteCredentialSchema(credentialSchemaId: String, promise: Promise) {
         Util.asyncCall(promise) {
             getCore().deleteCredentialSchema(credentialSchemaId)
-            return@asyncCall null 
+            return@asyncCall null
         }
     }
 
