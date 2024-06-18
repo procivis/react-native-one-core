@@ -81,6 +81,10 @@ RCT_EXTERN_METHOD(deleteCredential:(NSString *)credentialId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(importCredentialSchema:(NSDictionary *)request
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)     
+
 RCT_EXTERN_METHOD(getCredentialSchema:(NSString *)credentialSchemaId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)

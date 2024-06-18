@@ -214,6 +214,17 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
+    @objc(importCredentialSchema:resolver:rejecter:)
+    func importCredentialSchema(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let request = try deserializeImportCredentialSchemaRequest(request);
+                return try getCore().importCredentialSchema(request: request) 
+            }
+        }      
+
     @objc(getCredentialSchema:resolver:rejecter:)
     func getCredentialSchema(
         credentialSchemaId: String,
@@ -254,7 +265,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let request = try deserializeCreateProofSchemaRequest(request)
+                let request = deserializeCreateProofSchemaRequest(request)
                 try getCore().createProofSchema(request: request)
             }
         }

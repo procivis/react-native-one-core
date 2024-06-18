@@ -214,7 +214,7 @@ object Deserialize {
 
     fun createProofSchemaRequest(request: ReadableMap): CreateProofSchemaRequestDto {
         val rawProofInputSchemas = request.getArray("proofInputSchemas")!!
-        
+
         val proofInputSchemas = mutableListOf<ProofInputSchemaRequestDto>()
         for (i in 0 until rawProofInputSchemas.size()) {
             val rawInputSchema = rawProofInputSchemas.getMap(i)
@@ -231,14 +231,14 @@ object Deserialize {
 
     fun proofInputSchemaRequest(request: ReadableMap): ProofInputSchemaRequestDto {
         val rawClaimSchemas = request.getArray("claimSchemas")!!
-        
+
         val claimSchemas = mutableListOf<CreateProofSchemaClaimRequestDto>()
         for (i in 0 until rawClaimSchemas.size()) {
             val rawClaimSchema = rawClaimSchemas.getMap(i)
             claimSchemas.add(proofSchemaClaimRequest(rawClaimSchema))
         }
 
-        var validityConstraint: Long? = null;
+        var validityConstraint: Long? = null
         if (request.hasKey("validityConstraint")) {
             validityConstraint = request.getInt("validityConstraint").toLong()
         }
@@ -254,6 +254,95 @@ object Deserialize {
         return CreateProofSchemaClaimRequestDto(
                 request.getString("id")!!,
                 request.getBoolean("required"),
+        )
+    }
+
+    fun deserializeImportCredentialSchemaRequest(request: ReadableMap): ImportCredentialSchemaRequestBindingDto {
+       return ImportCredentialSchemaRequestBindingDto(
+                request.getString("organisationId")!!,
+                deserializeImportCredentialSchemaRequestSchema(request.getMap("schema")!!),
+       ) 
+    }
+
+    fun deserializeImportCredentialSchemaRequestSchema(request: ReadableMap): ImportCredentialSchemaRequestSchemaBindingDto {
+        val rawClaims = request.getArray("claims")!!
+
+        val claims = mutableListOf<ImportCredentialSchemaClaimSchemaBindingDto>()
+        for (i in 0 until rawClaims.size()) {
+            val claimSchema = rawClaims.getMap(i)
+            claims.add(deserializeImportCredentialSchemaRequestClaim(claimSchema))
+        } 
+
+        return ImportCredentialSchemaRequestSchemaBindingDto(
+                request.getString("id")!!,
+                request.getString("createdDate")!!,
+                request.getString("lastModified")!!,
+                request.getString("name")!!,
+                request.getString("format")!!,
+                request.getString("revocationMethod")!!,
+                request.getString("organisationId")!!,
+                claims,
+                opt(request.getString("walletStorageType"), WalletStorageTypeBindingEnum::valueOf),
+                request.getString("schemaId")!!,
+                deserializeCredentialSchemaTypeBindingEnum(request.getString("schemaType")!!),
+                opt(request.getString("layoutType"), LayoutTypeBindingEnum::valueOf),
+                opt(request.getMap("layoutProperties"), ::deserializeImportCredentialSchemaRequestLayoutProperties),
+        )    
+    }
+
+    fun deserializeImportCredentialSchemaRequestClaim(request: ReadableMap): ImportCredentialSchemaClaimSchemaBindingDto {
+        val rawClaimSchemas = request.getArray("claims")!!
+
+        val claimSchemas = mutableListOf<ImportCredentialSchemaClaimSchemaBindingDto>()
+        for (i in 0 until rawClaimSchemas.size()) {
+            val claimSchema = rawClaimSchemas.getMap(i)
+            claimSchemas.add(deserializeImportCredentialSchemaRequestClaim(claimSchema))
+        } 
+
+        val array = if (request.hasKey("array")) request.getBoolean("array") else null;
+        
+        return ImportCredentialSchemaClaimSchemaBindingDto(
+            request.getString("id")!!,
+            request.getString("createdDate")!!,
+            request.getString("lastModified")!!,
+            request.getBoolean("required"),
+            request.getString("key")!!,
+            array,
+            request.getString("datatype")!!,
+            claimSchemas,
+        )
+    }
+
+    fun deserializeImportCredentialSchemaRequestLayoutProperties(request: ReadableMap): ImportCredentialSchemaLayoutPropertiesBindingDto {
+        return ImportCredentialSchemaLayoutPropertiesBindingDto(
+            opt(request.getMap("background"), ::deserializeImportCredentialSchemaBackgroundProperties),
+            opt(request.getMap("logo"), ::deserializeImportCredentialSchemaLogoProperties),
+            request.getString("primaryAttribute"),
+            request.getString("secondaryAttribute"),
+            request.getString("pictureAttribute"),
+            opt(request.getMap("code"), ::deserializeImportCredentialSchemaCodeProperties),        
+        )
+    }
+
+    fun deserializeImportCredentialSchemaBackgroundProperties(request: ReadableMap): CredentialSchemaBackgroundPropertiesBindingDto {
+        return CredentialSchemaBackgroundPropertiesBindingDto(
+            request.getString("color"),
+            request.getString("image"),
+        )
+    }
+
+    fun deserializeImportCredentialSchemaLogoProperties(request: ReadableMap): CredentialSchemaLogoPropertiesBindingDto {
+        return CredentialSchemaLogoPropertiesBindingDto(
+            request.getString("fontColor"),
+            request.getString("backgroundColor"),
+            request.getString("image"), 
+        )
+    }
+
+    fun deserializeImportCredentialSchemaCodeProperties(request: ReadableMap): CredentialSchemaCodePropertiesBindingDto {
+        return CredentialSchemaCodePropertiesBindingDto(
+            request.getString("attribute")!!,
+            CredentialSchemaCodeTypeBindingDto.valueOf(request.getString("type")!!), 
         )
     }
 
@@ -281,5 +370,19 @@ object Deserialize {
             result.add(fn(entries.getString(n)))
         }
         return result
+    }
+}
+
+
+private fun deserializeCredentialSchemaTypeBindingEnum(credentialSchemaType: String): CredentialSchemaTypeBindingEnum {
+    when {
+        credentialSchemaType == "PROCIVIS_ONE_SCHEMA2024" -> 
+            return CredentialSchemaTypeBindingEnum.ProcivisOneSchema2024     
+        credentialSchemaType == "FALLBACK_SCHEMA2024" -> 
+            return CredentialSchemaTypeBindingEnum.FallbackSchema2024
+        credentialSchemaType == "MDOC" ->
+            return CredentialSchemaTypeBindingEnum.Mdoc         
+        else ->
+            return CredentialSchemaTypeBindingEnum.Other(credentialSchemaType)
     }
 }

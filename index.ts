@@ -679,6 +679,47 @@ export interface ProofSchemaClaimRequest {
   required: boolean,
 }
 
+export interface ImportCredentialSchemaRequest {
+  organisationId: string,
+  schema: ImportCredentialSchemaRequestSchema
+}
+
+export interface ImportCredentialSchemaRequestSchema {
+  id: string,
+  createdDate: string,
+  lastModified: string,
+  name: string,
+  format: string,
+  revocationMethod: string,
+  organisationId: string,
+  claims: ImportCredentialSchemaClaimSchema[],
+  walletStorageType?: WalletStorageType,
+  schemaId: string,
+  schemaType: CredentialSchemaType,
+  layoutType?: LayoutType,
+  layoutProperties?: ImportCredentialSchemaLayoutProperties,
+}
+
+export interface ImportCredentialSchemaClaimSchema {
+  id: string,
+  createdDate: string,
+  lastModified: string,
+  required: boolean,
+  key: string,
+  datatype: string,
+  claims: ImportCredentialSchemaClaimSchema[];
+  array?: boolean;
+}
+
+export interface ImportCredentialSchemaLayoutProperties {
+  background?: CredentialSchemaBackgroundProperties,
+  logo?: CredentialSchemaLogoProperties,
+  primaryAttribute?: string,
+  secondaryAttribute?: string,
+  pictureAttribute?: string,
+  code?: CredentialSchemaCodeProperties
+}
+
 export interface ONECore {
   getVersion(): Promise<Version>;
 
@@ -734,6 +775,8 @@ export interface ONECore {
   ): Promise<CredentialDetail>;
 
   deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
+
+  importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<CredentialSchema["id"]>;
 
   getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchema>;
 
