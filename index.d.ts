@@ -53,6 +53,30 @@ export interface CredentialSchema {
     layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
 }
+export interface CredentialSchemaDetail {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    format: string;
+    revocationMethod: string;
+    claims: ClaimSchema[];
+    walletStorageType?: WalletStorageType;
+    schemaId: string;
+    schemaType: CredentialSchemaType;
+    layoutType?: LayoutType;
+    layoutProperties?: CredentialSchemaLayoutProperties;
+}
+export interface ClaimSchema {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    key: string;
+    datatype: string;
+    required: boolean;
+    array?: boolean;
+    claims: ClaimSchema[];
+}
 export interface CredentialSchemaLayoutProperties {
     background?: CredentialSchemaBackgroundProperties;
     logo?: CredentialSchemaLogoProperties;
@@ -253,7 +277,7 @@ export interface ProofSchemaListQuery extends ListQuery {
     sort?: SortableProofSchemasColumnEnum;
     sortDirection?: SortDirection;
     name?: string;
-    exact?: ExactProofSchemaFilterColumnEnum;
+    exact?: ExactProofSchemaFilterColumnEnum[];
     ids?: string[];
 }
 export declare enum SortableProofColumnEnum {
@@ -269,7 +293,7 @@ export interface ProofListQuery extends ListQuery {
     sort?: SortableProofColumnEnum;
     sortDirection?: SortDirection;
     name?: string;
-    exact?: ExactProofFilterColumnEnum;
+    exact?: ExactProofFilterColumnEnum[];
     ids?: string[];
 }
 export interface ProofListItem {
@@ -597,7 +621,7 @@ export interface ImportCredentialSchemaClaimSchema {
     required: boolean;
     key: string;
     datatype: string;
-    claims?: ImportCredentialSchemaClaimSchema[];
+    claims: ImportCredentialSchemaClaimSchema[];
     array?: boolean;
 }
 export interface ImportCredentialSchemaLayoutProperties {
@@ -625,7 +649,7 @@ export interface ONECore {
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
     importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<CredentialSchema["id"]>;
-    getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchema>;
+    getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchemaDetail>;
     getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
     deleteCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<void>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
