@@ -291,10 +291,10 @@ object Deserialize {
     }
 
     fun deserializeImportCredentialSchemaRequestClaim(request: ReadableMap): ImportCredentialSchemaClaimSchemaBindingDto {
-        val rawClaimSchemas = request.getArray("claims")
-
         val claimSchemas = mutableListOf<ImportCredentialSchemaClaimSchemaBindingDto>()
-        if (rawClaimSchemas) {
+
+        if (request.hasKey("claims") && !request.isNull("claims")) {
+            val rawClaimSchemas = request.getArray("claims")!!
             for (i in 0 until rawClaimSchemas.size()) {
                 val claimSchema = rawClaimSchemas.getMap(i)
                 claimSchemas.add(deserializeImportCredentialSchemaRequestClaim(claimSchema))
