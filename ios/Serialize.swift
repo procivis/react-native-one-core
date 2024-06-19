@@ -90,6 +90,40 @@ func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
     return result as NSDictionary
 }
 
+func serialize(credentialSchemaDetail: CredentialSchemaDetailBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+        "id": credentialSchemaDetail.id,
+        "createdDate": credentialSchemaDetail.createdDate,
+        "lastModified": credentialSchemaDetail.lastModified,
+        "name": credentialSchemaDetail.name,
+        "format": credentialSchemaDetail.format,
+        "revocationMethod": credentialSchemaDetail.revocationMethod,
+        "schemaId": credentialSchemaDetail.schemaId,
+        "claims": credentialSchemaDetail.claims.map { serialize(claimSchema: $0) }
+    ]
+    result.addOpt("walletStorageType", opt(credentialSchemaDetail.walletStorageType, serializeEnumValue))
+    result.addOpt("schemaType", opt(credentialSchemaDetail.schemaType, {type in serialize(credentialSchemaType: type)}))
+    result.addOpt("layoutType", opt(credentialSchemaDetail.layoutType, serializeEnumValue))
+    result.addOpt("layoutProperties", opt(credentialSchemaDetail.layoutProperties, {properties in serialize(layoutProperties: properties)}))
+
+    return result as NSDictionary
+}
+
+func serialize(claimSchema: CredentialClaimSchemaBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+        "id": claimSchema.id,
+        "createdDate": claimSchema.createdDate,
+        "lastModified": claimSchema.lastModified,
+        "required": claimSchema.required,
+        "key": claimSchema.key,
+        "array": claimSchema.array,
+        "datatype": claimSchema.datatype,
+        "claims": claimSchema.claims.map { serialize(claimSchema: $0) }
+    ]
+
+    return result as NSDictionary 
+} 
+
 func serialize(layoutProperties: CredentialSchemaLayoutPropertiesBindingDto) -> NSDictionary {
     var result: [String: Any] = [:]
     result.addOpt("background", opt(layoutProperties.background, {background in serialize(backgroundProperties: background)}))
