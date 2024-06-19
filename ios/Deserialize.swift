@@ -252,16 +252,16 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
         revocationMethod: request.value(forKey: "revocationMethod") as! String,
         organisationId: request.value(forKey: "organisationId") as! String,
         claims: try claims.map { try deserializeImportCredentialSchemaRequestClaim($0 as! NSDictionary) },
-        walletStorageType: try opt(request.value(forKey: "walletStorageType") as! String?, deserializeEnum),
+        walletStorageType: try opt(request.value(forKey: "walletStorageType") as? String, deserializeEnum),
         schemaId: request.value(forKey: "schemaId") as! String,
         schemaType: deserializeCredentialSchemaTypeBindingEnum(request.value(forKey: "schemaType") as! String),
-        layoutType: try opt(request.value(forKey: "layoutType") as! String?, deserializeEnum),
-        layoutProperties: try opt((request.value(forKey: "layoutProperties") as! NSDictionary?), deserializeImportCredentialSchemaRequestLayoutProperties)
+        layoutType: try opt(request.value(forKey: "layoutType") as? String, deserializeEnum),
+        layoutProperties: try opt((request.value(forKey: "layoutProperties") as? NSDictionary), deserializeImportCredentialSchemaRequestLayoutProperties)
     )
 }
 
 func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) throws -> ImportCredentialSchemaClaimSchemaBindingDto {
-    let claims = request.value(forKey: "claims") as! NSArray;
+    let claims = request.value(forKey: "claims") as? NSArray ?? [];
 
     return ImportCredentialSchemaClaimSchemaBindingDto(
         id: request.value(forKey: "id") as! String,

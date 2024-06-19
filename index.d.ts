@@ -597,7 +597,7 @@ export interface ImportCredentialSchemaClaimSchema {
     required: boolean;
     key: string;
     datatype: string;
-    claims: ImportCredentialSchemaClaimSchema[];
+    claims?: ImportCredentialSchemaClaimSchema[];
     array?: boolean;
 }
 export interface ImportCredentialSchemaLayoutProperties {
