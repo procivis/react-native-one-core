@@ -181,8 +181,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getCredentialSchema(credentialSchemaId: String, promise: Promise) {
         Util.asyncCall(promise) {
-            val schemas = getCore().getCredentialSchema(credentialSchemaId)
-            return@asyncCall Util.convertToRN(schemas)
+            val schema = getCore().getCredentialSchema(credentialSchemaId)
+            return@asyncCall Util.convertToRN(schema)
         }
     }
 

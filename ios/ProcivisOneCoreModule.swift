@@ -232,7 +232,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let result = try getCore().getCredentialSchema(credentialSchemaId: credentialSchemaId);
-                return serialize(credentialSchema: result)
+                return serialize(credentialSchemaDetail: result)
             }
         }   
 
