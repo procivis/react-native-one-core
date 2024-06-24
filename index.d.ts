@@ -308,9 +308,44 @@ export interface ProofListItem {
     state: ProofStateEnum;
     schema: ProofSchemaListItem;
 }
-export interface ProofSchemaImportRequest {
-    url: string;
+export interface ImportProofSchemaRequest {
     organisationId: string;
+    schema: ImportProofSchema;
+}
+export interface ImportProofSchema {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    organisationId: string;
+    expireDuration: number;
+    proofInputSchemas: ImportProofSchemaInputSchema[];
+}
+export interface ImportProofSchemaInputSchema {
+    claimSchemas: ImportProofSchemaClaimSchema[];
+    credentialSchema: ImportProofSchemaCredentialSchema;
+    validityConstraint?: number;
+}
+export interface ImportProofSchemaClaimSchema {
+    id: string;
+    required: boolean;
+    key: string;
+    dataType: string;
+    claims: ImportProofSchemaClaimSchema[];
+    array: boolean;
+}
+export interface ImportProofSchemaCredentialSchema {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    format: string;
+    revocationMethod: string;
+    walletStorageType: WalletStorageType;
+    schemaId: string;
+    schemaType: CredentialSchemaType;
+    layoutType: LayoutType;
+    layoutProperties: CredentialSchemaLayoutProperties;
 }
 export declare enum HistoryActionEnum {
     ACCEPTED = "ACCEPTED",
@@ -658,7 +693,7 @@ export interface ONECore {
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
     getProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ProofSchema>;
     deleteProofSchema(proofSchemaId: ProofSchema["id"]): Promise<void>;
-    importProofSchema(request: ProofSchemaImportRequest): Promise<string>;
+    importProofSchema(request: ImportProofSchemaRequest): Promise<string>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
     getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;
