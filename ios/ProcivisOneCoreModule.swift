@@ -310,7 +310,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let request = try deserializeProofSchemaImportRequest(request);
+                let request = try deserializeImportProofSchemaRequest(request);
                 return try getCore().importProofSchema(request: request) 
             }
         }

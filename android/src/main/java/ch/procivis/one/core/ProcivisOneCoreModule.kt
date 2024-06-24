@@ -256,7 +256,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun importProofSchema(request: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val r = Deserialize.proofSchemaImportRequest(request)
+            val r = Deserialize.importProofSchemaRequest(request)
             return@asyncCall getCore().importProofSchema(r)
         }
     }
