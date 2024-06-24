@@ -363,9 +363,48 @@ export interface ProofListItem {
   schema: ProofSchemaListItem;
 }
 
-export interface ProofSchemaImportRequest {
-  url: string;
+export interface ImportProofSchemaRequest {
   organisationId: string;
+  schema: ImportProofSchema;
+}
+
+export interface ImportProofSchema {
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  name: string;
+  organisationId: string;
+  expireDuration: number;
+  proofInputSchemas: ImportProofSchemaInputSchema[];
+}
+
+export interface ImportProofSchemaInputSchema {
+  claimSchemas: ImportProofSchemaClaimSchema[],
+  credentialSchema: ImportProofSchemaCredentialSchema,
+  validityConstraint?: number;
+}
+
+export interface ImportProofSchemaClaimSchema {
+  id: string;
+  required: boolean;
+  key: string;
+  dataType: string;
+  claims: ImportProofSchemaClaimSchema[];
+  array: boolean;
+}
+
+export interface ImportProofSchemaCredentialSchema {
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  name: string;
+  format: string;
+  revocationMethod: string;
+  walletStorageType: WalletStorageType;
+  schemaId: string;
+  schemaType: CredentialSchemaType;
+  layoutType: LayoutType;
+  layoutProperties: CredentialSchemaLayoutProperties;
 }
 
 export enum HistoryActionEnum {
@@ -831,7 +870,7 @@ export interface ONECore {
   ): Promise<void>;
 
   importProofSchema(
-    request: ProofSchemaImportRequest
+    request: ImportProofSchemaRequest
   ): Promise<string>;
 
   checkRevocation(
