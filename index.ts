@@ -740,49 +740,61 @@ export interface ProofInputSchemaRequest {
 }
 
 export interface ProofSchemaClaimRequest {
-  id: string,
-  required: boolean,
+  id: string;
+  required: boolean;
 }
 
 export interface ImportCredentialSchemaRequest {
-  organisationId: string,
-  schema: ImportCredentialSchemaRequestSchema
+  organisationId: string;
+  schema: ImportCredentialSchemaRequestSchema;
 }
 
 export interface ImportCredentialSchemaRequestSchema {
-  id: string,
-  createdDate: string,
-  lastModified: string,
-  name: string,
-  format: string,
-  revocationMethod: string,
-  organisationId: string,
-  claims: ImportCredentialSchemaClaimSchema[],
-  walletStorageType?: WalletStorageType,
-  schemaId: string,
-  schemaType: CredentialSchemaType,
-  layoutType?: LayoutType,
-  layoutProperties?: ImportCredentialSchemaLayoutProperties,
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  name: string;
+  format: string;
+  revocationMethod: string;
+  organisationId: string;
+  claims: ImportCredentialSchemaClaimSchema[];
+  walletStorageType?: WalletStorageType;
+  schemaId: string;
+  schemaType: CredentialSchemaType;
+  layoutType?: LayoutType;
+  layoutProperties?: ImportCredentialSchemaLayoutProperties;
 }
 
 export interface ImportCredentialSchemaClaimSchema {
-  id: string,
-  createdDate: string,
-  lastModified: string,
-  required: boolean,
-  key: string,
-  datatype: string,
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  required: boolean;
+  key: string;
+  datatype: string;
   claims: ImportCredentialSchemaClaimSchema[];
   array?: boolean;
 }
 
 export interface ImportCredentialSchemaLayoutProperties {
-  background?: CredentialSchemaBackgroundProperties,
-  logo?: CredentialSchemaLogoProperties,
-  primaryAttribute?: string,
-  secondaryAttribute?: string,
-  pictureAttribute?: string,
-  code?: CredentialSchemaCodeProperties
+  background?: CredentialSchemaBackgroundProperties;
+  logo?: CredentialSchemaLogoProperties;
+  primaryAttribute?: string;
+  secondaryAttribute?: string;
+  pictureAttribute?: string;
+  code?: CredentialSchemaCodeProperties;
+}
+
+export interface CreateProofRequest {
+  proofSchemaId: string;
+  verifierDidId: string;
+  exchange: string;
+  redirectUri?: string;
+  verifierKey?: string;
+}
+
+export interface ShareProofResponse {
+  url: string;
 }
 
 export interface ONECore {
@@ -848,6 +860,10 @@ export interface ONECore {
   getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
 
   deleteCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<void>;
+
+  createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
+
+  shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
 
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
 

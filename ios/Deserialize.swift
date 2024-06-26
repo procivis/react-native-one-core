@@ -372,6 +372,16 @@ func deserializeImportCredentialSchemaCodeProperties(_ request: NSDictionary) th
     )
 }
 
+func deserializeCreateProofRequest(_ request: NSDictionary) throws -> CreateProofRequestBindingDto { 
+    return CreateProofRequestBindingDto(
+        proofSchemaId: request.value(forKey: "proofSchemaId") as! String,
+        verifierDidId: request.value(forKey: "verifierDidId") as! String,
+        exchange: request.value(forKey: "exchange") as! String,
+        redirectUri: request.value(forKey: "redirectUri") as! String?,
+        verifierKey: request.value(forKey: "verifierKey") as! String?
+    )
+}
+
 extension KeyRoleBindingEnum: CaseIterable {
     public static var allCases: [KeyRoleBindingEnum] {
         return [.authentication, .assertionMethod, .keyAgreement, .capabilityInvocation, .capabilityDelegation]

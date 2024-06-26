@@ -209,14 +209,14 @@ object Deserialize {
         val schema = request.getMap("schema")!!
 
         return ImportProofSchemaRequestBindingsDto(
-            importProofSchema(schema),
-            request.getString("organisationId")!!,
+                importProofSchema(schema),
+                request.getString("organisationId")!!,
         )
     }
 
     fun importProofSchema(request: ReadableMap): ImportProofSchemaBindingDto {
         val rawProofInputSchemas = request.getArray("proofInputSchemas")!!
-        
+
         val proofInputSchemas = mutableListOf<ImportProofSchemaInputSchemaBindingDto>()
         for (i in 0 until rawProofInputSchemas.size()) {
             val rawInputSchema = rawProofInputSchemas.getMap(i)
@@ -453,6 +453,16 @@ object Deserialize {
         return CredentialSchemaCodePropertiesBindingDto(
                 request.getString("attribute")!!,
                 CredentialSchemaCodeTypeBindingDto.valueOf(request.getString("type")!!),
+        )
+    }
+
+    fun createProofRequest(request: ReadableMap): CreateProofRequestBindingDto {
+        return CreateProofRequestBindingDto(
+                proofSchemaId = request.getString("proofSchemaId")!!,
+                verifierDidId = request.getString("verifierDidId")!!,
+                exchange = request.getString("exchange")!!,
+                redirectUri = request.getString("redirectUri"),
+                verifierKey = request.getString("verifierKey"),
         )
     }
 
