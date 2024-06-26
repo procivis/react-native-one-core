@@ -514,4 +514,11 @@ func serialize(invitationResponse: HandleInvitationResponseBindingEnum) -> NSDic
     }
 }
 
+func serialize(shareProofResponse: ShareProofResponseBindingDto) -> NSDictionary {
+    return [
+        "url": shareProofResponse.url,
+    ]
+}
+
+
 
