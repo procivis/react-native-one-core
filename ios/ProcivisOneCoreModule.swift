@@ -315,6 +315,28 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
+    @objc(createProof:resolver:rejecter:)
+    func createProof(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let request = try deserializeCreateProofRequest(request);
+                return try getCore().createProof(request: request) 
+            }
+        }
+    
+    @objc(shareProof:resolver:rejecter:)
+    func shareProof(
+        proofId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try getCore().shareProof(proofId: proofId);
+                return serialize(shareProofResponse: result)
+            }
+        }
+
     @objc(getProof:resolver:rejecter:)
     func getProof(
         proofId: String,

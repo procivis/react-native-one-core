@@ -667,6 +667,16 @@ export interface ImportCredentialSchemaLayoutProperties {
     pictureAttribute?: string;
     code?: CredentialSchemaCodeProperties;
 }
+export interface CreateProofRequest {
+    proofSchemaId: string;
+    verifierDidId: string;
+    exchange: string;
+    redirectUri?: string;
+    verifierKey?: string;
+}
+export interface ShareProofResponse {
+    url: string;
+}
 export interface ONECore {
     getVersion(): Promise<Version>;
     getConfig(): Promise<Config>;
@@ -687,6 +697,8 @@ export interface ONECore {
     getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchemaDetail>;
     getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
     deleteCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<void>;
+    createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
+    shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofs(proofId: ProofListQuery): Promise<ItemList<ProofListItem>>;
     createProofSchema(request: CreateProofSchemaRequest): Promise<ProofSchema["id"]>;

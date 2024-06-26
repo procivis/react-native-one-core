@@ -204,6 +204,22 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun createProof(request: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val createProofRequest = Deserialize.createProofRequest(request)
+            return@asyncCall getCore().createProof(createProofRequest)
+        }
+    }
+
+    @ReactMethod
+    fun shareProof(proofId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val shareProof = getCore().shareProof(proofId)
+            return@asyncCall Util.convertToRN(shareProof)
+        }
+    }
+
+    @ReactMethod
     fun getProof(proofId: String, promise: Promise) {
         Util.asyncCall(promise) {
             val proof = getCore().getProof(proofId)
