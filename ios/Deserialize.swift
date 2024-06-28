@@ -109,12 +109,12 @@ func deserializeCredentialSchemaListQuery(_ query: NSDictionary) throws -> Crede
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
         organisationId: query.value(forKey: "organisationId") as! String,
-        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
-        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
-        name: query.value(forKey: "name") as! String?,
-        ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
-        exact: try opt(query.value(forKey: "exact") as! NSArray?, enumList),
-        include: try opt(query.value(forKey: "include") as! NSArray?, enumList)
+        sort: try opt(query.value(forKey: "sort") as? String, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
+        name: query.value(forKey: "name") as? String,
+        ids: try opt(query.value(forKey: "ids") as? NSArray, deserializeIds),
+        exact: try opt(query.value(forKey: "exact") as? NSArray, enumList),
+        include: try opt(query.value(forKey: "include") as? NSArray, enumList)
     )
 }
 
@@ -122,15 +122,15 @@ func deserializeCredentialListQuery(_ query: NSDictionary) throws -> CredentialL
     return CredentialListQueryBindingDto(
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
-        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
-        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
+        sort: try opt(query.value(forKey: "sort") as? String, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
         organisationId: query.value(forKey: "organisationId") as! String,
-        name: query.value(forKey: "name") as! String?,
-        exact: try opt(query.value(forKey: "exact") as! NSArray?, enumList ),
-        role: try opt(query.value(forKey: "role") as! String?, deserializeEnum),
-        ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
-        status: try opt(query.value(forKey: "status") as! NSArray?, enumList),
-        include: try opt(query.value(forKey: "include") as! NSArray?, enumList)
+        name: query.value(forKey: "name") as? String,
+        exact: try opt(query.value(forKey: "exact") as? NSArray, enumList ),
+        role: try opt(query.value(forKey: "role") as? String, deserializeEnum),
+        ids: try opt(query.value(forKey: "ids") as? NSArray, deserializeIds),
+        status: try opt(query.value(forKey: "status") as? NSArray, enumList),
+        include: try opt(query.value(forKey: "include") as? NSArray, enumList)
     )
 }
 
@@ -138,16 +138,16 @@ func deserializeDidListQuery(_ query: NSDictionary) throws -> DidListQueryBindin
     return DidListQueryBindingDto(
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
-        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
-        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
+        sort: try opt(query.value(forKey: "sort") as? String, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
         organisationId: query.value(forKey: "organisationId") as! String,
-        name: query.value(forKey: "name") as! String?,
-        did: query.value(forKey: "did") as! String?,
-        type: try opt(query.value(forKey: "type") as! String?, deserializeEnum),
-        deactivated: query.value(forKey: "deactivated") as! Bool?,
-        exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns) } ),
-        keyAlgorithms: try opt(query.value(forKey: "keyAlgorithms") as! NSArray?, deserializeIds),
-        keyRoles: try opt(query.value(forKey: "keyRoles") as! NSArray?, { roles in try enumList(roles) })
+        name: query.value(forKey: "name") as? String,
+        did: query.value(forKey: "did") as? String,
+        type: try opt(query.value(forKey: "type") as? String, deserializeEnum),
+        deactivated: query.value(forKey: "deactivated") as? Bool,
+        exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } ),
+        keyAlgorithms: try opt(query.value(forKey: "keyAlgorithms") as? NSArray, deserializeIds),
+        keyRoles: try opt(query.value(forKey: "keyRoles") as? NSArray, { roles in try enumList(roles) })
     )
 }
 
@@ -156,19 +156,19 @@ func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQue
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
         organisationId: query.value(forKey: "organisationId") as! String,
-        entityId: query.value(forKey: "entityId") as! String?,
-        action: try opt(query.value(forKey: "action") as! String?, deserializeEnum),
-        entityTypes: try opt(query.value(forKey: "entityTypes") as! NSArray?, enumList),
-        createdDateFrom: query.value(forKey: "createdDateFrom") as! String?,
-        createdDateTo: query.value(forKey: "createdDateTo") as! String?,
-        didId: query.value(forKey: "didId") as! String?,
-        credentialId: query.value(forKey: "credentialId") as! String?,
-        credentialSchemaId: query.value(forKey: "credentialSchemaId") as! String?,
+        entityId: query.value(forKey: "entityId") as? String,
+        action: try opt(query.value(forKey: "action") as? String, deserializeEnum),
+        entityTypes: try opt(query.value(forKey: "entityTypes") as? NSArray, enumList),
+        createdDateFrom: query.value(forKey: "createdDateFrom") as? String,
+        createdDateTo: query.value(forKey: "createdDateTo") as? String,
+        didId: query.value(forKey: "didId") as? String,
+        credentialId: query.value(forKey: "credentialId") as? String,
+        credentialSchemaId: query.value(forKey: "credentialSchemaId") as? String,
         search: try deserializeHistorySearch(
-            text: query.value(forKey: "searchText") as! String?,
-            type: query.value(forKey: "searchType") as! String?
+            text: query.value(forKey: "searchText") as? String,
+            type: query.value(forKey: "searchType") as? String
         ),
-        proofSchemaId: query.value(forKey: "proofSchemaId") as! String?
+        proofSchemaId: query.value(forKey: "proofSchemaId") as? String
     )
 }
 
@@ -176,12 +176,12 @@ func deserializeProofSchemaListQuery(_ query: NSDictionary) throws -> ListProofS
     return ListProofSchemasFiltersBindingDto(
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
-        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
-        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
+        sort: try opt(query.value(forKey: "sort") as? String, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
         organisationId: query.value(forKey: "organisationId") as! String,
-        name: query.value(forKey: "name") as! String?,
-        exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns) } ),
-        ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds)
+        name: query.value(forKey: "name") as? String,
+        exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } ),
+        ids: try opt(query.value(forKey: "ids") as? NSArray, deserializeIds)
     )
 }
 
@@ -190,11 +190,11 @@ func deserializeProofListQuery(_ query: NSDictionary) throws -> ProofListQueryBi
         page: query.value(forKey: "page") as! UInt32,
         pageSize: query.value(forKey: "pageSize") as! UInt32,
         organisationId: query.value(forKey: "organisationId") as! String,
-        sort: try opt(query.value(forKey: "sort") as! String?, deserializeEnum),
-        sortDirection: try opt(query.value(forKey: "sortDirection") as! String?, deserializeEnum),
-        name: query.value(forKey: "name") as! String?,
-        ids: try opt(query.value(forKey: "ids") as! NSArray?, deserializeIds),
-        exact: try opt(query.value(forKey: "exact") as! NSArray?, { columns in try enumList(columns) } )
+        sort: try opt(query.value(forKey: "sort") as? String, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
+        name: query.value(forKey: "name") as? String,
+        ids: try opt(query.value(forKey: "ids") as? NSArray, deserializeIds),
+        exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } )
     )
 }
 
@@ -235,7 +235,7 @@ func deserializeProofInputSchemaRequest(_ request: NSDictionary) -> ProofInputSc
 
   return ProofInputSchemaRequestDto(
     credentialSchemaId: request.value(forKey: "credentialSchemaId") as! String,
-    validityConstraint: request.value(forKey: "validityConstraint") as! Int64?,
+    validityConstraint: request.value(forKey: "validityConstraint") as? Int64,
     claimSchemas: claimSchemas.map { deserializeProofClaimSchemaRequest($0 as! NSDictionary) }
   )
 }
@@ -246,7 +246,7 @@ func deserializeImportProofSchemaInputSchema(_ inputSchema: NSDictionary) throws
   return ImportProofSchemaInputSchemaBindingDto(
     claimSchemas: claimSchemas.map { deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },
     credentialSchema: try deserializeImportProofSchemaCredentialSchema(inputSchema.value(forKey: "credentialSchema") as! NSDictionary),
-    validityConstraint: inputSchema.value(forKey: "validityConstraint") as! Int64?
+    validityConstraint: inputSchema.value(forKey: "validityConstraint") as? Int64
   )
 }
 
@@ -322,7 +322,7 @@ func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) thro
         lastModified: request.value(forKey: "lastModified") as! String,
         required: request.value(forKey: "required") as! Bool,
         key: request.value(forKey: "key") as! String,
-        array: request.value(forKey: "array") as! Bool?,
+        array: request.value(forKey: "array") as? Bool,
         datatype: request.value(forKey: "datatype") as! String,
         claims: try claims.map { try deserializeImportCredentialSchemaRequestClaim($0 as! NSDictionary) }
     )
@@ -332,9 +332,9 @@ func deserializeImportCredentialSchemaRequestLayoutProperties(_ request: NSDicti
   return ImportCredentialSchemaLayoutPropertiesBindingDto(
         background: try opt(request.value(forKey: "background") as! NSDictionary?, deserializeImportCredentialSchemaBackgroundProperties),
         logo: try opt(request.value(forKey: "logo") as! NSDictionary?, deserializeImportCredentialSchemaLogoProperties), 
-        primaryAttribute: request.value(forKey: "primaryAttribute") as! String?,
-        secondaryAttribute: request.value(forKey: "secondaryAttribute") as! String?,
-        pictureAttribute: request.value(forKey: "pictureAttribute") as! String?,
+        primaryAttribute: request.value(forKey: "primaryAttribute") as? String,
+        secondaryAttribute: request.value(forKey: "secondaryAttribute") as? String,
+        pictureAttribute: request.value(forKey: "pictureAttribute") as? String,
         code: try opt(request.value(forKey: "code") as! NSDictionary?, deserializeImportCredentialSchemaCodeProperties)
   )
 }
@@ -343,25 +343,25 @@ func deserializeCredentialSchemaRequestLayoutProperties(_ request: NSDictionary)
   return CredentialSchemaLayoutPropertiesBindingDto(
         background: try opt(request.value(forKey: "background") as! NSDictionary?, deserializeImportCredentialSchemaBackgroundProperties),
         logo: try opt(request.value(forKey: "logo") as! NSDictionary?, deserializeImportCredentialSchemaLogoProperties), 
-        primaryAttribute: request.value(forKey: "primaryAttribute") as! String?,
-        secondaryAttribute: request.value(forKey: "secondaryAttribute") as! String?,
-        pictureAttribute: request.value(forKey: "pictureAttribute") as! String?,
+        primaryAttribute: request.value(forKey: "primaryAttribute") as? String,
+        secondaryAttribute: request.value(forKey: "secondaryAttribute") as? String,
+        pictureAttribute: request.value(forKey: "pictureAttribute") as? String,
         code: try opt(request.value(forKey: "code") as! NSDictionary?, deserializeImportCredentialSchemaCodeProperties)
   )
 }
 
 func deserializeImportCredentialSchemaBackgroundProperties(_ request: NSDictionary) -> CredentialSchemaBackgroundPropertiesBindingDto {
     return CredentialSchemaBackgroundPropertiesBindingDto(
-        color: request.value(forKey: "color") as! String?,
-        image: request.value(forKey: "image") as! String?
+        color: request.value(forKey: "color") as? String,
+        image: request.value(forKey: "image") as? String
     )
 }
 
 func deserializeImportCredentialSchemaLogoProperties(_ request: NSDictionary) -> CredentialSchemaLogoPropertiesBindingDto {
     return CredentialSchemaLogoPropertiesBindingDto(
-        fontColor: request.value(forKey: "fontColor") as! String?, 
-        backgroundColor: request.value(forKey: "backgroundColor") as! String?,
-        image: request.value(forKey: "image") as! String?
+        fontColor: request.value(forKey: "fontColor") as? String, 
+        backgroundColor: request.value(forKey: "backgroundColor") as? String,
+        image: request.value(forKey: "image") as? String
     )
 }
 
@@ -377,8 +377,8 @@ func deserializeCreateProofRequest(_ request: NSDictionary) throws -> CreateProo
         proofSchemaId: request.value(forKey: "proofSchemaId") as! String,
         verifierDidId: request.value(forKey: "verifierDidId") as! String,
         exchange: request.value(forKey: "exchange") as! String,
-        redirectUri: request.value(forKey: "redirectUri") as! String?,
-        verifierKey: request.value(forKey: "verifierKey") as! String?
+        redirectUri: request.value(forKey: "redirectUri") as? String,
+        verifierKey: request.value(forKey: "verifierKey") as? String
     )
 }
 
