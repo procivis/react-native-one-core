@@ -52,6 +52,7 @@ func serialize(config: ConfigBindingDto) -> NSDictionary {
     return [
         "format": config.format,
         "exchange": config.exchange,
+        "transport": config.transport,
         "revocation": config.revocation,
         "did": config.did,
         "datatype": config.datatype,
@@ -249,6 +250,7 @@ func serialize(proofListItem: ProofListItemBindingDto) -> NSDictionary {
         "lastModified": proofListItem.lastModified,
         "issuanceDate": proofListItem.issuanceDate,
         "exchange": proofListItem.exchange,
+        "transport": proofListItem.transport,
         "state": serializeEnumValue(value: proofListItem.state),
     ]
     

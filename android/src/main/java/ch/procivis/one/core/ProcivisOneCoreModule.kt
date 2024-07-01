@@ -21,11 +21,24 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun initialize(promise: Promise) {
+    fun initializeHolder(promise: Promise) {
         Util.asyncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
             oneCore =
-                    uniffi.one_core.initializeCore(
+                    uniffi.one_core.initializeHolderCore(
+                            dataDirPath,
+                            AndroidKeyStoreKeyStorage(this.reactApplicationContext)
+                    )
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun initializeVerifier(promise: Promise) {
+        Util.asyncCall(promise) {
+            val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
+            oneCore =
+                    uniffi.one_core.initializeVerifierCore(
                             dataDirPath,
                             AndroidKeyStoreKeyStorage(this.reactApplicationContext)
                     )

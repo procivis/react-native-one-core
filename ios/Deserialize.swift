@@ -194,6 +194,8 @@ func deserializeProofListQuery(_ query: NSDictionary) throws -> ProofListQueryBi
         sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
         name: query.value(forKey: "name") as? String,
         ids: try opt(query.value(forKey: "ids") as? NSArray, deserializeIds),
+        proofStates: try opt(query.value(forKey: "proofStates") as? NSArray, { columns in try enumList(columns) } ),
+        proofSchemaIds: query.value(forKey: "proofSchemaIds") as? [String],
         exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } )
     )
 }
@@ -414,7 +416,7 @@ extension SortableCredentialColumnBindingEnum: CaseIterable {
 
 extension CredentialListIncludeEntityTypeBindingEnum: CaseIterable {
     public static var allCases: [CredentialListIncludeEntityTypeBindingEnum] {
-        return [.layoutProperties]
+        return [.layoutProperties, .credential]
     }
 }
 
@@ -517,6 +519,19 @@ extension LayoutTypeBindingEnum: CaseIterable {
 extension WalletStorageTypeBindingEnum: CaseIterable {
     public static var allCases: [WalletStorageTypeBindingEnum] {
         return [.hardware, .software]
+    }
+}
+
+extension ProofStateBindingEnum: CaseIterable {
+    public static var allCases: [ProofStateBindingEnum] {
+        return [
+            .created,
+            .pending,
+            .requested,
+            .accepted,
+            .rejected,
+            .error
+        ]
     }
 }
 
