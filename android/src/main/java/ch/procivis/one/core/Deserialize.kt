@@ -199,8 +199,12 @@ object Deserialize {
                 opt(query.getString("sortDirection"), SortDirection::valueOf),
                 query.getString("name"),
                 opt(query.getArray("ids"), Deserialize::ids),
-                opt(query.getArray("exact")) { columns ->
-                    enumList(columns, ProofListQueryExactColumnBindingEnum::valueOf)
+                opt(query.getArray("proofStates")) { enumList(it, ProofStateBindingEnum::valueOf) },
+                opt(query.getArray("proofSchemaIds")) { ids ->
+                    (0 until ids.size()).map { i -> ids.getString(i) }
+                },
+                opt(query.getArray("exact")) {
+                    enumList(it, ProofListQueryExactColumnBindingEnum::valueOf)
                 },
         )
     }

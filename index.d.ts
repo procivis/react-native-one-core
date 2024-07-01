@@ -157,6 +157,7 @@ export interface ProofDetail {
     proofSchema?: ProofSchemaListItem;
     verifierDid?: string;
     exchange: string;
+    transport: string;
     redirectUri?: string;
 }
 export interface ProofSchemaListItem {
@@ -224,7 +225,8 @@ export declare enum SortableCredentialColumnEnum {
     STATE = "STATE"
 }
 export declare enum CredentialListIncludeEntityType {
-    LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES"
+    LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES",
+    CREDENTIAL = "CREDENTIAL"
 }
 export interface CredentialListQuery extends ListQuery {
     sort?: SortableCredentialColumnEnum;
@@ -293,8 +295,10 @@ export interface ProofListQuery extends ListQuery {
     sort?: SortableProofColumnEnum;
     sortDirection?: SortDirection;
     name?: string;
-    exact?: ExactProofFilterColumnEnum[];
     ids?: string[];
+    proofStates?: ProofStateEnum[];
+    proofSchemaIds?: string[];
+    exact?: ExactProofFilterColumnEnum[];
 }
 export interface ProofListItem {
     id: string;
@@ -305,6 +309,7 @@ export interface ProofListItem {
     completedDate?: string;
     verifierDid?: string;
     exchange: string;
+    transport: string;
     state: ProofStateEnum;
     schema: ProofSchemaListItem;
 }
@@ -572,6 +577,7 @@ export type DataTypeParams = {
 export interface Config {
     format: ConfigEntities<FormatCapabilities>;
     exchange: ConfigEntities;
+    transport: ConfigEntities;
     revocation: ConfigEntities;
     did: ConfigEntities<DidCapabilities>;
     datatype: ConfigEntities<undefined, DataTypeParams>;
@@ -765,9 +771,15 @@ export declare class OneError extends Error {
     });
 }
 /**
- * Initialize the ONE Core
+ * Initialize ONE Core for Holder
  * @note Beware that only one instance can be initialized at a time, repeated calls will fail
  * @returns ONE Core instance
  */
-export declare function initializeCore(): Promise<ONECore>;
+export declare function initializeHolderCore(): Promise<ONECore>;
+/**
+ * Initialize ONE Core for Verifier
+ * @note Beware that only one instance can be initialized at a time, repeated calls will fail
+ * @returns ONE Core instance
+ */
+export declare function initializeVerifierCore(): Promise<ONECore>;
 export {};

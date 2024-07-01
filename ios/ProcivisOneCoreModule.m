@@ -14,7 +14,10 @@
     return NO;
 }
 
-RCT_EXTERN_METHOD(initialize:(RCTPromiseResolveBlock)resolve
+RCT_EXTERN_METHOD(initializeHolder:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(initializeVerifier:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getVersion:(RCTPromiseResolveBlock)resolve

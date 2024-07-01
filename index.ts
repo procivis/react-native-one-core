@@ -186,6 +186,7 @@ export interface ProofDetail {
   proofSchema?: ProofSchemaListItem;
   verifierDid?: string;
   exchange: string;
+  transport: string;
   redirectUri?: string;
 }
 
@@ -267,6 +268,7 @@ export enum SortableCredentialColumnEnum {
 
 export enum CredentialListIncludeEntityType {
   LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES",
+  CREDENTIAL = "CREDENTIAL",
 }
 
 export interface CredentialListQuery extends ListQuery {
@@ -346,8 +348,10 @@ export interface ProofListQuery extends ListQuery {
   sort?: SortableProofColumnEnum;
   sortDirection?: SortDirection;
   name?: string;
-  exact?: ExactProofFilterColumnEnum[];
   ids?: string[];
+  proofStates?: ProofStateEnum[];
+  proofSchemaIds?: string[];
+  exact?: ExactProofFilterColumnEnum[];
 }
 
 export interface ProofListItem {
@@ -359,6 +363,7 @@ export interface ProofListItem {
   completedDate?: string;
   verifierDid?: string;
   exchange: string;
+  transport: string;
   state: ProofStateEnum;
   schema: ProofSchemaListItem;
 }
@@ -677,6 +682,7 @@ export type DataTypeParams =
 export interface Config {
   format: ConfigEntities<FormatCapabilities>;
   exchange: ConfigEntities;
+  transport: ConfigEntities;
   revocation: ConfigEntities;
   did: ConfigEntities<DidCapabilities>;
   datatype: ConfigEntities<undefined, DataTypeParams>;
@@ -1028,12 +1034,22 @@ ONE.getConfig = () =>
   );
 
 /**
- * Initialize the ONE Core
+ * Initialize ONE Core for Holder
  * @note Beware that only one instance can be initialized at a time, repeated calls will fail
  * @returns ONE Core instance
  */
-export async function initializeCore(): Promise<ONECore> {
-  await wrapFn(ONE.initialize, "initializeCore")();
+export async function initializeHolderCore(): Promise<ONECore> {
+  await wrapFn(ONE.initializeHolder, "initializeHolderCore")();
+  return wrapObj(ONE);
+}
+
+/**
+ * Initialize ONE Core for Verifier
+ * @note Beware that only one instance can be initialized at a time, repeated calls will fail
+ * @returns ONE Core instance
+ */
+export async function initializeVerifierCore(): Promise<ONECore> {
+  await wrapFn(ONE.initializeVerifier, "initializeVerifierCore")();
   return wrapObj(ONE);
 }
 
