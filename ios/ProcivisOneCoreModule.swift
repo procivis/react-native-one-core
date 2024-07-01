@@ -11,8 +11,8 @@ class ProcivisOneCoreModule: NSObject {
     private static let TAG = "ProcivisOneCoreModule";
     private var core: OneCoreBindingProtocol? = nil;
     
-    @objc(initialize:rejecter:)
-    func initialize(
+    @objc(initializeHolder:rejecter:)
+    func initializeHolder(
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
@@ -27,11 +27,32 @@ class ProcivisOneCoreModule: NSObject {
                     throw BindingError.Unknown(message: "core already initialized")
                 }
                 
-                core = try initializeCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage());
+                core = try initializeHolderCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage());
                 return nil as NSDictionary?;
             }
         }
-    
+
+    @objc(initializeVerifier:rejecter:)
+    func initializeVerifier(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                guard let dataDirPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else {
+                    throw BindingError.Unknown(message: "invalid DataDir")
+                }
+                
+                // create folder if not exists
+                try FileManager.default.createDirectory(atPath: dataDirPath, withIntermediateDirectories: true)
+                
+                if (core != nil) {
+                    throw BindingError.Unknown(message: "core already initialized")
+                }
+                
+                core = try initializeVerifierCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage());
+                return nil as NSDictionary?;
+            }
+        }
+
     private func getCore() throws -> OneCoreBindingProtocol {
         guard let result = core else {
             throw BindingError.Uninitialized(message: "core not initialized")
