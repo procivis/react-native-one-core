@@ -82,6 +82,7 @@ export var SortableCredentialColumnEnum;
 export var CredentialListIncludeEntityType;
 (function (CredentialListIncludeEntityType) {
     CredentialListIncludeEntityType["LAYOUT_PROPERTIES"] = "LAYOUT_PROPERTIES";
+    CredentialListIncludeEntityType["CREDENTIAL"] = "CREDENTIAL";
 })(CredentialListIncludeEntityType || (CredentialListIncludeEntityType = {}));
 export var SortableDidColumnEnum;
 (function (SortableDidColumnEnum) {
@@ -252,12 +253,21 @@ function wrapObj(obj) {
 const originalGetConfig = ONE.getConfig;
 ONE.getConfig = () => originalGetConfig().then((config) => objectMap(config, (entities) => objectMap(entities, (json) => JSON.parse(json))));
 /**
- * Initialize the ONE Core
+ * Initialize ONE Core for Holder
  * @note Beware that only one instance can be initialized at a time, repeated calls will fail
  * @returns ONE Core instance
  */
-export async function initializeCore() {
-    await wrapFn(ONE.initialize, "initializeCore")();
+export async function initializeHolderCore() {
+    await wrapFn(ONE.initializeHolder, "initializeHolderCore")();
+    return wrapObj(ONE);
+}
+/**
+ * Initialize ONE Core for Verifier
+ * @note Beware that only one instance can be initialized at a time, repeated calls will fail
+ * @returns ONE Core instance
+ */
+export async function initializeVerifierCore() {
+    await wrapFn(ONE.initializeVerifier, "initializeVerifierCore")();
     return wrapObj(ONE);
 }
 // UTILS
