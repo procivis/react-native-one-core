@@ -3,7 +3,6 @@ package ch.procivis.one.core
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import uniffi.one_core.*
 
 object Serialize {
     object Obj {
@@ -68,6 +67,7 @@ object Serialize {
                 when (val value = it) {
                     is ProofRequestClaimValueBindingDto.Value ->
                         result.putString("value", value.value)
+
                     is ProofRequestClaimValueBindingDto.Claims ->
                         result.putArray("value", Util.convertToRN(value.value) as ReadableArray)
                 }
