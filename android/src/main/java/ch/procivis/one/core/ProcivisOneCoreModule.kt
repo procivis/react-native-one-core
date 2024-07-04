@@ -6,12 +6,9 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import uniffi.one_core.BindingException
-import uniffi.one_core.OneCoreBindingInterface
-import uniffi.one_core.PresentationSubmitCredentialRequestBindingDto
 
 class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
-        ReactContextBaseJavaModule(reactContext) {
+    ReactContextBaseJavaModule(reactContext) {
     override fun getName() = "ProcivisOneCoreModule"
 
     private var oneCore: OneCoreBindingInterface? = null
@@ -25,10 +22,12 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         Util.asyncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
             oneCore =
-                    uniffi.one_core.initializeHolderCore(
-                            dataDirPath,
-                            AndroidKeyStoreKeyStorage(this.reactApplicationContext)
-                    )
+                initializeHolderCore(
+                    dataDirPath,
+                    AndroidKeyStoreKeyStorage(this.reactApplicationContext),
+                    AndroidBLECentral(this.reactApplicationContext),
+                    AndroidBLEPeripheral(this.reactApplicationContext)
+                )
             return@asyncCall null
         }
     }
@@ -38,10 +37,12 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         Util.asyncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
             oneCore =
-                    uniffi.one_core.initializeVerifierCore(
-                            dataDirPath,
-                            AndroidKeyStoreKeyStorage(this.reactApplicationContext)
-                    )
+                initializeVerifierCore(
+                    dataDirPath,
+                    AndroidKeyStoreKeyStorage(this.reactApplicationContext),
+                    AndroidBLECentral(this.reactApplicationContext),
+                    AndroidBLEPeripheral(this.reactApplicationContext)
+                )
             return@asyncCall null
         }
     }
@@ -102,10 +103,10 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun holderAcceptCredential(
-            interactionId: String,
-            didId: String,
-            keyId: String?,
-            promise: Promise
+        interactionId: String,
+        didId: String,
+        keyId: String?,
+        promise: Promise
     ) {
         Util.asyncCall(promise) {
             getCore().holderAcceptCredential(interactionId, didId, keyId)
@@ -139,19 +140,19 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun holderSubmitProof(
-            interactionId: String,
-            credentials: ReadableMap,
-            didId: String,
-            keyId: String?,
-            promise: Promise
+        interactionId: String,
+        credentials: ReadableMap,
+        didId: String,
+        keyId: String?,
+        promise: Promise
     ) {
         Util.asyncCall(promise) {
             val submitCredentials =
-                    mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
+                mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
             for (entry in credentials.entryIterator) {
                 val credential = entry.value as ReadableMap
                 submitCredentials[entry.key] =
-                        Deserialize.presentationSubmitCredentialRequest(credential)
+                    Deserialize.presentationSubmitCredentialRequest(credential)
             }
             getCore().holderSubmitProof(interactionId, submitCredentials, didId, keyId)
             return@asyncCall null
