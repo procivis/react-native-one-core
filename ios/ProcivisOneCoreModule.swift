@@ -27,7 +27,7 @@ class ProcivisOneCoreModule: NSObject {
                     throw BindingError.Unknown(message: "core already initialized")
                 }
                 
-                core = try initializeHolderCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage());
+                core = try initializeHolderCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage(), bleCentral: nil, blePeripheral: nil);
                 return nil as NSDictionary?;
             }
         }
@@ -48,7 +48,7 @@ class ProcivisOneCoreModule: NSObject {
                     throw BindingError.Unknown(message: "core already initialized")
                 }
                 
-                core = try initializeVerifierCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage());
+                core = try initializeVerifierCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage(), bleCentral: nil, blePeripheral: nil);
                 return nil as NSDictionary?;
             }
         }
