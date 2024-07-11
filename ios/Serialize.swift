@@ -106,7 +106,7 @@ func serialize(credentialSchemaDetail: CredentialSchemaDetailBindingDto) -> NSDi
     result.addOpt("schemaType", opt(credentialSchemaDetail.schemaType, {type in serialize(credentialSchemaType: type)}))
     result.addOpt("layoutType", opt(credentialSchemaDetail.layoutType, serializeEnumValue))
     result.addOpt("layoutProperties", opt(credentialSchemaDetail.layoutProperties, {properties in serialize(layoutProperties: properties)}))
-
+    
     return result as NSDictionary
 }
 
@@ -121,9 +121,9 @@ func serialize(claimSchema: CredentialClaimSchemaBindingDto) -> NSDictionary {
         "datatype": claimSchema.datatype,
         "claims": claimSchema.claims.map { serialize(claimSchema: $0) }
     ]
-
-    return result as NSDictionary 
-} 
+    
+    return result as NSDictionary
+}
 
 func serialize(layoutProperties: CredentialSchemaLayoutPropertiesBindingDto) -> NSDictionary {
     var result: [String: Any] = [:]
@@ -169,7 +169,13 @@ func serialize(claim: ClaimBindingDto) -> NSDictionary {
 
 func serialize(claimValue: ClaimValueBindingDto) -> Any {
     switch (claimValue) {
-    case let .value(value):
+    case let .boolean(value):
+        return value;
+    case let .float(value):
+        return value;
+    case let .integer(value):
+        return NSNumber(value: value);
+    case let .string(value):
         return value;
     case .nested(value: let values):
         return values.map { serialize(claim: $0) }
@@ -313,7 +319,7 @@ func serialize(proofSchema: GetProofSchemaBindingDto) -> NSDictionary {
 
 func serialize(proofInputSchema: ProofInputSchemaBindingDto) -> NSDictionary {
     var result: [String: Any] = [
-        "claimSchemas": proofInputSchema.claimSchemas.map { serialize(proofClaimSchema: $0) }, 
+        "claimSchemas": proofInputSchema.claimSchemas.map { serialize(proofClaimSchema: $0) },
         "credentialSchema": serialize(credentialSchema: proofInputSchema.credentialSchema),
     ]
     result.addOpt("validityConstraint", proofInputSchema.validityConstraint)
@@ -356,7 +362,7 @@ func serialize(proofClaimSchema: ProofClaimSchemaBindingDto) -> NSDictionary {
         "key": proofClaimSchema.key,
         "dataType": proofClaimSchema.dataType,
         "claims": proofClaimSchema.claims.map { serialize(proofClaimSchema: $0)},
-        "array": proofClaimSchema.array, 
+        "array": proofClaimSchema.array,
     ]
 }
 

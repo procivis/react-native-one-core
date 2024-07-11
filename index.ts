@@ -71,7 +71,7 @@ export interface CredentialSchemaDetail {
   name: string;
   format: string;
   revocationMethod: string;
-  claims: ClaimSchema[],
+  claims: ClaimSchema[];
   walletStorageType?: WalletStorageType;
   schemaId: string;
   schemaType: CredentialSchemaType;
@@ -123,15 +123,22 @@ export enum CredentialSchemaCodeType {
 
 export type ClaimValue =
   | {
-    dataType:
-    | DataTypeEnum.String
-    | DataTypeEnum.Number
-    | DataTypeEnum.Date
-    | DataTypeEnum.File
-    | string;
-    value: string;
-  }
-  | { dataType: DataTypeEnum.Object; value: Claim[] };
+      dataType: DataTypeEnum.String | DataTypeEnum.Date | DataTypeEnum.File;
+      value: string;
+    }
+  | {
+      dataType: DataTypeEnum.Number;
+      value: number;
+    }
+  | {
+      dataType: DataTypeEnum.Boolean;
+      value: boolean;
+    }
+  | { dataType: DataTypeEnum.Object; value: Claim[] }
+  | {
+      dataType: string;
+      value: string | number | boolean;
+    };
 
 export type Claim = ClaimValue & {
   id: string;
@@ -337,7 +344,7 @@ export enum SortableProofColumnEnum {
   SCHEMA_NAME = "SCHEMA_NAME",
   VERIFIER_DID = "VERIFIER_DID",
   CREATED_DATE = "CREATED_DATE",
-  STATE = "STATE"
+  STATE = "STATE",
 }
 
 export enum ExactProofFilterColumnEnum {
@@ -384,8 +391,8 @@ export interface ImportProofSchema {
 }
 
 export interface ImportProofSchemaInputSchema {
-  claimSchemas: ImportProofSchemaClaimSchema[],
-  credentialSchema: ImportProofSchemaCredentialSchema,
+  claimSchemas: ImportProofSchemaClaimSchema[];
+  credentialSchema: ImportProofSchemaCredentialSchema;
   validityConstraint?: number;
 }
 
@@ -627,6 +634,7 @@ export enum DataTypeEnum {
   Number = "NUMBER",
   Date = "DATE",
   File = "FILE",
+  Boolean = "BOOLEAN",
   Object = "OBJECT",
 }
 
@@ -659,25 +667,25 @@ export interface FileDataTypeParams {
 
 export type DataTypeParams =
   | {
-    type: DataTypeEnum.String;
-    params?: StringDataTypeParams;
-  }
+      type: DataTypeEnum.String;
+      params?: StringDataTypeParams;
+    }
   | {
-    type: DataTypeEnum.Number;
-    params?: NumberDataTypeParams;
-  }
+      type: DataTypeEnum.Number;
+      params?: NumberDataTypeParams;
+    }
   | {
-    type: DataTypeEnum.Date;
-    params?: DateDataTypeParams;
-  }
+      type: DataTypeEnum.Date;
+      params?: DateDataTypeParams;
+    }
   | {
-    type: DataTypeEnum.File;
-    params?: FileDataTypeParams;
-  }
+      type: DataTypeEnum.File;
+      params?: FileDataTypeParams;
+    }
   | {
-    type: DataTypeEnum.Object;
-    params?: undefined;
-  };
+      type: DataTypeEnum.Object;
+      params?: undefined;
+    };
 
 export interface Config {
   format: ConfigEntities<FormatCapabilities>;
@@ -859,13 +867,21 @@ export interface ONECore {
 
   deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
 
-  importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<CredentialSchema["id"]>;
+  importCredentialSchema(
+    request: ImportCredentialSchemaRequest
+  ): Promise<CredentialSchema["id"]>;
 
-  getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchemaDetail>;
+  getCredentialSchema(
+    credentialSchemaId: CredentialSchema["id"]
+  ): Promise<CredentialSchemaDetail>;
 
-  getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
+  getCredentialSchemas(
+    query: CredentialSchemaListQuery
+  ): Promise<ItemList<CredentialSchema>>;
 
-  deleteCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<void>;
+  deleteCredentialSchema(
+    credentialSchemaId: CredentialSchema["id"]
+  ): Promise<void>;
 
   createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
 
@@ -883,17 +899,11 @@ export interface ONECore {
     query: ProofSchemaListQuery
   ): Promise<ItemList<ProofSchemaListItem>>;
 
-  getProofSchema(
-    proofSchemaId: ProofSchema["id"]
-  ): Promise<ProofSchema>;
+  getProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ProofSchema>;
 
-  deleteProofSchema(
-    proofSchemaId: ProofSchema["id"]
-  ): Promise<void>;
+  deleteProofSchema(proofSchemaId: ProofSchema["id"]): Promise<void>;
 
-  importProofSchema(
-    request: ImportProofSchemaRequest
-  ): Promise<string>;
+  importProofSchema(request: ImportProofSchemaRequest): Promise<string>;
 
   checkRevocation(
     credentialIds: Array<CredentialListItem["id"]>
