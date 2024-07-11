@@ -192,6 +192,7 @@ export var DataTypeEnum;
     DataTypeEnum["Number"] = "NUMBER";
     DataTypeEnum["Date"] = "DATE";
     DataTypeEnum["File"] = "FILE";
+    DataTypeEnum["Boolean"] = "BOOLEAN";
     DataTypeEnum["Object"] = "OBJECT";
 })(DataTypeEnum || (DataTypeEnum = {}));
 // Function call arguments/Error transformation

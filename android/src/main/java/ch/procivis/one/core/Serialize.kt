@@ -49,9 +49,10 @@ object Serialize {
             result.putString("dataType", c.dataType)
 
             when (val value = c.value) {
-                is ClaimValueBindingDto.Value ->
-                    result.putString("value", value.value)
-
+                is ClaimValueBindingDto.Boolean -> result.putBoolean("value", value.value)
+                is ClaimValueBindingDto.Float -> result.putDouble("value", value.value)
+                is ClaimValueBindingDto.Integer -> result.putInt("value", value.value.toInt())
+                is ClaimValueBindingDto.String -> result.putString("value", value.value)
                 is ClaimValueBindingDto.Nested ->
                     result.putArray("value", Util.convertToRN(value.value) as ReadableArray)
             }
