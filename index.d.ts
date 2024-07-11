@@ -104,11 +104,20 @@ export declare enum CredentialSchemaCodeType {
     QR_CODE = "QR_CODE"
 }
 export type ClaimValue = {
-    dataType: DataTypeEnum.String | DataTypeEnum.Number | DataTypeEnum.Date | DataTypeEnum.File | string;
+    dataType: DataTypeEnum.String | DataTypeEnum.Date | DataTypeEnum.File;
     value: string;
+} | {
+    dataType: DataTypeEnum.Number;
+    value: number;
+} | {
+    dataType: DataTypeEnum.Boolean;
+    value: boolean;
 } | {
     dataType: DataTypeEnum.Object;
     value: Claim[];
+} | {
+    dataType: string;
+    value: string | number | boolean;
 };
 export type Claim = ClaimValue & {
     id: string;
@@ -534,6 +543,7 @@ export declare enum DataTypeEnum {
     Number = "NUMBER",
     Date = "DATE",
     File = "FILE",
+    Boolean = "BOOLEAN",
     Object = "OBJECT"
 }
 type DataTypeError = string | Record<string, string>;
