@@ -891,6 +891,8 @@ export interface ONECore {
 
   getProofs(proofId: ProofListQuery): Promise<ItemList<ProofListItem>>;
 
+  retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
+
   createProofSchema(
     request: CreateProofSchemaRequest
   ): Promise<ProofSchema["id"]>;
