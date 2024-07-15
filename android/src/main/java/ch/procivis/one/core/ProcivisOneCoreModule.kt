@@ -251,6 +251,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun retractProof(proofId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            return@asyncCall getCore().retractProof(proofId)
+        }
+    }
+
+    @ReactMethod
     fun createProofSchema(request: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
             val r = Deserialize.createProofSchemaRequest(request)

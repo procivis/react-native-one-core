@@ -717,6 +717,7 @@ export interface ONECore {
     shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofs(proofId: ProofListQuery): Promise<ItemList<ProofListItem>>;
+    retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
     createProofSchema(request: CreateProofSchemaRequest): Promise<ProofSchema["id"]>;
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
     getProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ProofSchema>;
