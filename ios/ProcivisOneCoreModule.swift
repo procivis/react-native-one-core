@@ -380,7 +380,17 @@ class ProcivisOneCoreModule: NSObject {
                 return serialize(proofList: result)
             }
         }
-    
+
+    @objc(retractProof:resolver:rejecter:)
+    func retractProof(
+        proofId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                return try getCore().retractProof(proofId: proofId)
+            }
+        }
+
     @objc(checkRevocation:resolver:rejecter:)
     func checkRevocation(
         credentialIds: NSArray,
