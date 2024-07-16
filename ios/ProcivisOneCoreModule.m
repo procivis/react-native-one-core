@@ -171,6 +171,10 @@ RCT_EXTERN_METHOD(finalizeImport:(RCTPromiseResolveBlock)resolve
 RCT_EXTERN_METHOD(rollbackImport:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(resolveJsonldContext:(NSString *)url
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(uninitialize:(BOOL *)deleteData
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
