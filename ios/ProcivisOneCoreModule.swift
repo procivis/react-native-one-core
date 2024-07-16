@@ -380,7 +380,7 @@ class ProcivisOneCoreModule: NSObject {
                 return serialize(proofList: result)
             }
         }
-
+    
     @objc(retractProof:resolver:rejecter:)
     func retractProof(
         proofId: String,
@@ -390,7 +390,7 @@ class ProcivisOneCoreModule: NSObject {
                 return try getCore().retractProof(proofId: proofId)
             }
         }
-
+    
     @objc(checkRevocation:resolver:rejecter:)
     func checkRevocation(
         credentialIds: NSArray,
@@ -479,6 +479,17 @@ class ProcivisOneCoreModule: NSObject {
             asyncCall(resolve, reject) {
                 try getCore().rollbackImport();
                 return nil as NSDictionary?;
+            }
+        }
+    
+    @objc(resolveJsonldContext:resolver:rejecter:)
+    func resolveJsonldContext(
+        url: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try getCore().resolveJsonldContext(url: url);
+                return serialize(resolveJsonLdContextResponse: result)
             }
         }
     

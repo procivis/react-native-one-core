@@ -528,5 +528,11 @@ func serialize(shareProofResponse: ShareProofResponseBindingDto) -> NSDictionary
     ]
 }
 
+func serialize(resolveJsonLdContextResponse: ResolveJsonLdContextResponseBindingDto) -> NSDictionary {
+    return [
+        "context": resolveJsonLdContextResponse.context,
+    ]
+}
+
 
 
