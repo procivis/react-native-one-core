@@ -365,6 +365,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun resolveJsonldContext(url: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val result = getCore().resolveJsonldContext(url)
+            return@asyncCall Util.convertToRN(result)
+        }
+    }
+
+    @ReactMethod
     fun uninitialize(deleteData: Boolean, promise: Promise) {
         Util.asyncCall(promise) {
             getCore().uninitialize(deleteData)

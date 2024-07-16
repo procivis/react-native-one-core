@@ -811,6 +811,10 @@ export interface ShareProofResponse {
   url: string;
 }
 
+export interface ResolveJsonLdContextResponse {
+  context: string;
+}
+
 export interface ONECore {
   getVersion(): Promise<Version>;
 
@@ -945,6 +949,8 @@ export interface ONECore {
    * This call will restore the old entries prior calling {@link unpackBackup}
    */
   rollbackImport(): Promise<void>;
+
+  resolveJsonldContext(url: string): Promise<ResolveJsonLdContextResponse>;
 
   /**
    * Uninitialize the core instance
