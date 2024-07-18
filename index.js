@@ -195,6 +195,11 @@ export var DataTypeEnum;
     DataTypeEnum["Boolean"] = "BOOLEAN";
     DataTypeEnum["Object"] = "OBJECT";
 })(DataTypeEnum || (DataTypeEnum = {}));
+export var ScanToVerifyBarcodeTypeEnum;
+(function (ScanToVerifyBarcodeTypeEnum) {
+    ScanToVerifyBarcodeTypeEnum["MRZ"] = "MRZ";
+    ScanToVerifyBarcodeTypeEnum["PDF417"] = "PDF417";
+})(ScanToVerifyBarcodeTypeEnum || (ScanToVerifyBarcodeTypeEnum = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;
