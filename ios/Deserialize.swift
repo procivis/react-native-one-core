@@ -209,7 +209,7 @@ func deserializeImportProofSchemaRequest(_ request: NSDictionary) throws -> Impo
 
 func deserializeImportProofSchema(_ schema: NSDictionary) throws -> ImportProofSchemaBindingDto {
     let proofInputSchemas = schema.value(forKey: "proofInputSchemas") as! NSArray;
-
+    
     return ImportProofSchemaBindingDto(
         id: schema.value(forKey: "id") as! String,
         createdDate: schema.value(forKey: "createdDate") as! String,
@@ -223,7 +223,7 @@ func deserializeImportProofSchema(_ schema: NSDictionary) throws -> ImportProofS
 
 func deserializeCreateProofSchemaRequest(_ request: NSDictionary) -> CreateProofSchemaRequestDto {
     let proofInputSchemas = request.value(forKey: "proofInputSchemas") as! NSArray;
-
+    
     return CreateProofSchemaRequestDto(
         name: request.value(forKey: "name") as! String,
         organisationId: request.value(forKey: "organisationId") as! String,
@@ -233,58 +233,58 @@ func deserializeCreateProofSchemaRequest(_ request: NSDictionary) -> CreateProof
 }
 
 func deserializeProofInputSchemaRequest(_ request: NSDictionary) -> ProofInputSchemaRequestDto {
-  let claimSchemas = request.value(forKey: "claimSchemas") as! NSArray;
-
-  return ProofInputSchemaRequestDto(
-    credentialSchemaId: request.value(forKey: "credentialSchemaId") as! String,
-    validityConstraint: request.value(forKey: "validityConstraint") as? Int64,
-    claimSchemas: claimSchemas.map { deserializeProofClaimSchemaRequest($0 as! NSDictionary) }
-  )
+    let claimSchemas = request.value(forKey: "claimSchemas") as! NSArray;
+    
+    return ProofInputSchemaRequestDto(
+        credentialSchemaId: request.value(forKey: "credentialSchemaId") as! String,
+        validityConstraint: request.value(forKey: "validityConstraint") as? Int64,
+        claimSchemas: claimSchemas.map { deserializeProofClaimSchemaRequest($0 as! NSDictionary) }
+    )
 }
 
 func deserializeImportProofSchemaInputSchema(_ inputSchema: NSDictionary) throws -> ImportProofSchemaInputSchemaBindingDto {
-  let claimSchemas = inputSchema.value(forKey: "claimSchemas") as! NSArray;
-
-  return ImportProofSchemaInputSchemaBindingDto(
-    claimSchemas: claimSchemas.map { deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },
-    credentialSchema: try deserializeImportProofSchemaCredentialSchema(inputSchema.value(forKey: "credentialSchema") as! NSDictionary),
-    validityConstraint: inputSchema.value(forKey: "validityConstraint") as? Int64
-  )
+    let claimSchemas = inputSchema.value(forKey: "claimSchemas") as! NSArray;
+    
+    return ImportProofSchemaInputSchemaBindingDto(
+        claimSchemas: claimSchemas.map { deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },
+        credentialSchema: try deserializeImportProofSchemaCredentialSchema(inputSchema.value(forKey: "credentialSchema") as! NSDictionary),
+        validityConstraint: inputSchema.value(forKey: "validityConstraint") as? Int64
+    )
 }
 
 func deserializeProofClaimSchemaRequest(_ request: NSDictionary) -> CreateProofSchemaClaimRequestDto {
-  return CreateProofSchemaClaimRequestDto(
-    id: request.value(forKey: "id") as! String,
-    required: request.value(forKey: "required") as! Bool  
-  )
+    return CreateProofSchemaClaimRequestDto(
+        id: request.value(forKey: "id") as! String,
+        required: request.value(forKey: "required") as! Bool
+    )
 }
 
 func deserializeImportProofSchemaClaimSchema(_ request: NSDictionary) -> ImportProofSchemaClaimSchemaBindingDto {
-  let claims = request.value(forKey: "claims") as? NSArray ?? [];
-
-  return ImportProofSchemaClaimSchemaBindingDto(
-    id: request.value(forKey: "id") as! String,
-    required: request.value(forKey: "required") as! Bool,  
-    key: request.value(forKey: "key") as! String,  
-    dataType: request.value(forKey: "dataType") as! String,  
-    claims: claims.map { deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },  
-    array: request.value(forKey: "array") as! Bool
-  )
+    let claims = request.value(forKey: "claims") as? NSArray ?? [];
+    
+    return ImportProofSchemaClaimSchemaBindingDto(
+        id: request.value(forKey: "id") as! String,
+        required: request.value(forKey: "required") as! Bool,
+        key: request.value(forKey: "key") as! String,
+        dataType: request.value(forKey: "dataType") as! String,
+        claims: claims.map { deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },
+        array: request.value(forKey: "array") as! Bool
+    )
 }
 
 func deserializeImportProofSchemaCredentialSchema(_ request: NSDictionary) throws -> ImportProofSchemaCredentialSchemaBindingDto {
-  return ImportProofSchemaCredentialSchemaBindingDto(
-      id: request.value(forKey: "id") as! String,
-      createdDate: request.value(forKey: "createdDate") as! String,
-      lastModified: request.value(forKey: "lastModified") as! String,
-      name: request.value(forKey: "name") as! String,
-      format: request.value(forKey: "format") as! String,
-      revocationMethod: request.value(forKey: "revocationMethod") as! String,
-      walletStorageType: try opt(request.value(forKey: "walletStorageType") as? String, deserializeEnum),
-      schemaId: request.value(forKey: "schemaId") as! String,
-      schemaType: deserializeCredentialSchemaTypeBindingEnum(request.value(forKey: "schemaType") as! String),
-      layoutType: try opt(request.value(forKey: "layoutType") as? String, deserializeEnum),
-      layoutProperties: try opt((request.value(forKey: "layoutProperties") as? NSDictionary), deserializeCredentialSchemaRequestLayoutProperties)
+    return ImportProofSchemaCredentialSchemaBindingDto(
+        id: request.value(forKey: "id") as! String,
+        createdDate: request.value(forKey: "createdDate") as! String,
+        lastModified: request.value(forKey: "lastModified") as! String,
+        name: request.value(forKey: "name") as! String,
+        format: request.value(forKey: "format") as! String,
+        revocationMethod: request.value(forKey: "revocationMethod") as! String,
+        walletStorageType: try opt(request.value(forKey: "walletStorageType") as? String, deserializeEnum),
+        schemaId: request.value(forKey: "schemaId") as! String,
+        schemaType: deserializeCredentialSchemaTypeBindingEnum(request.value(forKey: "schemaType") as! String),
+        layoutType: try opt(request.value(forKey: "layoutType") as? String, deserializeEnum),
+        layoutProperties: try opt((request.value(forKey: "layoutProperties") as? NSDictionary), deserializeCredentialSchemaRequestLayoutProperties)
     )
 }
 
@@ -297,7 +297,7 @@ func deserializeImportCredentialSchemaRequest(_ request: NSDictionary) throws ->
 
 func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) throws -> ImportCredentialSchemaRequestSchemaBindingDto {
     let claims = request.value(forKey: "claims") as! NSArray;
-
+    
     return ImportCredentialSchemaRequestSchemaBindingDto(
         id: request.value(forKey: "id") as! String,
         createdDate: request.value(forKey: "createdDate") as! String,
@@ -317,7 +317,7 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
 
 func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) throws -> ImportCredentialSchemaClaimSchemaBindingDto {
     let claims = request.value(forKey: "claims") as? NSArray ?? [];
-
+    
     return ImportCredentialSchemaClaimSchemaBindingDto(
         id: request.value(forKey: "id") as! String,
         createdDate: request.value(forKey: "createdDate") as! String,
@@ -328,28 +328,28 @@ func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) thro
         datatype: request.value(forKey: "datatype") as! String,
         claims: try claims.map { try deserializeImportCredentialSchemaRequestClaim($0 as! NSDictionary) }
     )
-} 
+}
 
 func deserializeImportCredentialSchemaRequestLayoutProperties(_ request: NSDictionary) throws -> ImportCredentialSchemaLayoutPropertiesBindingDto {
-  return ImportCredentialSchemaLayoutPropertiesBindingDto(
+    return ImportCredentialSchemaLayoutPropertiesBindingDto(
         background: try opt(request.value(forKey: "background") as! NSDictionary?, deserializeImportCredentialSchemaBackgroundProperties),
-        logo: try opt(request.value(forKey: "logo") as! NSDictionary?, deserializeImportCredentialSchemaLogoProperties), 
+        logo: try opt(request.value(forKey: "logo") as! NSDictionary?, deserializeImportCredentialSchemaLogoProperties),
         primaryAttribute: request.value(forKey: "primaryAttribute") as? String,
         secondaryAttribute: request.value(forKey: "secondaryAttribute") as? String,
         pictureAttribute: request.value(forKey: "pictureAttribute") as? String,
         code: try opt(request.value(forKey: "code") as! NSDictionary?, deserializeImportCredentialSchemaCodeProperties)
-  )
+    )
 }
 
 func deserializeCredentialSchemaRequestLayoutProperties(_ request: NSDictionary) throws -> CredentialSchemaLayoutPropertiesBindingDto {
-  return CredentialSchemaLayoutPropertiesBindingDto(
+    return CredentialSchemaLayoutPropertiesBindingDto(
         background: try opt(request.value(forKey: "background") as! NSDictionary?, deserializeImportCredentialSchemaBackgroundProperties),
-        logo: try opt(request.value(forKey: "logo") as! NSDictionary?, deserializeImportCredentialSchemaLogoProperties), 
+        logo: try opt(request.value(forKey: "logo") as! NSDictionary?, deserializeImportCredentialSchemaLogoProperties),
         primaryAttribute: request.value(forKey: "primaryAttribute") as? String,
         secondaryAttribute: request.value(forKey: "secondaryAttribute") as? String,
         pictureAttribute: request.value(forKey: "pictureAttribute") as? String,
         code: try opt(request.value(forKey: "code") as! NSDictionary?, deserializeImportCredentialSchemaCodeProperties)
-  )
+    )
 }
 
 func deserializeImportCredentialSchemaBackgroundProperties(_ request: NSDictionary) -> CredentialSchemaBackgroundPropertiesBindingDto {
@@ -361,26 +361,35 @@ func deserializeImportCredentialSchemaBackgroundProperties(_ request: NSDictiona
 
 func deserializeImportCredentialSchemaLogoProperties(_ request: NSDictionary) -> CredentialSchemaLogoPropertiesBindingDto {
     return CredentialSchemaLogoPropertiesBindingDto(
-        fontColor: request.value(forKey: "fontColor") as? String, 
+        fontColor: request.value(forKey: "fontColor") as? String,
         backgroundColor: request.value(forKey: "backgroundColor") as? String,
         image: request.value(forKey: "image") as? String
     )
 }
 
-func deserializeImportCredentialSchemaCodeProperties(_ request: NSDictionary) throws -> CredentialSchemaCodePropertiesBindingDto { 
+func deserializeImportCredentialSchemaCodeProperties(_ request: NSDictionary) throws -> CredentialSchemaCodePropertiesBindingDto {
     return CredentialSchemaCodePropertiesBindingDto(
-        attribute: request.value(forKey: "attribute") as! String, 
-        type: try deserializeEnum(request.value(forKey: "type") as! String)  
+        attribute: request.value(forKey: "attribute") as! String,
+        type: try deserializeEnum(request.value(forKey: "type") as! String)
     )
 }
 
-func deserializeCreateProofRequest(_ request: NSDictionary) throws -> CreateProofRequestBindingDto { 
+func deserializeCreateProofRequest(_ request: NSDictionary) throws -> CreateProofRequestBindingDto {
     return CreateProofRequestBindingDto(
         proofSchemaId: request.value(forKey: "proofSchemaId") as! String,
         verifierDidId: request.value(forKey: "verifierDidId") as! String,
         exchange: request.value(forKey: "exchange") as! String,
         redirectUri: request.value(forKey: "redirectUri") as? String,
-        verifierKey: request.value(forKey: "verifierKey") as? String
+        verifierKey: request.value(forKey: "verifierKey") as? String,
+        scanToVerify: try opt((request.value(forKey: "scanToVerify") as? NSDictionary), deserializeScanToVerifyRequest)
+    )
+}
+
+func deserializeScanToVerifyRequest(_ request: NSDictionary) throws -> ScanToVerifyRequestBindingDto {
+    return ScanToVerifyRequestBindingDto(
+        credential: request.value(forKey: "credential") as! String,
+        barcode: request.value(forKey: "barcode") as! String,
+        barcodeType: try deserializeEnum(request.value(forKey: "barcodeType") as! String)
     )
 }
 
@@ -497,7 +506,7 @@ extension SortableProofListColumnBinding: CaseIterable {
         return [.createdDate, .schemaName, .state, .verifierDid]
     }
 }
-    
+
 extension ProofListQueryExactColumnBindingEnum: CaseIterable {
     public static var allCases: [ProofListQueryExactColumnBindingEnum] {
         return [.name]
@@ -535,6 +544,12 @@ extension ProofStateBindingEnum: CaseIterable {
     }
 }
 
+extension ScanToVerifyBarcodeTypeBindingEnum: CaseIterable {
+    public static var allCases: [ScanToVerifyBarcodeTypeBindingEnum] {
+        return [.mrz, .pdf417]
+    }
+}
+
 private func deserializeEnum<T: CaseIterable>(_ input: String) throws -> T {
     if let entry = T.allCases.first(where: { value in
         serializeEnumValue(value: value) == input
@@ -562,14 +577,14 @@ private func enumList<T: CaseIterable>(_ entries: NSArray) throws -> [T] {
 
 private func deserializeCredentialSchemaTypeBindingEnum(_ credentialSchemaType: String) -> CredentialSchemaTypeBindingEnum {
     switch (credentialSchemaType) {
-    case "PROCIVIS_ONE_SCHEMA2024": 
-        return .procivisOneSchema2024     
-    case "FALLBACK_SCHEMA2024": 
+    case "PROCIVIS_ONE_SCHEMA2024":
+        return .procivisOneSchema2024
+    case "FALLBACK_SCHEMA2024":
         return .fallbackSchema2024
-    case "MDOC": 
-        return .mdoc         
-    case let other: 
+    case "MDOC":
+        return .mdoc
+    case let other:
         return .other(value: other)
     }
-     
+    
 }

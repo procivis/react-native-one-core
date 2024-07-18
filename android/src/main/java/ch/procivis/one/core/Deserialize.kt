@@ -217,7 +217,7 @@ object Deserialize {
         )
     }
 
-    fun importProofSchema(request: ReadableMap): ImportProofSchemaBindingDto {
+    private fun importProofSchema(request: ReadableMap): ImportProofSchemaBindingDto {
         val rawProofInputSchemas = request.getArray("proofInputSchemas")!!
 
         val proofInputSchemas = mutableListOf<ImportProofSchemaInputSchemaBindingDto>()
@@ -237,7 +237,7 @@ object Deserialize {
         )
     }
 
-    fun importProofSchemaInputSchema(request: ReadableMap): ImportProofSchemaInputSchemaBindingDto {
+    private fun importProofSchemaInputSchema(request: ReadableMap): ImportProofSchemaInputSchemaBindingDto {
         val rawClaimSchemas = request.getArray("claimSchemas")!!
 
         val claimSchemas = mutableListOf<ImportProofSchemaClaimSchemaBindingDto>()
@@ -253,7 +253,7 @@ object Deserialize {
         )
     }
 
-    fun importProofSchemaClaimSchema(request: ReadableMap): ImportProofSchemaClaimSchemaBindingDto {
+    private fun importProofSchemaClaimSchema(request: ReadableMap): ImportProofSchemaClaimSchemaBindingDto {
         val rawClaims = request.getArray("claims")!!
 
         val claims = mutableListOf<ImportProofSchemaClaimSchemaBindingDto>()
@@ -272,7 +272,7 @@ object Deserialize {
         )
     }
 
-    fun importProofSchemaCredentialSchema(
+    private fun importProofSchemaCredentialSchema(
         request: ReadableMap
     ): ImportProofSchemaCredentialSchemaBindingDto {
 
@@ -285,11 +285,11 @@ object Deserialize {
             request.getString("revocationMethod")!!,
             opt(request.getString("walletStorageType"), WalletStorageTypeBindingEnum::valueOf),
             request.getString("schemaId")!!,
-            deserializeCredentialSchemaTypeBindingEnum(request.getString("schemaType")!!),
+            credentialSchemaType(request.getString("schemaType")!!),
             opt(request.getString("layoutType"), LayoutTypeBindingEnum::valueOf),
             opt(
                 request.getMap("layoutProperties"),
-                ::deserializeCredentialSchemaRequestLayoutProperties
+                ::credentialSchemaRequestLayoutProperties
             ),
         )
     }
@@ -311,7 +311,7 @@ object Deserialize {
         )
     }
 
-    fun proofInputSchemaRequest(request: ReadableMap): ProofInputSchemaRequestDto {
+    private fun proofInputSchemaRequest(request: ReadableMap): ProofInputSchemaRequestDto {
         val rawClaimSchemas = request.getArray("claimSchemas")!!
 
         val claimSchemas = mutableListOf<CreateProofSchemaClaimRequestDto>()
@@ -327,23 +327,23 @@ object Deserialize {
         )
     }
 
-    fun proofSchemaClaimRequest(request: ReadableMap): CreateProofSchemaClaimRequestDto {
+    private fun proofSchemaClaimRequest(request: ReadableMap): CreateProofSchemaClaimRequestDto {
         return CreateProofSchemaClaimRequestDto(
             request.getString("id")!!,
             request.getBool("required")!!,
         )
     }
 
-    fun deserializeImportCredentialSchemaRequest(
+    fun importCredentialSchemaRequest(
         request: ReadableMap
     ): ImportCredentialSchemaRequestBindingDto {
         return ImportCredentialSchemaRequestBindingDto(
             request.getString("organisationId")!!,
-            deserializeImportCredentialSchemaRequestSchema(request.getMap("schema")!!),
+            importCredentialSchemaRequestSchema(request.getMap("schema")!!),
         )
     }
 
-    fun deserializeImportCredentialSchemaRequestSchema(
+    private fun importCredentialSchemaRequestSchema(
         request: ReadableMap
     ): ImportCredentialSchemaRequestSchemaBindingDto {
         val rawClaims = request.getArray("claims")!!
@@ -351,7 +351,7 @@ object Deserialize {
         val claims = mutableListOf<ImportCredentialSchemaClaimSchemaBindingDto>()
         for (i in 0 until rawClaims.size()) {
             val claimSchema = rawClaims.getMap(i)
-            claims.add(deserializeImportCredentialSchemaRequestClaim(claimSchema))
+            claims.add(importCredentialSchemaRequestClaim(claimSchema))
         }
 
         return ImportCredentialSchemaRequestSchemaBindingDto(
@@ -365,16 +365,16 @@ object Deserialize {
             claims,
             opt(request.getString("walletStorageType"), WalletStorageTypeBindingEnum::valueOf),
             request.getString("schemaId")!!,
-            deserializeCredentialSchemaTypeBindingEnum(request.getString("schemaType")!!),
+            credentialSchemaType(request.getString("schemaType")!!),
             opt(request.getString("layoutType"), LayoutTypeBindingEnum::valueOf),
             opt(
                 request.getMap("layoutProperties"),
-                ::deserializeImportCredentialSchemaRequestLayoutProperties
+                ::importCredentialSchemaRequestLayoutProperties
             ),
         )
     }
 
-    fun deserializeImportCredentialSchemaRequestClaim(
+    private fun importCredentialSchemaRequestClaim(
         request: ReadableMap
     ): ImportCredentialSchemaClaimSchemaBindingDto {
         val claimSchemas = mutableListOf<ImportCredentialSchemaClaimSchemaBindingDto>()
@@ -383,7 +383,7 @@ object Deserialize {
             val rawClaimSchemas = request.getArray("claims")!!
             for (i in 0 until rawClaimSchemas.size()) {
                 val claimSchema = rawClaimSchemas.getMap(i)
-                claimSchemas.add(deserializeImportCredentialSchemaRequestClaim(claimSchema))
+                claimSchemas.add(importCredentialSchemaRequestClaim(claimSchema))
             }
         }
 
@@ -399,39 +399,39 @@ object Deserialize {
         )
     }
 
-    fun deserializeImportCredentialSchemaRequestLayoutProperties(
+    private fun importCredentialSchemaRequestLayoutProperties(
         request: ReadableMap
     ): ImportCredentialSchemaLayoutPropertiesBindingDto {
         return ImportCredentialSchemaLayoutPropertiesBindingDto(
             opt(
                 request.getMap("background"),
-                ::deserializeImportCredentialSchemaBackgroundProperties
+                ::credentialSchemaBackgroundProperties
             ),
-            opt(request.getMap("logo"), ::deserializeImportCredentialSchemaLogoProperties),
+            opt(request.getMap("logo"), ::credentialSchemaLogoProperties),
             request.getString("primaryAttribute"),
             request.getString("secondaryAttribute"),
             request.getString("pictureAttribute"),
-            opt(request.getMap("code"), ::deserializeImportCredentialSchemaCodeProperties),
+            opt(request.getMap("code"), ::credentialSchemaCodeProperties),
         )
     }
 
-    fun deserializeCredentialSchemaRequestLayoutProperties(
+    private fun credentialSchemaRequestLayoutProperties(
         request: ReadableMap
     ): CredentialSchemaLayoutPropertiesBindingDto {
         return CredentialSchemaLayoutPropertiesBindingDto(
             opt(
                 request.getMap("background"),
-                ::deserializeImportCredentialSchemaBackgroundProperties
+                ::credentialSchemaBackgroundProperties
             ),
-            opt(request.getMap("logo"), ::deserializeImportCredentialSchemaLogoProperties),
+            opt(request.getMap("logo"), ::credentialSchemaLogoProperties),
             request.getString("primaryAttribute"),
             request.getString("secondaryAttribute"),
             request.getString("pictureAttribute"),
-            opt(request.getMap("code"), ::deserializeImportCredentialSchemaCodeProperties),
+            opt(request.getMap("code"), ::credentialSchemaCodeProperties),
         )
     }
 
-    fun deserializeImportCredentialSchemaBackgroundProperties(
+    private fun credentialSchemaBackgroundProperties(
         request: ReadableMap
     ): CredentialSchemaBackgroundPropertiesBindingDto {
         return CredentialSchemaBackgroundPropertiesBindingDto(
@@ -440,7 +440,7 @@ object Deserialize {
         )
     }
 
-    fun deserializeImportCredentialSchemaLogoProperties(
+    private fun credentialSchemaLogoProperties(
         request: ReadableMap
     ): CredentialSchemaLogoPropertiesBindingDto {
         return CredentialSchemaLogoPropertiesBindingDto(
@@ -450,7 +450,7 @@ object Deserialize {
         )
     }
 
-    fun deserializeImportCredentialSchemaCodeProperties(
+    private fun credentialSchemaCodeProperties(
         request: ReadableMap
     ): CredentialSchemaCodePropertiesBindingDto {
         return CredentialSchemaCodePropertiesBindingDto(
@@ -466,10 +466,21 @@ object Deserialize {
             exchange = request.getString("exchange")!!,
             redirectUri = request.getString("redirectUri"),
             verifierKey = request.getString("verifierKey"),
+            scanToVerify = opt(request.getMap("scanToVerify"), ::scanToVerifyRequest),
         )
     }
 
-    private fun deserializeCredentialSchemaTypeBindingEnum(
+    private fun scanToVerifyRequest(
+        request: ReadableMap
+    ): ScanToVerifyRequestBindingDto {
+        return ScanToVerifyRequestBindingDto(
+            credential = request.getString("credential")!!,
+            barcode = request.getString("barcode")!!,
+            barcodeType = ScanToVerifyBarcodeTypeBindingEnum.valueOf(request.getString("barcodeType")!!),
+        )
+    }
+
+    private fun credentialSchemaType(
         credentialSchemaType: String
     ): CredentialSchemaTypeBindingEnum {
         when {

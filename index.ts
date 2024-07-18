@@ -805,6 +805,18 @@ export interface CreateProofRequest {
   exchange: string;
   redirectUri?: string;
   verifierKey?: string;
+  scanToVerify?: ScanToVerifyRequest;
+}
+
+export interface ScanToVerifyRequest {
+  credential: string;
+  barcode: string;
+  barcodeType: ScanToVerifyBarcodeTypeEnum;
+}
+
+export enum ScanToVerifyBarcodeTypeEnum {
+  MRZ = "MRZ",
+  PDF417 = "PDF417",
 }
 
 export interface ShareProofResponse {
