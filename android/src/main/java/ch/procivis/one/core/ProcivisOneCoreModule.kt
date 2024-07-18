@@ -187,7 +187,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun importCredentialSchema(request: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
-            val r = Deserialize.deserializeImportCredentialSchemaRequest(request)
+            val r = Deserialize.importCredentialSchemaRequest(request)
             return@asyncCall getCore().importCredentialSchema(r)
         }
     }
