@@ -111,7 +111,7 @@ func serialize(credentialSchemaDetail: CredentialSchemaDetailBindingDto) -> NSDi
 }
 
 func serialize(claimSchema: CredentialClaimSchemaBindingDto) -> NSDictionary {
-    var result: [String: Any] = [
+    return [
         "id": claimSchema.id,
         "createdDate": claimSchema.createdDate,
         "lastModified": claimSchema.lastModified,
@@ -121,8 +121,6 @@ func serialize(claimSchema: CredentialClaimSchemaBindingDto) -> NSDictionary {
         "datatype": claimSchema.datatype,
         "claims": claimSchema.claims.map { serialize(claimSchema: $0) }
     ]
-    
-    return result as NSDictionary
 }
 
 func serialize(layoutProperties: CredentialSchemaLayoutPropertiesBindingDto) -> NSDictionary {
@@ -163,6 +161,7 @@ func serialize(claim: ClaimBindingDto) -> NSDictionary {
         "id": claim.id,
         "key": claim.key,
         "dataType": claim.dataType,
+        "array": claim.array,
         "value": serialize(claimValue: claim.value),
     ]
 }
@@ -305,7 +304,7 @@ func serialize(proofSchemaListItem: GetProofSchemaListItemBindingDto) -> NSDicti
 }
 
 func serialize(proofSchema: GetProofSchemaBindingDto) -> NSDictionary {
-    var result: [String: Any] = [
+    return [
         "id": proofSchema.id,
         "createdDate": proofSchema.createdDate,
         "lastModified": proofSchema.lastModified,
@@ -313,8 +312,6 @@ func serialize(proofSchema: GetProofSchemaBindingDto) -> NSDictionary {
         "expireDuration": proofSchema.expireDuration,
         "proofInputSchemas": proofSchema.proofInputSchemas.map { serialize(proofInputSchema: $0) }
     ]
-    
-    return result as NSDictionary
 }
 
 func serialize(proofInputSchema: ProofInputSchemaBindingDto) -> NSDictionary {
