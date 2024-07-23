@@ -47,6 +47,7 @@ object Serialize {
             result.putString("id", c.id)
             result.putString("key", c.key)
             result.putString("dataType", c.dataType)
+            result.putBoolean("array", c.array)
 
             when (val value = c.value) {
                 is ClaimValueBindingDto.Boolean -> result.putBoolean("value", value.value)
