@@ -122,6 +122,7 @@ export type ClaimValue = {
 export type Claim = ClaimValue & {
     id: string;
     key: string;
+    array: boolean;
 };
 export interface CredentialListItem {
     id: string;
