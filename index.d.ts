@@ -106,23 +106,31 @@ export declare enum CredentialSchemaCodeType {
 export type ClaimValue = {
     dataType: DataTypeEnum.String | DataTypeEnum.Date | DataTypeEnum.File;
     value: string;
+    array: false;
 } | {
     dataType: DataTypeEnum.Number;
     value: number;
+    array: false;
 } | {
     dataType: DataTypeEnum.Boolean;
     value: boolean;
+    array: false;
 } | {
     dataType: DataTypeEnum.Object;
     value: Claim[];
+    array: false;
 } | {
     dataType: string;
     value: string | number | boolean;
+    array: false;
+} | {
+    dataType: string;
+    value: Claim[];
+    array: true;
 };
 export type Claim = ClaimValue & {
     id: string;
     key: string;
-    array: boolean;
 };
 export interface CredentialListItem {
     id: string;
