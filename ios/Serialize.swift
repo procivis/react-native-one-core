@@ -83,9 +83,9 @@ func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
         "format": credentialSchema.format,
         "revocationMethod": credentialSchema.revocationMethod,
         "schemaId": credentialSchema.schemaId,
+        "schemaType": serialize(credentialSchemaType: credentialSchema.schemaType)
     ]
     result.addOpt("walletStorageType", opt(credentialSchema.walletStorageType, serializeEnumValue))
-    result.addOpt("schemaType", opt(credentialSchema.schemaType, {type in serialize(credentialSchemaType: type)}))
     result.addOpt("layoutType", opt(credentialSchema.layoutType, serializeEnumValue))
     result.addOpt("layoutProperties", opt(credentialSchema.layoutProperties, {properties in serialize(layoutProperties: properties)}))
     return result as NSDictionary
@@ -100,10 +100,10 @@ func serialize(credentialSchemaDetail: CredentialSchemaDetailBindingDto) -> NSDi
         "format": credentialSchemaDetail.format,
         "revocationMethod": credentialSchemaDetail.revocationMethod,
         "schemaId": credentialSchemaDetail.schemaId,
+        "schemaType": serialize(credentialSchemaType: credentialSchemaDetail.schemaType),
         "claims": credentialSchemaDetail.claims.map { serialize(claimSchema: $0) }
     ]
     result.addOpt("walletStorageType", opt(credentialSchemaDetail.walletStorageType, serializeEnumValue))
-    result.addOpt("schemaType", opt(credentialSchemaDetail.schemaType, {type in serialize(credentialSchemaType: type)}))
     result.addOpt("layoutType", opt(credentialSchemaDetail.layoutType, serializeEnumValue))
     result.addOpt("layoutProperties", opt(credentialSchemaDetail.layoutProperties, {properties in serialize(layoutProperties: properties)}))
     
@@ -309,6 +309,7 @@ func serialize(proofSchema: GetProofSchemaBindingDto) -> NSDictionary {
         "createdDate": proofSchema.createdDate,
         "lastModified": proofSchema.lastModified,
         "name": proofSchema.name,
+        "organisationId": proofSchema.organisationId,
         "expireDuration": proofSchema.expireDuration,
         "proofInputSchemas": proofSchema.proofInputSchemas.map { serialize(proofInputSchema: $0) }
     ]

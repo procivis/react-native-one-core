@@ -64,19 +64,8 @@ export interface CredentialSchema {
   layoutProperties?: CredentialSchemaLayoutProperties;
 }
 
-export interface CredentialSchemaDetail {
-  id: string;
-  createdDate: string;
-  lastModified: string;
-  name: string;
-  format: string;
-  revocationMethod: string;
+export interface CredentialSchemaDetail extends CredentialSchema {
   claims: ClaimSchema[];
-  walletStorageType?: WalletStorageType;
-  schemaId: string;
-  schemaType: CredentialSchemaType;
-  layoutType?: LayoutType;
-  layoutProperties?: CredentialSchemaLayoutProperties;
 }
 
 export interface ClaimSchema {
@@ -86,7 +75,7 @@ export interface ClaimSchema {
   key: string;
   datatype: string;
   required: boolean;
-  array?: boolean;
+  array: boolean;
   claims: ClaimSchema[];
 }
 
@@ -137,10 +126,11 @@ export type ClaimValue =
       value: boolean;
       array: false;
     }
-  | { 
-      dataType: DataTypeEnum.Object; 
-      value: Claim[]
-      array: false; }
+  | {
+      dataType: DataTypeEnum.Object;
+      value: Claim[];
+      array: false;
+    }
   | {
       dataType: string;
       value: string | number | boolean;
@@ -180,7 +170,7 @@ export interface ProofInput {
   claims: ProofInputClaim[];
   credential?: CredentialDetail;
   credentialSchema: CredentialSchema;
-  validityConstraint: number;
+  validityConstraint?: number;
 }
 
 export interface ProofInputClaim {
@@ -194,6 +184,7 @@ export interface ProofInputClaimSchema {
   key: string;
   dataType: string;
   claims: ProofInputClaimSchema[];
+  array: boolean;
 }
 
 export interface ProofDetail {
@@ -205,7 +196,6 @@ export interface ProofDetail {
   proofSchema?: ProofSchemaListItem;
   verifierDid?: string;
   exchange: string;
-  transport: string;
   redirectUri?: string;
 }
 
@@ -213,7 +203,7 @@ export interface ProofSchemaListItem {
   id: string;
   createdDate: string;
   lastModified: string;
-  deletedAt: string;
+  deletedAt?: string;
   name: string;
   expireDuration: number;
 }
@@ -384,7 +374,7 @@ export interface ProofListItem {
   exchange: string;
   transport: string;
   state: ProofStateEnum;
-  schema: ProofSchemaListItem;
+  schema?: ProofSchemaListItem;
 }
 
 export interface ImportProofSchemaRequest {
