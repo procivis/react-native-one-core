@@ -428,6 +428,40 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
+    @objc(createTrustAnchor:resolver:rejecter:)
+    func createTrustAnchor(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let request = try deserializeCreateTrustAnchorRequest(request);
+                return try getCore().createTrustAnchor(anchor: request)
+            }
+        }
+    
+    @objc(getTrustAnchor:resolver:rejecter:)
+    func getTrustAnchor(
+        trustAnchorId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let trustAnchor = try getCore().getTrustAnchor(anchorId: trustAnchorId);
+                return serialize(trustAnchor: trustAnchor)
+            }
+        }
+    
+    @objc(getTrustAnchors:resolver:rejecter:)
+    func getTrustAnchors(
+        query: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let listQuery = try deserializeTrustAnchorListQuery(query)
+                let result = try getCore().listTrustAnchors(filters: listQuery);
+                return serialize(trustAnchorList: result)
+            }
+        }
+    
     @objc(createBackup:outputPath:resolver:rejecter:)
     func createBackup(
         password: String,

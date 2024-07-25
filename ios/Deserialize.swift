@@ -393,6 +393,31 @@ func deserializeScanToVerifyRequest(_ request: NSDictionary) throws -> ScanToVer
     )
 }
 
+func deserializeCreateTrustAnchorRequest(_ request: NSDictionary) throws -> CreateTrustAnchorRequestBindingDto {
+    return CreateTrustAnchorRequestBindingDto(
+        name: request.value(forKey: "name") as! String,
+        type: request.value(forKey: "type") as! String,
+        publisherReference: request.value(forKey: "publisherReference") as? String,
+        role: try deserializeEnum(request.value(forKey: "role") as! String),
+        priority: request.value(forKey: "priority") as? UInt32,
+        organisationId: request.value(forKey: "organisationId") as! String
+    )
+}
+
+func deserializeTrustAnchorListQuery(_ query: NSDictionary) throws -> ListTrustAnchorsFiltersBindings {
+    return ListTrustAnchorsFiltersBindings(
+        page: query.value(forKey: "page") as! UInt32,
+        pageSize: query.value(forKey: "pageSize") as! UInt32,
+        sort: try opt(query.value(forKey: "sort") as? String, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
+        name: query.value(forKey: "name") as? String,
+        role: try opt(query.value(forKey: "role") as? String, deserializeEnum),
+        type: query.value(forKey: "type") as? String,
+        organisationId: query.value(forKey: "organisationId") as! String,
+        exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } )
+    )
+}
+
 extension KeyRoleBindingEnum: CaseIterable {
     public static var allCases: [KeyRoleBindingEnum] {
         return [.authentication, .assertionMethod, .keyAgreement, .capabilityInvocation, .capabilityDelegation]
@@ -547,6 +572,24 @@ extension ProofStateBindingEnum: CaseIterable {
 extension ScanToVerifyBarcodeTypeBindingEnum: CaseIterable {
     public static var allCases: [ScanToVerifyBarcodeTypeBindingEnum] {
         return [.mrz, .pdf417]
+    }
+}
+
+extension TrustAnchorRoleBinding: CaseIterable {
+    public static var allCases: [TrustAnchorRoleBinding] {
+        return [.publisher, .client]
+    }
+}
+
+extension SortableTrustAnchorColumnBindings: CaseIterable {
+    public static var allCases: [SortableTrustAnchorColumnBindings] {
+        return [.name, .createdDate, .type, .role, .priority]
+    }
+}
+
+extension ExactTrustAnchorFilterColumnBindings: CaseIterable {
+    public static var allCases: [ExactTrustAnchorFilterColumnBindings] {
+        return [.name, .type]
     }
 }
 
