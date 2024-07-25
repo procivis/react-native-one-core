@@ -152,6 +152,18 @@ RCT_EXTERN_METHOD(getHistoryEntry:(NSString *)historyId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(createTrustAnchor:(NSDictionary *)request
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getTrustAnchor:(NSString *)trustAnchorId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getTrustAnchors:(NSDictionary *)query
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(createBackup:(NSString *)password
                   outputPath:(NSString *)outputPath
                   resolver:(RCTPromiseResolveBlock)resolve

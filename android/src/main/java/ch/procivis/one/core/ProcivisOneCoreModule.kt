@@ -325,6 +325,31 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun createTrustAnchor(request: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val r = Deserialize.createTrustAnchorRequest(request)
+            return@asyncCall getCore().createTrustAnchor(r)
+        }
+    }
+
+    @ReactMethod
+    fun getTrustAnchor(trustAnchorId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val trustAnchor = getCore().getTrustAnchor(trustAnchorId)
+            return@asyncCall Util.convertToRN(trustAnchor)
+        }
+    }
+
+    @ReactMethod
+    fun getTrustAnchors(query: ReadableMap, promise: Promise) {
+        Util.asyncCall(promise) {
+            val listQuery = Deserialize.trustAnchorListQuery(query)
+            val trustAnchors = getCore().listTrustAnchors(listQuery)
+            return@asyncCall Util.convertToRN(trustAnchors)
+        }
+    }
+
+    @ReactMethod
     fun createBackup(password: String, outputPath: String, promise: Promise) {
         Util.asyncCall(promise) {
             val result = getCore().createBackup(password, outputPath)
