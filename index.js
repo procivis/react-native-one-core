@@ -200,6 +200,24 @@ export var ScanToVerifyBarcodeTypeEnum;
     ScanToVerifyBarcodeTypeEnum["MRZ"] = "MRZ";
     ScanToVerifyBarcodeTypeEnum["PDF417"] = "PDF417";
 })(ScanToVerifyBarcodeTypeEnum || (ScanToVerifyBarcodeTypeEnum = {}));
+export var TrustAnchorRoleEnum;
+(function (TrustAnchorRoleEnum) {
+    TrustAnchorRoleEnum["PUBLISHER"] = "PUBLISHER";
+    TrustAnchorRoleEnum["CLIENT"] = "CLIENT";
+})(TrustAnchorRoleEnum || (TrustAnchorRoleEnum = {}));
+export var SortableTrustAnchorColumnEnum;
+(function (SortableTrustAnchorColumnEnum) {
+    SortableTrustAnchorColumnEnum["NAME"] = "NAME";
+    SortableTrustAnchorColumnEnum["CREATED_DATE"] = "CREATED_DATE";
+    SortableTrustAnchorColumnEnum["TYPE"] = "TYPE";
+    SortableTrustAnchorColumnEnum["ROLE"] = "ROLE";
+    SortableTrustAnchorColumnEnum["PRIORITY"] = "PRIORITY";
+})(SortableTrustAnchorColumnEnum || (SortableTrustAnchorColumnEnum = {}));
+export var ExactTrustAnchorFilterColumnEnum;
+(function (ExactTrustAnchorFilterColumnEnum) {
+    ExactTrustAnchorFilterColumnEnum["NAME"] = "NAME";
+    ExactTrustAnchorFilterColumnEnum["TYPE"] = "TYPE";
+})(ExactTrustAnchorFilterColumnEnum || (ExactTrustAnchorFilterColumnEnum = {}));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
 export var OneErrorCode;

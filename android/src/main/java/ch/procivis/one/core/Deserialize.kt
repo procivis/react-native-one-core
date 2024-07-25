@@ -506,6 +506,33 @@ object Deserialize {
         )
     }
 
+    fun createTrustAnchorRequest(request: ReadableMap): CreateTrustAnchorRequestBindingDto {
+        return CreateTrustAnchorRequestBindingDto(
+            name = request.getString("name")!!,
+            type = request.getString("type")!!,
+            publisherReference = request.getString("publisherReference"),
+            role = TrustAnchorRoleBinding.valueOf(request.getString("role")!!),
+            priority = request.getUInt("priority"),
+            organisationId = request.getString("organisationId")!!
+        )
+    }
+
+    fun trustAnchorListQuery(query: ReadableMap): ListTrustAnchorsFiltersBindings {
+        return ListTrustAnchorsFiltersBindings(
+            page = query.getUInt("page")!!,
+            pageSize = query.getUInt("pageSize")!!,
+            organisationId = query.getString("organisationId")!!,
+            sort = opt(query.getString("sort"), SortableTrustAnchorColumnBindings::valueOf),
+            sortDirection = opt(query.getString("sortDirection"), SortDirection::valueOf),
+            name = query.getString("name"),
+            exact = opt(query.getArray("exact")) { columns ->
+                enumList(columns, ExactTrustAnchorFilterColumnBindings::valueOf)
+            },
+            type = query.getString("type"),
+            role = opt(query.getString("role"), TrustAnchorRoleBinding::valueOf),
+        )
+    }
+
     private fun <F, T> opt(input: F?, fn: (F) -> T): T? {
         if (input == null) {
             return null

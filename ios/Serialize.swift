@@ -532,5 +532,41 @@ func serialize(resolveJsonLdContextResponse: ResolveJsonLdContextResponseBinding
     ]
 }
 
+func serialize(trustAnchor: GetTrustAnchorResponseBindingDto) -> NSDictionary {
+    var result = [
+        "id": trustAnchor.id,
+        "createdDate": trustAnchor.createdDate,
+        "lastModified": trustAnchor.lastModified,
+        "name": trustAnchor.name,
+        "type": trustAnchor.type,
+        "role": serializeEnumValue(value: trustAnchor.role),
+        "organisationId": trustAnchor.organisationId,
+    ]
+    result.addOpt("publisherReference", trustAnchor.publisherReference)
+    result.addOpt("priority", trustAnchor.priority)
+    return result as NSDictionary
+}
 
+func serialize(trustAnchorList: TrustAnchorsListBindingDto) -> NSDictionary {
+    return [
+        "totalItems": trustAnchorList.totalItems,
+        "totalPages": trustAnchorList.totalPages,
+        "values": trustAnchorList.values.map { serialize(trustAnchorListItem: $0) },
+    ]
+}
 
+func serialize(trustAnchorListItem: TrustAnchorsListItemResponseBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+        "id": trustAnchorListItem.id,
+        "createdDate": trustAnchorListItem.createdDate,
+        "lastModified": trustAnchorListItem.lastModified,
+        "name": trustAnchorListItem.name,
+        "type": trustAnchorListItem.type,
+        "role": serializeEnumValue(value: trustAnchorListItem.role),
+        "organisationId": trustAnchorListItem.organisationId,
+        "entities": trustAnchorListItem.entities,
+    ]
+    result.addOpt("publisherReference", trustAnchorListItem.publisherReference)
+    result.addOpt("priority", trustAnchorListItem.priority)
+    return result as NSDictionary
+}

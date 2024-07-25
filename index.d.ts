@@ -704,6 +704,51 @@ export interface ShareProofResponse {
 export interface ResolveJsonLdContextResponse {
     context: string;
 }
+export declare enum TrustAnchorRoleEnum {
+    PUBLISHER = "PUBLISHER",
+    CLIENT = "CLIENT"
+}
+export interface CreateTrustAnchorRequest {
+    name: string;
+    type: string;
+    publisherReference?: string;
+    role: TrustAnchorRoleEnum;
+    priority?: number;
+    organisationId: string;
+}
+export interface TrustAnchor {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    type: string;
+    publisherReference?: string;
+    role: TrustAnchorRoleEnum;
+    priority?: number;
+    organisationId: string;
+}
+export interface TrustAnchorListItem extends TrustAnchor {
+    entities: number;
+}
+export declare enum SortableTrustAnchorColumnEnum {
+    NAME = "NAME",
+    CREATED_DATE = "CREATED_DATE",
+    TYPE = "TYPE",
+    ROLE = "ROLE",
+    PRIORITY = "PRIORITY"
+}
+export declare enum ExactTrustAnchorFilterColumnEnum {
+    NAME = "NAME",
+    TYPE = "TYPE"
+}
+export interface TrustAnchorListQuery extends ListQuery {
+    sort?: SortableTrustAnchorColumnEnum;
+    sortDirection?: SortDirection;
+    name?: string;
+    exact?: ExactTrustAnchorFilterColumnEnum[];
+    type?: string;
+    role?: TrustAnchorRoleEnum;
+}
 export interface ONECore {
     getVersion(): Promise<Version>;
     getConfig(): Promise<Config>;
@@ -727,7 +772,7 @@ export interface ONECore {
     createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
     shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
-    getProofs(proofId: ProofListQuery): Promise<ItemList<ProofListItem>>;
+    getProofs(query: ProofListQuery): Promise<ItemList<ProofListItem>>;
     retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
     createProofSchema(request: CreateProofSchemaRequest): Promise<ProofSchema["id"]>;
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
@@ -735,6 +780,9 @@ export interface ONECore {
     deleteProofSchema(proofSchemaId: ProofSchema["id"]): Promise<void>;
     importProofSchema(request: ImportProofSchemaRequest): Promise<string>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
+    createTrustAnchor(request: CreateTrustAnchorRequest): Promise<TrustAnchor["id"]>;
+    getTrustAnchor(trustAnchorId: TrustAnchor["id"]): Promise<TrustAnchor>;
+    getTrustAnchors(query: TrustAnchorListQuery): Promise<ItemList<TrustAnchorListItem>>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
     getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;
     createBackup(password: string, outputPath: string): Promise<BackupCreate>;
