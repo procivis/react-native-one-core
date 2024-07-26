@@ -403,7 +403,7 @@ export interface ImportProofSchemaClaimSchema {
   required: boolean;
   key: string;
   dataType: string;
-  claims: ImportProofSchemaClaimSchema[];
+  claims?: ImportProofSchemaClaimSchema[];
   array: boolean;
 }
 
@@ -414,11 +414,11 @@ export interface ImportProofSchemaCredentialSchema {
   name: string;
   format: string;
   revocationMethod: string;
-  walletStorageType: WalletStorageType;
+  walletStorageType?: WalletStorageType;
   schemaId: string;
   schemaType: CredentialSchemaType;
-  layoutType: LayoutType;
-  layoutProperties: CredentialSchemaLayoutProperties;
+  layoutType?: LayoutType;
+  layoutProperties?: CredentialSchemaLayoutProperties;
 }
 
 export enum HistoryActionEnum {
@@ -788,7 +788,7 @@ export interface ImportCredentialSchemaClaimSchema {
   required: boolean;
   key: string;
   datatype: string;
-  claims: ImportCredentialSchemaClaimSchema[];
+  claims?: ImportCredentialSchemaClaimSchema[];
   array?: boolean;
 }
 

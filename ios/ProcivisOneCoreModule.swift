@@ -190,10 +190,10 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 var submitCredentials: [String: PresentationSubmitCredentialRequestBindingDto] = [:];
-                credentials.allKeys.forEach {
+                try credentials.allKeys.forEach {
                     let key = $0 as! String;
                     let entry = credentials.value(forKey: key) as! NSDictionary;
-                    submitCredentials[key] = deserializePresentationSubmitCredentialRequest(entry)
+                    submitCredentials[key] = try deserializePresentationSubmitCredentialRequest(entry)
                 }
                 
                 try getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials, didId: didId, keyId: keyId);
@@ -286,8 +286,8 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let request = deserializeCreateProofSchemaRequest(request)
-                try getCore().createProofSchema(request: request)
+                let request = try deserializeCreateProofSchemaRequest(request)
+                return try getCore().createProofSchema(request: request)
             }
         }
     
@@ -397,7 +397,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let ids = deserializeIds(credentialIds);
+                let ids = try deserializeIds(credentialIds);
                 let result = try getCore().checkRevocation(credentialIds: ids);
                 return result.map {
                     serialize(credentialRevocationCheckResponse: $0)
