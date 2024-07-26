@@ -209,11 +209,9 @@ object Deserialize {
     }
 
     fun importProofSchemaRequest(request: ReadableMap): ImportProofSchemaRequestBindingsDto {
-        val schema = request.getMap("schema")!!
-
         return ImportProofSchemaRequestBindingsDto(
-            importProofSchema(schema),
-            request.getString("organisationId")!!,
+            schema = importProofSchema(request.getMap("schema")!!),
+            organisationId = request.getString("organisationId")!!,
         )
     }
 
@@ -222,18 +220,18 @@ object Deserialize {
 
         val proofInputSchemas = mutableListOf<ImportProofSchemaInputSchemaBindingDto>()
         for (i in 0 until rawProofInputSchemas.size()) {
-            val rawInputSchema = rawProofInputSchemas.getMap(i)
-            proofInputSchemas.add(importProofSchemaInputSchema(rawInputSchema))
+            val proofInputSchema = rawProofInputSchemas.getMap(i)
+            proofInputSchemas.add(importProofSchemaInputSchema(proofInputSchema))
         }
 
         return ImportProofSchemaBindingDto(
-            request.getString("id")!!,
-            request.getString("createdDate")!!,
-            request.getString("lastModified")!!,
-            request.getString("name")!!,
-            request.getString("organisationId")!!,
-            request.getUInt("expireDuration")!!,
-            proofInputSchemas
+            id = request.getString("id")!!,
+            createdDate = request.getString("createdDate")!!,
+            lastModified = request.getString("lastModified")!!,
+            name = request.getString("name")!!,
+            organisationId = request.getString("organisationId")!!,
+            expireDuration = request.getUInt("expireDuration")!!,
+            proofInputSchemas = proofInputSchemas
         )
     }
 
@@ -247,28 +245,30 @@ object Deserialize {
         }
 
         return ImportProofSchemaInputSchemaBindingDto(
-            claimSchemas,
-            importProofSchemaCredentialSchema(request.getMap("credentialSchema")!!),
-            request.getLong("validityConstraint"),
+            claimSchemas = claimSchemas,
+            credentialSchema = importProofSchemaCredentialSchema(request.getMap("credentialSchema")!!),
+            validityConstraint = request.getLong("validityConstraint"),
         )
     }
 
     private fun importProofSchemaClaimSchema(request: ReadableMap): ImportProofSchemaClaimSchemaBindingDto {
-        val rawClaims = request.getArray("claims")!!
-
-        val claims = mutableListOf<ImportProofSchemaClaimSchemaBindingDto>()
-        for (i in 0 until rawClaims.size()) {
-            val rawClaim = rawClaims.getMap(i)
-            claims.add(importProofSchemaClaimSchema(rawClaim))
+        var claims: List<ImportProofSchemaClaimSchemaBindingDto>? = null
+        if (request.hasKey("claims")) {
+            val rawClaims = request.getArray("claims")!!
+            claims = mutableListOf()
+            for (i in 0 until rawClaims.size()) {
+                val rawClaim = rawClaims.getMap(i)
+                claims.add(importProofSchemaClaimSchema(rawClaim))
+            }
         }
 
         return ImportProofSchemaClaimSchemaBindingDto(
-            request.getString("id")!!,
-            request.getBool("required")!!,
-            request.getString("key")!!,
-            request.getString("dataType")!!,
-            claims,
-            request.getBool("array")!!,
+            id = request.getString("id")!!,
+            required = request.getBoolean("required"),
+            key = request.getString("key")!!,
+            dataType = request.getString("dataType")!!,
+            claims = claims,
+            array = request.getBool("array")!!,
         )
     }
 
@@ -277,17 +277,20 @@ object Deserialize {
     ): ImportProofSchemaCredentialSchemaBindingDto {
 
         return ImportProofSchemaCredentialSchemaBindingDto(
-            request.getString("id")!!,
-            request.getString("createdDate")!!,
-            request.getString("lastModified")!!,
-            request.getString("name")!!,
-            request.getString("format")!!,
-            request.getString("revocationMethod")!!,
-            opt(request.getString("walletStorageType"), WalletStorageTypeBindingEnum::valueOf),
-            request.getString("schemaId")!!,
-            credentialSchemaType(request.getString("schemaType")!!),
-            opt(request.getString("layoutType"), LayoutTypeBindingEnum::valueOf),
-            opt(
+            id = request.getString("id")!!,
+            createdDate = request.getString("createdDate")!!,
+            lastModified = request.getString("lastModified")!!,
+            name = request.getString("name")!!,
+            format = request.getString("format")!!,
+            revocationMethod = request.getString("revocationMethod")!!,
+            walletStorageType = opt(
+                request.getString("walletStorageType"),
+                WalletStorageTypeBindingEnum::valueOf
+            ),
+            schemaId = request.getString("schemaId")!!,
+            schemaType = credentialSchemaType(request.getString("schemaType")!!),
+            layoutType = opt(request.getString("layoutType"), LayoutTypeBindingEnum::valueOf),
+            layoutProperties = opt(
                 request.getMap("layoutProperties"),
                 ::credentialSchemaRequestLayoutProperties
             ),
@@ -338,8 +341,8 @@ object Deserialize {
         request: ReadableMap
     ): ImportCredentialSchemaRequestBindingDto {
         return ImportCredentialSchemaRequestBindingDto(
-            request.getString("organisationId")!!,
-            importCredentialSchemaRequestSchema(request.getMap("schema")!!),
+            organisationId = request.getString("organisationId")!!,
+            schema = importCredentialSchemaRequestSchema(request.getMap("schema")!!),
         )
     }
 
@@ -355,19 +358,22 @@ object Deserialize {
         }
 
         return ImportCredentialSchemaRequestSchemaBindingDto(
-            request.getString("id")!!,
-            request.getString("createdDate")!!,
-            request.getString("lastModified")!!,
-            request.getString("name")!!,
-            request.getString("format")!!,
-            request.getString("revocationMethod")!!,
-            request.getString("organisationId")!!,
-            claims,
-            opt(request.getString("walletStorageType"), WalletStorageTypeBindingEnum::valueOf),
-            request.getString("schemaId")!!,
-            credentialSchemaType(request.getString("schemaType")!!),
-            opt(request.getString("layoutType"), LayoutTypeBindingEnum::valueOf),
-            opt(
+            id = request.getString("id")!!,
+            createdDate = request.getString("createdDate")!!,
+            lastModified = request.getString("lastModified")!!,
+            name = request.getString("name")!!,
+            format = request.getString("format")!!,
+            revocationMethod = request.getString("revocationMethod")!!,
+            organisationId = request.getString("organisationId")!!,
+            claims = claims,
+            walletStorageType = opt(
+                request.getString("walletStorageType"),
+                WalletStorageTypeBindingEnum::valueOf
+            ),
+            schemaId = request.getString("schemaId")!!,
+            schemaType = credentialSchemaType(request.getString("schemaType")!!),
+            layoutType = opt(request.getString("layoutType"), LayoutTypeBindingEnum::valueOf),
+            layoutProperties = opt(
                 request.getMap("layoutProperties"),
                 ::importCredentialSchemaRequestLayoutProperties
             ),
@@ -377,9 +383,9 @@ object Deserialize {
     private fun importCredentialSchemaRequestClaim(
         request: ReadableMap
     ): ImportCredentialSchemaClaimSchemaBindingDto {
-        val claimSchemas = mutableListOf<ImportCredentialSchemaClaimSchemaBindingDto>()
-
-        if (request.hasKey("claims") && !request.isNull("claims")) {
+        var claimSchemas: List<ImportCredentialSchemaClaimSchemaBindingDto>? = null
+        if (request.hasKey("claims")) {
+            claimSchemas = mutableListOf()
             val rawClaimSchemas = request.getArray("claims")!!
             for (i in 0 until rawClaimSchemas.size()) {
                 val claimSchema = rawClaimSchemas.getMap(i)
@@ -388,14 +394,14 @@ object Deserialize {
         }
 
         return ImportCredentialSchemaClaimSchemaBindingDto(
-            request.getString("id")!!,
-            request.getString("createdDate")!!,
-            request.getString("lastModified")!!,
-            request.getBool("required")!!,
-            request.getString("key")!!,
-            request.getBool("array"),
-            request.getString("datatype")!!,
-            claimSchemas,
+            id = request.getString("id")!!,
+            createdDate = request.getString("createdDate")!!,
+            lastModified = request.getString("lastModified")!!,
+            required = request.getBool("required")!!,
+            key = request.getString("key")!!,
+            array = request.getBool("array"),
+            datatype = request.getString("datatype")!!,
+            claims = claimSchemas,
         )
     }
 

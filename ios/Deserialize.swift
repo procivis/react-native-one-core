@@ -19,7 +19,7 @@ struct SerializationError: LocalizedError {
     }
 }
 
-func deserializeKeyRequest(keyRequest: NSDictionary) -> KeyRequestBindingDto {
+func deserializeKeyRequest(keyRequest: NSDictionary) throws -> KeyRequestBindingDto {
     let keyType = keyRequest.value(forKey: "keyType") as! String;
     let name = keyRequest.value(forKey: "name") as! String;
     let storageType = keyRequest.value(forKey: "storageType") as! String;
@@ -46,7 +46,7 @@ func deserializeDidRequest(didRequest: NSDictionary) throws -> DidRequestBinding
     let organisationId = didRequest.value(forKey: "organisationId") as! String;
     let name = didRequest.value(forKey: "name") as! String;
     let didMethod = didRequest.value(forKey: "didMethod") as! String;
-    let keys = deserializeDidRequestKeys(didRequestKeys: didRequest.value(forKey: "keys") as! NSDictionary);
+    let keys = try deserializeDidRequestKeys(didRequestKeys: didRequest.value(forKey: "keys") as! NSDictionary);
     
     let paramsRaw = didRequest.value(forKey: "params") as! NSDictionary;
     var params: [String: String] = [:];
@@ -58,16 +58,16 @@ func deserializeDidRequest(didRequest: NSDictionary) throws -> DidRequestBinding
     return DidRequestBindingDto(organisationId: organisationId, name: name, didMethod: didMethod, keys: keys, params: params);
 }
 
-func deserializeDidRequestKeys(didRequestKeys: NSDictionary) -> DidRequestKeysBindingDto {
-    let authentication = deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "authentication");
-    let assertionMethod = deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "assertionMethod");
-    let keyAgreement = deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "keyAgreement");
-    let capabilityInvocation = deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "capabilityInvocation");
-    let capabilityDelegation = deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "capabilityDelegation");
+func deserializeDidRequestKeys(didRequestKeys: NSDictionary) throws -> DidRequestKeysBindingDto {
+    let authentication = try deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "authentication");
+    let assertionMethod = try deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "assertionMethod");
+    let keyAgreement = try deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "keyAgreement");
+    let capabilityInvocation = try deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "capabilityInvocation");
+    let capabilityDelegation = try deserializeDidRequestKeySet(didRequestKeys: didRequestKeys, keyRole: "capabilityDelegation");
     return DidRequestKeysBindingDto(authentication: authentication, assertionMethod: assertionMethod, keyAgreement: keyAgreement, capabilityInvocation: capabilityInvocation, capabilityDelegation: capabilityDelegation);
 }
 
-func deserializeDidRequestKeySet(didRequestKeys: NSDictionary, keyRole: String) -> [String] {
+func deserializeDidRequestKeySet(didRequestKeys: NSDictionary, keyRole: String) throws -> [String] {
     let roleKeys = didRequestKeys.value(forKey: keyRole) as! NSArray;
     var result: [String] = [];
     roleKeys.forEach { key in
@@ -87,7 +87,7 @@ func deserializeHistorySearch(text: String?, type: String?) throws -> HistorySea
     )
 }
 
-func deserializeIds(_ ids: NSArray) -> [String] {
+func deserializeIds(_ ids: NSArray) throws -> [String] {
     var result: [String] = [];
     ids.forEach { id in
         result.append(id as! String);
@@ -95,7 +95,7 @@ func deserializeIds(_ ids: NSArray) -> [String] {
     return result
 }
 
-func deserializePresentationSubmitCredentialRequest(_ input: NSDictionary) -> PresentationSubmitCredentialRequestBindingDto {
+func deserializePresentationSubmitCredentialRequest(_ input: NSDictionary) throws -> PresentationSubmitCredentialRequestBindingDto {
     let claims = input.value(forKey: "submitClaims") as! NSArray;
     var submitClaims: [String] = [];
     claims.forEach { claim in
@@ -221,24 +221,24 @@ func deserializeImportProofSchema(_ schema: NSDictionary) throws -> ImportProofS
     )
 }
 
-func deserializeCreateProofSchemaRequest(_ request: NSDictionary) -> CreateProofSchemaRequestDto {
+func deserializeCreateProofSchemaRequest(_ request: NSDictionary) throws -> CreateProofSchemaRequestDto {
     let proofInputSchemas = request.value(forKey: "proofInputSchemas") as! NSArray;
     
     return CreateProofSchemaRequestDto(
         name: request.value(forKey: "name") as! String,
         organisationId: request.value(forKey: "organisationId") as! String,
         expireDuration: request.value(forKey: "expireDuration") as! UInt32,
-        proofInputSchemas: proofInputSchemas.map { deserializeProofInputSchemaRequest($0 as! NSDictionary) }
+        proofInputSchemas: try proofInputSchemas.map { try deserializeProofInputSchemaRequest($0 as! NSDictionary) }
     )
 }
 
-func deserializeProofInputSchemaRequest(_ request: NSDictionary) -> ProofInputSchemaRequestDto {
+func deserializeProofInputSchemaRequest(_ request: NSDictionary) throws -> ProofInputSchemaRequestDto {
     let claimSchemas = request.value(forKey: "claimSchemas") as! NSArray;
     
     return ProofInputSchemaRequestDto(
         credentialSchemaId: request.value(forKey: "credentialSchemaId") as! String,
         validityConstraint: request.value(forKey: "validityConstraint") as? Int64,
-        claimSchemas: claimSchemas.map { deserializeProofClaimSchemaRequest($0 as! NSDictionary) }
+        claimSchemas: try claimSchemas.map { try deserializeProofClaimSchemaRequest($0 as! NSDictionary) }
     )
 }
 
@@ -246,28 +246,28 @@ func deserializeImportProofSchemaInputSchema(_ inputSchema: NSDictionary) throws
     let claimSchemas = inputSchema.value(forKey: "claimSchemas") as! NSArray;
     
     return ImportProofSchemaInputSchemaBindingDto(
-        claimSchemas: claimSchemas.map { deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },
+        claimSchemas: try claimSchemas.map { try deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },
         credentialSchema: try deserializeImportProofSchemaCredentialSchema(inputSchema.value(forKey: "credentialSchema") as! NSDictionary),
         validityConstraint: inputSchema.value(forKey: "validityConstraint") as? Int64
     )
 }
 
-func deserializeProofClaimSchemaRequest(_ request: NSDictionary) -> CreateProofSchemaClaimRequestDto {
+func deserializeProofClaimSchemaRequest(_ request: NSDictionary) throws -> CreateProofSchemaClaimRequestDto {
     return CreateProofSchemaClaimRequestDto(
         id: request.value(forKey: "id") as! String,
         required: request.value(forKey: "required") as! Bool
     )
 }
 
-func deserializeImportProofSchemaClaimSchema(_ request: NSDictionary) -> ImportProofSchemaClaimSchemaBindingDto {
-    let claims = request.value(forKey: "claims") as? NSArray ?? [];
+func deserializeImportProofSchemaClaimSchema(_ request: NSDictionary) throws -> ImportProofSchemaClaimSchemaBindingDto {
+    let claims = request.value(forKey: "claims") as? NSArray;
     
     return ImportProofSchemaClaimSchemaBindingDto(
         id: request.value(forKey: "id") as! String,
         required: request.value(forKey: "required") as! Bool,
         key: request.value(forKey: "key") as! String,
         dataType: request.value(forKey: "dataType") as! String,
-        claims: claims.map { deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },
+        claims: try claims?.map { try deserializeImportProofSchemaClaimSchema($0 as! NSDictionary) },
         array: request.value(forKey: "array") as! Bool
     )
 }
@@ -316,7 +316,7 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
 }
 
 func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) throws -> ImportCredentialSchemaClaimSchemaBindingDto {
-    let claims = request.value(forKey: "claims") as? NSArray ?? [];
+    let claims = request.value(forKey: "claims") as? NSArray;
     
     return ImportCredentialSchemaClaimSchemaBindingDto(
         id: request.value(forKey: "id") as! String,
@@ -326,7 +326,7 @@ func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) thro
         key: request.value(forKey: "key") as! String,
         array: request.value(forKey: "array") as? Bool,
         datatype: request.value(forKey: "datatype") as! String,
-        claims: try claims.map { try deserializeImportCredentialSchemaRequestClaim($0 as! NSDictionary) }
+        claims: try claims?.map { try deserializeImportCredentialSchemaRequestClaim($0 as! NSDictionary) }
     )
 }
 
@@ -352,14 +352,14 @@ func deserializeCredentialSchemaRequestLayoutProperties(_ request: NSDictionary)
     )
 }
 
-func deserializeImportCredentialSchemaBackgroundProperties(_ request: NSDictionary) -> CredentialSchemaBackgroundPropertiesBindingDto {
+func deserializeImportCredentialSchemaBackgroundProperties(_ request: NSDictionary) throws -> CredentialSchemaBackgroundPropertiesBindingDto {
     return CredentialSchemaBackgroundPropertiesBindingDto(
         color: request.value(forKey: "color") as? String,
         image: request.value(forKey: "image") as? String
     )
 }
 
-func deserializeImportCredentialSchemaLogoProperties(_ request: NSDictionary) -> CredentialSchemaLogoPropertiesBindingDto {
+func deserializeImportCredentialSchemaLogoProperties(_ request: NSDictionary) throws -> CredentialSchemaLogoPropertiesBindingDto {
     return CredentialSchemaLogoPropertiesBindingDto(
         fontColor: request.value(forKey: "fontColor") as? String,
         backgroundColor: request.value(forKey: "backgroundColor") as? String,
