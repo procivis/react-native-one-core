@@ -519,19 +519,32 @@ export interface DidCapabilities {
     operations: string[];
 }
 export declare enum FormatFeatureEnum {
-    SelectiveDisclosure = "SELECTIVE_DISCLOSURE"
+    SelectiveDisclosure = "SELECTIVE_DISCLOSURE",
+    SupportsCredentialDesign = "SUPPORTS_CREDENTIAL_DESIGN",
+    RequiresSchemaId = "REQUIRES_SCHEMA_ID"
+}
+export declare enum FormatSelectiveDisclosureEnum {
+    AnyLevel = "ANY_LEVEL",
+    SecondLevel = "SECOND_LEVEL"
 }
 export interface FormatCapabilities {
     features: FormatFeatureEnum[];
+    selectiveDisclosure: FormatSelectiveDisclosureEnum[];
+    issuanceDidMethods: string[];
+    issuanceExchangeProtocols: string[];
+    proofExchangeProtocols: string[];
+    revocationMethods: string[];
+    signingKeyAlgorithms: string[];
+    verificationKeyAlgorithms: string[];
+    datatypes: Array<DataTypeEnum | string>;
+    allowedSchemaIds: string[];
+    forbiddenClaimNames: string[];
 }
 export interface ConfigEntity<Capabilities> {
     disabled?: boolean;
     capabilities?: Capabilities;
     display: string;
     order: number;
-}
-export interface FormatCapabilities {
-    features: FormatFeatureEnum[];
 }
 export type ConfigEntities<Capabilities = undefined, Params = {
     type: string;
