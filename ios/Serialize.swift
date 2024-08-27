@@ -58,6 +58,7 @@ func serialize(config: ConfigBindingDto) -> NSDictionary {
         "datatype": config.datatype,
         "keyAlgorithm": config.keyAlgorithm,
         "keyStorage": config.keyStorage,
+        "cacheEntities": config.cacheEntities,
     ]
 }
 
@@ -265,6 +266,14 @@ func serialize(proofListItem: ProofListItemBindingDto) -> NSDictionary {
     result.addOpt("verifierDid", proofListItem.verifierDid)
     
     return result as NSDictionary
+}
+
+func serialize(proposeProofResponse: ProposeProofResponseBindingDto) -> NSDictionary {
+    return [
+        "proofId": proposeProofResponse.proofId,
+        "interactionId": proposeProofResponse.interactionId,
+        "url": proposeProofResponse.url,
+    ]
 }
 
 func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
