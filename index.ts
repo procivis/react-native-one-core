@@ -711,6 +711,7 @@ export interface Config {
   datatype: ConfigEntities<undefined, DataTypeParams>;
   keyAlgorithm: ConfigEntities;
   keyStorage: ConfigEntities<KeyStorageCapabilities>;
+  cacheEntities: ConfigEntities;
 }
 
 export interface KeyListItem {
@@ -821,6 +822,7 @@ export interface CreateProofRequest {
   redirectUri?: string;
   verifierKey?: string;
   scanToVerify?: ScanToVerifyRequest;
+  isoMdlEngagement?: string;
 }
 
 export interface ScanToVerifyRequest {
@@ -892,6 +894,12 @@ export interface TrustAnchorListQuery extends ListQuery {
   exact?: ExactTrustAnchorFilterColumnEnum[];
   type?: string;
   role?: TrustAnchorRoleEnum;
+}
+
+export interface ProposeProofResponse {
+  proofId: string;
+  interactionId: string;
+  url: string;
 }
 
 export interface ONECore {
@@ -975,6 +983,11 @@ export interface ONECore {
   getProofs(query: ProofListQuery): Promise<ItemList<ProofListItem>>;
 
   retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
+
+  proposeProof(
+    exchange: string,
+    organisationId: string
+  ): Promise<ProposeProofResponse>;
 
   createProofSchema(
     request: CreateProofSchemaRequest

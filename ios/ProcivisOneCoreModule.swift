@@ -391,6 +391,18 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
+    @objc(proposeProof:organisationId:resolver:rejecter:)
+    func proposeProof(
+        exchange: String,
+        organisationId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try getCore().proposeProof(exchange: exchange, organisationId: organisationId)
+                return serialize(proposeProofResponse: result)
+            }
+        }
+    
     @objc(checkRevocation:resolver:rejecter:)
     func checkRevocation(
         credentialIds: NSArray,

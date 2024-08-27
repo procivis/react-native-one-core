@@ -381,7 +381,8 @@ func deserializeCreateProofRequest(_ request: NSDictionary) throws -> CreateProo
         exchange: request.value(forKey: "exchange") as! String,
         redirectUri: request.value(forKey: "redirectUri") as? String,
         verifierKey: request.value(forKey: "verifierKey") as? String,
-        scanToVerify: try opt((request.value(forKey: "scanToVerify") as? NSDictionary), deserializeScanToVerifyRequest)
+        scanToVerify: try opt((request.value(forKey: "scanToVerify") as? NSDictionary), deserializeScanToVerifyRequest),
+        isoMdlEngagement: request.value(forKey: "isoMdlEngagement") as? String
     )
 }
 

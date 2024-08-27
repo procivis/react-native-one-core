@@ -258,6 +258,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun proposeProof(exchange: String, organisationId: String, promise: Promise) {
+        Util.asyncCall(promise) {
+            val result = getCore().proposeProof(exchange, organisationId)
+            return@asyncCall Util.convertToRN(result)
+        }
+    }
+
+    @ReactMethod
     fun createProofSchema(request: ReadableMap, promise: Promise) {
         Util.asyncCall(promise) {
             val r = Deserialize.createProofSchemaRequest(request)

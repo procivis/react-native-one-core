@@ -473,6 +473,7 @@ object Deserialize {
             redirectUri = request.getString("redirectUri"),
             verifierKey = request.getString("verifierKey"),
             scanToVerify = opt(request.getMap("scanToVerify"), ::scanToVerifyRequest),
+            isoMdlEngagement = request.getString("isoMdlEngagement"),
         )
     }
 
