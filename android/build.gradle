@@ -57,6 +57,7 @@ dependencies {
     releaseImplementation(name: 'onecore-release', ext: 'aar')
     debugImplementation(name: 'onecore-debug', ext: 'aar')
     api 'net.java.dev.jna:jna:5.13.0@aar'
+    implementation("org.jetbrains.kotlin:kotlin-reflect:${safeExtGet('kotlinVersion', '1.8.0')}")
 }
 
 def coreUrlAAR = { buildType ->
