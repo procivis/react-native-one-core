@@ -1,5 +1,8 @@
 package ch.procivis.one.core
 
+import ch.procivis.one.core.Deserialize.construct
+import ch.procivis.one.core.Serialize.convertToRN
+import ch.procivis.one.core.Util.asyncCall
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -19,7 +22,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun initializeHolder(promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
             oneCore =
                 initializeHolderCore(
@@ -34,7 +37,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun initializeVerifier(promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
             oneCore =
                 initializeVerifierCore(
@@ -49,55 +52,54 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun getVersion(promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val version = getCore().version()
-            return@asyncCall Util.convertToRN(version)
+            return@asyncCall convertToRN(version)
         }
     }
 
     @ReactMethod
     fun getConfig(promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val config = getCore().getConfig()
-            return@asyncCall Util.convertToRN(config)
+            return@asyncCall convertToRN(config)
         }
     }
 
     @ReactMethod
     fun createOrganisation(uuid: String?, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             return@asyncCall getCore().createOrganisation(uuid)
         }
     }
 
     @ReactMethod
     fun generateKey(keyRequest: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            return@asyncCall getCore().generateKey(Deserialize.keyRequest(keyRequest))
+        asyncCall(promise) {
+            return@asyncCall getCore().generateKey(construct(keyRequest))
         }
     }
 
     @ReactMethod
     fun createDid(didRequest: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            return@asyncCall getCore().createDid(Deserialize.didRequest(didRequest))
+        asyncCall(promise) {
+            return@asyncCall getCore().createDid(construct(didRequest))
         }
     }
 
     @ReactMethod
     fun getDids(query: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val listQuery = Deserialize.didListQuery(query)
-            val dids = getCore().getDids(listQuery)
-            return@asyncCall Util.convertToRN(dids)
+        asyncCall(promise) {
+            val dids = getCore().getDids(construct(query))
+            return@asyncCall convertToRN(dids)
         }
     }
 
     @ReactMethod
     fun handleInvitation(url: String, organisationId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val invitationResult = getCore().handleInvitation(url, organisationId)
-            return@asyncCall Util.convertToRN(invitationResult)
+            return@asyncCall convertToRN(invitationResult)
         }
     }
 
@@ -108,7 +110,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         keyId: String?,
         promise: Promise
     ) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().holderAcceptCredential(interactionId, didId, keyId)
             return@asyncCall null
         }
@@ -116,7 +118,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun holderRejectCredential(interactionId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().holderRejectCredential(interactionId)
             return@asyncCall null
         }
@@ -124,15 +126,15 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun getPresentationDefinition(proofId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val presentationDefinition = getCore().getPresentationDefinition(proofId)
-            return@asyncCall Util.convertToRN(presentationDefinition)
+            return@asyncCall convertToRN(presentationDefinition)
         }
     }
 
     @ReactMethod
     fun holderRejectProof(interactionId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().holderRejectProof(interactionId)
             return@asyncCall null
         }
@@ -146,13 +148,12 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         keyId: String?,
         promise: Promise
     ) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val submitCredentials =
                 mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
             for (entry in credentials.entryIterator) {
                 val credential = entry.value as ReadableMap
-                submitCredentials[entry.key] =
-                    Deserialize.presentationSubmitCredentialRequest(credential)
+                submitCredentials[entry.key] = construct(credential)
             }
             getCore().holderSubmitProof(interactionId, submitCredentials, didId, keyId)
             return@asyncCall null
@@ -161,24 +162,23 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun getCredentials(query: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val listQuery = Deserialize.credentialListQuery(query)
-            val credentials = getCore().getCredentials(listQuery)
-            return@asyncCall Util.convertToRN(credentials)
+        asyncCall(promise) {
+            val credentials = getCore().getCredentials(construct(query))
+            return@asyncCall convertToRN(credentials)
         }
     }
 
     @ReactMethod
     fun getCredential(credentialId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val credential = getCore().getCredential(credentialId)
-            return@asyncCall Util.convertToRN(credential)
+            return@asyncCall convertToRN(credential)
         }
     }
 
     @ReactMethod
     fun deleteCredential(credentialId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().deleteCredential(credentialId)
             return@asyncCall null
         }
@@ -186,32 +186,30 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun importCredentialSchema(request: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val r = Deserialize.importCredentialSchemaRequest(request)
-            return@asyncCall getCore().importCredentialSchema(r)
+        asyncCall(promise) {
+            return@asyncCall getCore().importCredentialSchema(construct(request))
         }
     }
 
     @ReactMethod
     fun getCredentialSchema(credentialSchemaId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val schema = getCore().getCredentialSchema(credentialSchemaId)
-            return@asyncCall Util.convertToRN(schema)
+            return@asyncCall convertToRN(schema)
         }
     }
 
     @ReactMethod
     fun getCredentialSchemas(query: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val listQuery = Deserialize.credentialSchemaListQuery(query)
-            val schemas = getCore().getCredentialSchemas(listQuery)
-            return@asyncCall Util.convertToRN(schemas)
+        asyncCall(promise) {
+            val schemas = getCore().getCredentialSchemas(construct(query))
+            return@asyncCall convertToRN(schemas)
         }
     }
 
     @ReactMethod
     fun deleteCredentialSchema(credentialSchemaId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().deleteCredentialSchema(credentialSchemaId)
             return@asyncCall null
         }
@@ -219,80 +217,76 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun createProof(request: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val createProofRequest = Deserialize.createProofRequest(request)
-            return@asyncCall getCore().createProof(createProofRequest)
+        asyncCall(promise) {
+            return@asyncCall getCore().createProof(construct(request))
         }
     }
 
     @ReactMethod
     fun shareProof(proofId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val shareProof = getCore().shareProof(proofId)
-            return@asyncCall Util.convertToRN(shareProof)
+            return@asyncCall convertToRN(shareProof)
         }
     }
 
     @ReactMethod
     fun getProof(proofId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val proof = getCore().getProof(proofId)
-            return@asyncCall Util.convertToRN(proof)
+            return@asyncCall convertToRN(proof)
         }
     }
 
     @ReactMethod
     fun getProofs(query: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val listQuery = Deserialize.proofListQuery(query)
-            val proofs = getCore().getProofs(listQuery)
-            return@asyncCall Util.convertToRN(proofs)
+        asyncCall(promise) {
+            val proofs = getCore().getProofs(construct(query))
+            return@asyncCall convertToRN(proofs)
         }
     }
 
     @ReactMethod
     fun retractProof(proofId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             return@asyncCall getCore().retractProof(proofId)
         }
     }
 
     @ReactMethod
     fun proposeProof(exchange: String, organisationId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val result = getCore().proposeProof(exchange, organisationId)
-            return@asyncCall Util.convertToRN(result)
+            return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
     fun createProofSchema(request: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val r = Deserialize.createProofSchemaRequest(request)
-            return@asyncCall getCore().createProofSchema(r)
+        asyncCall(promise) {
+            return@asyncCall getCore().createProofSchema(construct(request))
         }
     }
 
     @ReactMethod
     fun getProofSchemas(query: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val listQuery = Deserialize.proofSchemaListQuery(query)
-            val schemas = getCore().getProofSchemas(listQuery)
-            return@asyncCall Util.convertToRN(schemas)
+        asyncCall(promise) {
+            val schemas = getCore().getProofSchemas(construct(query))
+            return@asyncCall convertToRN(schemas)
         }
     }
 
     @ReactMethod
     fun getProofSchema(proofSchemaId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val schema = getCore().getProofSchema(proofSchemaId)
-            return@asyncCall Util.convertToRN(schema)
+            return@asyncCall convertToRN(schema)
         }
     }
 
     @ReactMethod
     fun deleteProofSchema(proofSchemaId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().deleteProofSchema(proofSchemaId)
             return@asyncCall null
         }
@@ -300,90 +294,87 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun importProofSchema(request: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val r = Deserialize.importProofSchemaRequest(request)
-            return@asyncCall getCore().importProofSchema(r)
+        asyncCall(promise) {
+            return@asyncCall getCore().importProofSchema(construct(request))
         }
     }
 
     @ReactMethod
     fun checkRevocation(credentialIds: ReadableArray, promise: Promise) {
-        Util.asyncCall(promise) {
-            val ids = Deserialize.ids(credentialIds)
+        asyncCall(promise) {
+            val ids = DeserializeSpecific.ids(credentialIds)
             val results = getCore().checkRevocation(ids)
-            return@asyncCall Util.convertToRN(results)
+            return@asyncCall convertToRN(results)
         }
     }
 
     @ReactMethod
     fun getHistory(query: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val listQuery = Deserialize.historyListQuery(query)
+        asyncCall(promise) {
+            val listQuery = DeserializeSpecific.historyListQuery(query)
             val history = getCore().getHistoryList(listQuery)
-            return@asyncCall Util.convertToRN(history)
+            return@asyncCall convertToRN(history)
         }
     }
 
     @ReactMethod
     fun getHistoryEntry(historyId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val result = getCore().getHistoryEntry(historyId)
-            return@asyncCall Util.convertToRN(result)
+            return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
     fun createTrustAnchor(request: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val r = Deserialize.createTrustAnchorRequest(request)
-            return@asyncCall getCore().createTrustAnchor(r)
+        asyncCall(promise) {
+            return@asyncCall getCore().createTrustAnchor(construct(request))
         }
     }
 
     @ReactMethod
     fun getTrustAnchor(trustAnchorId: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val trustAnchor = getCore().getTrustAnchor(trustAnchorId)
-            return@asyncCall Util.convertToRN(trustAnchor)
+            return@asyncCall convertToRN(trustAnchor)
         }
     }
 
     @ReactMethod
     fun getTrustAnchors(query: ReadableMap, promise: Promise) {
-        Util.asyncCall(promise) {
-            val listQuery = Deserialize.trustAnchorListQuery(query)
-            val trustAnchors = getCore().listTrustAnchors(listQuery)
-            return@asyncCall Util.convertToRN(trustAnchors)
+        asyncCall(promise) {
+            val trustAnchors = getCore().listTrustAnchors(construct(query))
+            return@asyncCall convertToRN(trustAnchors)
         }
     }
 
     @ReactMethod
     fun createBackup(password: String, outputPath: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val result = getCore().createBackup(password, outputPath)
-            return@asyncCall Util.convertToRN(result)
+            return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
     fun backupInfo(promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val backupInfo = getCore().backupInfo()
-            return@asyncCall Util.convertToRN(backupInfo)
+            return@asyncCall convertToRN(backupInfo)
         }
     }
 
     @ReactMethod
     fun unpackBackup(password: String, inputPath: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val result = getCore().unpackBackup(password, inputPath)
-            return@asyncCall Util.convertToRN(result)
+            return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
     fun finalizeImport(promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().finalizeImport()
             return@asyncCall null
         }
@@ -391,7 +382,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun rollbackImport(promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().rollbackImport()
             return@asyncCall null
         }
@@ -399,15 +390,15 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun resolveJsonldContext(url: String, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             val result = getCore().resolveJsonldContext(url)
-            return@asyncCall Util.convertToRN(result)
+            return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
     fun uninitialize(deleteData: Boolean, promise: Promise) {
-        Util.asyncCall(promise) {
+        asyncCall(promise) {
             getCore().uninitialize(deleteData)
             oneCore = null
             return@asyncCall null
