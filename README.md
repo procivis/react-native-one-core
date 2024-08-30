@@ -48,6 +48,7 @@ Add following to your app `android/app/proguard-rules.pro`:
 
 ```
 -keep class java.security.*
+-keep class kotlin.UInt { *; }
 -keep class ch.procivis.one.core.** { *; }
 
 # java-native-access
