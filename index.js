@@ -84,6 +84,12 @@ export var CredentialListIncludeEntityType;
     CredentialListIncludeEntityType["LAYOUT_PROPERTIES"] = "LAYOUT_PROPERTIES";
     CredentialListIncludeEntityType["CREDENTIAL"] = "CREDENTIAL";
 })(CredentialListIncludeEntityType || (CredentialListIncludeEntityType = {}));
+export var CredentialListSearchType;
+(function (CredentialListSearchType) {
+    CredentialListSearchType["CLAIM_NAME"] = "CLAIM_NAME";
+    CredentialListSearchType["CLAIM_VALUE"] = "CLAIM_VALUE";
+    CredentialListSearchType["CREDENTIAL_SCHEMA_NAME"] = "CREDENTIAL_SCHEMA_NAME";
+})(CredentialListSearchType || (CredentialListSearchType = {}));
 export var SortableDidColumnEnum;
 (function (SortableDidColumnEnum) {
     SortableDidColumnEnum["NAME"] = "NAME";
