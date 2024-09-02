@@ -280,16 +280,28 @@ export enum CredentialListIncludeEntityType {
   CREDENTIAL = "CREDENTIAL",
 }
 
-export interface CredentialListQuery extends ListQuery {
+export enum CredentialListSearchType {
+  CLAIM_NAME = "CLAIM_NAME",
+  CLAIM_VALUE = "CLAIM_VALUE",
+  CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME",
+}
+
+export type CredentialListQuery = ListQuery & {
   sort?: SortableCredentialColumnEnum;
   sortDirection?: SortDirection;
-  name?: string;
   exact?: CredentialListQueryExactColumnEnum[];
   role?: CredentialRoleEnum;
   ids?: Array<CredentialListItem["id"]>;
   status?: CredentialStateEnum[];
   include?: CredentialListIncludeEntityType[];
-}
+} & (
+    | { name?: string; searchType?: never; searchText?: never }
+    | {
+        searchText?: string;
+        searchType?: CredentialListSearchType[];
+        name?: never;
+      }
+  );
 
 export enum SortableDidColumnEnum {
   NAME = "NAME",
