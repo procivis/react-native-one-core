@@ -126,6 +126,8 @@ func deserializeCredentialListQuery(_ query: NSDictionary) throws -> CredentialL
         sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
         organisationId: query.value(forKey: "organisationId") as! String,
         name: query.value(forKey: "name") as? String,
+        searchText: query.value(forKey: "searchText") as? String,
+        searchType: try opt(query.value(forKey: "searchType") as? NSArray, enumList),
         exact: try opt(query.value(forKey: "exact") as? NSArray, enumList ),
         role: try opt(query.value(forKey: "role") as? String, deserializeEnum),
         ids: try opt(query.value(forKey: "ids") as? NSArray, deserializeIds),
@@ -591,6 +593,12 @@ extension SortableTrustAnchorColumnBindings: CaseIterable {
 extension ExactTrustAnchorFilterColumnBindings: CaseIterable {
     public static var allCases: [ExactTrustAnchorFilterColumnBindings] {
         return [.name, .type]
+    }
+}
+
+extension SearchTypeBindingEnum: CaseIterable {
+    public static var allCases: [SearchTypeBindingEnum] {
+        return [.claimName, .claimValue, .credentialSchemaName]
     }
 }
 
