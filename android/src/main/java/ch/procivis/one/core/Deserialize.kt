@@ -58,7 +58,7 @@ object Deserialize {
     }
 
     private fun extractObjectItem(type: KType, data: ReadableMap, name: String): Any? {
-        if (!data.hasKey(name)) {
+        if (!data.hasKey(name) || (type.isMarkedNullable && data.isNull(name))) {
             return null
         }
 
