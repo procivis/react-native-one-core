@@ -784,7 +784,6 @@ export interface ProposeProofResponse {
 export interface ONECore {
     getVersion(): Promise<Version>;
     getConfig(): Promise<Config>;
-    runTask(task: string): Promise<string>;
     createOrganisation(uuid: string | undefined): Promise<string>;
     generateKey(keyRequest: KeyRequest): Promise<string>;
     createDid(didRequest: DidRequest): Promise<string>;
@@ -796,6 +795,7 @@ export interface ONECore {
     holderRejectProof(interactionId: InvitationResultProofRequest["interactionId"]): Promise<void>;
     holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: string, keyId: string | undefined): Promise<void>;
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
+    runTask(task: string): Promise<string>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
     importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<CredentialSchema["id"]>;

@@ -80,15 +80,7 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
-    @objc(runTask:rejecter:)
-    func runTask(
-        task: String,
-        resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock) {
-            asyncCall(resolve, reject) {
-                return try getCore().runTask(task);
-            }
-        }
+
 
     @objc(createOrganisation:resolver:rejecter:)
     func createOrganisation(
@@ -354,6 +346,16 @@ class ProcivisOneCoreModule: NSObject {
             asyncCall(resolve, reject) {
                 let request = try deserializeCreateProofRequest(request);
                 return try getCore().createProof(request: request)
+            }
+        }
+
+    @objc(runTask:resolver:rejecter:)
+    func runTask(
+        task: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                return try getCore().runTask(task: task);
             }
         }
 
