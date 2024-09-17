@@ -67,6 +67,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun runTask(task: String, promise: Promise) {
+        asyncCall(promise) {
+            return@asyncCall getCore().runTask(task)
+        }
+    }
+
+    @ReactMethod
     fun createOrganisation(uuid: String?, promise: Promise) {
         asyncCall(promise) {
             return@asyncCall getCore().createOrganisation(uuid)

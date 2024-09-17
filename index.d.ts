@@ -795,6 +795,7 @@ export interface ONECore {
     holderRejectProof(interactionId: InvitationResultProofRequest["interactionId"]): Promise<void>;
     holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: string, keyId: string | undefined): Promise<void>;
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
+    runTask(task: string): Promise<string>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
     importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<CredentialSchema["id"]>;
