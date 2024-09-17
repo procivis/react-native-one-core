@@ -784,6 +784,7 @@ export interface ProposeProofResponse {
 export interface ONECore {
     getVersion(): Promise<Version>;
     getConfig(): Promise<Config>;
+    runTask(task: string): Promise<string>;
     createOrganisation(uuid: string | undefined): Promise<string>;
     generateKey(keyRequest: KeyRequest): Promise<string>;
     createDid(didRequest: DidRequest): Promise<string>;
