@@ -964,6 +964,8 @@ export interface ONECore {
     query: CredentialListQuery
   ): Promise<ItemList<CredentialListItem>>;
 
+  runTask(task: string): Promise<string>;
+
   getCredential(
     credentialId: CredentialListItem["id"]
   ): Promise<CredentialDetail>;
