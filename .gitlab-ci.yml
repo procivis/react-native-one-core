@@ -1,16 +1,22 @@
 image: node:18.16.0-alpine
 
+include:
+  - project: "procivis/one/one-operations"
+    file:
+      - "gitlab/github.gitlab-ci.yml"
+
 variables:
   NODE_OPTIONS: --max_old_space_size=1536
   DOCKER_DRIVER: overlay2
   YARN_CACHE_FOLDER: "./.yarn/cache"
   YARN_ENABLE_GLOBAL_CACHE: "false"
-
+  GITHUB_PROJECT: "procivis/react-native-one-core"
 
 stages:
   - prepare
   - build
   - publish
+  - github
 
 
 .only_tag:
@@ -72,7 +78,18 @@ publish:npm:public:
   needs: [build_deps]
   script:
     - npm config set //registry.npmjs.org/:_authToken ${NPMJS_TOKEN}
-    - npm publish --verbose --access public 
+    - npm publish --verbose --access public
   extends:
     - .modules_setup
     - .only_manual_tag
+
+github:push:
+  needs: []
+  extends:
+    - .github:push
+
+github:release:
+  extends:
+    - .github:release
+  needs:
+    - job: github:push
