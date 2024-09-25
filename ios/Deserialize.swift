@@ -218,6 +218,7 @@ func deserializeImportProofSchema(_ schema: NSDictionary) throws -> ImportProofS
         lastModified: schema.value(forKey: "lastModified") as! String,
         name: schema.value(forKey: "name") as! String,
         organisationId: schema.value(forKey: "organisationId") as! String,
+        importedSourceUrl: schema.value(forKey: "importedSourceUrl") as! String,
         expireDuration: schema.value(forKey: "expireDuration") as! UInt32,
         proofInputSchemas: try proofInputSchemas.map { try deserializeImportProofSchemaInputSchema($0 as! NSDictionary) }
     )
@@ -284,6 +285,7 @@ func deserializeImportProofSchemaCredentialSchema(_ request: NSDictionary) throw
         revocationMethod: request.value(forKey: "revocationMethod") as! String,
         walletStorageType: try opt(request.value(forKey: "walletStorageType") as? String, deserializeEnum),
         schemaId: request.value(forKey: "schemaId") as! String,
+        importedSourceUrl: request.value(forKey: "importedSourceUrl") as! String,
         schemaType: deserializeCredentialSchemaTypeBindingEnum(request.value(forKey: "schemaType") as! String),
         layoutType: try opt(request.value(forKey: "layoutType") as? String, deserializeEnum),
         layoutProperties: try opt((request.value(forKey: "layoutProperties") as? NSDictionary), deserializeCredentialSchemaRequestLayoutProperties)
@@ -308,6 +310,7 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
         format: request.value(forKey: "format") as! String,
         revocationMethod: request.value(forKey: "revocationMethod") as! String,
         organisationId: request.value(forKey: "organisationId") as! String,
+        importedSourceUrl: request.value(forKey: "importedSourceUrl") as! String,
         claims: try claims.map { try deserializeImportCredentialSchemaRequestClaim($0 as! NSDictionary) },
         walletStorageType: try opt(request.value(forKey: "walletStorageType") as? String, deserializeEnum),
         schemaId: request.value(forKey: "schemaId") as! String,
@@ -489,7 +492,7 @@ extension HistorySearchEnumBindingEnum: CaseIterable {
 
 extension HistoryActionBindingEnum: CaseIterable {
     public static var allCases: [HistoryActionBindingEnum] {
-        return [.accepted, .created, .deactivated, .deleted, .issued, .offered, .reactivated, .rejected, .requested, .revoked, .pending, .suspended, .restored, .errored, .shared, .imported]
+        return [.accepted, .created, .deactivated, .deleted, .errored, .issued, .offered, .reactivated, .rejected, .requested, .revoked, .pending, .suspended, .restored, .shared, .imported, .claimsRemoved]
     }
 }
 
