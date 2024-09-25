@@ -166,6 +166,7 @@ export interface ProofDetail {
     verifierDid?: string;
     exchange: string;
     redirectUri?: string;
+    retainUntilDate?: string;
 }
 export interface ProofSchemaListItem {
     id: string;
@@ -331,6 +332,7 @@ export interface ProofListItem {
     transport: string;
     state: ProofStateEnum;
     schema?: ProofSchemaListItem;
+    retainUntilDate?: string;
 }
 export interface ImportProofSchemaRequest {
     organisationId: string;
@@ -342,6 +344,7 @@ export interface ImportProofSchema {
     lastModified: string;
     name: string;
     organisationId: string;
+    importedSourceUrl: string;
     expireDuration: number;
     proofInputSchemas: ImportProofSchemaInputSchema[];
 }
@@ -367,6 +370,7 @@ export interface ImportProofSchemaCredentialSchema {
     revocationMethod: string;
     walletStorageType?: WalletStorageType;
     schemaId: string;
+    importedSourceUrl: string;
     schemaType: CredentialSchemaType;
     layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
@@ -387,7 +391,8 @@ export declare enum HistoryActionEnum {
     RESTORED = "RESTORED",
     ERRORED = "ERRORED",
     SHARED = "SHARED",
-    IMPORTED = "IMPORTED"
+    IMPORTED = "IMPORTED",
+    CLAIMS_REMOVED = "CLAIMS_REMOVED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
@@ -682,6 +687,7 @@ export interface ImportCredentialSchemaRequestSchema {
     format: string;
     revocationMethod: string;
     organisationId: string;
+    importedSourceUrl: string;
     claims: ImportCredentialSchemaClaimSchema[];
     walletStorageType?: WalletStorageType;
     schemaId: string;

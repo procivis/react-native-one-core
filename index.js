@@ -150,6 +150,7 @@ export var HistoryActionEnum;
     HistoryActionEnum["ERRORED"] = "ERRORED";
     HistoryActionEnum["SHARED"] = "SHARED";
     HistoryActionEnum["IMPORTED"] = "IMPORTED";
+    HistoryActionEnum["CLAIMS_REMOVED"] = "CLAIMS_REMOVED";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
