@@ -86,7 +86,7 @@ RCT_EXTERN_METHOD(deleteCredential:(NSString *)credentialId
 
 RCT_EXTERN_METHOD(importCredentialSchema:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)     
+                  rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getCredentialSchema:(NSString *)credentialSchemaId
                   resolver:(RCTPromiseResolveBlock)resolve
@@ -118,7 +118,7 @@ RCT_EXTERN_METHOD(deleteProofSchema:(NSString *)proofSchemaId
 
 RCT_EXTERN_METHOD(importProofSchema:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)      
+                  rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(createProof:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
@@ -128,7 +128,19 @@ RCT_EXTERN_METHOD(runTask:(NSString *)task
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(deleteProofClaims:(NSString *)proofId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(shareProof:(NSString *)proofId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(shareProofSchema:(NSString *)proofSchemaId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(shareCredentialSchema:(NSString *)credentialSchemaId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
