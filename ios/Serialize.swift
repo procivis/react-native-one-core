@@ -535,15 +535,15 @@ func serialize(shareProofResponse: ShareProofResponseBindingDto) -> NSDictionary
     ]
 }
 
-func serialize(shareProofSchemaResponse: ShareProofResponseBindingDTO) -> NSDictionary {
+func serialize(proofSchemaShareResponse: ProofSchemaShareResponseBindingDto) -> NSDictionary {
     return [
-        "url": shareProofSchemaResponse.url,
+        "url": proofSchemaShareResponse.url,
     ]
 }
 
-func serialize(shareCredentialSchemaResponse: CredentialSchemaShareResponseBindingDTO) -> NSDictionary {
+func serialize(credentialSchemaShareResponse: CredentialSchemaShareResponseBindingDto) -> NSDictionary {
     return [
-        "url": shareCredentialSchemaResponse.url,
+        "url": credentialSchemaShareResponse.url,
     ]
 }
 
