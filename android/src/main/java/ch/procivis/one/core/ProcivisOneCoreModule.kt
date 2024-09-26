@@ -74,6 +74,28 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun deleteProofClaims(proofId: String, promise: Promise) {
+        asyncCall(promise) {
+            getCore().deleteProofClaims(proofId)
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun shareCredentialSchema(credentialSchemaId: String, promise: Promise) {
+        asyncCall(promise) {
+            return@asyncCall getCore().shareCredentialSchema(credentialSchemaId)
+        }
+    }
+
+    @ReactMethod
+    fun shareProofSchema(proofSchemaId: String, promise: Promise) {
+        asyncCall(promise) {
+            return@asyncCall getCore().shareProofSchema(proofSchemaId)
+        }
+    }
+
+    @ReactMethod
     fun createOrganisation(uuid: String?, promise: Promise) {
         asyncCall(promise) {
             return@asyncCall getCore().createOrganisation(uuid)

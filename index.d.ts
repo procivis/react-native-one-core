@@ -734,6 +734,12 @@ export declare enum ScanToVerifyBarcodeTypeEnum {
 export interface ShareProofResponse {
     url: string;
 }
+export interface ShareProofSchemaResponse {
+    url: string;
+}
+export interface ShareCredentialSchemaResponse {
+    url: string;
+}
 export interface ResolveJsonLdContextResponse {
     context: string;
 }
@@ -807,11 +813,14 @@ export interface ONECore {
     importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<CredentialSchema["id"]>;
     getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchemaDetail>;
     getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
+    shareCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<ShareCredentialSchemaResponse>;
     deleteCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<void>;
     createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
     shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
+    shareProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ShareProofSchemaResponse>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofs(query: ProofListQuery): Promise<ItemList<ProofListItem>>;
+    deleteProofClaims(proofId: ProofDetail["id"]): Promise<void>;
     retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
     proposeProof(exchange: string, organisationId: string): Promise<ProposeProofResponse>;
     createProofSchema(request: CreateProofSchemaRequest): Promise<ProofSchema["id"]>;

@@ -857,7 +857,12 @@ export enum ScanToVerifyBarcodeTypeEnum {
 export interface ShareProofResponse {
   url: string;
 }
-
+export interface ShareProofSchemaResponse {
+  url: string;
+}
+export interface ShareCredentialSchemaResponse {
+  url: string;
+}
 export interface ResolveJsonLdContextResponse {
   context: string;
 }
@@ -972,6 +977,8 @@ export interface ONECore {
 
   runTask(task: string): Promise<string>;
 
+  deleteProofClaims(proofId: ProofDetail["id"]): Promise<void>;
+
   getCredential(
     credentialId: CredentialListItem["id"]
   ): Promise<CredentialDetail>;
@@ -997,6 +1004,10 @@ export interface ONECore {
   createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
 
   shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
+
+  shareProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ShareProofSchemaResponse>;
+
+  shareCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<ShareCredentialSchemaResponse>;
 
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
 

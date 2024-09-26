@@ -359,6 +359,39 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
+    @objc(runTask:resolver:rejecter:)
+    func deleteProofClaims(
+        proofId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try getCore().deleteProofClaims(proofId: proofId);
+                return nil as NSDictionary?;
+            }
+        }
+
+    @objc(shareCredentialSchema:resolver:rejecter:)
+    func shareCredentialSchema(
+        credentialSchemaId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try getCore().shareCredentialSchema(credentialSchemaId: credentialSchemaId);
+                return serialize(shareCredentialSchemaResponse: result)
+            }
+        }
+
+    @objc(shareProofSchema:resolver:rejecter:)
+    func shareProofSchema(
+        proofSchemaId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let result = try getCore().shareProofSchema(proofSchemaId: proofSchemaId);
+                return serialize(shareProofSchemaResponse: result)
+            }
+        }
+
     @objc(shareProof:resolver:rejecter:)
     func shareProof(
         proofId: String,
