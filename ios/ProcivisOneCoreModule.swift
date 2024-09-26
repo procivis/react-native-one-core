@@ -359,7 +359,7 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
-    @objc(runTask:resolver:rejecter:)
+    @objc(deleteProofClaims:resolver:rejecter:)
     func deleteProofClaims(
         proofId: String,
         resolve: @escaping RCTPromiseResolveBlock,
@@ -377,7 +377,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let result = try getCore().shareCredentialSchema(credentialSchemaId: credentialSchemaId);
-                return serialize(shareCredentialSchemaResponse: result)
+                return serialize(credentialSchemaShareResponse: result)
             }
         }
 
@@ -388,7 +388,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let result = try getCore().shareProofSchema(proofSchemaId: proofSchemaId);
-                return serialize(shareProofSchemaResponse: result)
+                return serialize(proofSchemaShareResponse: result)
             }
         }
 
