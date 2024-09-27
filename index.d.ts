@@ -49,6 +49,7 @@ export interface CredentialSchema {
     revocationMethod: string;
     walletStorageType?: WalletStorageType;
     schemaId: string;
+    importedSourceUrl: string;
     schemaType: CredentialSchemaType;
     layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
