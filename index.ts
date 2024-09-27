@@ -59,6 +59,7 @@ export interface CredentialSchema {
   revocationMethod: string;
   walletStorageType?: WalletStorageType;
   schemaId: string;
+  importedSourceUrl: string;
   schemaType: CredentialSchemaType;
   layoutType?: LayoutType;
   layoutProperties?: CredentialSchemaLayoutProperties;
@@ -1005,9 +1006,13 @@ export interface ONECore {
 
   shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
 
-  shareProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ShareProofSchemaResponse>;
+  shareProofSchema(
+    proofSchemaId: ProofSchema["id"]
+  ): Promise<ShareProofSchemaResponse>;
 
-  shareCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<ShareCredentialSchemaResponse>;
+  shareCredentialSchema(
+    credentialSchemaId: CredentialSchema["id"]
+  ): Promise<ShareCredentialSchemaResponse>;
 
   getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
 
