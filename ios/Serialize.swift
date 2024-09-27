@@ -84,6 +84,7 @@ func serialize(credentialSchema: CredentialSchemaBindingDto) -> NSDictionary {
         "format": credentialSchema.format,
         "revocationMethod": credentialSchema.revocationMethod,
         "schemaId": credentialSchema.schemaId,
+        "importedSourceUrl": credentialSchema.importedSourceUrl,
         "schemaType": serialize(credentialSchemaType: credentialSchema.schemaType)
     ]
     result.addOpt("walletStorageType", opt(credentialSchema.walletStorageType, serializeEnumValue))
@@ -101,6 +102,7 @@ func serialize(credentialSchemaDetail: CredentialSchemaDetailBindingDto) -> NSDi
         "format": credentialSchemaDetail.format,
         "revocationMethod": credentialSchemaDetail.revocationMethod,
         "schemaId": credentialSchemaDetail.schemaId,
+        "importedSourceUrl": credentialSchemaDetail.importedSourceUrl,
         "schemaType": serialize(credentialSchemaType: credentialSchemaDetail.schemaType),
         "claims": credentialSchemaDetail.claims.map { serialize(claimSchema: $0) }
     ]
