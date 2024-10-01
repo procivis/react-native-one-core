@@ -1,0 +1,42 @@
+export var HistoryActionEnum;
+(function (HistoryActionEnum) {
+    HistoryActionEnum["ACCEPTED"] = "ACCEPTED";
+    HistoryActionEnum["CREATED"] = "CREATED";
+    HistoryActionEnum["DEACTIVATED"] = "DEACTIVATED";
+    HistoryActionEnum["DELETED"] = "DELETED";
+    HistoryActionEnum["ISSUED"] = "ISSUED";
+    HistoryActionEnum["OFFERED"] = "OFFERED";
+    HistoryActionEnum["REACTIVATED"] = "REACTIVATED";
+    HistoryActionEnum["REJECTED"] = "REJECTED";
+    HistoryActionEnum["REQUESTED"] = "REQUESTED";
+    HistoryActionEnum["REVOKED"] = "REVOKED";
+    HistoryActionEnum["PENDING"] = "PENDING";
+    HistoryActionEnum["SUSPENDED"] = "SUSPENDED";
+    HistoryActionEnum["RESTORED"] = "RESTORED";
+    HistoryActionEnum["ERRORED"] = "ERRORED";
+    HistoryActionEnum["SHARED"] = "SHARED";
+    HistoryActionEnum["IMPORTED"] = "IMPORTED";
+    HistoryActionEnum["CLAIMS_REMOVED"] = "CLAIMS_REMOVED";
+})(HistoryActionEnum || (HistoryActionEnum = {}));
+export var HistoryEntityTypeEnum;
+(function (HistoryEntityTypeEnum) {
+    HistoryEntityTypeEnum["KEY"] = "KEY";
+    HistoryEntityTypeEnum["DID"] = "DID";
+    HistoryEntityTypeEnum["CREDENTIAL"] = "CREDENTIAL";
+    HistoryEntityTypeEnum["CREDENTIAL_SCHEMA"] = "CREDENTIAL_SCHEMA";
+    HistoryEntityTypeEnum["PROOF"] = "PROOF";
+    HistoryEntityTypeEnum["PROOF_SCHEMA"] = "PROOF_SCHEMA";
+    HistoryEntityTypeEnum["ORGANISATION"] = "ORGANISATION";
+    HistoryEntityTypeEnum["BACKUP"] = "BACKUP";
+})(HistoryEntityTypeEnum || (HistoryEntityTypeEnum = {}));
+export var HistorySearchTypeEnum;
+(function (HistorySearchTypeEnum) {
+    HistorySearchTypeEnum["CLAIM_NAME"] = "CLAIM_NAME";
+    HistorySearchTypeEnum["CLAIM_VALUE"] = "CLAIM_VALUE";
+    HistorySearchTypeEnum["CREDENTIAL_SCHEMA_NAME"] = "CREDENTIAL_SCHEMA_NAME";
+    HistorySearchTypeEnum["ISSUER_DID"] = "ISSUER_DID";
+    HistorySearchTypeEnum["ISSUER_NAME"] = "ISSUER_NAME";
+    HistorySearchTypeEnum["VERIFIER_DID"] = "VERIFIER_DID";
+    HistorySearchTypeEnum["VERIFIER_NAME"] = "VERIFIER_NAME";
+    HistorySearchTypeEnum["PROOF_SCHEMA_NAME"] = "PROOF_SCHEMA_NAME";
+})(HistorySearchTypeEnum || (HistorySearchTypeEnum = {}));

@@ -1,19 +1,18 @@
 {
   "name": "@procivis/react-native-one-core",
-  "version": "1.24967.0",
+  "version": "1.24967.1",
   "author": "Procivis AG (https://procivis.ch)",
   "license": "Apache-2.0",
   "description": "ONE core bindings for React Native",
   "homepage": "https://procivis.ch",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "react-native",
     "one-core"
   ],
   "files": [
-    "index.js",
-    "index.d.ts",
+    "dist",
     "core-sdk.json",
     "android",
     "ios",
