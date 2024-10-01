@@ -316,7 +316,8 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
         schemaId: request.value(forKey: "schemaId") as! String,
         schemaType: deserializeCredentialSchemaTypeBindingEnum(request.value(forKey: "schemaType") as! String),
         layoutType: try opt(request.value(forKey: "layoutType") as? String, deserializeEnum),
-        layoutProperties: try opt((request.value(forKey: "layoutProperties") as? NSDictionary), deserializeImportCredentialSchemaRequestLayoutProperties)
+        layoutProperties: try opt((request.value(forKey: "layoutProperties") as? NSDictionary), deserializeImportCredentialSchemaRequestLayoutProperties),
+        allowSuspension: request.value(forKey: "allowSuspension") as? Bool
     )
 }
 

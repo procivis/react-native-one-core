@@ -218,6 +218,7 @@ export interface ProofSchema {
   organisationId: string;
   expireDuration: number;
   proofInputSchemas: ProofInputSchema[];
+  importedSourceUrl?: string;
 }
 
 export interface ProofInputSchema {
@@ -812,6 +813,7 @@ export interface ImportCredentialSchemaRequestSchema {
   schemaType: CredentialSchemaType;
   layoutType?: LayoutType;
   layoutProperties?: ImportCredentialSchemaLayoutProperties;
+  allowSuspension?: boolean;
 }
 
 export interface ImportCredentialSchemaClaimSchema {

@@ -315,7 +315,7 @@ func serialize(proofSchemaListItem: GetProofSchemaListItemBindingDto) -> NSDicti
 }
 
 func serialize(proofSchema: GetProofSchemaBindingDto) -> NSDictionary {
-    return [
+    var result: [String: Any] = [
         "id": proofSchema.id,
         "createdDate": proofSchema.createdDate,
         "lastModified": proofSchema.lastModified,
@@ -324,6 +324,8 @@ func serialize(proofSchema: GetProofSchemaBindingDto) -> NSDictionary {
         "expireDuration": proofSchema.expireDuration,
         "proofInputSchemas": proofSchema.proofInputSchemas.map { serialize(proofInputSchema: $0) }
     ]
+    result.addOpt("importedSourceUrl", proofSchema.importedSourceUrl)
+    return result as NSDictionary
 }
 
 func serialize(proofInputSchema: ProofInputSchemaBindingDto) -> NSDictionary {
