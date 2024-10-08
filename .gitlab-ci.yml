@@ -146,3 +146,25 @@ create_core_binding:
   rules:
     - if: $CI_PIPELINE_SOURCE == "pipeline"
       when: always
+
+
+sdk:project-update:
+  stage: sdk
+  needs:
+    - job: publish:npm:private
+  parallel:
+    matrix:
+      - SDK_PROJECT:
+        - one/one-mobile-verifier
+        - one/one-wallet
+  variables:
+    COMMIT_TITLE: "Update One Core bindings to $CI_COMMIT_TAG"
+    BRANCH_NAME: "sdk-core-binding-$CI_PIPELINE_ID"
+    MR_TITLE: "Update One Core bindings to $CI_COMMIT_TAG"
+    NEW_VERSION: $CI_COMMIT_TAG
+  trigger:
+    project: procivis/$SDK_PROJECT
+    branch: main
+    strategy: depend
+  extends:
+    - .only_tag
