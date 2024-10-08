@@ -84,14 +84,16 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun shareCredentialSchema(credentialSchemaId: String, promise: Promise) {
         asyncCall(promise) {
-            return@asyncCall getCore().shareCredentialSchema(credentialSchemaId)
+            val result = getCore().shareCredentialSchema(credentialSchemaId)
+            return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
     fun shareProofSchema(proofSchemaId: String, promise: Promise) {
         asyncCall(promise) {
-            return@asyncCall getCore().shareProofSchema(proofSchemaId)
+            val result = getCore().shareProofSchema(proofSchemaId)
+            return@asyncCall convertToRN(result)
         }
     }
 
