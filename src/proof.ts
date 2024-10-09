@@ -60,6 +60,7 @@ export interface CreateProofRequest {
   verifierKey?: string;
   scanToVerify?: ScanToVerifyRequest;
   isoMdlEngagement?: string;
+  transport?: string[];
 }
 
 export interface ScanToVerifyRequest {
