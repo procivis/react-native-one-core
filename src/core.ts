@@ -94,7 +94,8 @@ export interface ONECore {
 
   handleInvitation(
     url: string,
-    organisationId: string
+    organisationId: string,
+    transport: string[] | undefined
   ): Promise<InvitationResult>;
 
   holderAcceptCredential(
