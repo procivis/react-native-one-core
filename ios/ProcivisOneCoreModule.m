@@ -44,6 +44,7 @@ RCT_EXTERN_METHOD(getDids:(NSDictionary *)query
 
 RCT_EXTERN_METHOD(handleInvitation:(NSString *)url
                   organisationId:(NSString *)organisationId
+                  transport:(NSArray *)transport
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

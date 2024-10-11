@@ -127,9 +127,15 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun handleInvitation(url: String, organisationId: String, promise: Promise) {
+    fun handleInvitation(
+        url: String,
+        organisationId: String,
+        transport: ReadableArray?,
+        promise: Promise
+    ) {
         asyncCall(promise) {
-            val invitationResult = getCore().handleInvitation(url, organisationId)
+            val transportList = transport?.let { DeserializeSpecific.ids(it) }
+            val invitationResult = getCore().handleInvitation(url, organisationId, transportList)
             return@asyncCall convertToRN(invitationResult)
         }
     }

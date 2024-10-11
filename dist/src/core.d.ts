@@ -40,7 +40,7 @@ export interface ONECore {
     generateKey(keyRequest: KeyRequest): Promise<string>;
     createDid(didRequest: DidRequest): Promise<string>;
     getDids(query: DidListQuery): Promise<ItemList<DidListItem>>;
-    handleInvitation(url: string, organisationId: string): Promise<InvitationResult>;
+    handleInvitation(url: string, organisationId: string, transport: string[] | undefined): Promise<InvitationResult>;
     holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: string, keyId: string | undefined): Promise<void>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
     getPresentationDefinition(proofId: ProofDetail["id"]): Promise<PresentationDefinition>;
