@@ -67,6 +67,13 @@ export interface CredentialDetail extends CredentialListItem {
   claims: Claim[];
   redirectUri?: string;
   lvvcIssuanceDate?: string;
+  mdocMsoValidity?: MdocMsoValidity;
+}
+
+export interface MdocMsoValidity {
+  expiration: string;
+  nextUpdate: string;
+  lastUpdate: string;
 }
 
 export enum CredentialRoleEnum {
