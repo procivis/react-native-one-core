@@ -109,7 +109,7 @@ func serialize(credentialSchemaDetail: CredentialSchemaDetailBindingDto) -> NSDi
     result.addOpt("walletStorageType", opt(credentialSchemaDetail.walletStorageType, serializeEnumValue))
     result.addOpt("layoutType", opt(credentialSchemaDetail.layoutType, serializeEnumValue))
     result.addOpt("layoutProperties", opt(credentialSchemaDetail.layoutProperties, {properties in serialize(layoutProperties: properties)}))
-
+    
     return result as NSDictionary
 }
 
@@ -216,7 +216,16 @@ func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
     result.addOpt("redirectUri", credentialDetail.redirectUri)
     result.addOpt("lvvcIssuanceDate", credentialDetail.lvvcIssuanceDate)
     result.addOpt("suspendEndDate", credentialDetail.suspendEndDate)
+    result.addOpt("mdocMsoValidity", opt(credentialDetail.mdocMsoValidity, {validity in serialize(mdocMsoValidity: validity)}) )
     return result as NSDictionary
+}
+
+func serialize(mdocMsoValidity: MdocMsoValidityResponseBindingDto) -> NSDictionary {
+    return [
+        "expiration": mdocMsoValidity.expiration,
+        "nextUpdate": mdocMsoValidity.nextUpdate,
+        "lastUpdate": mdocMsoValidity.lastUpdate,
+    ]
 }
 
 func serialize(credentialList: CredentialListBindingDto) -> NSDictionary {
@@ -261,12 +270,12 @@ func serialize(proofListItem: ProofListItemBindingDto) -> NSDictionary {
         "transport": proofListItem.transport,
         "state": serializeEnumValue(value: proofListItem.state),
     ]
-
+    
     result.addOpt("requestedDate", proofListItem.requestedDate)
     result.addOpt("completedDate", proofListItem.completedDate)
     result.addOpt("schema", opt(proofListItem.schema, {proofSchema in serialize(proofSchemaListItem: proofSchema) }))
     result.addOpt("verifierDid", proofListItem.verifierDid)
-
+    
     return result as NSDictionary
 }
 
@@ -309,7 +318,7 @@ func serialize(proofSchemaListItem: GetProofSchemaListItemBindingDto) -> NSDicti
         "name": proofSchemaListItem.name,
         "expireDuration": proofSchemaListItem.expireDuration
     ]
-
+    
     result.addOpt("deletedAt", proofSchemaListItem.deletedAt)
     return result as NSDictionary
 }
@@ -334,7 +343,7 @@ func serialize(proofInputSchema: ProofInputSchemaBindingDto) -> NSDictionary {
         "credentialSchema": serialize(credentialSchema: proofInputSchema.credentialSchema),
     ]
     result.addOpt("validityConstraint", proofInputSchema.validityConstraint)
-
+    
     return result as NSDictionary
 }
 
@@ -352,7 +361,7 @@ func serialize(proofRequestClaim: ProofRequestClaimBindingDto) -> NSDictionary {
     var result: [String: Any] = [
         "schema": serialize(proofClaimSchema: proofRequestClaim.schema),
     ]
-
+    
     result.addOpt("value", opt(proofRequestClaim.value, { claim in serialize(proofRequestClaimValue: claim) }))
     return result as NSDictionary
 }
@@ -524,7 +533,7 @@ func serialize(invitationResponse: HandleInvitationResponseBindingEnum) -> NSDic
             "interactionId": interactionId,
             "credentialIds": credentialIds
         ];
-
+        
     case let .proofRequest(interactionId, proofId):
         return [
             "interactionId": interactionId,
