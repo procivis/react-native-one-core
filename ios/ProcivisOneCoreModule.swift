@@ -195,8 +195,8 @@ class ProcivisOneCoreModule: NSObject {
             asyncCall(resolve, reject) {
                 var submitCredentials: [String: PresentationSubmitCredentialRequestBindingDto] = [:];
                 try credentials.allKeys.forEach {
-                    let key = $0 as! String;
-                    let entry = credentials.value(forKey: key) as! NSDictionary;
+                    let key: String = try safeCast($0);
+                    let entry: NSDictionary = try safeCast(credentials.value(forKey: key));
                     submitCredentials[key] = try deserializePresentationSubmitCredentialRequest(entry)
                 }
                 
