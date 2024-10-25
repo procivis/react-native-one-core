@@ -408,6 +408,7 @@ func serialize(presentationDefinitionRequestedCredential: PresentationDefinition
         "id": presentationDefinitionRequestedCredential.id,
         "fields": presentationDefinitionRequestedCredential.fields.map { serialize(presentationDefinitionField: $0) },
         "applicableCredentials": presentationDefinitionRequestedCredential.applicableCredentials,
+        "inapplicableCredentials": presentationDefinitionRequestedCredential.inapplicableCredentials,
     ]
     result.addOpt("name", presentationDefinitionRequestedCredential.name)
     result.addOpt("purpose", presentationDefinitionRequestedCredential.purpose)
