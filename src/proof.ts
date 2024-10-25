@@ -108,6 +108,7 @@ export interface PresentationDefinitionRequestedCredential {
   purpose?: string;
   fields: PresentationDefinitionField[];
   applicableCredentials: Array<CredentialListItem["id"]>;
+  inapplicableCredentials: Array<CredentialListItem["id"]>;
   validityCredentialNbf?: string;
 }
 
