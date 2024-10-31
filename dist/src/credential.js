@@ -37,3 +37,8 @@ export var CredentialListSearchType;
     CredentialListSearchType["CLAIM_VALUE"] = "CLAIM_VALUE";
     CredentialListSearchType["CREDENTIAL_SCHEMA_NAME"] = "CREDENTIAL_SCHEMA_NAME";
 })(CredentialListSearchType || (CredentialListSearchType = {}));
+export var OpenID4VCITxCodeInputMode;
+(function (OpenID4VCITxCodeInputMode) {
+    OpenID4VCITxCodeInputMode["NUMERIC"] = "NUMERIC";
+    OpenID4VCITxCodeInputMode["TEXT"] = "TEXT";
+})(OpenID4VCITxCodeInputMode || (OpenID4VCITxCodeInputMode = {}));
