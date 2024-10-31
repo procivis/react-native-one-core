@@ -20,7 +20,7 @@ import {
 } from "./credentialSchema";
 import { DidListItem, DidListQuery, DidRequest } from "./did";
 import { HistoryListItem, HistoryListQuery } from "./history";
-import { KeyRequest } from "./key";
+import {KeyCheckCertificateRequestBindingDto, KeyListItem, KeyRequest} from "./key";
 import { ItemList } from "./list";
 import {
   CreateProofRequest,
@@ -131,6 +131,8 @@ export interface ONECore {
   ): Promise<ItemList<CredentialListItem>>;
 
   runTask(task: string): Promise<string>;
+
+  checkCertificate(keyId: KeyListItem["id"], certificate: KeyCheckCertificateRequestBindingDto): Promise<void>;
 
   deleteProofClaims(proofId: ProofDetail["id"]): Promise<void>;
 

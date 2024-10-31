@@ -9,11 +9,11 @@ import Foundation
 
 struct SerializationError: LocalizedError {
     let description: String
-    
+
     init(_ description: String) {
         self.description = description
     }
-    
+
     var errorDescription: String? {
         description
     }
@@ -24,21 +24,21 @@ func deserializeKeyRequest(keyRequest: NSDictionary) throws -> KeyRequestBinding
     let name: String = try safeCast(keyRequest.value(forKey: "name"));
     let storageType: String = try safeCast(keyRequest.value(forKey: "storageType"));
     let organisationId: String = try safeCast(keyRequest.value(forKey: "organisationId"));
-    
+
     let keyParamsRaw: NSDictionary = try safeCast(keyRequest.value(forKey: "keyParams"));
     var keyParams: [String: String] = [:];
     try keyParamsRaw.allKeys.forEach {
         let key: String = try safeCast($0);
         keyParams[key] = keyParamsRaw.value(forKey: key) as? String;
     }
-    
+
     let storageParamsRaw: NSDictionary = try safeCast(keyRequest.value(forKey: "storageParams"));
     var storageParams: [String: String] = [:];
     try storageParamsRaw.allKeys.forEach {
         let key: String = try safeCast($0);
         storageParams[key] = storageParamsRaw.value(forKey: key) as? String;
     }
-    
+
     return KeyRequestBindingDto(organisationId: organisationId, keyType: keyType, keyParams: keyParams, name: name, storageType: storageType, storageParams: storageParams);
 }
 
@@ -47,14 +47,14 @@ func deserializeDidRequest(didRequest: NSDictionary) throws -> DidRequestBinding
     let name: String = try safeCast(didRequest.value(forKey: "name"));
     let didMethod: String = try safeCast(didRequest.value(forKey: "didMethod"));
     let keys = try deserializeDidRequestKeys(didRequestKeys: try safeCast(didRequest.value(forKey: "keys")));
-    
+
     let paramsRaw: NSDictionary = try safeCast(didRequest.value(forKey: "params"));
     var params: [String: String] = [:];
     try paramsRaw.allKeys.forEach {
         let key: String = try safeCast($0);
         params[key] = paramsRaw.value(forKey: key) as? String;
     }
-    
+
     return DidRequestBindingDto(organisationId: organisationId, name: name, didMethod: didMethod, keys: keys, params: params);
 }
 
@@ -80,7 +80,7 @@ func deserializeHistorySearch(text: String?, type: String?) throws -> HistorySea
     if text == nil {
         return nil
     }
-    
+
     return HistorySearchBindingDto(
         text: text!,
         type: try opt(type, deserializeEnum)
@@ -211,7 +211,7 @@ func deserializeImportProofSchemaRequest(_ request: NSDictionary) throws -> Impo
 
 func deserializeImportProofSchema(_ schema: NSDictionary) throws -> ImportProofSchemaBindingDto {
     let proofInputSchemas: NSArray = try safeCast(schema.value(forKey: "proofInputSchemas"));
-    
+
     return ImportProofSchemaBindingDto(
         id: try safeCast(schema.value(forKey: "id")),
         createdDate: try safeCast(schema.value(forKey: "createdDate")),
@@ -226,7 +226,7 @@ func deserializeImportProofSchema(_ schema: NSDictionary) throws -> ImportProofS
 
 func deserializeCreateProofSchemaRequest(_ request: NSDictionary) throws -> CreateProofSchemaRequestDto {
     let proofInputSchemas: NSArray = try safeCast(request.value(forKey: "proofInputSchemas"));
-    
+
     return CreateProofSchemaRequestDto(
         name: try safeCast(request.value(forKey: "name")),
         organisationId: try safeCast(request.value(forKey: "organisationId")),
@@ -237,7 +237,7 @@ func deserializeCreateProofSchemaRequest(_ request: NSDictionary) throws -> Crea
 
 func deserializeProofInputSchemaRequest(_ request: NSDictionary) throws -> ProofInputSchemaRequestDto {
     let claimSchemas: NSArray = try safeCast(request.value(forKey: "claimSchemas"));
-    
+
     return ProofInputSchemaRequestDto(
         credentialSchemaId: try safeCast(request.value(forKey: "credentialSchemaId")),
         validityConstraint: try safeCast(request.value(forKey: "validityConstraint")),
@@ -247,7 +247,7 @@ func deserializeProofInputSchemaRequest(_ request: NSDictionary) throws -> Proof
 
 func deserializeImportProofSchemaInputSchema(_ inputSchema: NSDictionary) throws -> ImportProofSchemaInputSchemaBindingDto {
     let claimSchemas: NSArray = try safeCast(inputSchema.value(forKey: "claimSchemas"));
-    
+
     return ImportProofSchemaInputSchemaBindingDto(
         claimSchemas: try claimSchemas.map { try deserializeImportProofSchemaClaimSchema(try safeCast($0)) },
         credentialSchema: try deserializeImportProofSchemaCredentialSchema(try safeCast(inputSchema.value(forKey: "credentialSchema"))),
@@ -264,7 +264,7 @@ func deserializeProofClaimSchemaRequest(_ request: NSDictionary) throws -> Creat
 
 func deserializeImportProofSchemaClaimSchema(_ request: NSDictionary) throws -> ImportProofSchemaClaimSchemaBindingDto {
     let claims = request.value(forKey: "claims") as? NSArray;
-    
+
     return ImportProofSchemaClaimSchemaBindingDto(
         id: try safeCast(request.value(forKey: "id")),
         required: try safeCast(request.value(forKey: "required")),
@@ -301,7 +301,7 @@ func deserializeImportCredentialSchemaRequest(_ request: NSDictionary) throws ->
 
 func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) throws -> ImportCredentialSchemaRequestSchemaBindingDto {
     let claims: NSArray = try safeCast(request.value(forKey: "claims"));
-    
+
     return ImportCredentialSchemaRequestSchemaBindingDto(
         id: try safeCast(request.value(forKey: "id")),
         createdDate: try safeCast(request.value(forKey: "createdDate")),
@@ -323,7 +323,7 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
 
 func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) throws -> ImportCredentialSchemaClaimSchemaBindingDto {
     let claims = request.value(forKey: "claims") as? NSArray;
-    
+
     return ImportCredentialSchemaClaimSchemaBindingDto(
         id: try safeCast(request.value(forKey: "id")),
         createdDate: try safeCast(request.value(forKey: "createdDate")),
@@ -390,6 +390,12 @@ func deserializeCreateProofRequest(_ request: NSDictionary) throws -> CreateProo
         scanToVerify: try opt((request.value(forKey: "scanToVerify") as? NSDictionary), deserializeScanToVerifyRequest),
         isoMdlEngagement: request.value(forKey: "isoMdlEngagement") as? String,
         transport: request.value(forKey: "transport") as? [String]
+    )
+}
+
+func deserializeKeyCheckCertificateRequest(_ request: NSDictionary) throws -> KeyCheckCertificateRequestBindingDto {
+    return KeyCheckCertificateRequestBindingDto(
+        certificate: (request.value(forKey: "certificate") as? String)!
     )
 }
 
@@ -651,5 +657,5 @@ private func deserializeCredentialSchemaTypeBindingEnum(_ credentialSchemaType: 
     case let other:
         return .other(value: other)
     }
-    
+
 }
