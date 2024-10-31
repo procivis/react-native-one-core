@@ -41,7 +41,7 @@ export interface ONECore {
     createDid(didRequest: DidRequest): Promise<string>;
     getDids(query: DidListQuery): Promise<ItemList<DidListItem>>;
     handleInvitation(url: string, organisationId: string, transport: string[] | undefined): Promise<InvitationResult>;
-    holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: string, keyId: string | undefined): Promise<void>;
+    holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: string, keyId: string | undefined, txCode: string | undefined): Promise<void>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
     getPresentationDefinition(proofId: ProofDetail["id"]): Promise<PresentationDefinition>;
     holderRejectProof(interactionId: InvitationResultProofRequest["interactionId"]): Promise<void>;

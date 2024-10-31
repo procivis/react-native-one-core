@@ -138,15 +138,16 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
-    @objc(holderAcceptCredential:didId:keyId:resolver:rejecter:)
+    @objc(holderAcceptCredential:didId:keyId:txCode:resolver:rejecter:)
     func holderAcceptCredential(
         interactionId: String,
         didId: String,
         keyId: String?,
+        txCode: String?,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().holderAcceptCredential(interactionId: interactionId, didId: didId, keyId: keyId);
+                try getCore().holderAcceptCredential(interactionId: interactionId, didId: didId, keyId: keyId, txCode: txCode);
                 return nil as NSDictionary?;
             }
         }
