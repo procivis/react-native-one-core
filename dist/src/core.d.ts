@@ -4,7 +4,7 @@ import { CredentialDetail, CredentialListItem, CredentialListQuery, CredentialRe
 import { CredentialSchema, CredentialSchemaDetail, CredentialSchemaListQuery, ImportCredentialSchemaRequest, ShareCredentialSchemaResponse } from "./credentialSchema";
 import { DidListItem, DidListQuery, DidRequest } from "./did";
 import { HistoryListItem, HistoryListQuery } from "./history";
-import { KeyRequest } from "./key";
+import { KeyCheckCertificateRequestBindingDto, KeyListItem, KeyRequest } from "./key";
 import { ItemList } from "./list";
 import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
@@ -48,6 +48,7 @@ export interface ONECore {
     holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: string, keyId: string | undefined): Promise<void>;
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     runTask(task: string): Promise<string>;
+    checkCertificate(keyId: KeyListItem["id"], certificate: KeyCheckCertificateRequestBindingDto): Promise<void>;
     deleteProofClaims(proofId: ProofDetail["id"]): Promise<void>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;

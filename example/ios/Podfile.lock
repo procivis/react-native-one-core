@@ -315,7 +315,7 @@ PODS:
   - React-jsinspector (0.72.5)
   - React-logger (0.72.5):
     - glog
-  - react-native-one-core (1.26730.0):
+  - react-native-one-core (1.26730.1):
     - React-Core
   - React-NativeModulesApple (0.72.5):
     - hermes-engine
@@ -587,7 +587,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: ff70a72027dea5cc7d71cfcc6fad7f599f63987a
   React-jsinspector: aef73cbd43b70675f572214d10fa438c89bf11ba
   React-logger: 2e4aee3e11b3ec4fa6cfd8004610bbb3b8d6cca4
-  react-native-one-core: 8e274842ce64cb57d22bef4f75a2f303b53ac8c0
+  react-native-one-core: 43b5df53d72be22e1996caefa19ca1656d5186a2
   React-NativeModulesApple: 797bc6078d566eef3fb3f74127e6e1d2e945a15f
   React-perflogger: cd8886513f68e1c135a1e79d20575c6489641597
   React-RCTActionSheet: 726d2615ca62a77ce3e2c13d87f65379cdc73498
