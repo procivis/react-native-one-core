@@ -529,11 +529,15 @@ func serialize(importBackupMetadata: MetadataBindingDto) -> NSDictionary {
 
 func serialize(invitationResponse: HandleInvitationResponseBindingEnum) -> NSDictionary {
     switch (invitationResponse) {
-    case let .credentialIssuance(interactionId, credentialIds):
-        return [
+    case let .credentialIssuance(interactionId, credentialIds, txCode):
+        var result: [String: Any] = [
             "interactionId": interactionId,
             "credentialIds": credentialIds
         ];
+        
+        result.addOpt("txCode", opt(txCode, { serialize(txCode: $0) }));        
+
+        return result as NSDictionary;
         
     case let .proofRequest(interactionId, proofId):
         return [
@@ -541,6 +545,16 @@ func serialize(invitationResponse: HandleInvitationResponseBindingEnum) -> NSDic
             "proofId": proofId
         ];
     }
+}
+
+func serialize(txCode: OpenId4vciTxCodeBindingDto) -> NSDictionary {
+    var result: [String: Any] = [:];
+
+    result.addOpt("inputMode", opt(txCode.inputMode, serializeEnumValue));
+    result.addOpt("length", txCode.length);
+    result.addOpt("description", txCode.description);
+    
+    return result as NSDictionary;
 }
 
 func serialize(shareProofResponse: ShareProofResponseBindingDto) -> NSDictionary {

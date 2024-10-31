@@ -131,4 +131,16 @@ export interface CredentialRevocationCheckResponse {
 export interface InvitationResultCredentialIssuance {
   interactionId: string;
   credentialIds: Array<CredentialListItem["id"]>;
+  txCode?: OpenID4VCITxCode;
+}
+
+export interface OpenID4VCITxCode {
+  inputMode?: OpenID4VCITxCodeInputMode;
+  length?: number;
+  description?: string;
+}
+
+export enum OpenID4VCITxCodeInputMode {
+  NUMERIC = "NUMERIC",
+  TEXT = "TEXT"
 }

@@ -152,10 +152,11 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         interactionId: String,
         didId: String,
         keyId: String?,
+        txCode: String?,
         promise: Promise
     ) {
         asyncCall(promise) {
-            getCore().holderAcceptCredential(interactionId, didId, keyId)
+            getCore().holderAcceptCredential(interactionId, didId, keyId, txCode)
             return@asyncCall null
         }
     }

@@ -101,7 +101,8 @@ export interface ONECore {
   holderAcceptCredential(
     interactionId: InvitationResultCredentialIssuance["interactionId"],
     didId: string,
-    keyId: string | undefined
+    keyId: string | undefined,
+    txCode: string | undefined
   ): Promise<void>;
 
   holderRejectCredential(
