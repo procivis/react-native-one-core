@@ -56,11 +56,43 @@ build_deps:
   cache:
     policy: pull-push
 
-build:
+build:lib:
   stage: build
   extends: .modules_setup
   script:
     - yarn compile
+
+build:kotlin:
+  image: $CI_REGISTRY/procivis/one/one-operations/core-base:1.81.0-0.1
+  stage: build
+  variables:
+    YARN_ENABLE_IMMUTABLE_INSTALLS: true
+    NODE_ENV: development
+  script:
+    - cd example
+    - yarn install
+    - cd android
+    - ./gradlew build
+  cache:
+    key: $CI_JOB_NAME_SLUG
+    policy: pull-push
+    when: on_success
+    paths:
+      - example/android/.gradle
+
+build:swift:
+  image: $CI_REGISTRY/procivis/one/one-operations/bitrise-builder:0.2.0
+  stage: build
+  variables:
+    BITRISE_PROJECT_SLUG: 6ee8c26f-6d7b-4bcb-8ddc-be1ba3cd2687
+    BITRISE_WORKFLOW: iOS_RN_Core_LIB
+  script:
+    - /etc/gitrise.sh
+      --access-token $BITRISE_API_ACCESS_TOKEN
+      --slug $BITRISE_PROJECT_SLUG
+      --workflow $BITRISE_WORKFLOW
+      --commit "$CI_COMMIT_SHA"
+
 
 publish:npm:private:
   stage: publish
@@ -96,7 +128,7 @@ github:release:
 
 create_core_binding:
   stage: sdk
-  image: registry.gitlab.procivis.ch/procivis/one/one-operations/bitrise-builder:0.2.0
+  image: $CI_REGISTRY/procivis/one/one-operations/bitrise-builder:0.2.0
   variables:
     # NEW_VERSION: required from upstream pipeline
     MR_ENDPOINT: ${CI_SERVER_URL}/api/v4/projects/${CI_PROJECT_ID}/merge_requests
