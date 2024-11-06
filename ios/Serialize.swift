@@ -378,6 +378,7 @@ func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto) -> Any 
 func serialize(proofClaimSchema: ProofClaimSchemaBindingDto) -> NSDictionary {
     return [
         "id": proofClaimSchema.id,
+        "requested": proofClaimSchema.requested,
         "required": proofClaimSchema.required,
         "key": proofClaimSchema.key,
         "dataType": proofClaimSchema.dataType,

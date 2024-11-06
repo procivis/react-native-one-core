@@ -9,6 +9,7 @@ import { ListQuery, SortDirection } from "./list";
 
 export interface ProofInputClaimSchema {
   id: string;
+  requested: boolean;
   required: boolean;
   key: string;
   dataType: string;
@@ -87,6 +88,7 @@ export interface ImportProofSchemaInputSchema {
 
 export interface ImportProofSchemaClaimSchema {
   id: string;
+  requested: boolean;
   required: boolean;
   key: string;
   dataType: string;
