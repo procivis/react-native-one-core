@@ -267,6 +267,7 @@ func deserializeImportProofSchemaClaimSchema(_ request: NSDictionary) throws -> 
 
     return ImportProofSchemaClaimSchemaBindingDto(
         id: try safeCast(request.value(forKey: "id")),
+        requested: try safeCast(request.value(forKey: "requested")),
         required: try safeCast(request.value(forKey: "required")),
         key: try safeCast(request.value(forKey: "key")),
         dataType: try safeCast(request.value(forKey: "dataType")),
