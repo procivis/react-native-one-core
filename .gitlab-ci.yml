@@ -4,6 +4,7 @@ include:
   - project: "procivis/one/one-operations"
     file:
       - "gitlab/github.gitlab-ci.yml"
+      - "gitlab/rules.gitlab-ci.yml"
 
 variables:
   NODE_OPTIONS: --max_old_space_size=1536
@@ -19,6 +20,10 @@ stages:
   - github
   - sdk
 
+.rule:only_mr_event:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: on_success
 
 .only_tag:
   rules:
@@ -28,6 +33,11 @@ stages:
   rules:
     - if: $CI_COMMIT_TAG
       when: manual
+
+.rule:build_deps:
+  rules:
+    - !reference [ .rule:only_main_or_tag, rules ]
+    - !reference [ .rule:only_mr_event, rules ]
 
 .yarn-cache: &yarn-cache
     key:
@@ -46,20 +56,17 @@ stages:
     - yarn global add node-gyp @mapbox/node-pre-gyp --network-concurrency 1
     - yarn install --frozen-lockfile --network-concurrency 1
 
-.rule:only_mr_event:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: on_success
 
 build_deps:
   stage: prepare
   extends:
     - .modules_setup
-    - .rule:only_mr_event
+    - .rule:build_deps
   script:
     - ''
   cache:
     policy: pull-push
+
 
 build:lib:
   stage: build
@@ -106,7 +113,6 @@ build:swift:
 
 publish:npm:private:
   stage: publish
-  needs: [build_deps]
   script:
     - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
     - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
@@ -117,7 +123,6 @@ publish:npm:private:
 
 publish:npm:public:
   stage: publish
-  needs: [build_deps]
   script:
     - npm config set //registry.npmjs.org/:_authToken ${NPMJS_TOKEN}
     - npm publish --verbose --access public
