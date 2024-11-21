@@ -590,10 +590,8 @@ func serialize(trustAnchor: GetTrustAnchorResponseBindingDto) -> NSDictionary {
         "name": trustAnchor.name,
         "type": trustAnchor.type,
         "role": serializeEnumValue(value: trustAnchor.role),
-        "organisationId": trustAnchor.organisationId,
     ]
     result.addOpt("publisherReference", trustAnchor.publisherReference)
-    result.addOpt("priority", trustAnchor.priority)
     return result as NSDictionary
 }
 
@@ -613,10 +611,8 @@ func serialize(trustAnchorListItem: TrustAnchorsListItemResponseBindingDto) -> N
         "name": trustAnchorListItem.name,
         "type": trustAnchorListItem.type,
         "role": serializeEnumValue(value: trustAnchorListItem.role),
-        "organisationId": trustAnchorListItem.organisationId,
         "entities": trustAnchorListItem.entities,
     ]
     result.addOpt("publisherReference", trustAnchorListItem.publisherReference)
-    result.addOpt("priority", trustAnchorListItem.priority)
     return result as NSDictionary
 }
