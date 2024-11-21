@@ -413,9 +413,7 @@ func deserializeCreateTrustAnchorRequest(_ request: NSDictionary) throws -> Crea
         name: try safeCast(request.value(forKey: "name")),
         type: try safeCast(request.value(forKey: "type")),
         publisherReference: request.value(forKey: "publisherReference") as? String,
-        role: try deserializeEnum(try safeCast(request.value(forKey: "role"))),
-        priority: request.value(forKey: "priority") as? UInt32,
-        organisationId: try safeCast(request.value(forKey: "organisationId"))
+        role: try deserializeEnum(try safeCast(request.value(forKey: "role")))
     )
 }
 
@@ -428,7 +426,6 @@ func deserializeTrustAnchorListQuery(_ query: NSDictionary) throws -> ListTrustA
         name: query.value(forKey: "name") as? String,
         role: try opt(query.value(forKey: "role") as? String, deserializeEnum),
         type: query.value(forKey: "type") as? String,
-        organisationId: try safeCast(query.value(forKey: "organisationId")),
         exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } )
     )
 }
@@ -598,7 +595,7 @@ extension TrustAnchorRoleBinding: CaseIterable {
 
 extension SortableTrustAnchorColumnBindings: CaseIterable {
     public static var allCases: [SortableTrustAnchorColumnBindings] {
-        return [.name, .createdDate, .type, .role, .priority]
+        return [.name, .createdDate, .type]
     }
 }
 
