@@ -8,8 +8,6 @@ export var SortableTrustAnchorColumnEnum;
     SortableTrustAnchorColumnEnum["NAME"] = "NAME";
     SortableTrustAnchorColumnEnum["CREATED_DATE"] = "CREATED_DATE";
     SortableTrustAnchorColumnEnum["TYPE"] = "TYPE";
-    SortableTrustAnchorColumnEnum["ROLE"] = "ROLE";
-    SortableTrustAnchorColumnEnum["PRIORITY"] = "PRIORITY";
 })(SortableTrustAnchorColumnEnum || (SortableTrustAnchorColumnEnum = {}));
 export var ExactTrustAnchorFilterColumnEnum;
 (function (ExactTrustAnchorFilterColumnEnum) {

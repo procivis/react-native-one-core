@@ -10,8 +10,6 @@ export interface CreateTrustAnchorRequest {
   type: string;
   publisherReference?: string;
   role: TrustAnchorRoleEnum;
-  priority?: number;
-  organisationId: string;
 }
 
 export interface TrustAnchor {
@@ -22,8 +20,6 @@ export interface TrustAnchor {
   type: string;
   publisherReference?: string;
   role: TrustAnchorRoleEnum;
-  priority?: number;
-  organisationId: string;
 }
 
 export interface TrustAnchorListItem extends TrustAnchor {
@@ -34,8 +30,6 @@ export enum SortableTrustAnchorColumnEnum {
   NAME = "NAME",
   CREATED_DATE = "CREATED_DATE",
   TYPE = "TYPE",
-  ROLE = "ROLE",
-  PRIORITY = "PRIORITY",
 }
 
 export enum ExactTrustAnchorFilterColumnEnum {
@@ -43,7 +37,8 @@ export enum ExactTrustAnchorFilterColumnEnum {
   TYPE = "TYPE",
 }
 
-export interface TrustAnchorListQuery extends ListQuery {
+export interface TrustAnchorListQuery
+  extends Omit<ListQuery, "organisationId"> {
   sort?: SortableTrustAnchorColumnEnum;
   sortDirection?: SortDirection;
   name?: string;
