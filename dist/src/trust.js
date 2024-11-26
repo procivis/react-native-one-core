@@ -1,8 +1,3 @@
-export var TrustAnchorRoleEnum;
-(function (TrustAnchorRoleEnum) {
-    TrustAnchorRoleEnum["PUBLISHER"] = "PUBLISHER";
-    TrustAnchorRoleEnum["CLIENT"] = "CLIENT";
-})(TrustAnchorRoleEnum || (TrustAnchorRoleEnum = {}));
 export var SortableTrustAnchorColumnEnum;
 (function (SortableTrustAnchorColumnEnum) {
     SortableTrustAnchorColumnEnum["NAME"] = "NAME";
