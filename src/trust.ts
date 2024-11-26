@@ -1,16 +1,18 @@
 import { ListQuery, SortDirection } from "./list";
 
-export enum TrustAnchorRoleEnum {
-  PUBLISHER = "PUBLISHER",
-  CLIENT = "CLIENT",
-}
-
-export interface CreateTrustAnchorRequest {
+export type CreateTrustAnchorRequest = {
   name: string;
   type: string;
-  publisherReference?: string;
-  role: TrustAnchorRoleEnum;
-}
+} & (
+  | {
+      isPublisher: true;
+      publisherReference?: never;
+    }
+  | {
+      isPublisher?: false;
+      publisherReference: string;
+    }
+);
 
 export interface TrustAnchor {
   id: string;
@@ -18,8 +20,8 @@ export interface TrustAnchor {
   lastModified: string;
   name: string;
   type: string;
-  publisherReference?: string;
-  role: TrustAnchorRoleEnum;
+  isPublisher: boolean;
+  publisherReference: string;
 }
 
 export interface TrustAnchorListItem extends TrustAnchor {
@@ -44,5 +46,5 @@ export interface TrustAnchorListQuery
   name?: string;
   exact?: ExactTrustAnchorFilterColumnEnum[];
   type?: string;
-  role?: TrustAnchorRoleEnum;
+  isPublisher?: boolean;
 }

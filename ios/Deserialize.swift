@@ -412,8 +412,8 @@ func deserializeCreateTrustAnchorRequest(_ request: NSDictionary) throws -> Crea
     return CreateTrustAnchorRequestBindingDto(
         name: try safeCast(request.value(forKey: "name")),
         type: try safeCast(request.value(forKey: "type")),
-        publisherReference: request.value(forKey: "publisherReference") as? String,
-        role: try deserializeEnum(try safeCast(request.value(forKey: "role")))
+        isPublisher: request.value(forKey: "isPublisher") as? Bool,
+        publisherReference: request.value(forKey: "publisherReference") as? String
     )
 }
 
@@ -424,7 +424,7 @@ func deserializeTrustAnchorListQuery(_ query: NSDictionary) throws -> ListTrustA
         sort: try opt(query.value(forKey: "sort") as? String, deserializeEnum),
         sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
         name: query.value(forKey: "name") as? String,
-        role: try opt(query.value(forKey: "role") as? String, deserializeEnum),
+        isPublisher: query.value(forKey: "isPublisher") as? Bool,
         type: query.value(forKey: "type") as? String,
         exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } )
     )
@@ -584,12 +584,6 @@ extension ProofStateBindingEnum: CaseIterable {
 extension ScanToVerifyBarcodeTypeBindingEnum: CaseIterable {
     public static var allCases: [ScanToVerifyBarcodeTypeBindingEnum] {
         return [.mrz, .pdf417]
-    }
-}
-
-extension TrustAnchorRoleBinding: CaseIterable {
-    public static var allCases: [TrustAnchorRoleBinding] {
-        return [.publisher, .client]
     }
 }
 
