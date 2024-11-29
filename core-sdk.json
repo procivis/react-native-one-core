@@ -1,16 +1,16 @@
 {
   "android": {
     "debug": {
-      "url": "https://onetfstatestorage.blob.core.windows.net/core-sdk/android/28924/onecore-debug.aar",
-      "sha1": "dff0fe8d2ed7662eee3e18e1dffd8c0b03574177"
+      "url": "https://onetfstatestorage.blob.core.windows.net/core-sdk/android/29006/onecore-debug.aar",
+      "sha1": "d091a6e5291f5cc0564139c8ca64c313fed063dc"
     },
     "release": {
-      "url": "https://onetfstatestorage.blob.core.windows.net/core-sdk/android/28924/onecore-release.aar",
-      "sha1": "76ddcac1bf77eabf7ea206df10b75064de5e6191"
+      "url": "https://onetfstatestorage.blob.core.windows.net/core-sdk/android/29006/onecore-release.aar",
+      "sha1": "946655e99845c81a07f01ccd6cdaea91f5e2af1f"
     }
   },
   "ios": {
-    "url": "https://onetfstatestorage.blob.core.windows.net/core-sdk/ios/28924/deploy.zip",
-    "sha1": "5e0a93055b17c7138d1b9610699c6958ccc521c7"
+    "url": "https://onetfstatestorage.blob.core.windows.net/core-sdk/ios/29006/deploy.zip",
+    "sha1": "c64c175c0f5a32d49f13882521db70d80d587576"
   }
 }
