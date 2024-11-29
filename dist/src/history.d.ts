@@ -7,7 +7,6 @@ export declare enum HistoryActionEnum {
     DELETED = "DELETED",
     ISSUED = "ISSUED",
     OFFERED = "OFFERED",
-    REACTIVATED = "REACTIVATED",
     REJECTED = "REJECTED",
     REQUESTED = "REQUESTED",
     REVOKED = "REVOKED",

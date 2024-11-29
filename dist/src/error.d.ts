@@ -7,7 +7,8 @@ export declare enum OneErrorCode {
     Uninitialized = "Uninitialized",
     DbErr = "DbErr",
     IOError = "IOError",
-    Unknown = "Unknown"
+    Unknown = "Unknown",
+    IncorrectTxCode = "IncorrectTxCode"
 }
 /**
  * Specific errors being throw from the {@link ONECore} functions

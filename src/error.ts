@@ -9,6 +9,7 @@ export enum OneErrorCode {
   DbErr = "DbErr",
   IOError = "IOError",
   Unknown = "Unknown",
+  IncorrectTxCode = "IncorrectTxCode",
 }
 
 /**
