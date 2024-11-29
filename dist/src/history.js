@@ -6,7 +6,6 @@ export var HistoryActionEnum;
     HistoryActionEnum["DELETED"] = "DELETED";
     HistoryActionEnum["ISSUED"] = "ISSUED";
     HistoryActionEnum["OFFERED"] = "OFFERED";
-    HistoryActionEnum["REACTIVATED"] = "REACTIVATED";
     HistoryActionEnum["REJECTED"] = "REJECTED";
     HistoryActionEnum["REQUESTED"] = "REQUESTED";
     HistoryActionEnum["REVOKED"] = "REVOKED";

@@ -10,6 +10,7 @@ export var OneErrorCode;
     OneErrorCode["DbErr"] = "DbErr";
     OneErrorCode["IOError"] = "IOError";
     OneErrorCode["Unknown"] = "Unknown";
+    OneErrorCode["IncorrectTxCode"] = "IncorrectTxCode";
 })(OneErrorCode || (OneErrorCode = {}));
 /**
  * Specific errors being throw from the {@link ONECore} functions
