@@ -17,7 +17,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     private var oneCore: OneCoreBindingInterface? = null
 
     private fun getCore(): OneCoreBindingInterface {
-        return oneCore ?: throw BindingException.Uninitialized("core not initialized")
+        return oneCore ?: throw BindingException.ErrorResponse(ErrorResponseBindingDto("BR_0184", "core not initialized", null))
     }
 
     @ReactMethod
