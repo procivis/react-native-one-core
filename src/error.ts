@@ -1,31 +1,25 @@
-export enum OneErrorCode {
-  // BindingError
-  AlreadyExists = "AlreadyExists",
-  NotFound = "NotFound",
-  NotSupported = "NotSupported",
-  ValidationError = "ValidationError",
-  ConfigValidationError = "ConfigValidationError",
-  Uninitialized = "Uninitialized",
-  DbErr = "DbErr",
-  IOError = "IOError",
-  Unknown = "Unknown",
-  IncorrectTxCode = "IncorrectTxCode",
-}
+import { ONECore } from "./core";
 
 /**
- * Specific errors being throw from the {@link ONECore} functions
+ * Specific errors being thrown from the {@link ONECore} functions
  */
 export class OneError extends Error {
-  readonly code: OneErrorCode;
-  readonly cause: unknown;
+  readonly operation: string;
+  readonly code: string;
+  readonly cause?: string;
+  readonly originalError: Error;
 
   constructor(params: {
-    code: OneErrorCode;
-    cause: unknown;
-    message?: string;
+    operation: string;
+    code: string;
+    message: string;
+    cause?: string;
+    originalError: Error;
   }) {
     super(params.message);
+    this.operation = params.operation;
     this.code = params.code;
     this.cause = params.cause;
+    this.originalError = params.originalError;
   }
 }

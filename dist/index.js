@@ -1,5 +1,5 @@
 import { NativeModules } from "react-native";
-import { OneError, OneErrorCode } from "./src/error";
+import { OneError } from "./src/error";
 export * from "./src/core";
 export * from "./src/error";
 const ONE = NativeModules.ProcivisOneCoreModule;
@@ -29,24 +29,26 @@ export async function initializeVerifierCore() {
 const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, fn(v)]));
 // Function call arguments/Error transformation
 // for devs: Beware to not declare function parameters as optional, otherwise automatic conversion to null will not be performed
-function wrapFn(fn, name) {
+function wrapFn(fn, operation) {
     return (...args) => {
-        const errHandler = (cause) => {
-            const code = (cause ?? {}).code;
-            if (Object.values(OneErrorCode).includes(code)) {
-                // throw a specific error to be able to handle it easily
+        const errHandler = (e) => {
+            if (e instanceof Error && "code" in e) {
                 throw new OneError({
-                    code,
-                    cause,
-                    message: cause?.message,
+                    operation,
+                    code: e.code,
+                    message: e.message,
+                    cause: "cause" in e ? e.cause : undefined,
+                    originalError: e
                 });
+                // iOS additional fields: "domain", "nativeStackIOS"
+                // android additional fields: "nativeStackAndroid"
             }
             else {
-                throw cause;
+                throw e;
             }
         };
         // set name on the err handler to display the original function name in callstack
-        Object.defineProperty(errHandler, "name", { value: name });
+        Object.defineProperty(errHandler, "name", { value: operation });
         // convert undefined parameters to null for proper parameter matching in native code
         return fn(...args.map((x) => (x === undefined ? null : x))).catch(errHandler);
     };
