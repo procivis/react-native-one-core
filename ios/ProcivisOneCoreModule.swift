@@ -17,14 +17,14 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 guard let dataDirPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else {
-                    throw BindingError.Unknown(message: "invalid DataDir")
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0000", message: "invalid DataDir", cause: nil))
                 }
 
                 // create folder if not exists
                 try FileManager.default.createDirectory(atPath: dataDirPath, withIntermediateDirectories: true)
 
                 if (core != nil) {
-                    throw BindingError.Unknown(message: "core already initialized")
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
                 }
 
                 core = try initializeHolderCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
@@ -38,14 +38,14 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 guard let dataDirPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else {
-                    throw BindingError.Unknown(message: "invalid DataDir")
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0000", message: "invalid DataDir", cause: nil))
                 }
 
                 // create folder if not exists
                 try FileManager.default.createDirectory(atPath: dataDirPath, withIntermediateDirectories: true)
 
                 if (core != nil) {
-                    throw BindingError.Unknown(message: "core already initialized")
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
                 }
 
                 core = try initializeVerifierCore(dataDirPath: dataDirPath, keyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
@@ -55,7 +55,7 @@ class ProcivisOneCoreModule: NSObject {
 
     private func getCore() throws -> OneCoreBindingProtocol {
         guard let result = core else {
-            throw BindingError.Uninitialized(message: "core not initialized")
+            throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0184", message: "core not initialized", cause: nil))
         }
         return result
     }

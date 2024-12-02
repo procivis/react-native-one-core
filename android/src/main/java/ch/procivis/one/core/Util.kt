@@ -10,12 +10,14 @@ object Util {
             override fun run() {
                 try {
                     promise.resolve(function())
-                } catch (error: Throwable) {
+                } catch (error: BindingException.ErrorResponse) {
                     promise.reject(
-                        error.javaClass.simpleName.replaceFirst(Regex("Exception$"), "Error"),
-                        error.message,
+                        error.data.code,
+                        error.data.message,
                         error
                     )
+                } catch (error: Throwable) {
+                    promise.reject(error)
                 }
             }
         }.start()

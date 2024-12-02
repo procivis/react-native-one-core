@@ -1,5 +1,5 @@
 import { NativeModules } from "react-native";
-import { OneError, OneErrorCode } from "./src/error";
+import { OneError } from "./src/error";
 import { ONECore } from "./src/core";
 
 export * from "./src/core";
@@ -54,25 +54,28 @@ const objectMap = <Source, Result>(
 
 function wrapFn<Fn extends (...args: any[]) => Promise<any>>(
   fn: Fn,
-  name: string
+  operation: string
 ) {
   return (...args: any[]) => {
-    const errHandler = (cause: any) => {
-      const code = (cause ?? {}).code;
-      if (Object.values(OneErrorCode).includes(code)) {
-        // throw a specific error to be able to handle it easily
+    const errHandler = (e: unknown) => {
+      if (e instanceof Error && "code" in e) {
         throw new OneError({
-          code,
-          cause,
-          message: cause?.message,
+          operation,
+          code: e.code as string,
+          message: e.message,
+          cause: "cause" in e ? e.cause as string : undefined,
+          originalError: e
         });
+    
+        // iOS additional fields: "domain", "nativeStackIOS"
+        // android additional fields: "nativeStackAndroid"
       } else {
-        throw cause;
+        throw e;
       }
     };
 
     // set name on the err handler to display the original function name in callstack
-    Object.defineProperty(errHandler, "name", { value: name });
+    Object.defineProperty(errHandler, "name", { value: operation });
 
     // convert undefined parameters to null for proper parameter matching in native code
     return fn(...args.map((x) => (x === undefined ? null : x))).catch(

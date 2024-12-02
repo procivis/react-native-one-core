@@ -1,26 +1,16 @@
-export var OneErrorCode;
-(function (OneErrorCode) {
-    // BindingError
-    OneErrorCode["AlreadyExists"] = "AlreadyExists";
-    OneErrorCode["NotFound"] = "NotFound";
-    OneErrorCode["NotSupported"] = "NotSupported";
-    OneErrorCode["ValidationError"] = "ValidationError";
-    OneErrorCode["ConfigValidationError"] = "ConfigValidationError";
-    OneErrorCode["Uninitialized"] = "Uninitialized";
-    OneErrorCode["DbErr"] = "DbErr";
-    OneErrorCode["IOError"] = "IOError";
-    OneErrorCode["Unknown"] = "Unknown";
-    OneErrorCode["IncorrectTxCode"] = "IncorrectTxCode";
-})(OneErrorCode || (OneErrorCode = {}));
 /**
- * Specific errors being throw from the {@link ONECore} functions
+ * Specific errors being thrown from the {@link ONECore} functions
  */
 export class OneError extends Error {
+    operation;
     code;
     cause;
+    originalError;
     constructor(params) {
         super(params.message);
+        this.operation = params.operation;
         this.code = params.code;
         this.cause = params.cause;
+        this.originalError = params.originalError;
     }
 }

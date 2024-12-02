@@ -17,31 +17,11 @@ func asyncCall<Result>(_ resolve: @escaping RCTPromiseResolveBlock,
     }
 }
 
-private let errorMessageRegex = try! NSRegularExpression(pattern: "^([a-zA-Z0-9]+)\\(message\\: \\\"(.*)\\\"\\)$", options: [])
 private func handleError(error: Error, _ reject: @escaping RCTPromiseRejectBlock) {
-    
-    let input = String(describing: error);
-    let inputRange = NSMakeRange(0, input.count)
-    let result = errorMessageRegex.matches(in: input, options: [], range: inputRange)
-    
-    guard let match = result.first else {
-        reject("UnknownError", input, error)
+    if case BindingError.ErrorResponse(data: let errorResponse) = error {
+        reject(errorResponse.code, errorResponse.message, error)
         return
     }
     
-    if (match.numberOfRanges != 3) {
-        reject("UnknownError", input, error)
-        return
-    }
-    
-    let codeRange = Range(match.range(at: 1), in: input)
-    let messageRange = Range(match.range(at: 2), in: input)
-    guard let c = codeRange, let m = messageRange else {
-        reject("UnknownError", input, error)
-        return
-    }
-    
-    let code = String(input[c])
-    let message = String(input[m])
-    reject(code, message, error)
+    reject("UnknownError", String(describing: error), error)
 }
