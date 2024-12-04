@@ -268,9 +268,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun shareProof(proofId: String, promise: Promise) {
+    fun shareProof(proofId: String, request: ShareProofRequestBindingDto, promise: Promise) {
         asyncCall(promise) {
-            val shareProof = getCore().shareProof(proofId)
+            val shareProof = getCore().shareProof(proofId, request)
             return@asyncCall convertToRN(shareProof)
         }
     }
@@ -390,6 +390,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         asyncCall(promise) {
             val trustAnchors = getCore().listTrustAnchors(construct(query))
             return@asyncCall convertToRN(trustAnchors)
+        }
+    }
+
+    @ReactMethod
+    fun getTrustEntityByDid(didId: String, promise: Promise) {
+        asyncCall(promise) {
+            val trustEntity = getCore().getTrustEntityByDid(didId)
+            return@asyncCall convertToRN(trustEntity)
         }
     }
 

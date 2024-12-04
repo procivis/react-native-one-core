@@ -408,13 +408,14 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
-    @objc(shareProof:resolver:rejecter:)
+    @objc(shareProof:request:resolver:rejecter:)
     func shareProof(
         proofId: String,
+        request: NSDictionary,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().shareProof(proofId: proofId);
+                let result = try getCore().shareProof(proofId: proofId, request: deserializeShareProofRequest(request));
                 return serialize(shareProofResponse: result)
             }
         }
@@ -532,6 +533,17 @@ class ProcivisOneCoreModule: NSObject {
                 let listQuery = try deserializeTrustAnchorListQuery(query)
                 let result = try getCore().listTrustAnchors(filters: listQuery);
                 return serialize(trustAnchorList: result)
+            }
+        }
+
+    @objc(getTrustEntityById:resolver:rejecter:)
+    func getTrustEntityById(
+        didId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let trustEntity = try getCore().getTrustEntityByDid(didId: didId);
+                return serialize(trustEntity: trustEntity)
             }
         }
 

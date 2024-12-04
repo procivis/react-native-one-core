@@ -140,6 +140,7 @@ RCT_EXTERN_METHOD(checkCertificate:(NSString *)keyId
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(shareProof:(NSString *)proofId
+                  request:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -189,6 +190,10 @@ RCT_EXTERN_METHOD(getTrustAnchor:(NSString *)trustAnchorId
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getTrustAnchors:(NSDictionary *)query
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getTrustEntityByDid:(NSString *)didId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
