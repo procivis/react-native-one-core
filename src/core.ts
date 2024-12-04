@@ -31,7 +31,7 @@ import {
   ProofDetail,
   ProofListItem,
   ProofListQuery,
-  ProposeProofResponse,
+  ProposeProofResponse, ShareProofRequest,
   ShareProofResponse,
 } from "./proof";
 import {
@@ -46,7 +46,7 @@ import {
   CreateTrustAnchorRequest,
   TrustAnchor,
   TrustAnchorListItem,
-  TrustAnchorListQuery,
+  TrustAnchorListQuery, TrustEntity,
 } from "./trust";
 
 export * from "./backup";
@@ -161,7 +161,7 @@ export interface ONECore {
 
   createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
 
-  shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
+  shareProof(proofId: ProofDetail["id"], request: ShareProofRequest): Promise<ShareProofResponse>;
 
   shareProofSchema(
     proofSchemaId: ProofSchema["id"]
@@ -211,6 +211,8 @@ export interface ONECore {
   getTrustAnchors(
     query: TrustAnchorListQuery
   ): Promise<ItemList<TrustAnchorListItem>>;
+
+  getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
 
   getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
 

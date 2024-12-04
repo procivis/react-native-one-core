@@ -28,3 +28,8 @@ export var ExactProofFilterColumnEnum;
 (function (ExactProofFilterColumnEnum) {
     ExactProofFilterColumnEnum["NAME"] = "NAME";
 })(ExactProofFilterColumnEnum || (ExactProofFilterColumnEnum = {}));
+export var ShareProofRequestClientIdSchemaType;
+(function (ShareProofRequestClientIdSchemaType) {
+    ShareProofRequestClientIdSchemaType["REDIRECT_URI"] = "REDIRECT_URI";
+    ShareProofRequestClientIdSchemaType["VERIFIER_ATTESTATION"] = "VERIFIER_ATTESTATION";
+})(ShareProofRequestClientIdSchemaType || (ShareProofRequestClientIdSchemaType = {}));

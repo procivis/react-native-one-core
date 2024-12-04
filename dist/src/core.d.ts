@@ -6,9 +6,9 @@ import { DidListItem, DidListQuery, DidRequest } from "./did";
 import { HistoryListItem, HistoryListQuery } from "./history";
 import { KeyCheckCertificateRequestBindingDto, KeyListItem, KeyRequest } from "./key";
 import { ItemList } from "./list";
-import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofResponse } from "./proof";
+import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
-import { CreateTrustAnchorRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery } from "./trust";
+import { CreateTrustAnchorRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity } from "./trust";
 export * from "./backup";
 export * from "./config";
 export * from "./credential";
@@ -57,7 +57,7 @@ export interface ONECore {
     getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
     deleteCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<void>;
     createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
-    shareProof(proofId: ProofDetail["id"]): Promise<ShareProofResponse>;
+    shareProof(proofId: ProofDetail["id"], request: ShareProofRequest): Promise<ShareProofResponse>;
     shareProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ShareProofSchemaResponse>;
     shareCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<ShareCredentialSchemaResponse>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
@@ -73,6 +73,7 @@ export interface ONECore {
     createTrustAnchor(request: CreateTrustAnchorRequest): Promise<TrustAnchor["id"]>;
     getTrustAnchor(trustAnchorId: TrustAnchor["id"]): Promise<TrustAnchor>;
     getTrustAnchors(query: TrustAnchorListQuery): Promise<ItemList<TrustAnchorListItem>>;
+    getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
     getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;
     createBackup(password: string, outputPath: string): Promise<BackupCreate>;

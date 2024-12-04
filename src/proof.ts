@@ -156,3 +156,17 @@ export interface InvitationResultProofRequest {
   interactionId: string;
   proofId: ProofDetail["id"];
 }
+
+export interface ShareProofRequest {
+  params?: ShareProofRequestParams,
+}
+
+export interface ShareProofRequestParams {
+  clientIdSchema?: ShareProofRequestClientIdSchemaType,
+}
+
+export enum ShareProofRequestClientIdSchemaType {
+  REDIRECT_URI = "REDIRECT_URI",
+  VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION"
+}
+

@@ -394,6 +394,19 @@ func deserializeCreateProofRequest(_ request: NSDictionary) throws -> CreateProo
     )
 }
 
+func deserializeShareProofRequest(_ request: NSDictionary) throws -> ShareProofRequestBindingDto {
+    return ShareProofRequestBindingDto(
+        params: try opt((request.value(forKey: "params") as? NSDictionary), deserializeShareProofRequestParams)
+    )
+}
+
+func deserializeShareProofRequestParams(_ request: NSDictionary) throws -> ShareProofRequestParamsBindingDto {
+    return ShareProofRequestParamsBindingDto(
+        clientIdSchema: try opt(request.value(forKey: "clientIdSchema") as? String, deserializeEnum)
+    )
+}
+
+
 func deserializeKeyCheckCertificateRequest(_ request: NSDictionary) throws -> KeyCheckCertificateRequestBindingDto {
     return KeyCheckCertificateRequestBindingDto(
         certificate: (request.value(forKey: "certificate") as? String)!
@@ -578,6 +591,12 @@ extension ProofStateBindingEnum: CaseIterable {
             .rejected,
             .error
         ]
+    }
+}
+
+extension ShareProofRequestClientIdSchemaTypeBindingDto: CaseIterable {
+    public static var allCases: [ShareProofRequestClientIdSchemaTypeBindingDto] {
+        return [.redirectUri, .verifierAttestation]
     }
 }
 
