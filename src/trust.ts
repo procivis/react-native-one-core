@@ -1,4 +1,5 @@
 import { ListQuery, SortDirection } from "./list";
+import { DidListItem } from "./did";
 
 export type CreateTrustAnchorRequest = {
   name: string;
@@ -47,4 +48,32 @@ export interface TrustAnchorListQuery
   exact?: ExactTrustAnchorFilterColumnEnum[];
   type?: string;
   isPublisher?: boolean;
+}
+
+export interface TrustEntity {
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  name: string;
+  logo?: string;
+  website?: string;
+  termsUrl?: string;
+  privacyUrl?: string;
+  role: TrustEntityRoleEnum;
+  state: TrustEntityStateEnum;
+  did: DidListItem;
+  trustAnchor: TrustAnchor;
+}
+
+export enum TrustEntityRoleEnum {
+  ISSUER = "ISSUER",
+  VERIFIER = "VERIFIER",
+  BOTH = "BOTH",
+}
+
+export enum TrustEntityStateEnum {
+  ACTIVE = "ACTIVE",
+  REMOVED = "REMOVED",
+  WITHDRAWN = "WITHDRAWN",
+  REMOVED_AND_WITHDRAWN = "REMOVED_AND_WITHDRAWN",
 }

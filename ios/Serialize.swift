@@ -614,3 +614,21 @@ func serialize(trustAnchorListItem: TrustAnchorsListItemResponseBindingDto) -> N
         "entities": trustAnchorListItem.entities,
     ]
 }
+
+func serialize(trustEntity: GetTrustEntityResponseBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+        "id": trustEntity.id,
+        "createdDate": trustEntity.createdDate,
+        "lastModified": trustEntity.lastModified,
+        "name": trustEntity.name,
+        "role": serializeEnumValue(value: trustEntity.role),
+        "trustAnchor": serialize(trustAnchor: trustEntity.trustAnchor),
+        "did": serialize(didListItem: trustEntity.did),
+        "state": serializeEnumValue(value: trustEntity.state),
+    ]
+    result.addOpt("logo", trustEntity.logo)
+    result.addOpt("website", trustEntity.website)
+    result.addOpt("termsUrl", trustEntity.termsUrl)
+    result.addOpt("privacyUrl", trustEntity.privacyUrl)
+    return result as NSDictionary
+}
