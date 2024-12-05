@@ -602,6 +602,14 @@ func serialize(trustAnchorList: TrustAnchorsListBindingDto) -> NSDictionary {
     ]
 }
 
+func serialize(trustEntityList: TrustEntitiesListBindingDto) -> NSDictionary {
+    return [
+        "totalItems": trustEntityList.totalItems,
+        "totalPages": trustEntityList.totalPages,
+        "values": trustEntityList.values.map { serialize(trustEntityListItem: $0) },
+    ]
+}
+
 func serialize(trustAnchorListItem: TrustAnchorsListItemResponseBindingDto) -> NSDictionary {
     return [
         "id": trustAnchorListItem.id,
@@ -630,5 +638,23 @@ func serialize(trustEntity: GetTrustEntityResponseBindingDto) -> NSDictionary {
     result.addOpt("website", trustEntity.website)
     result.addOpt("termsUrl", trustEntity.termsUrl)
     result.addOpt("privacyUrl", trustEntity.privacyUrl)
+    return result as NSDictionary
+}
+
+func serialize(trustEntityListItem: TrustEntitiesListItemResponseBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+        "id": trustEntityListItem.id,
+        "createdDate": trustEntityListItem.createdDate,
+        "lastModified": trustEntityListItem.lastModified,
+        "name": trustEntityListItem.name,
+        "role": serializeEnumValue(value: trustEntityListItem.role),
+        "trustAnchor": serialize(trustAnchor: trustEntityListItem.trustAnchor),
+        "did": serialize(didListItem: trustEntityListItem.did),
+        "state": serializeEnumValue(value: trustEntityListItem.state),
+    ]
+    result.addOpt("logo", trustEntityListItem.logo)
+    result.addOpt("website", trustEntityListItem.website)
+    result.addOpt("termsUrl", trustEntityListItem.termsUrl)
+    result.addOpt("privacyUrl", trustEntityListItem.privacyUrl)
     return result as NSDictionary
 }

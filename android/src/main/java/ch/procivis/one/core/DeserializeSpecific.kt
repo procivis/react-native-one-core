@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 object DeserializeSpecific {
     object Obj {
-        private val CustomConversionTypes = arrayOf(CredentialSchemaTypeBindingEnum::class)
+        private val CustomConversionTypes = arrayOf(CredentialSchemaTypeBindingEnum::class, OptionalString::class)
 
         fun isCustomConversionType(type: KClass<*>): Boolean {
             return CustomConversionTypes.contains(type)
@@ -16,7 +16,14 @@ object DeserializeSpecific {
             return when (type) {
                 CredentialSchemaTypeBindingEnum::class -> input.getString(field)
                     ?.let { credentialSchemaType(it) }
-
+                OptionalString::class -> {
+                    val value = input.getString(field)
+                    if (value == null) {
+                        OptionalString.None
+                    } else {
+                        OptionalString.Some(value)
+                    }
+                }
                 else -> {
                     throw IllegalArgumentException("Invalid map conversion: $input")
                 }
