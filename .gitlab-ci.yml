@@ -5,6 +5,7 @@ include:
     file:
       - "gitlab/github.gitlab-ci.yml"
       - "gitlab/rules.gitlab-ci.yml"
+      - "gitlab/ci-tools.gitlab-ci.yml"
 
 variables:
   NODE_OPTIONS: --max_old_space_size=1536
@@ -18,6 +19,7 @@ stages:
   - build
   - publish
   - github
+  - sync_with_jira
   - sdk
 
 .rule:only_mr_event:
@@ -131,15 +133,14 @@ publish:npm:public:
     - .only_manual_tag
 
 github:push:
-  needs: []
+  stage: github
   extends:
-    - .github:push
+    - .ci-tool:open_source_release
 
-github:release:
+set_jira_version:
+  stage: sync_with_jira
   extends:
-    - .github:release
-  needs:
-    - job: github:push
+    - .ci-tool:set_jira_version
 
 create_core_binding:
   stage: sdk
