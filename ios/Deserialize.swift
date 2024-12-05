@@ -443,6 +443,61 @@ func deserializeTrustAnchorListQuery(_ query: NSDictionary) throws -> ListTrustA
     )
 }
 
+func deserializeCreateTrustEntityRequest(_ request: NSDictionary) throws -> CreateTrustEntityRequestBindingDto {
+    return CreateTrustEntityRequestBindingDto(
+        name: try safeCast(request.value(forKey: "name")),
+        logo: request.value(forKey: "logo") as? String,
+        website: request.value(forKey: "website") as? String,
+        termsUrl: request.value(forKey: "termsUrl") as? String,
+        privacyUrl: request.value(forKey: "privacyUrl") as? String,
+        role: try deserializeEnum(try safeCast(request.value(forKey: "role"))),
+        state: try deserializeEnum(try safeCast(request.value(forKey: "state"))),
+        trustAnchorId: try safeCast(request.value(forKey: "trustAnchorId")),
+        didId: try safeCast(request.value(forKey: "didId"))
+    )
+}
+
+func deserializeCreateRemoteTrustEntityRequest(_ request: NSDictionary) throws -> CreateRemoteTrustEntityRequestBindingDto {
+    return CreateRemoteTrustEntityRequestBindingDto(
+        didId: try safeCast(request.value(forKey: "didId")),
+        trustAnchorId: request.value(forKey: "trustAnchorId") as? String,
+        name: try safeCast(request.value(forKey: "name")),
+        logo: request.value(forKey: "logo") as? String,
+        termsUrl: request.value(forKey: "termsUrl") as? String,
+        privacyUrl: request.value(forKey: "privacyUrl") as? String,
+        website: request.value(forKey: "website") as? String,
+        role: try deserializeEnum(try safeCast(request.value(forKey: "role")))
+    )
+}
+
+func deserializeUpdateRemoteTrustEntityRequest(_ request: NSDictionary) throws -> UpdateRemoteTrustEntityFromDidRequestBindingDto {
+    return UpdateRemoteTrustEntityFromDidRequestBindingDto(
+        didId: try safeCast(request.value(forKey: "didId")),
+        action: try opt(request.value(forKey: "action") as? String, deserializeEnum),
+        name: try safeCast(request.value(forKey: "name")),
+        logo: try optionalString(request, key: "logo"),
+        website: try optionalString(request, key: "website"),
+        termsUrl: try optionalString(request, key: "termsUrl"),
+        privacyUrl: try optionalString(request, key: "privacyUrl"),
+        role: try opt(request.value(forKey: "role") as? String, deserializeEnum)
+    )
+}
+
+func deserializeTrustEntityListQuery(_ query: NSDictionary) throws -> ListTrustEntitiesFiltersBindings {
+    return ListTrustEntitiesFiltersBindings(
+        page: try safeCast(query.value(forKey: "page")),
+        pageSize: try safeCast(query.value(forKey: "pageSize")),
+        sort: try opt(query.value(forKey: "sort") as? String, deserializeEnum),
+        sortDirection: try opt(query.value(forKey: "sortDirection") as? String, deserializeEnum),
+        name: query.value(forKey: "name") as? String,
+        role: try opt(query.value(forKey: "role") as? String, deserializeEnum),
+        trustAnchor: query.value(forKey: "trustAnchor") as? String,
+        didId: query.value(forKey: "didId") as? String,
+        organisationId: query.value(forKey: "organisationId") as? String,
+        exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } )
+    )
+}
+
 extension KeyRoleBindingEnum: CaseIterable {
     public static var allCases: [KeyRoleBindingEnum] {
         return [.authentication, .assertionMethod, .keyAgreement, .capabilityInvocation, .capabilityDelegation]
@@ -624,6 +679,36 @@ extension SearchTypeBindingEnum: CaseIterable {
     }
 }
 
+extension TrustEntityRoleBindingEnum: CaseIterable {
+    public static var allCases: [TrustEntityRoleBindingEnum] {
+        return [.issuer, .verifier, .both]
+    }
+}
+
+extension TrustEntityStateBindingEnum: CaseIterable {
+    public static var allCases: [TrustEntityStateBindingEnum] {
+        return [.active, .removed, .withdrawn, .removedAndWithdrawn]
+    }
+}
+
+extension SortableTrustEntityColumnBindings: CaseIterable {
+    public static var allCases: [SortableTrustEntityColumnBindings] {
+        return [.name, .role]
+    }
+}
+
+extension ExactTrustEntityFilterColumnBindings: CaseIterable {
+    public static var allCases: [ExactTrustEntityFilterColumnBindings] {
+        return [.name]
+    }
+}
+
+extension TrustEntityUpdateActionBindingEnum: CaseIterable {
+    public static var allCases: [TrustEntityUpdateActionBindingEnum] {
+        return [.activate, .remove, .withdraw]
+    }
+}
+
 private func deserializeEnum<T: CaseIterable>(_ input: String) throws -> T {
     if let entry = T.allCases.first(where: { value in
         serializeEnumValue(value: value) == input
@@ -639,6 +724,23 @@ private func opt<F, T>(_ input: F?, _ deserialize: @escaping (_ input: F) throws
         return try deserialize(input!);
     }
     return nil
+}
+
+private func optionalString(_ input: NSDictionary, key: String) throws -> OptionalString? {
+    var isThere: Bool = false;
+    input.keyEnumerator().forEach { k in
+        if (k as! String == key) {
+            isThere = true;
+        }
+    }
+    if (!isThere) {
+        return nil;
+    }
+    let value = input[key] as? String;
+    if value == nil {
+        return OptionalString.none;
+    }
+    return OptionalString.some(value: value!);
 }
 
 func safeCast<T>(_ input: Any?) throws -> T {

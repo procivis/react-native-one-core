@@ -64,3 +64,47 @@ export declare enum TrustEntityStateEnum {
     WITHDRAWN = "WITHDRAWN",
     REMOVED_AND_WITHDRAWN = "REMOVED_AND_WITHDRAWN"
 }
+export interface CreateTrustEntityRequest {
+    name: string;
+    logo?: string;
+    website?: string;
+    termsUrl?: string;
+    privacyUrl?: string;
+    role: TrustEntityRoleEnum;
+    state: TrustEntityStateEnum;
+    trustAnchorId: string;
+    didId: string;
+}
+export interface TrustEntityListQuery {
+    sort?: SortableTrustEntityColumnEnum;
+    sortDirection?: SortDirection;
+    name?: string;
+    exact?: ExactTrustEntityFilterColumnEnum[];
+    type?: string;
+    isPublisher?: boolean;
+}
+export declare enum SortableTrustEntityColumnEnum {
+    NAME = "NAME",
+    ROLE = "ROLE"
+}
+export declare enum ExactTrustEntityFilterColumnEnum {
+    NAME = "NAME"
+}
+export interface CreateRemoteTrustEntityRequest extends Omit<CreateTrustEntityRequest, "trustAnchorId" | "state"> {
+    trustAnchorId?: string;
+}
+export interface UpdateRemoteTrustEntityRequest {
+    didId: string;
+    action?: TrustEntityUpdateActionEnum;
+    name?: string;
+    logo?: string | null;
+    website?: string | null;
+    termsUrl?: string | null;
+    privacyUrl?: string | null;
+    role?: TrustEntityRoleEnum;
+}
+export declare enum TrustEntityUpdateActionEnum {
+    ACTIVATE = "ACTIVATE",
+    WITHDRAW = "WITHDRAW",
+    REMOVE = "REMOVE"
+}

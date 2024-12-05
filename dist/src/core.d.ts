@@ -8,7 +8,7 @@ import { KeyCheckCertificateRequestBindingDto, KeyListItem, KeyRequest } from ".
 import { ItemList } from "./list";
 import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
-import { CreateTrustAnchorRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity } from "./trust";
+import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
 export * from "./backup";
 export * from "./config";
 export * from "./credential";
@@ -71,9 +71,16 @@ export interface ONECore {
     importProofSchema(request: ImportProofSchemaRequest): Promise<ProofSchema["id"]>;
     checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
     createTrustAnchor(request: CreateTrustAnchorRequest): Promise<TrustAnchor["id"]>;
+    deleteTrustAnchor(trustAnchorId: TrustAnchor["id"]): Promise<void>;
     getTrustAnchor(trustAnchorId: TrustAnchor["id"]): Promise<TrustAnchor>;
     getTrustAnchors(query: TrustAnchorListQuery): Promise<ItemList<TrustAnchorListItem>>;
+    createTrustEntity(request: CreateTrustEntityRequest): Promise<TrustEntity["id"]>;
+    getTrustEntity(trustEntityId: TrustEntity["id"]): Promise<TrustEntity>;
+    getTrustEntities(query: TrustEntityListQuery): Promise<ItemList<TrustEntity>>;
     getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
+    createRemoteTrustEntity(request: CreateRemoteTrustEntityRequest): Promise<TrustEntity["id"]>;
+    getRemoteTrustEntity(trustEntityId: TrustEntity["id"]): Promise<TrustEntity>;
+    updateRemoteTrustEntity(request: UpdateRemoteTrustEntityRequest): Promise<void>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
     getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;
     createBackup(password: string, outputPath: string): Promise<BackupCreate>;

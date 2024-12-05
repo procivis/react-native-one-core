@@ -536,8 +536,53 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
 
-    @objc(getTrustEntityById:resolver:rejecter:)
-    func getTrustEntityById(
+    @objc(deleteTrustAnchor:resolver:rejecter:)
+    func deleteTrustAnchor(
+        trustAnchorId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try getCore().deleteTrustAnchor(anchorId: trustAnchorId);
+                return nil as NSDictionary?;
+            }
+        }
+
+    @objc(createTrustEntity:resolver:rejecter:)
+    func createTrustEntity(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let request = try deserializeCreateTrustEntityRequest(request);
+                return try getCore().createTrustEntity(anchor: request)
+            }
+        }
+    
+    @objc(getTrustEntities:resolver:rejecter:)
+    func getTrustEntities(
+        query: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let listQuery = try deserializeTrustEntityListQuery(query)
+                let result = try getCore().listTrustEntities(filters: listQuery);
+                return serialize(trustEntityList: result)
+            }
+        }
+    
+    @objc(getTrustEntity:resolver:rejecter:)
+    func getTrustEntity(
+        trustEntityId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let trustEntity = try getCore().getTrustEntity(trustEntityId: trustEntityId);
+                return serialize(trustEntity: trustEntity)
+            }
+        }
+
+    @objc(getTrustEntityByDid:resolver:rejecter:)
+    func getTrustEntityByDid(
         didId: String,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
@@ -546,6 +591,40 @@ class ProcivisOneCoreModule: NSObject {
                 return serialize(trustEntity: trustEntity)
             }
         }
+    
+    @objc(createRemoteTrustEntity:resolver:rejecter:)
+    func createRemoteTrustEntity(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let request = try deserializeCreateRemoteTrustEntityRequest(request);
+                return try getCore().createRemoteTrustEntity(request: request)
+            }
+        }
+    
+    @objc(getRemoteTrustEntity:resolver:rejecter:)
+    func getRemoteTrustEntity(
+        didId: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let trustEntity = try getCore().getRemoteTrustEntity(didId: didId);
+                return serialize(trustEntity: trustEntity)
+            }
+        }
+    
+    @objc(updateRemoteTrustEntity:resolver:rejecter:)
+    func updateRemoteTrustEntity(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let request = try deserializeUpdateRemoteTrustEntityRequest(request);
+                return try getCore().updateRemoteTrustEntity(request: request)
+            }
+        }
+
 
     @objc(createBackup:outputPath:resolver:rejecter:)
     func createBackup(
