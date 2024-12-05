@@ -58,7 +58,7 @@ object Deserialize {
     }
 
     private fun extractObjectItem(type: KType, data: ReadableMap, name: String): Any? {
-        if (!data.hasKey(name) || (type.isMarkedNullable && data.isNull(name))) {
+        if (!data.hasKey(name)) {
             return null
         }
 
@@ -67,6 +67,10 @@ object Deserialize {
         // exceptional types
         if (DeserializeSpecific.Obj.isCustomConversionType(kClass)) {
             return DeserializeSpecific.Obj.convertCustom(kClass, data, name)
+        }
+
+        if (type.isMarkedNullable && data.isNull(name)) {
+            return null
         }
 
         if (kClass.java.isEnum) {

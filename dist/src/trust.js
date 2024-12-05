@@ -22,3 +22,18 @@ export var TrustEntityStateEnum;
     TrustEntityStateEnum["WITHDRAWN"] = "WITHDRAWN";
     TrustEntityStateEnum["REMOVED_AND_WITHDRAWN"] = "REMOVED_AND_WITHDRAWN";
 })(TrustEntityStateEnum || (TrustEntityStateEnum = {}));
+export var SortableTrustEntityColumnEnum;
+(function (SortableTrustEntityColumnEnum) {
+    SortableTrustEntityColumnEnum["NAME"] = "NAME";
+    SortableTrustEntityColumnEnum["ROLE"] = "ROLE";
+})(SortableTrustEntityColumnEnum || (SortableTrustEntityColumnEnum = {}));
+export var ExactTrustEntityFilterColumnEnum;
+(function (ExactTrustEntityFilterColumnEnum) {
+    ExactTrustEntityFilterColumnEnum["NAME"] = "NAME";
+})(ExactTrustEntityFilterColumnEnum || (ExactTrustEntityFilterColumnEnum = {}));
+export var TrustEntityUpdateActionEnum;
+(function (TrustEntityUpdateActionEnum) {
+    TrustEntityUpdateActionEnum["ACTIVATE"] = "ACTIVATE";
+    TrustEntityUpdateActionEnum["WITHDRAW"] = "WITHDRAW";
+    TrustEntityUpdateActionEnum["REMOVE"] = "REMOVE";
+})(TrustEntityUpdateActionEnum || (TrustEntityUpdateActionEnum = {}));

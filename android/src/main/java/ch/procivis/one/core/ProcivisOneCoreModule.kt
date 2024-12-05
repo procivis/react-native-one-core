@@ -378,6 +378,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun deleteTrustAnchor(trustAnchorId: String, promise: Promise) {
+        asyncCall(promise) {
+            return@asyncCall getCore().deleteTrustAnchor(trustAnchorId)
+        }
+    }
+
+    @ReactMethod
     fun getTrustAnchor(trustAnchorId: String, promise: Promise) {
         asyncCall(promise) {
             val trustAnchor = getCore().getTrustAnchor(trustAnchorId)
@@ -394,9 +401,56 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun createTrustEntity(request: ReadableMap, promise: Promise) {
+        asyncCall(promise) {
+            return@asyncCall getCore().createTrustEntity(construct(request))
+        }
+    }
+
+    @ReactMethod
+    fun getTrustEntity(trustEntityId: String, promise: Promise) {
+        asyncCall(promise) {
+            val trustEntity = getCore().getTrustEntity(trustEntityId)
+            return@asyncCall convertToRN(trustEntity)
+        }
+    }
+
+    @ReactMethod
+    fun getTrustEntities(query: ReadableMap, promise: Promise) {
+        asyncCall(promise) {
+            val trustEntity = getCore().listTrustEntities(construct(query))
+            return@asyncCall convertToRN(trustEntity)
+        }
+    }
+
+
+    @ReactMethod
     fun getTrustEntityByDid(didId: String, promise: Promise) {
         asyncCall(promise) {
             val trustEntity = getCore().getTrustEntityByDid(didId)
+            return@asyncCall convertToRN(trustEntity)
+        }
+    }
+
+    @ReactMethod
+    fun createRemoteTrustEntity(request: ReadableMap, promise: Promise) {
+        asyncCall(promise) {
+            return@asyncCall getCore().createRemoteTrustEntity(construct(request))
+        }
+    }
+
+    @ReactMethod
+    fun updateRemoteTrustEntity(request: ReadableMap, promise: Promise) {
+        asyncCall(promise) {
+            val foo = construct<UpdateRemoteTrustEntityFromDidRequestBindingDto>(request)
+            return@asyncCall getCore().updateRemoteTrustEntity(foo)
+        }
+    }
+
+    @ReactMethod
+    fun getRemoteTrustEntity(didId: String, promise: Promise) {
+        asyncCall(promise) {
+            val trustEntity = getCore().getRemoteTrustEntity(didId)
             return@asyncCall convertToRN(trustEntity)
         }
     }
