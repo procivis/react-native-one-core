@@ -212,7 +212,8 @@ func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
         "role": serializeEnumValue(value: credentialDetail.role),
     ]
     result.addOpt("revocationDate", credentialDetail.revocationDate)
-    result.addOpt("issuerDid", credentialDetail.issuerDid)
+    result.addOpt("issuerDid", opt(credentialDetail.issuerDid, {issuerDid in serialize(didListItem: issuerDid)}))
+    result.addOpt("holderDid", opt(credentialDetail.holderDid, {holderDid in serialize(didListItem: holderDid)}))
     result.addOpt("redirectUri", credentialDetail.redirectUri)
     result.addOpt("lvvcIssuanceDate", credentialDetail.lvvcIssuanceDate)
     result.addOpt("suspendEndDate", credentialDetail.suspendEndDate)
@@ -297,7 +298,8 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
         "exchange": proofRequest.exchange,
     ]
     result.addOpt("proofSchema", opt(proofRequest.proofSchema, {proofSchema in serialize(proofSchemaListItem: proofSchema) }))
-    result.addOpt("verifierDid", proofRequest.verifierDid)
+    result.addOpt("verifierDid", opt(proofRequest.verifierDid, {verifierDid in serialize(didListItem: verifierDid)}))
+    result.addOpt("holderDid", opt(proofRequest.holderDid, {holderDid in serialize(didListItem: holderDid)}))
     result.addOpt("redirectUri", proofRequest.redirectUri)
     return result as NSDictionary
 }
