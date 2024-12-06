@@ -2,6 +2,7 @@ import { CredentialDetail, CredentialListItem } from "./credential";
 import { CredentialSchema } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { ProofInputClaimSchema, ProofSchemaListItem } from "./proofSchema";
+import {DidListItem} from "./did";
 
 export enum ProofStateEnum {
   CREATED = "CREATED",
@@ -31,7 +32,8 @@ export interface ProofDetail {
   proofInputs: ProofInput[];
   state: ProofStateEnum;
   proofSchema?: ProofSchemaListItem;
-  verifierDid?: string;
+  verifierDid?: DidListItem;
+  holderDid?: DidListItem;
   exchange: string;
   redirectUri?: string;
   retainUntilDate?: string;
