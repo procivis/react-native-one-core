@@ -19,7 +19,12 @@ func asyncCall<Result>(_ resolve: @escaping RCTPromiseResolveBlock,
 
 private func handleError(error: Error, _ reject: @escaping RCTPromiseRejectBlock) {
     if case BindingError.ErrorResponse(data: let errorResponse) = error {
-        reject(errorResponse.code, errorResponse.message, error)
+        var userInfo: [String: Any] = [NSUnderlyingErrorKey: error]
+        if let cause = errorResponse.cause?.message {
+            userInfo["cause"] = cause
+        }
+        
+        reject(errorResponse.code, errorResponse.message, NSError(domain: "one-core", code: 1, userInfo: userInfo))
         return
     }
     

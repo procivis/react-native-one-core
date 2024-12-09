@@ -1,5 +1,6 @@
 package ch.procivis.one.core
 
+import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
 
@@ -11,10 +12,17 @@ object Util {
                 try {
                     promise.resolve(function())
                 } catch (error: BindingException.ErrorResponse) {
+                    val userInfo = Arguments.createMap()
+                    val cause = error.data.cause?.message
+                    if (cause != null) {
+                        userInfo.putString("cause", cause)
+                    }
+
                     promise.reject(
                         error.data.code,
                         error.data.message,
-                        error
+                        error,
+                        userInfo
                     )
                 } catch (error: Throwable) {
                     promise.reject(error)
