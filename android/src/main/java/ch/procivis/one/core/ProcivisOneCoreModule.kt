@@ -268,9 +268,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun shareProof(proofId: String, request: ShareProofRequestBindingDto, promise: Promise) {
+    fun shareProof(proofId: String, request: ReadableMap, promise: Promise) {
         asyncCall(promise) {
-            val shareProof = getCore().shareProof(proofId, request)
+            val shareProof = getCore().shareProof(proofId, construct(request))
             return@asyncCall convertToRN(shareProof)
         }
     }
