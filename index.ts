@@ -59,15 +59,24 @@ function wrapFn<Fn extends (...args: any[]) => Promise<any>>(
   return (...args: any[]) => {
     const errHandler = (e: unknown) => {
       if (e instanceof Error && "code" in e) {
+        const userInfo =
+          "userInfo" in e && typeof e.userInfo === "object"
+            ? e.userInfo
+            : undefined;
+        const cause =
+          userInfo && "cause" in userInfo && typeof userInfo.cause === "string"
+            ? userInfo.cause
+            : undefined;
+
         throw new OneError({
           operation,
           code: e.code as string,
           message: e.message,
-          cause: "cause" in e ? e.cause as string : undefined,
-          originalError: e
+          cause,
+          originalError: e,
         });
-    
-        // iOS additional fields: "domain", "nativeStackIOS"
+
+        // iOS additional fields: "nativeStackIOS"
         // android additional fields: "nativeStackAndroid"
       } else {
         throw e;
