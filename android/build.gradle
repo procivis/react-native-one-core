@@ -62,6 +62,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:${safeExtGet('kotlinVersion', '1.8.0')}")
 }
 
+def downloadFile = { url, file ->
+    new URL(url).withInputStream { downloadStream ->
+        file.withOutputStream { fileOut ->
+            fileOut << downloadStream
+        }
+    }
+}
+
 def coreUrlAAR = { buildType ->
     def name = "onecore-${buildType}"
     def coreSdkJsonFile = file("$projectDir/../core-sdk.json")
@@ -71,18 +79,21 @@ def coreUrlAAR = { buildType ->
     def url = sdk.url
     File file = new File("$projectDir/libs/${name}.aar")
     file.parentFile.mkdirs()
-    if (!file.exists()) {
-        new URL(url).withInputStream { downloadStream ->
-            file.withOutputStream { fileOut ->
-                fileOut << downloadStream
-            }
+
+    def sha1Expected = sdk.sha1
+    if (file.exists()) {
+        if (Checksum.getChecksum(file, "SHA1") == sha1Expected) {
+            // all good
+            return
         }
+        // The file is most likely just stale -> delete and download again
+        file.delete()
     }
 
+    downloadFile(url, file)
     def sha1sum = Checksum.getChecksum(file, "SHA1")
-    def sha1Expected = sdk.sha1
     if (sha1sum != sha1Expected) {
-        file.delete()
+        // if the file hash still does not match then something is off
         println "URL($name): $url"
         println "sha1 expected: $sha1Expected"
         println "sha1 actual: $sha1sum"
