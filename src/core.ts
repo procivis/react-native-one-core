@@ -3,7 +3,7 @@ import {
   ImportBackupMetadata,
   UnexportableEntities,
 } from "./backup";
-import {Config} from "./config";
+import { Config } from "./config";
 import {
   CredentialDetail,
   CredentialListItem,
@@ -18,10 +18,14 @@ import {
   ImportCredentialSchemaRequest,
   ShareCredentialSchemaResponse,
 } from "./credentialSchema";
-import {DidListItem, DidListQuery, DidRequest} from "./did";
-import {HistoryListItem, HistoryListQuery} from "./history";
-import {KeyCheckCertificateRequestBindingDto, KeyListItem, KeyRequest} from "./key";
-import {ItemList} from "./list";
+import { DidListItem, DidListQuery, DidRequest } from "./did";
+import { HistoryListItem, HistoryListQuery } from "./history";
+import {
+  KeyCheckCertificateRequestBindingDto,
+  KeyListItem,
+  KeyRequest,
+} from "./key";
+import { ItemList } from "./list";
 import {
   CreateProofRequest,
   InvitationResultProofRequest,
@@ -31,7 +35,8 @@ import {
   ProofDetail,
   ProofListItem,
   ProofListQuery,
-  ProposeProofResponse, ShareProofRequest,
+  ProposeProofResponse,
+  ShareProofRequest,
   ShareProofResponse,
 } from "./proof";
 import {
@@ -44,10 +49,14 @@ import {
 } from "./proofSchema";
 import {
   CreateRemoteTrustEntityRequest,
-  CreateTrustAnchorRequest, CreateTrustEntityRequest,
+  CreateTrustAnchorRequest,
+  CreateTrustEntityRequest,
   TrustAnchor,
   TrustAnchorListItem,
-  TrustAnchorListQuery, TrustEntity, TrustEntityListQuery, UpdateRemoteTrustEntityRequest,
+  TrustAnchorListQuery,
+  TrustEntity,
+  TrustEntityListQuery,
+  UpdateRemoteTrustEntityRequest,
 } from "./trust";
 
 export * from "./backup";
@@ -134,7 +143,10 @@ export interface ONECore {
 
   runTask(task: string): Promise<string>;
 
-  checkCertificate(keyId: KeyListItem["id"], certificate: KeyCheckCertificateRequestBindingDto): Promise<void>;
+  checkCertificate(
+    keyId: KeyListItem["id"],
+    certificate: KeyCheckCertificateRequestBindingDto
+  ): Promise<void>;
 
   deleteProofClaims(proofId: ProofDetail["id"]): Promise<void>;
 
@@ -162,7 +174,10 @@ export interface ONECore {
 
   createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
 
-  shareProof(proofId: ProofDetail["id"], request: ShareProofRequest): Promise<ShareProofResponse>;
+  shareProof(
+    proofId: ProofDetail["id"],
+    request: ShareProofRequest
+  ): Promise<ShareProofResponse>;
 
   shareProofSchema(
     proofSchemaId: ProofSchema["id"]
@@ -225,11 +240,15 @@ export interface ONECore {
 
   getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
 
-  createRemoteTrustEntity(request: CreateRemoteTrustEntityRequest): Promise<TrustEntity["id"]>;
+  createRemoteTrustEntity(
+    request: CreateRemoteTrustEntityRequest
+  ): Promise<TrustEntity["id"]>;
 
-  getRemoteTrustEntity(trustEntityId: TrustEntity["id"]): Promise<TrustEntity>;
+  getRemoteTrustEntity(didId: DidListItem["id"]): Promise<TrustEntity>;
 
-  updateRemoteTrustEntity(request: UpdateRemoteTrustEntityRequest): Promise<void>;
+  updateRemoteTrustEntity(
+    request: UpdateRemoteTrustEntityRequest
+  ): Promise<void>;
 
   getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
 
