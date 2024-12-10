@@ -9,11 +9,11 @@ import Foundation
 
 struct SerializationError: LocalizedError {
     let description: String
-
+    
     init(_ description: String) {
         self.description = description
     }
-
+    
     var errorDescription: String? {
         description
     }
@@ -24,21 +24,21 @@ func deserializeKeyRequest(keyRequest: NSDictionary) throws -> KeyRequestBinding
     let name: String = try safeCast(keyRequest.value(forKey: "name"));
     let storageType: String = try safeCast(keyRequest.value(forKey: "storageType"));
     let organisationId: String = try safeCast(keyRequest.value(forKey: "organisationId"));
-
+    
     let keyParamsRaw: NSDictionary = try safeCast(keyRequest.value(forKey: "keyParams"));
     var keyParams: [String: String] = [:];
     try keyParamsRaw.allKeys.forEach {
         let key: String = try safeCast($0);
         keyParams[key] = keyParamsRaw.value(forKey: key) as? String;
     }
-
+    
     let storageParamsRaw: NSDictionary = try safeCast(keyRequest.value(forKey: "storageParams"));
     var storageParams: [String: String] = [:];
     try storageParamsRaw.allKeys.forEach {
         let key: String = try safeCast($0);
         storageParams[key] = storageParamsRaw.value(forKey: key) as? String;
     }
-
+    
     return KeyRequestBindingDto(organisationId: organisationId, keyType: keyType, keyParams: keyParams, name: name, storageType: storageType, storageParams: storageParams);
 }
 
@@ -47,14 +47,14 @@ func deserializeDidRequest(didRequest: NSDictionary) throws -> DidRequestBinding
     let name: String = try safeCast(didRequest.value(forKey: "name"));
     let didMethod: String = try safeCast(didRequest.value(forKey: "didMethod"));
     let keys = try deserializeDidRequestKeys(didRequestKeys: try safeCast(didRequest.value(forKey: "keys")));
-
+    
     let paramsRaw: NSDictionary = try safeCast(didRequest.value(forKey: "params"));
     var params: [String: String] = [:];
     try paramsRaw.allKeys.forEach {
         let key: String = try safeCast($0);
         params[key] = paramsRaw.value(forKey: key) as? String;
     }
-
+    
     return DidRequestBindingDto(organisationId: organisationId, name: name, didMethod: didMethod, keys: keys, params: params);
 }
 
@@ -80,7 +80,7 @@ func deserializeHistorySearch(text: String?, type: String?) throws -> HistorySea
     if text == nil {
         return nil
     }
-
+    
     return HistorySearchBindingDto(
         text: text!,
         type: try opt(type, deserializeEnum)
@@ -159,18 +159,18 @@ func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQue
         pageSize: try safeCast(query.value(forKey: "pageSize")),
         organisationId: try safeCast(query.value(forKey: "organisationId")),
         entityId: query.value(forKey: "entityId") as? String,
-        action: try opt(query.value(forKey: "action") as? String, deserializeEnum),
         entityTypes: try opt(query.value(forKey: "entityTypes") as? NSArray, enumList),
+        action: try opt(query.value(forKey: "action") as? String, deserializeEnum),
         createdDateFrom: query.value(forKey: "createdDateFrom") as? String,
         createdDateTo: query.value(forKey: "createdDateTo") as? String,
         didId: query.value(forKey: "didId") as? String,
         credentialId: query.value(forKey: "credentialId") as? String,
         credentialSchemaId: query.value(forKey: "credentialSchemaId") as? String,
+        proofSchemaId: query.value(forKey: "proofSchemaId") as? String,
         search: try deserializeHistorySearch(
             text: query.value(forKey: "searchText") as? String,
             type: query.value(forKey: "searchType") as? String
-        ),
-        proofSchemaId: query.value(forKey: "proofSchemaId") as? String
+        )
     )
 }
 
@@ -211,22 +211,22 @@ func deserializeImportProofSchemaRequest(_ request: NSDictionary) throws -> Impo
 
 func deserializeImportProofSchema(_ schema: NSDictionary) throws -> ImportProofSchemaBindingDto {
     let proofInputSchemas: NSArray = try safeCast(schema.value(forKey: "proofInputSchemas"));
-
+    
     return ImportProofSchemaBindingDto(
         id: try safeCast(schema.value(forKey: "id")),
         createdDate: try safeCast(schema.value(forKey: "createdDate")),
         lastModified: try safeCast(schema.value(forKey: "lastModified")),
         name: try safeCast(schema.value(forKey: "name")),
         organisationId: try safeCast(schema.value(forKey: "organisationId")),
-        importedSourceUrl: try safeCast(schema.value(forKey: "importedSourceUrl")),
         expireDuration: try safeCast(schema.value(forKey: "expireDuration")),
+        importedSourceUrl: try safeCast(schema.value(forKey: "importedSourceUrl")),
         proofInputSchemas: try proofInputSchemas.map { try deserializeImportProofSchemaInputSchema(try safeCast($0)) }
     )
 }
 
 func deserializeCreateProofSchemaRequest(_ request: NSDictionary) throws -> CreateProofSchemaRequestDto {
     let proofInputSchemas: NSArray = try safeCast(request.value(forKey: "proofInputSchemas"));
-
+    
     return CreateProofSchemaRequestDto(
         name: try safeCast(request.value(forKey: "name")),
         organisationId: try safeCast(request.value(forKey: "organisationId")),
@@ -237,7 +237,7 @@ func deserializeCreateProofSchemaRequest(_ request: NSDictionary) throws -> Crea
 
 func deserializeProofInputSchemaRequest(_ request: NSDictionary) throws -> ProofInputSchemaRequestDto {
     let claimSchemas: NSArray = try safeCast(request.value(forKey: "claimSchemas"));
-
+    
     return ProofInputSchemaRequestDto(
         credentialSchemaId: try safeCast(request.value(forKey: "credentialSchemaId")),
         validityConstraint: try safeCast(request.value(forKey: "validityConstraint")),
@@ -247,7 +247,7 @@ func deserializeProofInputSchemaRequest(_ request: NSDictionary) throws -> Proof
 
 func deserializeImportProofSchemaInputSchema(_ inputSchema: NSDictionary) throws -> ImportProofSchemaInputSchemaBindingDto {
     let claimSchemas: NSArray = try safeCast(inputSchema.value(forKey: "claimSchemas"));
-
+    
     return ImportProofSchemaInputSchemaBindingDto(
         claimSchemas: try claimSchemas.map { try deserializeImportProofSchemaClaimSchema(try safeCast($0)) },
         credentialSchema: try deserializeImportProofSchemaCredentialSchema(try safeCast(inputSchema.value(forKey: "credentialSchema"))),
@@ -264,7 +264,7 @@ func deserializeProofClaimSchemaRequest(_ request: NSDictionary) throws -> Creat
 
 func deserializeImportProofSchemaClaimSchema(_ request: NSDictionary) throws -> ImportProofSchemaClaimSchemaBindingDto {
     let claims = request.value(forKey: "claims") as? NSArray;
-
+    
     return ImportProofSchemaClaimSchemaBindingDto(
         id: try safeCast(request.value(forKey: "id")),
         requested: try safeCast(request.value(forKey: "requested")),
@@ -302,7 +302,7 @@ func deserializeImportCredentialSchemaRequest(_ request: NSDictionary) throws ->
 
 func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) throws -> ImportCredentialSchemaRequestSchemaBindingDto {
     let claims: NSArray = try safeCast(request.value(forKey: "claims"));
-
+    
     return ImportCredentialSchemaRequestSchemaBindingDto(
         id: try safeCast(request.value(forKey: "id")),
         createdDate: try safeCast(request.value(forKey: "createdDate")),
@@ -311,10 +311,10 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
         format: try safeCast(request.value(forKey: "format")),
         revocationMethod: try safeCast(request.value(forKey: "revocationMethod")),
         organisationId: try safeCast(request.value(forKey: "organisationId")),
-        importedSourceUrl: try safeCast(request.value(forKey: "importedSourceUrl")),
         claims: try claims.map { try deserializeImportCredentialSchemaRequestClaim(try safeCast($0)) },
         walletStorageType: try opt(request.value(forKey: "walletStorageType") as? String, deserializeEnum),
         schemaId: try safeCast(request.value(forKey: "schemaId")),
+        importedSourceUrl: try safeCast(request.value(forKey: "importedSourceUrl")),
         schemaType: deserializeCredentialSchemaTypeBindingEnum(try safeCast(request.value(forKey: "schemaType"))),
         layoutType: try opt(request.value(forKey: "layoutType") as? String, deserializeEnum),
         layoutProperties: try opt((request.value(forKey: "layoutProperties") as? NSDictionary), deserializeImportCredentialSchemaRequestLayoutProperties),
@@ -324,15 +324,15 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
 
 func deserializeImportCredentialSchemaRequestClaim(_ request: NSDictionary) throws -> ImportCredentialSchemaClaimSchemaBindingDto {
     let claims = request.value(forKey: "claims") as? NSArray;
-
+    
     return ImportCredentialSchemaClaimSchemaBindingDto(
         id: try safeCast(request.value(forKey: "id")),
         createdDate: try safeCast(request.value(forKey: "createdDate")),
         lastModified: try safeCast(request.value(forKey: "lastModified")),
         required: try safeCast(request.value(forKey: "required")),
         key: try safeCast(request.value(forKey: "key")),
-        array: request.value(forKey: "array") as? Bool,
         datatype: try safeCast(request.value(forKey: "datatype")),
+        array: request.value(forKey: "array") as? Bool,
         claims: try claims?.map { try deserializeImportCredentialSchemaRequestClaim(try safeCast($0)) }
     )
 }
@@ -770,5 +770,5 @@ private func deserializeCredentialSchemaTypeBindingEnum(_ credentialSchemaType: 
     case let other:
         return .other(value: other)
     }
-
+    
 }
