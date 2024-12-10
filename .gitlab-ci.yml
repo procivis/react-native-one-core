@@ -1,9 +1,11 @@
-image: node:18.16.0-alpine
+image: node:18.17.0-alpine
 
 include:
   - project: "procivis/one/one-operations"
     file:
       - "gitlab/github.gitlab-ci.yml"
+      - "gitlab/rules.gitlab-ci.yml"
+      - "gitlab/ci-tools.gitlab-ci.yml"
 
 variables:
   NODE_OPTIONS: --max_old_space_size=1536
@@ -17,8 +19,13 @@ stages:
   - build
   - publish
   - github
+  - sync_with_jira
   - sdk
 
+.rule:only_mr_event:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: on_success
 
 .only_tag:
   rules:
@@ -28,6 +35,11 @@ stages:
   rules:
     - if: $CI_COMMIT_TAG
       when: manual
+
+.rule:build_deps:
+  rules:
+    - !reference [ .rule:only_main_or_tag, rules ]
+    - !reference [ .rule:only_mr_event, rules ]
 
 .yarn-cache: &yarn-cache
     key:
@@ -51,20 +63,58 @@ build_deps:
   stage: prepare
   extends:
     - .modules_setup
+    - .rule:build_deps
   script:
     - ''
   cache:
     policy: pull-push
 
-build:
+
+build:lib:
   stage: build
-  extends: .modules_setup
+  extends:
+    - .modules_setup
+    - .rule:only_mr_event
   script:
     - yarn compile
 
+build:kotlin:
+  image: $CI_REGISTRY/procivis/one/one-operations/core-base:1.81.0-0.1
+  stage: build
+  variables:
+    YARN_ENABLE_IMMUTABLE_INSTALLS: true
+    NODE_ENV: development
+  script:
+    - cd example
+    - yarn install
+    - cd android
+    - ./gradlew build
+  cache:
+    key: $CI_JOB_NAME_SLUG
+    policy: pull-push
+    when: on_success
+    paths:
+      - example/android/.gradle
+  extends:
+    - .rule:only_mr_event
+
+build:swift:
+  image: $CI_REGISTRY/procivis/one/one-operations/bitrise-builder:0.2.0
+  stage: build
+  variables:
+    BITRISE_PROJECT_SLUG: 6ee8c26f-6d7b-4bcb-8ddc-be1ba3cd2687
+    BITRISE_WORKFLOW: iOS_RN_Core_LIB
+  script:
+    - /etc/gitrise.sh
+      --access-token $BITRISE_API_ACCESS_TOKEN
+      --slug $BITRISE_PROJECT_SLUG
+      --workflow $BITRISE_WORKFLOW
+      --commit "$CI_COMMIT_SHA"
+  extends:
+    - .rule:only_mr_event
+
 publish:npm:private:
   stage: publish
-  needs: [build_deps]
   script:
     - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
     - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
@@ -75,7 +125,6 @@ publish:npm:private:
 
 publish:npm:public:
   stage: publish
-  needs: [build_deps]
   script:
     - npm config set //registry.npmjs.org/:_authToken ${NPMJS_TOKEN}
     - npm publish --verbose --access public
@@ -84,19 +133,18 @@ publish:npm:public:
     - .only_manual_tag
 
 github:push:
-  needs: []
+  stage: github
   extends:
-    - .github:push
+    - .ci-tool:open_source_release
 
-github:release:
+set_jira_version:
+  stage: sync_with_jira
   extends:
-    - .github:release
-  needs:
-    - job: github:push
+    - .ci-tool:set_jira_version
 
 create_core_binding:
   stage: sdk
-  image: registry.gitlab.procivis.ch/procivis/one/one-operations/bitrise-builder:0.2.0
+  image: $CI_REGISTRY/procivis/one/one-operations/bitrise-builder:0.2.0
   variables:
     # NEW_VERSION: required from upstream pipeline
     MR_ENDPOINT: ${CI_SERVER_URL}/api/v4/projects/${CI_PROJECT_ID}/merge_requests
@@ -146,7 +194,6 @@ create_core_binding:
   rules:
     - if: $CI_PIPELINE_SOURCE == "pipeline"
       when: always
-
 
 sdk:project-update:
   stage: sdk
