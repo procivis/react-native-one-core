@@ -79,7 +79,7 @@ export interface ONECore {
     getTrustEntities(query: TrustEntityListQuery): Promise<ItemList<TrustEntity>>;
     getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
     createRemoteTrustEntity(request: CreateRemoteTrustEntityRequest): Promise<TrustEntity["id"]>;
-    getRemoteTrustEntity(trustEntityId: TrustEntity["id"]): Promise<TrustEntity>;
+    getRemoteTrustEntity(didId: DidListItem["id"]): Promise<TrustEntity>;
     updateRemoteTrustEntity(request: UpdateRemoteTrustEntityRequest): Promise<void>;
     getHistory(query: HistoryListQuery): Promise<ItemList<HistoryListItem>>;
     getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;

@@ -72,8 +72,8 @@ export interface CreateTrustEntityRequest {
     privacyUrl?: string;
     role: TrustEntityRoleEnum;
     state: TrustEntityStateEnum;
-    trustAnchorId: string;
-    didId: string;
+    trustAnchorId: TrustAnchor["id"];
+    didId: DidListItem["id"];
 }
 export interface TrustEntityListQuery {
     sort?: SortableTrustEntityColumnEnum;
@@ -91,10 +91,10 @@ export declare enum ExactTrustEntityFilterColumnEnum {
     NAME = "NAME"
 }
 export interface CreateRemoteTrustEntityRequest extends Omit<CreateTrustEntityRequest, "trustAnchorId" | "state"> {
-    trustAnchorId?: string;
+    trustAnchorId?: TrustAnchor["id"];
 }
 export interface UpdateRemoteTrustEntityRequest {
-    didId: string;
+    didId: DidListItem["id"];
     action?: TrustEntityUpdateActionEnum;
     name?: string;
     logo?: string | null;
