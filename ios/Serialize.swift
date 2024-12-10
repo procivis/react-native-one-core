@@ -58,6 +58,7 @@ func serialize(config: ConfigBindingDto) -> NSDictionary {
         "datatype": config.datatype,
         "keyAlgorithm": config.keyAlgorithm,
         "keyStorage": config.keyStorage,
+        "trustManagement": config.trustManagement,
         "cacheEntities": config.cacheEntities,
     ]
 }
