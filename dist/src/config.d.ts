@@ -95,6 +95,7 @@ export interface Config {
     datatype: ConfigEntities<undefined, DataTypeParams>;
     keyAlgorithm: ConfigEntities;
     keyStorage: ConfigEntities<KeyStorageCapabilities>;
+    trustManagement: ConfigEntities;
     cacheEntities: ConfigEntities;
 }
 export {};
