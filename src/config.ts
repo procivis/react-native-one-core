@@ -1,15 +1,35 @@
+export enum KeyAlgorithmFeatureEnum {
+  GENERATE_CSR = "GENERATE_CSR",
+}
+
+export interface KeyAlgorithmCapabilities {
+  features: KeyAlgorithmFeatureEnum[];
+}
+
 export enum KeyStorageSecurityEnum {
   HARDWARE = "HARDWARE",
   SOFTWARE = "SOFTWARE",
 }
 
+export enum KeyStorageFeatureEnum {
+  EXPORTABLE = "EXPORTABLE",
+}
+
 export interface KeyStorageCapabilities {
   algorithms: string[];
+  features: KeyStorageFeatureEnum[];
   security: KeyStorageSecurityEnum[];
 }
 
+export enum DidOperationEnum {
+  RESOLVE = "RESOLVE",
+  CREATE = "CREATE",
+  DEACTIVATE = "DEACTIVATE",
+}
+
 export interface DidCapabilities {
-  operations: string[];
+  operations: DidOperationEnum[];
+  keyAlgorithms: string[];
 }
 
 export enum FormatFeatureEnum {
@@ -32,9 +52,19 @@ export interface FormatCapabilities {
   revocationMethods: string[];
   signingKeyAlgorithms: string[];
   verificationKeyAlgorithms: string[];
+  verificationKeyStorages: string[];
   datatypes: Array<DataTypeEnum | string>;
   allowedSchemaIds: string[];
   forbiddenClaimNames: string[];
+}
+
+export enum RevocationOperationEnum {
+  REVOKE = "REVOKE",
+  SUSPEND = "SUSPEND",
+}
+
+export interface RevocationCapabilities {
+  operations: RevocationOperationEnum[];
 }
 
 export interface ConfigEntity<Capabilities> {
@@ -111,10 +141,10 @@ export interface Config {
   format: ConfigEntities<FormatCapabilities>;
   exchange: ConfigEntities;
   transport: ConfigEntities;
-  revocation: ConfigEntities;
+  revocation: ConfigEntities<RevocationCapabilities>;
   did: ConfigEntities<DidCapabilities>;
   datatype: ConfigEntities<undefined, DataTypeParams>;
-  keyAlgorithm: ConfigEntities;
+  keyAlgorithm: ConfigEntities<KeyAlgorithmCapabilities>;
   keyStorage: ConfigEntities<KeyStorageCapabilities>;
   trustManagement: ConfigEntities;
   cacheEntities: ConfigEntities;
