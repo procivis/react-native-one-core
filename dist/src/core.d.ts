@@ -8,7 +8,7 @@ import { KeyCheckCertificateRequestBindingDto, KeyListItem, KeyRequest } from ".
 import { ItemList } from "./list";
 import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
-import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
+import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListItem, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
 export * from "./backup";
 export * from "./config";
 export * from "./credential";
@@ -76,7 +76,7 @@ export interface ONECore {
     getTrustAnchors(query: TrustAnchorListQuery): Promise<ItemList<TrustAnchorListItem>>;
     createTrustEntity(request: CreateTrustEntityRequest): Promise<TrustEntity["id"]>;
     getTrustEntity(trustEntityId: TrustEntity["id"]): Promise<TrustEntity>;
-    getTrustEntities(query: TrustEntityListQuery): Promise<ItemList<TrustEntity>>;
+    getTrustEntities(query: TrustEntityListQuery): Promise<ItemList<TrustEntityListItem>>;
     getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
     createRemoteTrustEntity(request: CreateRemoteTrustEntityRequest): Promise<TrustEntity["id"]>;
     getRemoteTrustEntity(didId: DidListItem["id"]): Promise<TrustEntity>;

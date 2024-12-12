@@ -1,3 +1,4 @@
+import { KeyListItem } from "./key";
 import { ListQuery, SortDirection } from "./list";
 
 export enum DidTypeEnum {
@@ -14,11 +15,11 @@ export interface DidRequest {
 }
 
 export interface DidRequestKeys {
-  authentication: string[];
-  assertionMethod: string[];
-  keyAgreement: string[];
-  capabilityInvocation: string[];
-  capabilityDelegation: string[];
+  authentication: Array<KeyListItem["id"]>;
+  assertionMethod: Array<KeyListItem["id"]>;
+  keyAgreement: Array<KeyListItem["id"]>;
+  capabilityInvocation: Array<KeyListItem["id"]>;
+  capabilityDelegation: Array<KeyListItem["id"]>;
 }
 
 export interface DidListItem {
@@ -64,4 +65,7 @@ export interface DidListQuery extends ListQuery {
   exact?: ExactDidFilterColumnEnum[];
   keyAlgorithms?: string[];
   keyRoles?: KeyRoleEnum[];
+  keyStorages?: string[];
+  keyIds?: Array<KeyListItem["id"]>;
+  didMethods?: string[];
 }

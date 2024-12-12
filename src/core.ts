@@ -55,6 +55,7 @@ import {
   TrustAnchorListItem,
   TrustAnchorListQuery,
   TrustEntity,
+  TrustEntityListItem,
   TrustEntityListQuery,
   UpdateRemoteTrustEntityRequest,
 } from "./trust";
@@ -236,7 +237,9 @@ export interface ONECore {
 
   getTrustEntity(trustEntityId: TrustEntity["id"]): Promise<TrustEntity>;
 
-  getTrustEntities(query: TrustEntityListQuery): Promise<ItemList<TrustEntity>>;
+  getTrustEntities(
+    query: TrustEntityListQuery
+  ): Promise<ItemList<TrustEntityListItem>>;
 
   getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
 
