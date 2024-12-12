@@ -69,7 +69,7 @@ export interface RevocationCapabilities {
 
 export interface ConfigEntity<Capabilities> {
   disabled?: boolean;
-  capabilities?: Capabilities;
+  capabilities: Capabilities;
   display: string;
   order: number;
 }
