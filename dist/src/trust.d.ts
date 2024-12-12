@@ -39,7 +39,7 @@ export interface TrustAnchorListQuery extends Omit<ListQuery, "organisationId"> 
     type?: string;
     isPublisher?: boolean;
 }
-export interface TrustEntity {
+export interface TrustEntityListItem {
     id: string;
     createdDate: string;
     lastModified: string;
@@ -52,6 +52,9 @@ export interface TrustEntity {
     state: TrustEntityStateEnum;
     did: DidListItem;
     trustAnchor: TrustAnchor;
+}
+export interface TrustEntity extends TrustEntityListItem {
+    organisationId: string;
 }
 export declare enum TrustEntityRoleEnum {
     ISSUER = "ISSUER",

@@ -50,7 +50,7 @@ export interface TrustAnchorListQuery
   isPublisher?: boolean;
 }
 
-export interface TrustEntity {
+export interface TrustEntityListItem {
   id: string;
   createdDate: string;
   lastModified: string;
@@ -63,6 +63,10 @@ export interface TrustEntity {
   state: TrustEntityStateEnum;
   did: DidListItem;
   trustAnchor: TrustAnchor;
+}
+
+export interface TrustEntity extends TrustEntityListItem {
+  organisationId: string;
 }
 
 export enum TrustEntityRoleEnum {

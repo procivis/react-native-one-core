@@ -149,7 +149,10 @@ func deserializeDidListQuery(_ query: NSDictionary) throws -> DidListQueryBindin
         deactivated: query.value(forKey: "deactivated") as? Bool,
         exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } ),
         keyAlgorithms: try opt(query.value(forKey: "keyAlgorithms") as? NSArray, deserializeIds),
-        keyRoles: try opt(query.value(forKey: "keyRoles") as? NSArray, { roles in try enumList(roles) })
+        keyRoles: try opt(query.value(forKey: "keyRoles") as? NSArray, { roles in try enumList(roles) }),
+        keyStorages: try opt(query.value(forKey: "keyStorages") as? NSArray, deserializeIds),
+        keyIds: try opt(query.value(forKey: "keyIds") as? NSArray, deserializeIds),
+        didMethods: try opt(query.value(forKey: "didMethods") as? NSArray, deserializeIds)
     )
 }
 
