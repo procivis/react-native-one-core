@@ -53,7 +53,13 @@ object SerializeSpecific {
             when (val value = c.value) {
                 is ClaimValueBindingDto.Boolean -> result.putBoolean("value", value.value)
                 is ClaimValueBindingDto.Float -> result.putDouble("value", value.value)
-                is ClaimValueBindingDto.Integer -> result.putInt("value", value.value.toInt())
+                is ClaimValueBindingDto.Integer -> {
+                    if (value.value < Int.MIN_VALUE || value.value > Int.MAX_VALUE) {
+                        result.putDouble("value", value.value.toDouble())
+                    } else {
+                        result.putInt("value", value.value.toInt())
+                    }
+                }
                 is ClaimValueBindingDto.String -> result.putString("value", value.value)
                 is ClaimValueBindingDto.Nested ->
                     result.putArray("value", convertToRN(value.value) as ReadableArray)
