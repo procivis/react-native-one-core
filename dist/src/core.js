@@ -1,4 +1,5 @@
 export * from "./backup";
+export * from "./cache";
 export * from "./config";
 export * from "./credential";
 export * from "./credentialSchema";

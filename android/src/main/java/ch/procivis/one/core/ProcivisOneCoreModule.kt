@@ -1,6 +1,7 @@
 package ch.procivis.one.core
 
 import ch.procivis.one.core.Deserialize.construct
+import ch.procivis.one.core.DeserializeSpecific.enumList
 import ch.procivis.one.core.Serialize.convertToRN
 import ch.procivis.one.core.Util.asyncCall
 import com.facebook.react.bridge.Promise
@@ -508,6 +509,18 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         asyncCall(promise) {
             getCore().uninitialize(deleteData)
             oneCore = null
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun deleteCache(types: ReadableArray?, promise: Promise) {
+        asyncCall(promise) {
+            var cacheTypeList: List<CacheTypeBindingDto>? = null;
+            if (types != null) {
+                cacheTypeList = enumList(types, CacheTypeBindingDto::valueOf)
+            }
+            getCore().deleteCache(cacheTypeList)
             return@asyncCall null
         }
     }

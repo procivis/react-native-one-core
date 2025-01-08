@@ -95,6 +95,10 @@ func deserializeIds(_ ids: NSArray) throws -> [String] {
     return result
 }
 
+func deserializeCacheTypes(types: NSArray?) throws -> [CacheTypeBindingDto]? {
+    return try opt(types, enumList)
+}
+
 func deserializePresentationSubmitCredentialRequest(_ input: NSDictionary) throws -> PresentationSubmitCredentialRequestBindingDto {
     let claims: NSArray = try safeCast(input.value(forKey: "submitClaims"));
     var submitClaims: [String] = [];
@@ -709,6 +713,12 @@ extension ExactTrustEntityFilterColumnBindings: CaseIterable {
 extension TrustEntityUpdateActionBindingEnum: CaseIterable {
     public static var allCases: [TrustEntityUpdateActionBindingEnum] {
         return [.activate, .remove, .withdraw]
+    }
+}
+
+extension CacheTypeBindingDto: CaseIterable {
+    public static var allCases: [CacheTypeBindingDto] {
+        return [.didDocument, .jsonLdContext, .jsonSchema, .statusListCredential, .trustList, .vctMetadata]
     }
 }
 
