@@ -91,7 +91,7 @@ object DeserializeSpecific {
         return fn(input)
     }
 
-    private fun <T> enumList(entries: ReadableArray, fn: (String) -> T): List<T> {
+    fun <T> enumList(entries: ReadableArray, fn: (String) -> T): List<T> {
         val result = mutableListOf<T>()
         for (n in 0 until entries.size()) {
             result.add(fn(entries.getString(n)))

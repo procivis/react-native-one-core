@@ -700,4 +700,16 @@ class ProcivisOneCoreModule: NSObject {
                 return nil as NSDictionary?;
             }
         }
+    
+    @objc(deleteCache:resolver:rejecter:)
+    func deleteCache(
+        types: NSArray?,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                let types = try deserializeCacheTypes(types: types);
+                try getCore().deleteCache(types: types);
+                return nil as NSDictionary?;
+            }
+        }
 }

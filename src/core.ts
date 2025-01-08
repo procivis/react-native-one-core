@@ -59,8 +59,10 @@ import {
   TrustEntityListQuery,
   UpdateRemoteTrustEntityRequest,
 } from "./trust";
+import {CacheType} from "./cache";
 
 export * from "./backup";
+export * from "./cache";
 export * from "./config";
 export * from "./credential";
 export * from "./credentialSchema";
@@ -260,6 +262,8 @@ export interface ONECore {
   createBackup(password: string, outputPath: string): Promise<BackupCreate>;
 
   backupInfo(): Promise<UnexportableEntities>;
+
+  deleteCache(types: CacheType[] | undefined): Promise<void>;
 
   /**
    * Start import procedure

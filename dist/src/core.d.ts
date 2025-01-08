@@ -9,7 +9,9 @@ import { ItemList } from "./list";
 import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
 import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListItem, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
+import { CacheType } from "./cache";
 export * from "./backup";
+export * from "./cache";
 export * from "./config";
 export * from "./credential";
 export * from "./credentialSchema";
@@ -85,6 +87,7 @@ export interface ONECore {
     getHistoryEntry(historyId: HistoryListItem["id"]): Promise<HistoryListItem>;
     createBackup(password: string, outputPath: string): Promise<BackupCreate>;
     backupInfo(): Promise<UnexportableEntities>;
+    deleteCache(types: CacheType[] | undefined): Promise<void>;
     /**
      * Start import procedure
      *

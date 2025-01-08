@@ -252,4 +252,8 @@ RCT_EXTERN_METHOD(uninitialize:(BOOL *)deleteData
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(deleteCache:(NSArray *)types
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 @end
