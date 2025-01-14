@@ -9,7 +9,7 @@ import { ItemList } from "./list";
 import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
 import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListItem, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
-import { CacheType } from "./cache";
+import { BypassCache, CacheType } from "./cache";
 export * from "./backup";
 export * from "./cache";
 export * from "./config";
@@ -71,7 +71,7 @@ export interface ONECore {
     getProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ProofSchema>;
     deleteProofSchema(proofSchemaId: ProofSchema["id"]): Promise<void>;
     importProofSchema(request: ImportProofSchemaRequest): Promise<ProofSchema["id"]>;
-    checkRevocation(credentialIds: Array<CredentialListItem["id"]>): Promise<CredentialRevocationCheckResponse[]>;
+    checkRevocation(credentialIds: Array<CredentialListItem["id"]>, bypassCache: BypassCache[] | undefined): Promise<CredentialRevocationCheckResponse[]>;
     createTrustAnchor(request: CreateTrustAnchorRequest): Promise<TrustAnchor["id"]>;
     deleteTrustAnchor(trustAnchorId: TrustAnchor["id"]): Promise<void>;
     getTrustAnchor(trustAnchorId: TrustAnchor["id"]): Promise<TrustAnchor>;

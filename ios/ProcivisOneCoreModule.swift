@@ -463,14 +463,16 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(checkRevocation:resolver:rejecter:)
+    @objc(checkRevocation:bypassCache:resolver:rejecter:)
     func checkRevocation(
         credentialIds: NSArray,
+        bypassCache: NSArray?,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let ids = try deserializeIds(credentialIds);
-                let result = try getCore().checkRevocation(credentialIds: ids);
+                let bypass = try deserializeBypassCache(bypassCache: bypassCache);
+                let result = try getCore().checkRevocation(credentialIds: ids, bypassCache: bypass);
                 return result.map {
                     serialize(credentialRevocationCheckResponse: $0)
                 }

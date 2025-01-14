@@ -59,7 +59,7 @@ import {
   TrustEntityListQuery,
   UpdateRemoteTrustEntityRequest,
 } from "./trust";
-import {CacheType} from "./cache";
+import { BypassCache, CacheType } from "./cache";
 
 export * from "./backup";
 export * from "./cache";
@@ -218,7 +218,8 @@ export interface ONECore {
   ): Promise<ProofSchema["id"]>;
 
   checkRevocation(
-    credentialIds: Array<CredentialListItem["id"]>
+    credentialIds: Array<CredentialListItem["id"]>,
+    bypassCache: BypassCache[] | undefined
   ): Promise<CredentialRevocationCheckResponse[]>;
 
   createTrustAnchor(
