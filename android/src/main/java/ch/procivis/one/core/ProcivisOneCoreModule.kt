@@ -346,10 +346,11 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun checkRevocation(credentialIds: ReadableArray, promise: Promise) {
+    fun checkRevocation(credentialIds: ReadableArray, bypassCache: ReadableArray?, promise: Promise) {
         asyncCall(promise) {
             val ids = DeserializeSpecific.ids(credentialIds)
-            val results = getCore().checkRevocation(ids)
+            val bypass = bypassCache?.let { enumList(it, BypassCacheBindingDto::valueOf) }
+            val results = getCore().checkRevocation(ids, bypass)
             return@asyncCall convertToRN(results)
         }
     }

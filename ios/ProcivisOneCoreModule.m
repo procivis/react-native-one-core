@@ -170,6 +170,7 @@ RCT_EXTERN_METHOD(proposeProof:(NSString *)exchange
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(checkRevocation:(NSArray *)credentialIds
+                  bypassCache:(NSArray *)bypassCache
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
