@@ -6,3 +6,8 @@ export enum CacheType {
   JSON_SCHEMA = "JSON_SCHEMA",
   TRUST_LIST = "TRUST_LIST",
 }
+
+export enum BypassCache {
+  DID_DOCUMENT = "DID_DOCUMENT",
+  STATUS_LIST_CREDENTIAL = "STATUS_LIST_CREDENTIAL",
+}
