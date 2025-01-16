@@ -444,8 +444,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun updateRemoteTrustEntity(request: ReadableMap, promise: Promise) {
         asyncCall(promise) {
-            val foo = construct<UpdateRemoteTrustEntityFromDidRequestBindingDto>(request)
-            return@asyncCall getCore().updateRemoteTrustEntity(foo)
+            getCore().updateRemoteTrustEntity(construct(request))
+            return@asyncCall null
         }
     }
 
