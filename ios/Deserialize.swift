@@ -462,7 +462,6 @@ func deserializeCreateTrustEntityRequest(_ request: NSDictionary) throws -> Crea
         termsUrl: request.value(forKey: "termsUrl") as? String,
         privacyUrl: request.value(forKey: "privacyUrl") as? String,
         role: try deserializeEnum(try safeCast(request.value(forKey: "role"))),
-        state: try deserializeEnum(try safeCast(request.value(forKey: "state"))),
         trustAnchorId: try safeCast(request.value(forKey: "trustAnchorId")),
         didId: try safeCast(request.value(forKey: "didId"))
     )
