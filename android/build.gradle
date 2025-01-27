@@ -54,6 +54,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${safeExtGet('kotlinVersion', '1.8.0')}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation 'com.facebook.react:react-native:+'
 
     releaseImplementation(name: 'onecore-release', ext: 'aar')

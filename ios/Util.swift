@@ -8,12 +8,23 @@
 import Foundation
 
 // Error handling
-func asyncCall<Result>(_ resolve: @escaping RCTPromiseResolveBlock,
+func syncCall<Result>(_ resolve: @escaping RCTPromiseResolveBlock,
                        _ reject: @escaping RCTPromiseRejectBlock, _ function: () throws -> Result) {
     do {
         resolve(try function());
     } catch {
         handleError(error: error, reject);
+    }
+}
+
+func asyncCall<Result>(_ resolve: @escaping RCTPromiseResolveBlock,
+                        _ reject: @escaping RCTPromiseRejectBlock, _ function: @escaping () async throws -> Result) {
+    Task {
+        do {
+            resolve(try await function());
+        } catch {
+            handleError(error: error, reject);
+        }
     }
 }
 
