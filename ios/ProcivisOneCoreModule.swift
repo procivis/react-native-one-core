@@ -15,7 +15,7 @@ class ProcivisOneCoreModule: NSObject {
     func initializeHolder(
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
-            asyncCall(resolve, reject) {
+            syncCall(resolve, reject) {
                 guard let dataDirPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0000", message: "invalid DataDir", cause: nil))
                 }
@@ -23,11 +23,11 @@ class ProcivisOneCoreModule: NSObject {
                 // create folder if not exists
                 try FileManager.default.createDirectory(atPath: dataDirPath, withIntermediateDirectories: true)
                 
-                if (core != nil) {
+                if (self.core != nil) {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
                 }
                 
-                core = try initializeHolderCore(dataDirPath: dataDirPath, nativeKeyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
+                self.core = try initializeHolderCore(dataDirPath: dataDirPath, nativeKeyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
                 return nil as NSDictionary?;
             }
         }
@@ -36,7 +36,7 @@ class ProcivisOneCoreModule: NSObject {
     func initializeVerifier(
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
-            asyncCall(resolve, reject) {
+            syncCall(resolve, reject) {
                 guard let dataDirPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0000", message: "invalid DataDir", cause: nil))
                 }
@@ -44,11 +44,11 @@ class ProcivisOneCoreModule: NSObject {
                 // create folder if not exists
                 try FileManager.default.createDirectory(atPath: dataDirPath, withIntermediateDirectories: true)
                 
-                if (core != nil) {
+                if (self.core != nil) {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
                 }
                 
-                core = try initializeVerifierCore(dataDirPath: dataDirPath, nativeKeyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
+                self.core = try initializeVerifierCore(dataDirPath: dataDirPath, nativeKeyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
                 return nil as NSDictionary?;
             }
         }
@@ -64,7 +64,7 @@ class ProcivisOneCoreModule: NSObject {
     func getVersion(
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
-            asyncCall(resolve, reject) {
+            syncCall(resolve, reject) {
                 let version = try getCore().version();
                 return serialize(version: version)
             }
@@ -75,7 +75,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let config = try getCore().getConfig();
+                let config = try await self.getCore().getConfig();
                 return serialize(config: config)
             }
         }
@@ -86,7 +86,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try getCore().createOrganisation(uuid: uuid);
+                return try await self.getCore().createOrganisation(uuid: uuid);
             }
         }
     
@@ -96,7 +96,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try getCore().generateKey(request: deserializeKeyRequest(keyRequest: keyRequest));
+                return try await self.getCore().generateKey(request: deserializeKeyRequest(keyRequest: keyRequest));
             }
         }
     
@@ -106,7 +106,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try getCore().createDid(request: deserializeDidRequest(didRequest: didRequest));
+                return try await self.getCore().createDid(request: deserializeDidRequest(didRequest: didRequest));
             }
         }
     
@@ -117,7 +117,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let listQuery = try deserializeDidListQuery(query);
-                let result = try getCore().getDids(query: listQuery);
+                let result = try await self.getCore().getDids(query: listQuery);
                 return serialize(didList: result)
             }
         }
@@ -131,7 +131,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let transport = (transport != nil) ? try deserializeIds(transport!) : nil;
-                let result = try getCore().handleInvitation(url: url, organisationId: organisationId, transport: transport);
+                let result = try await self.getCore().handleInvitation(url: url, organisationId: organisationId, transport: transport);
                 return serialize(invitationResponse: result)
             }
         }
@@ -145,7 +145,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().holderAcceptCredential(interactionId: interactionId, didId: didId, keyId: keyId, txCode: txCode);
+                try await self.getCore().holderAcceptCredential(interactionId: interactionId, didId: didId, keyId: keyId, txCode: txCode);
                 return nil as NSDictionary?;
             }
         }
@@ -156,7 +156,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().holderRejectCredential(interactionId: interactionId);
+                try await self.getCore().holderRejectCredential(interactionId: interactionId);
                 return nil as NSDictionary?;
             }
         }
@@ -167,7 +167,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().getPresentationDefinition(proofId: proofId);
+                let result = try await self.getCore().getPresentationDefinition(proofId: proofId);
                 return serialize(presentationDefinition: result)
             }
         }
@@ -178,7 +178,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().holderRejectProof(interactionId: interactionId);
+                try await self.getCore().holderRejectProof(interactionId: interactionId);
                 return nil as NSDictionary?;
             }
         }
@@ -199,7 +199,7 @@ class ProcivisOneCoreModule: NSObject {
                     submitCredentials[key] = try deserializePresentationSubmitCredentialRequest(entry)
                 }
                 
-                try getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials, didId: didId, keyId: keyId);
+                try await self.getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials, didId: didId, keyId: keyId);
                 return nil as NSDictionary?;
             }
         }
@@ -211,7 +211,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let listQuery = try deserializeCredentialListQuery(query);
-                let result = try getCore().getCredentials(query: listQuery);
+                let result = try await self.getCore().getCredentials(query: listQuery);
                 return serialize(credentialList: result)
             }
         }
@@ -222,7 +222,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().getCredential(credentialId: credentialId);
+                let result = try await self.getCore().getCredential(credentialId: credentialId);
                 return serialize(credentialDetail: result)
             }
         }
@@ -233,7 +233,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().deleteCredential(credentialId: credentialId);
+                try await self.getCore().deleteCredential(credentialId: credentialId);
                 return nil as NSDictionary?;
             }
         }
@@ -245,7 +245,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeImportCredentialSchemaRequest(request);
-                return try getCore().importCredentialSchema(request: request)
+                return try await self.getCore().importCredentialSchema(request: request)
             }
         }
     
@@ -255,7 +255,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().getCredentialSchema(credentialSchemaId: credentialSchemaId);
+                let result = try await self.getCore().getCredentialSchema(credentialSchemaId: credentialSchemaId);
                 return serialize(credentialSchemaDetail: result)
             }
         }
@@ -267,7 +267,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let listQuery = try deserializeCredentialSchemaListQuery(query)
-                let result = try getCore().getCredentialSchemas(query: listQuery);
+                let result = try await self.getCore().getCredentialSchemas(query: listQuery);
                 return serialize(credentialSchemaList: result)
             }
         }
@@ -278,7 +278,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().deleteCredentialSchema(credentialSchemaId: credentialSchemaId);
+                try await self.getCore().deleteCredentialSchema(credentialSchemaId: credentialSchemaId);
                 return nil as NSDictionary?;
             }
         }
@@ -290,7 +290,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeCreateProofSchemaRequest(request)
-                return try getCore().createProofSchema(request: request)
+                return try await self.getCore().createProofSchema(request: request)
             }
         }
     
@@ -301,7 +301,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let listQuery = try deserializeProofSchemaListQuery(query)
-                let result = try getCore().getProofSchemas(filter: listQuery);
+                let result = try await self.getCore().getProofSchemas(filter: listQuery);
                 return serialize(proofSchemaList: result)
             }
         }
@@ -312,7 +312,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().getProofSchema(proofSchemaId: proofSchemaId);
+                let result = try await self.getCore().getProofSchema(proofSchemaId: proofSchemaId);
                 return serialize(proofSchema: result)
             }
         }
@@ -323,7 +323,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().deleteProofSchema(proofSchemaId: proofSchemaId);
+                try await self.getCore().deleteProofSchema(proofSchemaId: proofSchemaId);
                 return nil as NSDictionary?;
             }
         }
@@ -335,7 +335,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeImportProofSchemaRequest(request);
-                return try getCore().importProofSchema(request: request)
+                return try await self.getCore().importProofSchema(request: request)
             }
         }
     
@@ -346,7 +346,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeCreateProofRequest(request);
-                return try getCore().createProof(request: request)
+                return try await self.getCore().createProof(request: request)
             }
         }
     
@@ -356,7 +356,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try getCore().runTask(task: task);
+                return try await self.getCore().runTask(task: task);
             }
         }
     
@@ -366,7 +366,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().deleteProofClaims(proofId: proofId);
+                try await self.getCore().deleteProofClaims(proofId: proofId);
                 return nil as NSDictionary?;
             }
         }
@@ -379,7 +379,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let certificate = try deserializeKeyCheckCertificateRequest(certificate);
-                try getCore().checkCertificate(keyId: keyId, certificate: certificate);
+                try await self.getCore().checkCertificate(keyId: keyId, certificate: certificate);
                 return nil as NSDictionary?;
             }
         }
@@ -390,7 +390,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().shareCredentialSchema(credentialSchemaId: credentialSchemaId);
+                let result = try await self.getCore().shareCredentialSchema(credentialSchemaId: credentialSchemaId);
                 return serialize(credentialSchemaShareResponse: result)
             }
         }
@@ -401,7 +401,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().shareProofSchema(proofSchemaId: proofSchemaId);
+                let result = try await self.getCore().shareProofSchema(proofSchemaId: proofSchemaId);
                 return serialize(proofSchemaShareResponse: result)
             }
         }
@@ -413,7 +413,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().shareProof(proofId: proofId, params: deserializeShareProofRequest(request));
+                let result = try await self.getCore().shareProof(proofId: proofId, params: deserializeShareProofRequest(request));
                 return serialize(shareProofResponse: result)
             }
         }
@@ -424,7 +424,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().getProof(proofId: proofId);
+                let result = try await self.getCore().getProof(proofId: proofId);
                 return serialize(proofRequest: result)
             }
         }
@@ -436,7 +436,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let listQuery = try deserializeProofListQuery(query);
-                let result = try getCore().getProofs(query: listQuery);
+                let result = try await self.getCore().getProofs(query: listQuery);
                 return serialize(proofList: result)
             }
         }
@@ -447,7 +447,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try getCore().retractProof(proofId: proofId)
+                return try await self.getCore().retractProof(proofId: proofId)
             }
         }
     
@@ -458,7 +458,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().proposeProof(exchange: exchange, organisationId: organisationId)
+                let result = try await self.getCore().proposeProof(exchange: exchange, organisationId: organisationId)
                 return serialize(proposeProofResponse: result)
             }
         }
@@ -472,7 +472,7 @@ class ProcivisOneCoreModule: NSObject {
             asyncCall(resolve, reject) {
                 let ids = try deserializeIds(credentialIds);
                 let bypass = try deserializeBypassCache(bypassCache: bypassCache);
-                let result = try getCore().checkRevocation(credentialIds: ids, bypassCache: bypass);
+                let result = try await self.getCore().checkRevocation(credentialIds: ids, bypassCache: bypass);
                 return result.map {
                     serialize(credentialRevocationCheckResponse: $0)
                 }
@@ -486,7 +486,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let listQuery = try deserializeHistoryListQuery(query)
-                let result = try getCore().getHistoryList(query: listQuery);
+                let result = try await self.getCore().getHistoryList(query: listQuery);
                 return serialize(historyList: result)
             }
         }
@@ -497,7 +497,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().getHistoryEntry(historyId: historyId);
+                let result = try await self.getCore().getHistoryEntry(historyId: historyId);
                 return serialize(historyListItem: result)
             }
         }
@@ -509,7 +509,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeCreateTrustAnchorRequest(request);
-                return try getCore().createTrustAnchor(anchor: request)
+                return try await self.getCore().createTrustAnchor(anchor: request)
             }
         }
     
@@ -519,7 +519,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let trustAnchor = try getCore().getTrustAnchor(trustAnchorId: trustAnchorId);
+                let trustAnchor = try await self.getCore().getTrustAnchor(trustAnchorId: trustAnchorId);
                 return serialize(trustAnchor: trustAnchor)
             }
         }
@@ -531,7 +531,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let listQuery = try deserializeTrustAnchorListQuery(query)
-                let result = try getCore().listTrustAnchors(filters: listQuery);
+                let result = try await self.getCore().listTrustAnchors(filters: listQuery);
                 return serialize(trustAnchorList: result)
             }
         }
@@ -542,7 +542,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().deleteTrustAnchor(anchorId: trustAnchorId);
+                try await self.getCore().deleteTrustAnchor(anchorId: trustAnchorId);
                 return nil as NSDictionary?;
             }
         }
@@ -554,7 +554,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeCreateTrustEntityRequest(request);
-                return try getCore().createTrustEntity(request: request)
+                return try await self.getCore().createTrustEntity(request: request)
             }
         }
     
@@ -565,7 +565,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let listQuery = try deserializeTrustEntityListQuery(query)
-                let result = try getCore().listTrustEntities(filters: listQuery);
+                let result = try await self.getCore().listTrustEntities(filters: listQuery);
                 return serialize(trustEntityList: result)
             }
         }
@@ -576,7 +576,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let trustEntity = try getCore().getTrustEntity(trustEntityId: trustEntityId);
+                let trustEntity = try await self.getCore().getTrustEntity(trustEntityId: trustEntityId);
                 return serialize(trustEntity: trustEntity)
             }
         }
@@ -587,7 +587,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let trustEntity = try getCore().getTrustEntityByDid(didId: didId);
+                let trustEntity = try await self.getCore().getTrustEntityByDid(didId: didId);
                 return serialize(trustEntity: trustEntity)
             }
         }
@@ -599,7 +599,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeCreateRemoteTrustEntityRequest(request);
-                return try getCore().createRemoteTrustEntity(request: request)
+                return try await self.getCore().createRemoteTrustEntity(request: request)
             }
         }
     
@@ -609,7 +609,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let trustEntity = try getCore().getRemoteTrustEntity(didId: didId);
+                let trustEntity = try await self.getCore().getRemoteTrustEntity(didId: didId);
                 return serialize(trustEntity: trustEntity)
             }
         }
@@ -621,7 +621,7 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let request = try deserializeUpdateRemoteTrustEntityRequest(request);
-                return try getCore().updateRemoteTrustEntity(request: request)
+                return try await self.getCore().updateRemoteTrustEntity(request: request)
             }
         }
     
@@ -633,7 +633,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().createBackup(password: password, outputPath: outputPath);
+                let result = try await self.getCore().createBackup(password: password, outputPath: outputPath);
                 return serialize(backupCreate: result)
             }
         }
@@ -643,7 +643,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().backupInfo();
+                let result = try await self.getCore().backupInfo();
                 return serialize(unexportableEntities: result)
             }
         }
@@ -655,7 +655,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().unpackBackup(password: password, inputPath: inputPath);
+                let result = try await self.getCore().unpackBackup(password: password, inputPath: inputPath);
                 return serialize(importBackupMetadata: result)
             }
         }
@@ -665,7 +665,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().finalizeImport();
+                try await self.getCore().finalizeImport();
                 return nil as NSDictionary?;
             }
         }
@@ -675,7 +675,7 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                try getCore().rollbackImport();
+                try await self.getCore().rollbackImport();
                 return nil as NSDictionary?;
             }
         }
@@ -686,20 +686,8 @@ class ProcivisOneCoreModule: NSObject {
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                let result = try getCore().resolveJsonldContext(url: url);
+                let result = try await self.getCore().resolveJsonldContext(url: url);
                 return serialize(resolveJsonLdContextResponse: result)
-            }
-        }
-    
-    @objc(uninitialize:resolver:rejecter:)
-    func uninitialize(
-        deleteData: Bool,
-        resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock) {
-            asyncCall(resolve, reject) {
-                try getCore().uninitialize(deleteData: deleteData);
-                core = nil
-                return nil as NSDictionary?;
             }
         }
     
@@ -710,7 +698,19 @@ class ProcivisOneCoreModule: NSObject {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let types = try deserializeCacheTypes(types: types);
-                try getCore().deleteCache(types: types);
+                try await self.getCore().deleteCache(types: types);
+                return nil as NSDictionary?;
+            }
+        }
+    
+    @objc(uninitialize:resolver:rejecter:)
+    func uninitialize(
+        deleteData: Bool,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try await self.getCore().uninitialize(deleteData: deleteData);
+                self.core = nil
                 return nil as NSDictionary?;
             }
         }
