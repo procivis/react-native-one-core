@@ -14,10 +14,8 @@
     return NO;
 }
 
-RCT_EXTERN_METHOD(initializeHolder:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(initializeVerifier:(RCTPromiseResolveBlock)resolve
+RCT_EXTERN_METHOD(initialize:(NSString *)configJson
+                  resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getVersion:(RCTPromiseResolveBlock)resolve

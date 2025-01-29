@@ -32,26 +32,12 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun initializeHolder(promise: Promise) {
+    fun initialize(configJson: String, promise: Promise) {
         syncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
             oneCore =
-                initializeHolderCore(
-                    dataDirPath,
-                    AndroidKeyStoreKeyStorage(this.reactApplicationContext),
-                    AndroidBLECentral(this.reactApplicationContext),
-                    AndroidBLEPeripheral(this.reactApplicationContext)
-                )
-            return@syncCall null
-        }
-    }
-
-    @ReactMethod
-    fun initializeVerifier(promise: Promise) {
-        syncCall(promise) {
-            val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
-            oneCore =
-                initializeVerifierCore(
+                initializeCore(
+                    configJson,
                     dataDirPath,
                     AndroidKeyStoreKeyStorage(this.reactApplicationContext),
                     AndroidBLECentral(this.reactApplicationContext),
