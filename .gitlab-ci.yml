@@ -6,6 +6,7 @@ include:
       - "gitlab/github.gitlab-ci.yml"
       - "gitlab/rules.gitlab-ci.yml"
       - "gitlab/ci-tools.gitlab-ci.yml"
+      - "gitlab/bitrise.gitlab-ci.yml"
 
 variables:
   NODE_OPTIONS: --max_old_space_size=1536
@@ -99,19 +100,13 @@ build:kotlin:
     - .rule:only_mr_event
 
 build:swift:
-  image: $CI_REGISTRY/procivis/one/one-operations/bitrise-builder:0.2.0
   stage: build
+  extends:
+    - .bitrise:default
+    - .rule:only_mr_event
   variables:
     BITRISE_PROJECT_SLUG: 6ee8c26f-6d7b-4bcb-8ddc-be1ba3cd2687
     BITRISE_WORKFLOW: iOS_RN_Core_LIB
-  script:
-    - /etc/gitrise.sh
-      --access-token $BITRISE_API_ACCESS_TOKEN
-      --slug $BITRISE_PROJECT_SLUG
-      --workflow $BITRISE_WORKFLOW
-      --commit "$CI_COMMIT_SHA"
-  extends:
-    - .rule:only_mr_event
 
 publish:npm:private:
   stage: publish
