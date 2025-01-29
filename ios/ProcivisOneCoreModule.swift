@@ -11,8 +11,9 @@ class ProcivisOneCoreModule: NSObject {
     private static let TAG = "ProcivisOneCoreModule";
     private var core: OneCoreBindingProtocol? = nil;
     
-    @objc(initializeHolder:rejecter:)
-    func initializeHolder(
+    @objc(initialize:resolver:rejecter:)
+    func initialize(
+        configJson: String,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             syncCall(resolve, reject) {
@@ -27,28 +28,7 @@ class ProcivisOneCoreModule: NSObject {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
                 }
                 
-                self.core = try initializeHolderCore(dataDirPath: dataDirPath, nativeKeyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
-                return nil as NSDictionary?;
-            }
-        }
-    
-    @objc(initializeVerifier:rejecter:)
-    func initializeVerifier(
-        resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock) {
-            syncCall(resolve, reject) {
-                guard let dataDirPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else {
-                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0000", message: "invalid DataDir", cause: nil))
-                }
-                
-                // create folder if not exists
-                try FileManager.default.createDirectory(atPath: dataDirPath, withIntermediateDirectories: true)
-                
-                if (self.core != nil) {
-                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
-                }
-                
-                self.core = try initializeVerifierCore(dataDirPath: dataDirPath, nativeKeyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
+                self.core = try initializeCore(configJson: configJson, dataDirPath: dataDirPath, nativeKeyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
                 return nil as NSDictionary?;
             }
         }

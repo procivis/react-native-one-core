@@ -7,21 +7,13 @@ const ONE = NativeModules.ProcivisOneCoreModule;
 const originalGetConfig = ONE.getConfig;
 ONE.getConfig = () => originalGetConfig().then((config) => objectMap(config, (entities) => objectMap(entities, (json) => JSON.parse(json))));
 /**
- * Initialize ONE Core for Holder
+ * Initialize ONE Core
  * @note Beware that only one instance can be initialized at a time, repeated calls will fail
+ * @param config one-core configuration
  * @returns ONE Core instance
  */
-export async function initializeHolderCore() {
-    await wrapFn(ONE.initializeHolder, "initializeHolderCore")();
-    return wrapObj(ONE);
-}
-/**
- * Initialize ONE Core for Verifier
- * @note Beware that only one instance can be initialized at a time, repeated calls will fail
- * @returns ONE Core instance
- */
-export async function initializeVerifierCore() {
-    await wrapFn(ONE.initializeVerifier, "initializeVerifierCore")();
+export async function initializeCore(config = {}) {
+    await wrapFn(ONE.initialize, "initializeCore")(JSON.stringify(config));
     return wrapObj(ONE);
 }
 // UTILS
