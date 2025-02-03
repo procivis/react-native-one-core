@@ -37,11 +37,12 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
             oneCore =
                 initializeCore(
-                    configJson,
-                    dataDirPath,
-                    AndroidKeyStoreKeyStorage(this.reactApplicationContext),
-                    AndroidBLECentral(this.reactApplicationContext),
-                    AndroidBLEPeripheral(this.reactApplicationContext)
+                    configJson = configJson,
+                    dataDirPath = dataDirPath,
+                    nativeSecureElement = AndroidKeyStoreKeyStorage(this.reactApplicationContext),
+                    remoteSecureElement = null,
+                    bleCentral = AndroidBLECentral(this.reactApplicationContext),
+                    blePeripheral = AndroidBLEPeripheral(this.reactApplicationContext)
                 )
             return@syncCall null
         }

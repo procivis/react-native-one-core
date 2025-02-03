@@ -28,7 +28,7 @@ class ProcivisOneCoreModule: NSObject {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
                 }
                 
-                self.core = try initializeCore(configJson: configJson, dataDirPath: dataDirPath, nativeKeyStorage: SecureEnclaveKeyStorage(), bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
+                self.core = try initializeCore(configJson: configJson, dataDirPath: dataDirPath, nativeSecureElement: SecureEnclaveKeyStorage(), remoteSecureElement: nil, bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
                 return nil as NSDictionary?;
             }
         }
