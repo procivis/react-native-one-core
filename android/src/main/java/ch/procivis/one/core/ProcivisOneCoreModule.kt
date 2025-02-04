@@ -5,6 +5,8 @@ import ch.procivis.one.core.DeserializeSpecific.enumList
 import ch.procivis.one.core.Serialize.convertToRN
 import ch.procivis.one.core.Util.asyncCall
 import ch.procivis.one.core.Util.syncCall
+import ch.procivis.one.core.ubiqu.PinPadRunner
+import ch.procivis.one.core.ubiqu.UbiquKeyStorage
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -31,16 +33,28 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         )
     }
 
+    private var ubiqu: UbiquKeyStorage? = null
+    private fun getUbiqu(): UbiquKeyStorage {
+        return ubiqu ?: throw BindingException.ErrorResponse(
+            ErrorResponseBindingDto(
+                "BR_0184",
+                "ubiqu not initialized",
+                null
+            )
+        )
+    }
+
     @ReactMethod
     fun initialize(configJson: String, promise: Promise) {
         syncCall(promise) {
             val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
+            ubiqu = ubiqu ?: UbiquKeyStorage(this.reactApplicationContext)
             oneCore =
                 initializeCore(
                     configJson = configJson,
                     dataDirPath = dataDirPath,
                     nativeSecureElement = AndroidKeyStoreKeyStorage(this.reactApplicationContext),
-                    remoteSecureElement = null,
+                    remoteSecureElement = ubiqu,
                     bleCentral = AndroidBLECentral(this.reactApplicationContext),
                     blePeripheral = AndroidBLEPeripheral(this.reactApplicationContext)
                 )
@@ -523,7 +537,62 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         asyncCall(promise, scope) {
             getCore().uninitialize(deleteData)
             oneCore = null
+            if (deleteData) {
+                ubiqu?.reset()
+            }
             return@asyncCall null
         }
+    }
+
+    // ===== Ubiqu specific methods
+    @ReactMethod
+    fun changeRSEPin(promise: Promise) {
+        asyncCall(promise, scope) {
+            getUbiqu().changePin()
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun areRSEBiometricsSupported(promise: Promise) {
+        asyncCall(promise, scope) {
+            return@asyncCall getUbiqu().getBiometricsSupported()
+        }
+    }
+
+    @ReactMethod
+    fun areRSEBiometricsEnabled(promise: Promise) {
+        asyncCall(promise, scope) {
+            return@asyncCall getUbiqu().getBiometricsEnabled()
+        }
+    }
+
+    @ReactMethod
+    fun setRSEBiometrics(enabled: Boolean, promise: Promise) {
+        asyncCall(promise, scope) {
+            if (enabled) {
+                getUbiqu().enableBiometrics(true)
+            } else {
+                getUbiqu().disableBiometrics()
+            }
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun resetRSE(promise: Promise) {
+        asyncCall(promise, scope) {
+            ubiqu?.reset()
+            return@asyncCall null
+        }
+    }
+
+    // handling RN event emitter
+    @ReactMethod
+    fun addListener(eventName: String) {
+    }
+
+    @ReactMethod
+    fun removeListeners(count: Int) {
     }
 }

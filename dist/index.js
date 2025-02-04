@@ -1,7 +1,9 @@
 import { NativeModules } from "react-native";
 import { OneError } from "./src/error";
+import * as ubiqu from "./src/ubiqu";
 export * from "./src/core";
 export * from "./src/error";
+export const Ubiqu = ubiqu;
 const ONE = NativeModules.ProcivisOneCoreModule;
 // Config entities are exposed as serialized JSON, here conversion to structs
 const originalGetConfig = ONE.getConfig;

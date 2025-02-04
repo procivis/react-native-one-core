@@ -29,4 +29,4 @@ ios/one_coreFFI.xcframework
 ios/one_core.swift
 ios/IOSBLE*.swift
 ios/SecureEnclaveKeyStorage.swift
-android/libs/
+android/libs/onecore-*

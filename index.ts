@@ -1,9 +1,17 @@
 import { NativeModules } from "react-native";
 import { OneError } from "./src/error";
 import { ONECore } from "./src/core";
+import * as ubiqu from "./src/ubiqu";
 
 export * from "./src/core";
 export * from "./src/error";
+
+export const Ubiqu = ubiqu;
+export declare namespace Ubiqu {
+  export type PinEventType = ubiqu.PinEventType;
+  export type PinFlowType = ubiqu.PinFlowType;
+  export type PinFlowStage = ubiqu.PinFlowStage;
+}
 
 const ONE = NativeModules.ProcivisOneCoreModule;
 
