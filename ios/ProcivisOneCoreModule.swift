@@ -443,16 +443,15 @@ class ProcivisOneCoreModule: NSObject {
             }
         }
     
-    @objc(checkRevocation:bypassCache:resolver:rejecter:)
+    @objc(checkRevocation:forceRefresh:resolver:rejecter:)
     func checkRevocation(
         credentialIds: NSArray,
-        bypassCache: NSArray?,
+        forceRefresh: Bool,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let ids = try deserializeIds(credentialIds);
-                let bypass = try deserializeBypassCache(bypassCache: bypassCache);
-                let result = try await self.getCore().checkRevocation(credentialIds: ids, bypassCache: bypass);
+                let result = try await self.getCore().checkRevocation(credentialIds: ids, forceRefresh: forceRefresh);
                 return result.map {
                     serialize(credentialRevocationCheckResponse: $0)
                 }

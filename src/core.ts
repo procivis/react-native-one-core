@@ -219,7 +219,7 @@ export interface ONECore {
 
   checkRevocation(
     credentialIds: Array<CredentialListItem["id"]>,
-    bypassCache: BypassCache[] | undefined
+    forceRefresh: boolean
   ): Promise<CredentialRevocationCheckResponse[]>;
 
   createTrustAnchor(
