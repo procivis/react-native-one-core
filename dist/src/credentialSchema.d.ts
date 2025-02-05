@@ -62,7 +62,8 @@ export interface CredentialSchemaListQuery extends ListQuery {
 }
 export declare enum WalletStorageType {
     HARDWARE = "HARDWARE",
-    SOFTWARE = "SOFTWARE"
+    SOFTWARE = "SOFTWARE",
+    REMOTE_SECURE_ELEMENT = "REMOTE_SECURE_ELEMENT"
 }
 export declare enum KnownCredentialSchemaType {
     PROCIVIS_ONE_SCHEMA2024 = "PROCIVIS_ONE_SCHEMA2024",

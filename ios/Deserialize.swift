@@ -642,7 +642,7 @@ extension LayoutTypeBindingEnum: CaseIterable {
 
 extension WalletStorageTypeBindingEnum: CaseIterable {
     public static var allCases: [WalletStorageTypeBindingEnum] {
-        return [.hardware, .software]
+        return [.hardware, .software, .remoteSecureElement]
     }
 }
 

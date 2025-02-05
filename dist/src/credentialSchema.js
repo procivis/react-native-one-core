@@ -16,6 +16,7 @@ export var WalletStorageType;
 (function (WalletStorageType) {
     WalletStorageType["HARDWARE"] = "HARDWARE";
     WalletStorageType["SOFTWARE"] = "SOFTWARE";
+    WalletStorageType["REMOTE_SECURE_ELEMENT"] = "REMOTE_SECURE_ELEMENT";
 })(WalletStorageType || (WalletStorageType = {}));
 export var KnownCredentialSchemaType;
 (function (KnownCredentialSchemaType) {
