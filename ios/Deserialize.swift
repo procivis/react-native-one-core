@@ -99,10 +99,6 @@ func deserializeCacheTypes(types: NSArray?) throws -> [CacheTypeBindingDto]? {
     return try opt(types, enumList)
 }
 
-func deserializeBypassCache(bypassCache: NSArray?) throws -> [BypassCacheBindingDto]? {
-    return try opt(bypassCache, enumList)
-}
-
 func deserializePresentationSubmitCredentialRequest(_ input: NSDictionary) throws -> PresentationSubmitCredentialRequestBindingDto {
     let claims: NSArray = try safeCast(input.value(forKey: "submitClaims"));
     var submitClaims: [String] = [];
@@ -722,12 +718,6 @@ extension TrustEntityUpdateActionBindingEnum: CaseIterable {
 extension CacheTypeBindingDto: CaseIterable {
     public static var allCases: [CacheTypeBindingDto] {
         return [.didDocument, .jsonLdContext, .jsonSchema, .statusListCredential, .trustList, .vctMetadata]
-    }
-}
-
-extension BypassCacheBindingDto: CaseIterable {
-    public static var allCases: [BypassCacheBindingDto] {
-        return [.didDocument, .statusListCredential]
     }
 }
 
