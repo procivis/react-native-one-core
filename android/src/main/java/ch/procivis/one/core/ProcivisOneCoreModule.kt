@@ -5,7 +5,6 @@ import ch.procivis.one.core.DeserializeSpecific.enumList
 import ch.procivis.one.core.Serialize.convertToRN
 import ch.procivis.one.core.Util.asyncCall
 import ch.procivis.one.core.Util.syncCall
-import ch.procivis.one.core.ubiqu.PinPadRunner
 import ch.procivis.one.core.ubiqu.UbiquKeyStorage
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
