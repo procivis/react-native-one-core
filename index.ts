@@ -21,13 +21,15 @@ const originalGetConfig: () => Promise<
     string /* entity type */,
     Record<string /* entity identifier */, string /* json */>
   >
-> = ONE.getConfig;
-ONE.getConfig = () =>
-  originalGetConfig().then((config) =>
-    objectMap(config, (entities) =>
-      objectMap(entities, (json) => JSON.parse(json))
-    )
-  );
+> = ONE?.getConfig;
+if (originalGetConfig) {
+  ONE.getConfig = () =>
+    originalGetConfig().then((config) =>
+      objectMap(config, (entities) =>
+        objectMap(entities, (json) => JSON.parse(json))
+      )
+    );
+}
 
 /**
  * Initialize ONE Core
