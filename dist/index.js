@@ -6,8 +6,10 @@ export * from "./src/error";
 export const Ubiqu = ubiqu;
 const ONE = NativeModules.ProcivisOneCoreModule;
 // Config entities are exposed as serialized JSON, here conversion to structs
-const originalGetConfig = ONE.getConfig;
-ONE.getConfig = () => originalGetConfig().then((config) => objectMap(config, (entities) => objectMap(entities, (json) => JSON.parse(json))));
+const originalGetConfig = ONE?.getConfig;
+if (originalGetConfig) {
+    ONE.getConfig = () => originalGetConfig().then((config) => objectMap(config, (entities) => objectMap(entities, (json) => JSON.parse(json))));
+}
 /**
  * Initialize ONE Core
  * @note Beware that only one instance can be initialized at a time, repeated calls will fail
