@@ -54,7 +54,7 @@ export interface TrustEntityListItem {
     trustAnchor: TrustAnchor;
 }
 export interface TrustEntity extends TrustEntityListItem {
-    organisationId: string;
+    organisationId?: string;
 }
 export declare enum TrustEntityRoleEnum {
     ISSUER = "ISSUER",
