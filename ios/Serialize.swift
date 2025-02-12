@@ -272,12 +272,11 @@ func serialize(proofListItem: ProofListItemBindingDto) -> NSDictionary {
         "transport": proofListItem.transport,
         "state": serializeEnumValue(value: proofListItem.state),
     ]
-    
     result.addOpt("requestedDate", proofListItem.requestedDate)
     result.addOpt("completedDate", proofListItem.completedDate)
     result.addOpt("schema", opt(proofListItem.schema, {proofSchema in serialize(proofSchemaListItem: proofSchema) }))
     result.addOpt("verifierDid", proofListItem.verifierDid)
-    
+    result.addOpt("retainUntilDate", proofListItem.retainUntilDate)
     return result as NSDictionary
 }
 
@@ -302,6 +301,7 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
     result.addOpt("verifierDid", opt(proofRequest.verifierDid, {verifierDid in serialize(didListItem: verifierDid)}))
     result.addOpt("holderDid", opt(proofRequest.holderDid, {holderDid in serialize(didListItem: holderDid)}))
     result.addOpt("redirectUri", proofRequest.redirectUri)
+    result.addOpt("retainUntilDate", proofRequest.retainUntilDate)
     return result as NSDictionary
 }
 
@@ -548,8 +548,8 @@ func serialize(invitationResponse: HandleInvitationResponseBindingEnum) -> NSDic
             "credentialIds": credentialIds
         ];
         
-        result.addOpt("txCode", opt(txCode, { serialize(txCode: $0) }));        
-
+        result.addOpt("txCode", opt(txCode, { serialize(txCode: $0) }));
+        
         return result as NSDictionary;
         
     case let .proofRequest(interactionId, proofId):
@@ -562,11 +562,9 @@ func serialize(invitationResponse: HandleInvitationResponseBindingEnum) -> NSDic
 
 func serialize(txCode: OpenId4vciTxCodeBindingDto) -> NSDictionary {
     var result: [String: Any] = [:];
-
     result.addOpt("inputMode", opt(txCode.inputMode, serializeEnumValue));
     result.addOpt("length", txCode.length);
     result.addOpt("description", txCode.description);
-    
     return result as NSDictionary;
 }
 
