@@ -40,6 +40,9 @@ object SerializeSpecific {
             when (metadata) {
                 is HistoryMetadataBinding.UnexportableEntities ->
                     return convertToRN(metadata.value) as ReadableMap
+
+                is HistoryMetadataBinding.ErrorMetadata ->
+                    return convertToRN(metadata.value) as ReadableMap
             }
         }
 
