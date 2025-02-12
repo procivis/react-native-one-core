@@ -32,7 +32,9 @@ class ProcivisOneCoreModule: RCTEventEmitter {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
                 }
                 
-                rseKeyStorage = RSEKeyStorage()
+                if (RSEKeyStorage.available) {
+                    rseKeyStorage = RSEKeyStorage()
+                }
                 self.core = try initializeCore(configJson: configJson, dataDirPath: dataDirPath, nativeSecureElement: SecureEnclaveKeyStorage(), remoteSecureElement: rseKeyStorage, bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
                 return nil as NSDictionary?;
             }
