@@ -66,7 +66,7 @@ export interface TrustEntityListItem {
 }
 
 export interface TrustEntity extends TrustEntityListItem {
-  organisationId: string;
+  organisationId?: string;
 }
 
 export enum TrustEntityRoleEnum {
