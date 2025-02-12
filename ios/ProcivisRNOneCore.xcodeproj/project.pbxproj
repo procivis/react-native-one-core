@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1522CCF12D5C909D002AC200 /* EventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1522CCF02D5C9095002AC200 /* EventEmitter.swift */; };
+		15260DE82D561D4300797D80 /* UBQKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15260DE72D561D4300797D80 /* UBQKit.xcframework */; };
+		15260DEA2D561D6900797D80 /* RSEKeyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15260DE92D561D6900797D80 /* RSEKeyStorage.swift */; };
+		15260DEC2D561D8900797D80 /* RSEPinPadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 15260DEB2D561D7F00797D80 /* RSEPinPadManager.m */; };
+		15260DF02D56203600797D80 /* RSEPinPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15260DEF2D56203000797D80 /* RSEPinPad.swift */; };
 		339DE1322A4EB16400F68DE2 /* one_coreFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 339DE1312A4EB16300F68DE2 /* one_coreFFI.xcframework */; };
 		339DE1342A4EB17E00F68DE2 /* one_core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339DE1332A4EB17E00F68DE2 /* one_core.swift */; };
 		339E6C092A7265970085D7EE /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339E6C082A7265970085D7EE /* Util.swift */; };
@@ -34,6 +39,11 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libProcivisRNOneCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProcivisRNOneCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1522CCF02D5C9095002AC200 /* EventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventEmitter.swift; sourceTree = "<group>"; };
+		15260DE72D561D4300797D80 /* UBQKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = UBQKit.xcframework; sourceTree = "<group>"; };
+		15260DE92D561D6900797D80 /* RSEKeyStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSEKeyStorage.swift; sourceTree = "<group>"; };
+		15260DEB2D561D7F00797D80 /* RSEPinPadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSEPinPadManager.m; sourceTree = "<group>"; };
+		15260DEF2D56203000797D80 /* RSEPinPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSEPinPad.swift; sourceTree = "<group>"; };
 		1542F7E72832BE9B005D3C06 /* react-native-one-core-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "react-native-one-core-Bridging-Header.h"; sourceTree = "<group>"; };
 		339DE1312A4EB16300F68DE2 /* one_coreFFI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = one_coreFFI.xcframework; sourceTree = "<group>"; };
 		339DE1332A4EB17E00F68DE2 /* one_core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = one_core.swift; sourceTree = "<group>"; };
@@ -54,6 +64,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				339DE1322A4EB16400F68DE2 /* one_coreFFI.xcframework in Frameworks */,
+				15260DE82D561D4300797D80 /* UBQKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +82,11 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				1522CCF02D5C9095002AC200 /* EventEmitter.swift */,
+				15260DEF2D56203000797D80 /* RSEPinPad.swift */,
+				15260DEB2D561D7F00797D80 /* RSEPinPadManager.m */,
+				15260DE92D561D6900797D80 /* RSEKeyStorage.swift */,
+				15260DE72D561D4300797D80 /* UBQKit.xcframework */,
 				33F27119292F97400090E4DB /* ProcivisOneCoreModule.m */,
 				339DE1312A4EB16300F68DE2 /* one_coreFFI.xcframework */,
 				339DE1332A4EB17E00F68DE2 /* one_core.swift */,
@@ -145,11 +161,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15260DEC2D561D8900797D80 /* RSEPinPadManager.m in Sources */,
 				33F2711C292F97400090E4DB /* ProcivisOneCoreModule.swift in Sources */,
 				33F2711B292F97400090E4DB /* ProcivisOneCoreModule.m in Sources */,
 				33CB57422C3E6ED400A303BB /* IOSBLECentral.swift in Sources */,
+				15260DEA2D561D6900797D80 /* RSEKeyStorage.swift in Sources */,
 				339DE1342A4EB17E00F68DE2 /* one_core.swift in Sources */,
 				33CB57412C3E6ED400A303BB /* IOSBLEPeripheral.swift in Sources */,
+				1522CCF12D5C909D002AC200 /* EventEmitter.swift in Sources */,
+				15260DF02D56203600797D80 /* RSEPinPad.swift in Sources */,
 				33AFE82E2ADD59F000137FCD /* Deserialize.swift in Sources */,
 				339E6C092A7265970085D7EE /* Util.swift in Sources */,
 				33A474252A86532B00C94287 /* Serialize.swift in Sources */,

@@ -6,13 +6,16 @@
 
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface RCT_EXTERN_MODULE(ProcivisOneCoreModule, NSObject)
+@interface RCT_EXTERN_MODULE(ProcivisOneCoreModule, RCTEventEmitter)
 
 + (BOOL)requiresMainQueueSetup
 {
     return NO;
 }
+
+RCT_EXTERN_METHOD(supportedEvents)
 
 RCT_EXTERN_METHOD(initialize:(NSString *)configJson
                   resolver:(RCTPromiseResolveBlock)resolve
@@ -253,6 +256,22 @@ RCT_EXTERN_METHOD(uninitialize:(BOOL *)deleteData
 
 RCT_EXTERN_METHOD(deleteCache:(NSArray *)types
                   resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(changeRSEPin:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(areRSEBiometricsSupported:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(areRSEBiometricsEnabled:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setRSEBiometrics:(BOOL *)enabled
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(resetRSE:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 @end
