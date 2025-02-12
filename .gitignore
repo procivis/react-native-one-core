@@ -30,3 +30,6 @@ ios/one_core.swift
 ios/IOSBLE*.swift
 ios/SecureEnclaveKeyStorage.swift
 android/libs/onecore-*
+
+# keep dist
+!dist

@@ -5,17 +5,21 @@
 //
 
 import Foundation
+import React
 
 @objc(ProcivisOneCoreModule)
-class ProcivisOneCoreModule: NSObject {
-    private static let TAG = "ProcivisOneCoreModule";
-    private var core: OneCoreBindingProtocol? = nil;
+class ProcivisOneCoreModule: RCTEventEmitter {
+    private static let TAG = "ProcivisOneCoreModule"
+    private var core: OneCoreBindingProtocol? = nil
+    private var rseKeyStorage: NativeKeyStorage? = nil
+    private var hasListeners: Bool = false
     
     @objc(initialize:resolver:rejecter:)
     func initialize(
         configJson: String,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
+            ProcivisOneCoreEventEmitter.shared.eventEmitter = self
             syncCall(resolve, reject) {
                 guard let dataDirPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0000", message: "invalid DataDir", cause: nil))
@@ -28,7 +32,8 @@ class ProcivisOneCoreModule: NSObject {
                     throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0183", message: "core already initialized", cause: nil))
                 }
                 
-                self.core = try initializeCore(configJson: configJson, dataDirPath: dataDirPath, nativeSecureElement: SecureEnclaveKeyStorage(), remoteSecureElement: nil, bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
+                rseKeyStorage = RSEKeyStorage()
+                self.core = try initializeCore(configJson: configJson, dataDirPath: dataDirPath, nativeSecureElement: SecureEnclaveKeyStorage(), remoteSecureElement: rseKeyStorage, bleCentral: IOSBLECentral(), blePeripheral: IOSBLEPeripheral());
                 return nil as NSDictionary?;
             }
         }
@@ -690,7 +695,103 @@ class ProcivisOneCoreModule: NSObject {
             asyncCall(resolve, reject) {
                 try await self.getCore().uninitialize(deleteData: deleteData);
                 self.core = nil
+                if deleteData, let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage {
+                    try await rseKeyStorage.delete()
+                }
                 return nil as NSDictionary?;
             }
         }
+    
+    // MARK: Ubiqu specific methods
+    
+    @objc(changeRSEPin:rejecter:)
+    func changeRSEPin(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0184", message: "ubiqu not initialized", cause: nil))
+                }
+                try await rseKeyStorage.changePin()
+                return nil as NSDictionary?;
+            }
+        }
+    
+    @objc(areRSEBiometricsSupported:rejecter:)
+    func areRSEBiometricsSupported(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0184", message: "ubiqu not initialized", cause: nil))
+                }
+                return rseKeyStorage.areBiometricsSupported
+            }
+        }
+    
+    @objc(areRSEBiometricsEnabled:rejecter:)
+    func areRSEBiometricsEnabled(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0184", message: "ubiqu not initialized", cause: nil))
+                }
+                return rseKeyStorage.areBiometricsEnabled
+            }
+        }
+    
+    @objc(setRSEBiometrics:resolver:rejecter:)
+    func setRSEBiometrics(
+        enabled: Bool,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0184", message: "ubiqu not initialized", cause: nil))
+                }
+                if (enabled) {
+                    try await rseKeyStorage.enableBiometrics()
+                } else {
+                    try rseKeyStorage.disableBiometrics()
+                }
+                return nil as NSDictionary?;
+            }
+        }
+    
+    @objc(resetRSE:rejecter:)
+    func resetRSE(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                if let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage {
+                    try await rseKeyStorage.delete()
+                }
+                return nil as NSDictionary?;
+            }
+        }
+}
+
+// MARK: RCTEventEmitter
+
+extension ProcivisOneCoreModule {
+    
+    override func supportedEvents() -> [String]! {
+        return ProcivisOneCoreEventEmitter.supportedEvents
+    }
+    
+    override func startObserving() {
+        hasListeners = true
+    }
+
+    override func stopObserving() {
+        hasListeners = false
+    }
+    
+    override func sendEvent(withName name: String!, body: Any!) {
+        guard hasListeners else {
+            return
+        }
+        super.sendEvent(withName: name, body: body)
+    }
 }
