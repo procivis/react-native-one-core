@@ -476,7 +476,16 @@ func serialize(historyMetadata: HistoryMetadataBinding) -> NSDictionary {
     switch (historyMetadata) {
     case let .unexportableEntities(value):
         return serialize(unexportableEntities: value);
+    case let .errorMetadata(value):
+        return serialize(historyErrorMetadata: value);
     }
+}
+
+func serialize(historyErrorMetadata: HistoryErrorMetadataBindingDto) -> NSDictionary {
+    return [
+        "errorCode": historyErrorMetadata.errorCode,
+        "message": historyErrorMetadata.message,
+    ]
 }
 
 func serialize(keyListItem: KeyListItemBindingDto) -> NSDictionary {
@@ -629,7 +638,6 @@ func serialize(trustAnchorListItem: TrustAnchorsListItemResponseBindingDto) -> N
 func serialize(trustEntity: GetTrustEntityResponseBindingDto) -> NSDictionary {
     var result: [String: Any] = [
         "id": trustEntity.id,
-        "organisationId": trustEntity.organisationId,
         "createdDate": trustEntity.createdDate,
         "lastModified": trustEntity.lastModified,
         "name": trustEntity.name,
@@ -638,6 +646,7 @@ func serialize(trustEntity: GetTrustEntityResponseBindingDto) -> NSDictionary {
         "did": serialize(didListItem: trustEntity.did),
         "state": serializeEnumValue(value: trustEntity.state),
     ]
+    result.addOpt("organisationId", trustEntity.organisationId)
     result.addOpt("logo", trustEntity.logo)
     result.addOpt("website", trustEntity.website)
     result.addOpt("termsUrl", trustEntity.termsUrl)

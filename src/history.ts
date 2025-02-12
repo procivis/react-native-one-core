@@ -58,7 +58,12 @@ export interface HistoryListQuery extends ListQuery {
   searchType?: HistorySearchTypeEnum;
 }
 
-export type HistoryMetadata = UnexportableEntities;
+export interface HistoryErrorMetadata {
+  errorCode: string;
+  message: string;
+}
+
+export type HistoryMetadata = UnexportableEntities | HistoryErrorMetadata;
 
 export interface HistoryListItem {
   id: string;
