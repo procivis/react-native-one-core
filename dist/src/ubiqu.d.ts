@@ -46,3 +46,4 @@ export declare const areBiometricsSupported: () => Promise<boolean>;
 export declare const areBiometricsEnabled: () => Promise<boolean>;
 export declare const setBiometrics: (enabled: boolean) => Promise<void>;
 export declare const reset: () => Promise<void>;
+export declare const resetPinFlow: () => Promise<void>;

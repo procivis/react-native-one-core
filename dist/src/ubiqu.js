@@ -27,7 +27,7 @@ export function addEventListener(fn) {
     const showPinListener = eventEmitter.addListener(PinEventType.SHOW_PIN, (event) => {
         fn({
             type: PinEventType.SHOW_PIN,
-            flowType: event.type,
+            flowType: event.flowType,
             stage: event.stage,
         });
     });
@@ -66,3 +66,4 @@ export const areBiometricsSupported = async () => NativeModule.areRSEBiometricsS
 export const areBiometricsEnabled = async () => NativeModule.areRSEBiometricsEnabled();
 export const setBiometrics = async (enabled) => NativeModule.setRSEBiometrics(enabled);
 export const reset = async () => NativeModule.resetRSE();
+export const resetPinFlow = async () => NativeModule.resetRSEPinFlow();

@@ -274,4 +274,7 @@ RCT_EXTERN_METHOD(setRSEBiometrics:(BOOL *)enabled
 RCT_EXTERN_METHOD(resetRSE:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(resetRSEPinFlow:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 @end
