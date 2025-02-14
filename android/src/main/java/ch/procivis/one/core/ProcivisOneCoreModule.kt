@@ -586,6 +586,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         }
     }
 
+    @ReactMethod
+    fun resetRSEPinFlow(promise: Promise) {
+        asyncCall(promise, scope) {
+            ubiqu?.resetPinFlow()
+            return@asyncCall null
+        }
+    }
+
     // handling RN event emitter
     @ReactMethod
     fun addListener(eventName: String) {

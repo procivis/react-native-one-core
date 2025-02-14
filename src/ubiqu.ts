@@ -65,7 +65,7 @@ export function addEventListener(fn: (event: Event) => void) {
     (event) => {
       fn({
         type: PinEventType.SHOW_PIN,
-        flowType: event.type,
+        flowType: event.flowType,
         stage: event.stage,
       });
     }
@@ -127,3 +127,5 @@ export const setBiometrics = async (enabled: boolean): Promise<void> =>
   NativeModule.setRSEBiometrics(enabled);
 
 export const reset = async (): Promise<void> => NativeModule.resetRSE();
+
+export const resetPinFlow = async (): Promise<void> => NativeModule.resetRSEPinFlow();
