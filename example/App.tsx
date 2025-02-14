@@ -140,6 +140,17 @@ export default function App(): JSX.Element {
       .catch((e) => setText(`Error: ${e}`));
   }, [oneCore]);
 
+  const cancelPinFlow = useCallback(async () => {
+    setText("Canceling PIN entry...");
+    await Ubiqu.resetPinFlow()
+      .then(() => {
+        setUbiquPin(undefined);
+        setBiometricsEnabled(undefined);
+        setText(`PIN flow cancelled`);
+      })
+      .catch((e) => setText(`Error: ${e}`));
+  }, [oneCore]);
+
   const deleteCore = useCallback(async () => {
     setText("Deleting core...");
     await oneCore!
@@ -177,6 +188,7 @@ export default function App(): JSX.Element {
         )}
         {ubiquPin && (
           <>
+            <Button title="Cancel PIN flow" onPress={cancelPinFlow}></Button>
             <Text>{`Flow: ${ubiquPin.type}`}</Text>
             <Text>{`Stage: ${ubiquPin.stage}`}</Text>
             <Text>{`Entered: ${ubiquPin.entered}/${Ubiqu.PIN_COUNT}`}</Text>
