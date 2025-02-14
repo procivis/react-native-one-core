@@ -1,6 +1,6 @@
 {
   "name": "@procivis/react-native-one-core",
-  "version": "1.34819.2",
+  "version": "1.34819.3",
   "author": "Procivis AG (https://procivis.ch)",
   "license": "Apache-2.0",
   "description": "ONE core bindings for React Native",
