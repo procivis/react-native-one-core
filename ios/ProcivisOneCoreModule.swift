@@ -772,6 +772,19 @@ class ProcivisOneCoreModule: RCTEventEmitter {
                 return nil as NSDictionary?;
             }
         }
+    
+    @objc(resetRSEPinFlow:rejecter:)
+    func resetRSEPinFlow(
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
+                    throw BindingError.ErrorResponse(data: ErrorResponseBindingDto(code: "BR_0184", message: "ubiqu not initialized", cause: nil))
+                }
+                try await rseKeyStorage.resetPinFlow()
+                return nil as NSDictionary?;
+            }
+        }
 }
 
 // MARK: RCTEventEmitter
