@@ -129,6 +129,8 @@ publish:npm:public:
 
 github:push:
   stage: github
+  variables:
+    CMD_ARGS: --ubiqu-cleaning
   extends:
     - .ci-tool:open_source_release
 
