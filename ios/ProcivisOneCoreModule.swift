@@ -12,7 +12,6 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     private static let TAG = "ProcivisOneCoreModule"
     private var core: OneCoreBindingProtocol? = nil
     private var rseKeyStorage: NativeKeyStorage? = nil
-    private var hasListeners: Bool = false
     
     @objc(initialize:resolver:rejecter:)
     func initialize(
@@ -796,15 +795,15 @@ extension ProcivisOneCoreModule {
     }
     
     override func startObserving() {
-        hasListeners = true
+        ProcivisOneCoreEventEmitter.hasListeners = true
     }
-
+    
     override func stopObserving() {
-        hasListeners = false
+        ProcivisOneCoreEventEmitter.hasListeners = false
     }
     
     override func sendEvent(withName name: String!, body: Any!) {
-        guard hasListeners else {
+        guard ProcivisOneCoreEventEmitter.hasListeners else {
             return
         }
         super.sendEvent(withName: name, body: body)
