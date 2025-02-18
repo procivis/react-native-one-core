@@ -5,7 +5,7 @@ import React
 class ProcivisOneCoreEventEmitter: NSObject {
     
     enum EventName: String, CaseIterable {
-      
+        
         case rseShowPin = "RSE_SHOW_PIN"
         case rseHidePin = "RSE_HIDE_PIN"
         case rsePinStageChanged = "RSE_PIN_STAGE"
@@ -14,13 +14,13 @@ class ProcivisOneCoreEventEmitter: NSObject {
     }
     
     enum PinFlowType: String {
-      
+        
         case subscribe = "SUBSCRIBE"
         case transaction = "TRANSACTION"
         case addBiometrics = "ADD_BIOMETRICS"
         case changePin = "CHANGE_PIN"
     }
-
+    
     enum PinFlowStage: String {
         
         case checkCurrentPin = "CHECK_CURRENT_PIN"
@@ -37,7 +37,13 @@ class ProcivisOneCoreEventEmitter: NSObject {
         return EventName.allCases.map(\.rawValue)
     }
     
-    func sendShowPinEvent(flowType: PinFlowType, stage: PinFlowStage) {
+    static var hasListeners: Bool = false
+    
+    func sendShowPinEvent(flowType: PinFlowType, stage: PinFlowStage) throws {
+        guard ProcivisOneCoreEventEmitter.hasListeners else {
+            throw NativeKeyStorageError.Unknown(reason: "No UI listener")
+        }
+        
         self.sendEvent(with: .rseShowPin, body: [
             "flowType": flowType.rawValue,
             "stage": stage.rawValue,
