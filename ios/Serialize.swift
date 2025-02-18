@@ -296,12 +296,16 @@ func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
         "proofInputs": proofRequest.proofInputs.map { serialize(proofInput: $0) },
         "state": serializeEnumValue(value: proofRequest.state),
         "exchange": proofRequest.exchange,
+        "transport": proofRequest.transport,
     ]
     result.addOpt("proofSchema", opt(proofRequest.proofSchema, {proofSchema in serialize(proofSchemaListItem: proofSchema) }))
     result.addOpt("verifierDid", opt(proofRequest.verifierDid, {verifierDid in serialize(didListItem: verifierDid)}))
     result.addOpt("holderDid", opt(proofRequest.holderDid, {holderDid in serialize(didListItem: holderDid)}))
     result.addOpt("redirectUri", proofRequest.redirectUri)
     result.addOpt("retainUntilDate", proofRequest.retainUntilDate)
+    result.addOpt("requestedDate", proofRequest.requestedDate)
+    result.addOpt("completedDate", proofRequest.completedDate)
+    result.addOpt("claimsRemovedAt", proofRequest.claimsRemovedAt)
     return result as NSDictionary
 }
 

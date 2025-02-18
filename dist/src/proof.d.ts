@@ -31,8 +31,12 @@ export interface ProofDetail {
     verifierDid?: DidListItem;
     holderDid?: DidListItem;
     exchange: string;
+    transport: string;
     redirectUri?: string;
     retainUntilDate?: string;
+    requestedDate?: string;
+    completedDate?: string;
+    claimsRemovedAt?: string;
 }
 export interface ProofListItem {
     id: string;

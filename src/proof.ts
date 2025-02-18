@@ -2,7 +2,7 @@ import { CredentialDetail, CredentialListItem } from "./credential";
 import { CredentialSchema } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { ProofInputClaimSchema, ProofSchemaListItem } from "./proofSchema";
-import {DidListItem} from "./did";
+import { DidListItem } from "./did";
 
 export enum ProofStateEnum {
   CREATED = "CREATED",
@@ -35,8 +35,12 @@ export interface ProofDetail {
   verifierDid?: DidListItem;
   holderDid?: DidListItem;
   exchange: string;
+  transport: string;
   redirectUri?: string;
   retainUntilDate?: string;
+  requestedDate?: string;
+  completedDate?: string;
+  claimsRemovedAt?: string;
 }
 
 export interface ProofListItem {
@@ -160,15 +164,14 @@ export interface InvitationResultProofRequest {
 }
 
 export interface ShareProofRequest {
-  params?: ShareProofRequestParams,
+  params?: ShareProofRequestParams;
 }
 
 export interface ShareProofRequestParams {
-  clientIdSchema?: ShareProofRequestClientIdSchemaType,
+  clientIdSchema?: ShareProofRequestClientIdSchemaType;
 }
 
 export enum ShareProofRequestClientIdSchemaType {
   REDIRECT_URI = "REDIRECT_URI",
-  VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION"
+  VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION",
 }
-
