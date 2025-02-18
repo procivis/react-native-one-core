@@ -597,9 +597,11 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     // handling RN event emitter
     @ReactMethod
     fun addListener(eventName: String) {
+        UbiquKeyStorage.listenerCount++
     }
 
     @ReactMethod
     fun removeListeners(count: Int) {
+        UbiquKeyStorage.listenerCount -= count
     }
 }
