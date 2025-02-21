@@ -288,24 +288,25 @@ func serialize(proposeProofResponse: ProposeProofResponseBindingDto) -> NSDictio
     ]
 }
 
-func serialize(proofRequest: ProofRequestBindingDto) -> NSDictionary {
+func serialize(proofResponse: ProofResponseBindingDto) -> NSDictionary {
     var result: [String: Any] = [
-        "id": proofRequest.id,
-        "createdDate": proofRequest.createdDate,
-        "lastModified": proofRequest.lastModified,
-        "proofInputs": proofRequest.proofInputs.map { serialize(proofInput: $0) },
-        "state": serializeEnumValue(value: proofRequest.state),
-        "exchange": proofRequest.exchange,
-        "transport": proofRequest.transport,
+        "id": proofResponse.id,
+        "createdDate": proofResponse.createdDate,
+        "lastModified": proofResponse.lastModified,
+        "proofInputs": proofResponse.proofInputs.map { serialize(proofInput: $0) },
+        "state": serializeEnumValue(value: proofResponse.state),
+        "role": serializeEnumValue(value: proofResponse.role),
+        "exchange": proofResponse.exchange,
+        "transport": proofResponse.transport,
     ]
-    result.addOpt("proofSchema", opt(proofRequest.proofSchema, {proofSchema in serialize(proofSchemaListItem: proofSchema) }))
-    result.addOpt("verifierDid", opt(proofRequest.verifierDid, {verifierDid in serialize(didListItem: verifierDid)}))
-    result.addOpt("holderDid", opt(proofRequest.holderDid, {holderDid in serialize(didListItem: holderDid)}))
-    result.addOpt("redirectUri", proofRequest.redirectUri)
-    result.addOpt("retainUntilDate", proofRequest.retainUntilDate)
-    result.addOpt("requestedDate", proofRequest.requestedDate)
-    result.addOpt("completedDate", proofRequest.completedDate)
-    result.addOpt("claimsRemovedAt", proofRequest.claimsRemovedAt)
+    result.addOpt("proofSchema", opt(proofResponse.proofSchema, {proofSchema in serialize(proofSchemaListItem: proofSchema) }))
+    result.addOpt("verifierDid", opt(proofResponse.verifierDid, {verifierDid in serialize(didListItem: verifierDid)}))
+    result.addOpt("holderDid", opt(proofResponse.holderDid, {holderDid in serialize(didListItem: holderDid)}))
+    result.addOpt("redirectUri", proofResponse.redirectUri)
+    result.addOpt("retainUntilDate", proofResponse.retainUntilDate)
+    result.addOpt("requestedDate", proofResponse.requestedDate)
+    result.addOpt("completedDate", proofResponse.completedDate)
+    result.addOpt("claimsRemovedAt", proofResponse.claimsRemovedAt)
     return result as NSDictionary
 }
 
