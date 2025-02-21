@@ -196,6 +196,8 @@ export interface ONECore {
 
   retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
 
+  deleteProof(proofId: ProofDetail["id"]): Promise<void>;
+
   proposeProof(
     exchange: string,
     organisationId: string
