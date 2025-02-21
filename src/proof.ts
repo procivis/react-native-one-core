@@ -14,6 +14,11 @@ export enum ProofStateEnum {
   ERROR = "ERROR",
 }
 
+export enum ProofRoleEnum {
+  HOLDER = "HOLDER",
+  VERIFIER = "VERIFIER",
+}
+
 export interface ProofInput {
   claims: ProofInputClaim[];
   credential?: CredentialDetail;
@@ -32,6 +37,7 @@ export interface ProofDetail {
   lastModified: string;
   proofInputs: ProofInput[];
   state: ProofStateEnum;
+  role: ProofRoleEnum;
   proofSchema?: ProofSchemaListItem;
   verifierDid?: DidListItem;
   holderDid?: DidListItem;
@@ -55,6 +61,7 @@ export interface ProofListItem {
   exchange: string;
   transport: string;
   state: ProofStateEnum;
+  role: ProofRoleEnum;
   schema?: ProofSchemaListItem;
   retainUntilDate?: string;
 }
@@ -149,6 +156,7 @@ export interface ProofListQuery extends ListQuery {
   name?: string;
   ids?: string[];
   proofStates?: ProofStateEnum[];
+  proofRoles?: ProofRoleEnum[];
   proofSchemaIds?: string[];
   exact?: ExactProofFilterColumnEnum[];
 }

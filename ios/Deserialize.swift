@@ -204,6 +204,7 @@ func deserializeProofListQuery(_ query: NSDictionary) throws -> ProofListQueryBi
         name: query.value(forKey: "name") as? String,
         ids: try opt(query.value(forKey: "ids") as? NSArray, deserializeIds),
         proofStates: try opt(query.value(forKey: "proofStates") as? NSArray, { columns in try enumList(columns) } ),
+        proofRoles: try opt(query.value(forKey: "proofRoles") as? NSArray, { columns in try enumList(columns) } ),
         proofSchemaIds: query.value(forKey: "proofSchemaIds") as? [String],
         exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } )
     )
@@ -653,6 +654,12 @@ extension ProofStateBindingEnum: CaseIterable {
             .retracted,
             .error
         ]
+    }
+}
+
+extension ProofRoleBindingEnum: CaseIterable {
+    public static var allCases: [ProofRoleBindingEnum] {
+        return [.holder, .verifier]
     }
 }
 
