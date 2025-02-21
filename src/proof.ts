@@ -10,6 +10,7 @@ export enum ProofStateEnum {
   REQUESTED = "REQUESTED",
   ACCEPTED = "ACCEPTED",
   REJECTED = "REJECTED",
+  RETRACTED = "RETRACTED",
   ERROR = "ERROR",
 }
 

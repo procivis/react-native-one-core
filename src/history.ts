@@ -18,6 +18,7 @@ export enum HistoryActionEnum {
   SHARED = "SHARED",
   IMPORTED = "IMPORTED",
   CLAIMS_REMOVED = "CLAIMS_REMOVED",
+  RETRACTED = "RETRACTED",
 }
 
 export enum HistoryEntityTypeEnum {
