@@ -165,6 +165,10 @@ RCT_EXTERN_METHOD(retractProof:(NSString *)proofId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(deleteProof:(NSString *)proofId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(proposeProof:(NSString *)exchange
                   organisationId:(NSString *)organisationId
                   resolver:(RCTPromiseResolveBlock)resolve

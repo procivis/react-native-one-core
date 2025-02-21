@@ -16,7 +16,8 @@ export declare enum HistoryActionEnum {
     ERRORED = "ERRORED",
     SHARED = "SHARED",
     IMPORTED = "IMPORTED",
-    CLAIMS_REMOVED = "CLAIMS_REMOVED"
+    CLAIMS_REMOVED = "CLAIMS_REMOVED",
+    RETRACTED = "RETRACTED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",

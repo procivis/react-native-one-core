@@ -16,6 +16,7 @@ export var HistoryActionEnum;
     HistoryActionEnum["SHARED"] = "SHARED";
     HistoryActionEnum["IMPORTED"] = "IMPORTED";
     HistoryActionEnum["CLAIMS_REMOVED"] = "CLAIMS_REMOVED";
+    HistoryActionEnum["RETRACTED"] = "RETRACTED";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
