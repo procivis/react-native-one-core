@@ -411,7 +411,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
                 let result = try await self.getCore().getProof(proofId: proofId);
-                return serialize(proofRequest: result)
+                return serialize(proofResponse: result)
             }
         }
     

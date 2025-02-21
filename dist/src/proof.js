@@ -8,6 +8,11 @@ export var ProofStateEnum;
     ProofStateEnum["RETRACTED"] = "RETRACTED";
     ProofStateEnum["ERROR"] = "ERROR";
 })(ProofStateEnum || (ProofStateEnum = {}));
+export var ProofRoleEnum;
+(function (ProofRoleEnum) {
+    ProofRoleEnum["HOLDER"] = "HOLDER";
+    ProofRoleEnum["VERIFIER"] = "VERIFIER";
+})(ProofRoleEnum || (ProofRoleEnum = {}));
 export var ScanToVerifyBarcodeTypeEnum;
 (function (ScanToVerifyBarcodeTypeEnum) {
     ScanToVerifyBarcodeTypeEnum["MRZ"] = "MRZ";
