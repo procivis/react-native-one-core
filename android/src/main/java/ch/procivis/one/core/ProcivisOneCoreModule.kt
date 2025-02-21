@@ -311,6 +311,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun deleteProof(proofId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().deleteProof(proofId)
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun proposeProof(exchange: String, organisationId: String, promise: Promise) {
         asyncCall(promise, scope) {
             val result = getCore().proposeProof(exchange, organisationId)

@@ -65,6 +65,7 @@ export interface ONECore {
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofs(query: ProofListQuery): Promise<ItemList<ProofListItem>>;
     retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
+    deleteProof(proofId: ProofDetail["id"]): Promise<void>;
     proposeProof(exchange: string, organisationId: string): Promise<ProposeProofResponse>;
     createProofSchema(request: CreateProofSchemaRequest): Promise<ProofSchema["id"]>;
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;

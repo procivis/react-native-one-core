@@ -5,6 +5,7 @@ export var ProofStateEnum;
     ProofStateEnum["REQUESTED"] = "REQUESTED";
     ProofStateEnum["ACCEPTED"] = "ACCEPTED";
     ProofStateEnum["REJECTED"] = "REJECTED";
+    ProofStateEnum["RETRACTED"] = "RETRACTED";
     ProofStateEnum["ERROR"] = "ERROR";
 })(ProofStateEnum || (ProofStateEnum = {}));
 export var ScanToVerifyBarcodeTypeEnum;
