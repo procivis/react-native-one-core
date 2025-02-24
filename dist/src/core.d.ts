@@ -64,7 +64,6 @@ export interface ONECore {
     shareCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<ShareCredentialSchemaResponse>;
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofs(query: ProofListQuery): Promise<ItemList<ProofListItem>>;
-    retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
     deleteProof(proofId: ProofDetail["id"]): Promise<void>;
     proposeProof(exchange: string, organisationId: string): Promise<ProposeProofResponse>;
     createProofSchema(request: CreateProofSchemaRequest): Promise<ProofSchema["id"]>;
