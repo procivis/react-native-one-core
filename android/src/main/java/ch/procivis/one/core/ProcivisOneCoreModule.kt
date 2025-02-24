@@ -304,13 +304,6 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun retractProof(proofId: String, promise: Promise) {
-        asyncCall(promise, scope) {
-            return@asyncCall getCore().retractProof(proofId)
-        }
-    }
-
-    @ReactMethod
     fun deleteProof(proofId: String, promise: Promise) {
         asyncCall(promise, scope) {
             getCore().deleteProof(proofId)

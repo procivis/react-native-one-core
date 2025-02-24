@@ -427,16 +427,6 @@ class ProcivisOneCoreModule: RCTEventEmitter {
             }
         }
     
-    @objc(retractProof:resolver:rejecter:)
-    func retractProof(
-        proofId: String,
-        resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock) {
-            asyncCall(resolve, reject) {
-                return try await self.getCore().retractProof(proofId: proofId)
-            }
-        }
-    
     @objc(deleteProof:resolver:rejecter:)
     func deleteProof(
         proofId: String,

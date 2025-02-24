@@ -194,8 +194,6 @@ export interface ONECore {
 
   getProofs(query: ProofListQuery): Promise<ItemList<ProofListItem>>;
 
-  retractProof(proofId: ProofDetail["id"]): Promise<ProofDetail["id"]>;
-
   deleteProof(proofId: ProofDetail["id"]): Promise<void>;
 
   proposeProof(
