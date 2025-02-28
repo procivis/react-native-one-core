@@ -19,6 +19,7 @@ export interface ImportCredentialSchemaRequestSchema {
     layoutType?: LayoutType;
     layoutProperties?: ImportCredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
+    externalSchema: boolean;
 }
 export interface ImportCredentialSchemaClaimSchema {
     id: string;
@@ -68,7 +69,8 @@ export declare enum WalletStorageType {
 export declare enum KnownCredentialSchemaType {
     PROCIVIS_ONE_SCHEMA2024 = "PROCIVIS_ONE_SCHEMA2024",
     FALLBACK_SCHEMA2024 = "FALLBACK_SCHEMA2024",
-    MDOC = "MDOC"
+    MDOC = "MDOC",
+    SD_JWT_VC = "SD_JWT_VC"
 }
 export type CredentialSchemaType = KnownCredentialSchemaType | string;
 export declare enum LayoutType {

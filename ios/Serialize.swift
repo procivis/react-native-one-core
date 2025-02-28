@@ -71,6 +71,8 @@ func serialize(credentialSchemaType: CredentialSchemaTypeBindingEnum) -> String 
         return "FALLBACK_SCHEMA2024";
     case .mdoc:
         return "MDOC";
+    case .sdJwtVc:
+        return "SD_JWT_VC";
     case let .other(value):
         return value;
     }
