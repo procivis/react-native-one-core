@@ -326,7 +326,8 @@ func deserializeImportCredentialSchemaRequestSchema(_ request: NSDictionary) thr
         schemaType: deserializeCredentialSchemaTypeBindingEnum(try safeCast(request.value(forKey: "schemaType"))),
         layoutType: try opt(request.value(forKey: "layoutType") as? String, deserializeEnum),
         layoutProperties: try opt((request.value(forKey: "layoutProperties") as? NSDictionary), deserializeImportCredentialSchemaRequestLayoutProperties),
-        allowSuspension: request.value(forKey: "allowSuspension") as? Bool
+        allowSuspension: request.value(forKey: "allowSuspension") as? Bool,
+        externalSchema: try safeCast(request.value(forKey: "externalSchema") as? Bool)
     )
 }
 
@@ -787,6 +788,8 @@ private func deserializeCredentialSchemaTypeBindingEnum(_ credentialSchemaType: 
         return .fallbackSchema2024
     case "MDOC":
         return .mdoc
+    case "SD_JWT_VC":
+        return .sdJwtVc
     case let other:
         return .other(value: other)
     }
