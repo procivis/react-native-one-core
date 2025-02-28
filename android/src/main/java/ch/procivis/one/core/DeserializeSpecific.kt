@@ -38,6 +38,7 @@ object DeserializeSpecific {
             "PROCIVIS_ONE_SCHEMA2024" -> CredentialSchemaTypeBindingEnum.ProcivisOneSchema2024
             "FALLBACK_SCHEMA2024" -> CredentialSchemaTypeBindingEnum.FallbackSchema2024
             "MDOC" -> CredentialSchemaTypeBindingEnum.Mdoc
+            "SD_JWT_VC" -> CredentialSchemaTypeBindingEnum.SdJwtVc
             else -> CredentialSchemaTypeBindingEnum.Other(credentialSchemaType)
         }
     }

@@ -122,6 +122,9 @@ object SerializeSpecific {
                 is CredentialSchemaTypeBindingEnum.Mdoc ->
                     "MDOC"
 
+                is CredentialSchemaTypeBindingEnum.SdJwtVc ->
+                    "SD_JWT_VC"
+
                 is CredentialSchemaTypeBindingEnum.Other ->
                     type.value
             }
