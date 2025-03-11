@@ -7,7 +7,17 @@ import {
 } from "@procivis/react-native-one-core";
 
 const config = {
-  keyStorage: { UBIQU_RSE: { disabled: false } },
+  keyStorage: {
+    INTERNAL: {
+      params: {
+        private: {
+          encryption:
+            "93d9182795f0d1bec61329fc2d18c4b4c1b7e65e69e20ec30a2101a9875fff7e",
+        },
+      },
+    },
+    UBIQU_RSE: { disabled: false },
+  },
 };
 
 export default function App(): JSX.Element {
