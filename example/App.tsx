@@ -18,6 +18,24 @@ const config = {
     },
     UBIQU_RSE: { disabled: false },
   },
+  exchange: {
+    OPENID4VC: {
+      params: {
+        private: {
+          encryption:
+            "93d9182795f0d1bec61329fc2d18c4b4c1b7e65e69e20ec30a2101a9875fff7e",
+        },
+      },
+    },
+    MDOC_OPENID4VP: {
+      params: {
+        private: {
+          encryption:
+            "93d9182795f0d1bec61329fc2d18c4b4c1b7e65e69e20ec30a2101a9875fff7e",
+        },
+      },
+    },
+  },
 };
 
 export default function App(): JSX.Element {
