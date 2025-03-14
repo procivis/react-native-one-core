@@ -1,10 +1,13 @@
 import { NativeModules } from "react-native";
 import { OneError } from "./src/error";
+import { interfaceMethodNames } from "./src/core";
 import * as ubiqu from "./src/ubiqu";
 export * from "./src/core";
 export * from "./src/error";
 export const Ubiqu = ubiqu;
 const ONE = NativeModules.ProcivisOneCoreModule;
+// New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
+interfaceMethodNames.forEach((method) => ONE?.[method]);
 // Config entities are exposed as serialized JSON, here conversion to structs
 const originalGetConfig = ONE?.getConfig;
 if (originalGetConfig) {

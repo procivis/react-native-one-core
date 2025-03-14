@@ -11,11 +11,11 @@ object Deserialize {
         return constructObjectWithMembers(T::class, data) as T
     }
 
-    private fun extractArrayItem(kType: KType, data: ReadableArray, index: Int): Any {
+    private fun extractArrayItem(kType: KType, data: ReadableArray, index: Int): Any? {
         val kClass = kType.classifier as KClass<*>
 
         if (kClass.java.isEnum) {
-            return constructEnumValue(kClass, data.getString(index))
+            return constructEnumValue(kClass, data.getString(index)!!)
         }
 
         return when (kClass) {
@@ -26,15 +26,15 @@ object Deserialize {
             List::class -> {
                 val itemType = kType.arguments.first().type
                 val values = data.getArray(index)
-                return extractArrayItems(itemType!!, values)
+                return extractArrayItems(itemType!!, values!!)
             }
 
             Map::class -> {
                 val values = data.getMap(index)
-                return extractMapItems(kType, values)
+                return extractMapItems(kType, values!!)
             }
 
-            else -> constructObjectWithMembers(kClass, data.getMap(index))
+            else -> constructObjectWithMembers(kClass, data.getMap(index)!!)
         }
     }
 
