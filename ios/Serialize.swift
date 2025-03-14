@@ -196,6 +196,7 @@ func serialize(credentialListItem: CredentialListItemBindingDto) -> NSDictionary
         "state": serializeEnumValue(value: credentialListItem.state),
         "schema": serialize(credentialSchema: credentialListItem.schema),
         "role": serializeEnumValue(value: credentialListItem.role),
+        "exchange": credentialListItem.exchange,
     ]
     result.addOpt("revocationDate", credentialListItem.revocationDate)
     result.addOpt("issuerDid", credentialListItem.issuerDid)
@@ -213,6 +214,7 @@ func serialize(credentialDetail: CredentialDetailBindingDto) -> NSDictionary {
         "claims": credentialDetail.claims.map { serialize(claim: $0) },
         "schema": serialize(credentialSchema: credentialDetail.schema),
         "role": serializeEnumValue(value: credentialDetail.role),
+        "exchange": credentialDetail.exchange,
     ]
     result.addOpt("revocationDate", credentialDetail.revocationDate)
     result.addOpt("issuerDid", opt(credentialDetail.issuerDid, {issuerDid in serialize(didListItem: issuerDid)}))

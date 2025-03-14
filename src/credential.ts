@@ -62,6 +62,7 @@ export interface CredentialListItem {
   schema: CredentialSchema;
   role: CredentialRoleEnum;
   suspendEndDate?: string;
+  exchange: string;
 }
 
 export interface CredentialDetail extends Omit<CredentialListItem, "issuerDid"> {
