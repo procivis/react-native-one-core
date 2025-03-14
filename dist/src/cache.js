@@ -7,8 +7,3 @@ export var CacheType;
     CacheType["JSON_SCHEMA"] = "JSON_SCHEMA";
     CacheType["TRUST_LIST"] = "TRUST_LIST";
 })(CacheType || (CacheType = {}));
-export var BypassCache;
-(function (BypassCache) {
-    BypassCache["DID_DOCUMENT"] = "DID_DOCUMENT";
-    BypassCache["STATUS_LIST_CREDENTIAL"] = "STATUS_LIST_CREDENTIAL";
-})(BypassCache || (BypassCache = {}));

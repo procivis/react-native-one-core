@@ -80,7 +80,7 @@ build:lib:
     - yarn compile
 
 build:kotlin:
-  image: $CI_REGISTRY/procivis/one/one-operations/core-base:1.81.0-0.1
+  image: $CI_REGISTRY/procivis/one/one-operations/core-base:1.84.1-0.4
   stage: build
   variables:
     YARN_ENABLE_IMMUTABLE_INSTALLS: true
