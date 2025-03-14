@@ -46,7 +46,7 @@ object DeserializeSpecific {
     fun ids(ids: ReadableArray): List<String> {
         val result = mutableListOf<String>()
         for (n in 0 until ids.size()) {
-            result.add(ids.getString(n))
+            result.add(ids.getString(n)!!)
         }
         return result
     }
@@ -95,7 +95,7 @@ object DeserializeSpecific {
     fun <T> enumList(entries: ReadableArray, fn: (String) -> T): List<T> {
         val result = mutableListOf<T>()
         for (n in 0 until entries.size()) {
-            result.add(fn(entries.getString(n)))
+            result.add(fn(entries.getString(n)!!))
         }
         return result
     }

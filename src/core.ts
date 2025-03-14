@@ -59,7 +59,7 @@ import {
   TrustEntityListQuery,
   UpdateRemoteTrustEntityRequest,
 } from "./trust";
-import { BypassCache, CacheType } from "./cache";
+import { CacheType } from "./cache";
 
 export * from "./backup";
 export * from "./cache";
@@ -304,3 +304,72 @@ export interface ONECore {
    */
   uninitialize(deleteData: boolean): Promise<void>;
 }
+
+// New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
+export const interfaceMethodNames = [
+  "getVersion",
+  "getConfig",
+  "createOrganisation",
+  "generateKey",
+  "createDid",
+  "getDids",
+  "handleInvitation",
+  "holderAcceptCredential",
+  "holderRejectCredential",
+  "getPresentationDefinition",
+  "holderRejectProof",
+  "holderSubmitProof",
+  "getCredentials",
+  "runTask",
+  "checkCertificate",
+  "deleteProofClaims",
+  "getCredential",
+  "deleteCredential",
+  "importCredentialSchema",
+  "getCredentialSchema",
+  "getCredentialSchemas",
+  "deleteCredentialSchema",
+  "createProof",
+  "shareProof",
+  "shareProofSchema",
+  "shareCredentialSchema",
+  "getProof",
+  "getProofs",
+  "deleteProof",
+  "proposeProof",
+  "createProofSchema",
+  "getProofSchemas",
+  "getProofSchema",
+  "deleteProofSchema",
+  "importProofSchema",
+  "checkRevocation",
+  "createTrustAnchor",
+  "deleteTrustAnchor",
+  "getTrustAnchor",
+  "getTrustAnchors",
+  "createTrustEntity",
+  "getTrustEntity",
+  "getTrustEntities",
+  "getTrustEntityByDid",
+  "createRemoteTrustEntity",
+  "getRemoteTrustEntity",
+  "updateRemoteTrustEntity",
+  "getHistory",
+  "getHistoryEntry",
+  "createBackup",
+  "backupInfo",
+  "deleteCache",
+  "unpackBackup",
+  "finalizeImport",
+  "rollbackImport",
+  "resolveJsonldContext",
+  "uninitialize",
+] as const;
+
+// Typescript automatic assertions to keep ONECore and interfaceMethodNames in sync
+/** assert that all method names listed in {@link interfaceMethodNames} exist in {@link ONECore} interface */
+const methodNamesCheck: ReadonlyArray<keyof ONECore> = interfaceMethodNames;
+
+/** assert that all {@link ONECore} interface methods are listed in {@link interfaceMethodNames} */
+const interfaceMethodsCheck: (typeof interfaceMethodNames)[number] =
+  null as unknown as keyof ONECore;
