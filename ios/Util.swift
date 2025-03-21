@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import one_core
 
 // Error handling
 func syncCall<Result>(_ resolve: @escaping RCTPromiseResolveBlock,

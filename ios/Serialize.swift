@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import one_core
 
 // Enum values serialization
 func serializeEnumValue<T>(value: T) -> String {
