@@ -27,7 +27,11 @@ RCT_EXTERN_METHOD(getVersion:(RCTPromiseResolveBlock)resolve
 RCT_EXTERN_METHOD(getConfig:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(createOrganisation:(NSString *)uuid
+RCT_EXTERN_METHOD(createOrganisation:(NSDictionary *)request
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(upsertOrganisation:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

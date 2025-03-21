@@ -5,6 +5,7 @@ export declare enum HistoryActionEnum {
     CREATED = "CREATED",
     DEACTIVATED = "DEACTIVATED",
     DELETED = "DELETED",
+    ERRORED = "ERRORED",
     ISSUED = "ISSUED",
     OFFERED = "OFFERED",
     REJECTED = "REJECTED",
@@ -13,11 +14,14 @@ export declare enum HistoryActionEnum {
     PENDING = "PENDING",
     SUSPENDED = "SUSPENDED",
     RESTORED = "RESTORED",
-    ERRORED = "ERRORED",
     SHARED = "SHARED",
     IMPORTED = "IMPORTED",
     CLAIMS_REMOVED = "CLAIMS_REMOVED",
-    RETRACTED = "RETRACTED"
+    RETRACTED = "RETRACTED",
+    ACTIVATED = "ACTIVATED",
+    WITHDRAWN = "WITHDRAWN",
+    REMOVED = "REMOVED",
+    UPDATED = "UPDATED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
