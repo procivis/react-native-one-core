@@ -7,6 +7,7 @@ export * from "./did";
 export * from "./history";
 export * from "./key";
 export * from "./list";
+export * from "./organisation";
 export * from "./proof";
 export * from "./proofSchema";
 export * from "./trust";
@@ -15,6 +16,7 @@ export const interfaceMethodNames = [
     "getVersion",
     "getConfig",
     "createOrganisation",
+    "upsertOrganisation",
     "generateKey",
     "createDid",
     "getDids",

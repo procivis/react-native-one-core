@@ -19,6 +19,20 @@ struct SerializationError: LocalizedError {
     }
 }
 
+func deserializeCreateOrganisationRequest(request: NSDictionary) -> CreateOrganisationRequestBindingDto {
+    return CreateOrganisationRequestBindingDto(
+        id: request.value(forKey: "id") as? String,
+        name: request.value(forKey: "name") as? String
+    );
+}
+
+func deserializeUpsertOrganisationRequest(request: NSDictionary) throws -> UpsertOrganisationRequestBindingDto {
+    return UpsertOrganisationRequestBindingDto(
+        id: try safeCast(request.value(forKey: "id")),
+        name: try safeCast(request.value(forKey: "name"))
+    );
+}
+
 func deserializeKeyRequest(keyRequest: NSDictionary) throws -> KeyRequestBindingDto {
     let keyType: String = try safeCast(keyRequest.value(forKey: "keyType"));
     let name: String = try safeCast(keyRequest.value(forKey: "name"));
@@ -574,7 +588,29 @@ extension HistorySearchEnumBindingEnum: CaseIterable {
 
 extension HistoryActionBindingEnum: CaseIterable {
     public static var allCases: [HistoryActionBindingEnum] {
-        return [.accepted, .created, .deactivated, .deleted, .errored, .issued, .offered, .rejected, .requested, .revoked, .pending, .suspended, .restored, .shared, .imported, .claimsRemoved, .retracted]
+        return [
+            .accepted,
+            .created,
+            .deactivated,
+            .deleted,
+            .errored,
+            .issued,
+            .offered,
+            .rejected,
+            .requested,
+            .revoked,
+            .suspended,
+            .pending,
+            .restored,
+            .shared,
+            .imported,
+            .claimsRemoved,
+            .activated,
+            .withdrawn,
+            .removed,
+            .retracted,
+            .updated
+        ]
     }
 }
 
