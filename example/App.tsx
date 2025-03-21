@@ -98,7 +98,7 @@ export default function App(): JSX.Element {
 
   const generateKey = useCallback(async () => {
     setText("Generating key...");
-    const organisationId = await oneCore!.createOrganisation(undefined);
+    const organisationId = await oneCore!.createOrganisation({});
     await oneCore!
       .generateKey({
         organisationId,

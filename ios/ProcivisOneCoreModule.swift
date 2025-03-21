@@ -68,11 +68,22 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     
     @objc(createOrganisation:resolver:rejecter:)
     func createOrganisation(
-        uuid: String?,
+        request: NSDictionary,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock) {
             asyncCall(resolve, reject) {
-                return try await self.getCore().createOrganisation(uuid: uuid);
+                return try await self.getCore().createOrganisation(request: deserializeCreateOrganisationRequest(request: request));
+            }
+        }
+    
+    @objc(upsertOrganisation:resolver:rejecter:)
+    func upsertOrganisation(
+        request: NSDictionary,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock) {
+            asyncCall(resolve, reject) {
+                try await self.getCore().upsertOrganisation(request: deserializeUpsertOrganisationRequest(request: request));
+                return nil as NSDictionary?;
             }
         }
     

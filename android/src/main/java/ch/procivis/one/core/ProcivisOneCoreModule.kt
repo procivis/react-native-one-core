@@ -117,9 +117,17 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun createOrganisation(uuid: String?, promise: Promise) {
+    fun createOrganisation(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            return@asyncCall getCore().createOrganisation(uuid)
+            return@asyncCall getCore().createOrganisation(construct(request))
+        }
+    }
+
+    @ReactMethod
+    fun upsertOrganisation(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().upsertOrganisation(construct(request))
+            return@asyncCall null
         }
     }
 
