@@ -6,6 +6,7 @@
 
 import Foundation
 import React
+import one_core
 
 @objc(ProcivisOneCoreModule)
 class ProcivisOneCoreModule: RCTEventEmitter {

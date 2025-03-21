@@ -1,5 +1,6 @@
 import Foundation
 import React
+import one_core
 
 @objc(ProcivisOneCoreEventEmitter)
 class ProcivisOneCoreEventEmitter: NSObject {
