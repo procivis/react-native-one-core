@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import one_core
 
 struct SerializationError: LocalizedError {
     let description: String
