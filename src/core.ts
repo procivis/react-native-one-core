@@ -60,6 +60,10 @@ import {
   UpdateRemoteTrustEntityRequest,
 } from "./trust";
 import { CacheType } from "./cache";
+import {
+  CreateOrganisationRequest,
+  UpsertOrganisationRequest,
+} from "./organisation";
 
 export * from "./backup";
 export * from "./cache";
@@ -70,6 +74,7 @@ export * from "./did";
 export * from "./history";
 export * from "./key";
 export * from "./list";
+export * from "./organisation";
 export * from "./proof";
 export * from "./proofSchema";
 export * from "./trust";
@@ -97,7 +102,9 @@ export interface ONECore {
 
   getConfig(): Promise<Config>;
 
-  createOrganisation(uuid: string | undefined): Promise<string>;
+  createOrganisation(request: CreateOrganisationRequest): Promise<string>;
+
+  upsertOrganisation(request: UpsertOrganisationRequest): Promise<void>;
 
   generateKey(keyRequest: KeyRequest): Promise<string>;
 
@@ -310,6 +317,7 @@ export const interfaceMethodNames = [
   "getVersion",
   "getConfig",
   "createOrganisation",
+  "upsertOrganisation",
   "generateKey",
   "createDid",
   "getDids",
