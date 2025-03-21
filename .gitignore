@@ -26,9 +26,7 @@ local.properties
 # build files
 build/
 ios/one_coreFFI.xcframework
-ios/one_core.swift
-ios/IOSBLE*.swift
-ios/SecureEnclaveKeyStorage.swift
+ios/one_core.xcframework
 android/libs/onecore-*
 
 # keep dist
