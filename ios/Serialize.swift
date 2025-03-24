@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import one_core
+import ProcivisOneCore
 
 // Enum values serialization
 func serializeEnumValue<T>(value: T) -> String {

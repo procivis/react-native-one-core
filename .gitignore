@@ -25,8 +25,8 @@ local.properties
 
 # build files
 build/
-ios/one_coreFFI.xcframework
-ios/one_core.xcframework
+ios/ProcivisOneCoreFFI.xcframework
+ios/ProcivisOneCore.xcframework
 android/libs/onecore-*
 
 # keep dist

@@ -12,8 +12,8 @@
 		15260DEA2D561D6900797D80 /* RSEKeyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15260DE92D561D6900797D80 /* RSEKeyStorage.swift */; };
 		15260DEC2D561D8900797D80 /* RSEPinPadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 15260DEB2D561D7F00797D80 /* RSEPinPadManager.m */; };
 		15260DF02D56203600797D80 /* RSEPinPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15260DEF2D56203000797D80 /* RSEPinPad.swift */; };
-		339DE1322A4EB16400F68DE2 /* one_coreFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 339DE1312A4EB16300F68DE2 /* one_coreFFI.xcframework */; };
-		339DE1322A4EB16400F68DE2 /* one_core.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 339DE1312A4EB16300F68DE2 /* one_core.xcframework */; };
+		339DE1322A4EB16400F68DE2 /* ProcivisOneCoreFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 339DE1312A4EB16300F68DE2 /* ProcivisOneCoreFFI.xcframework */; };
+		339DE1322A4EB16400F68DE2 /* ProcivisOneCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 339DE1312A4EB16300F68DE2 /* ProcivisOneCore.xcframework */; };
 		339E6C092A7265970085D7EE /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339E6C082A7265970085D7EE /* Util.swift */; };
 		33A474252A86532B00C94287 /* Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A474242A86532B00C94287 /* Serialize.swift */; };
 		33AFE82E2ADD59F000137FCD /* Deserialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AFE82D2ADD59F000137FCD /* Deserialize.swift */; };
@@ -41,7 +41,7 @@
 		15260DEB2D561D7F00797D80 /* RSEPinPadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSEPinPadManager.m; sourceTree = "<group>"; };
 		15260DEF2D56203000797D80 /* RSEPinPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSEPinPad.swift; sourceTree = "<group>"; };
 		1542F7E72832BE9B005D3C06 /* react-native-one-core-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "react-native-one-core-Bridging-Header.h"; sourceTree = "<group>"; };
-		339DE1312A4EB16300F68DE2 /* one_core.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = one_core.xcframework; sourceTree = "<group>"; };
+		339DE1312A4EB16300F68DE2 /* ProcivisOneCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = ProcivisOneCore.xcframework; sourceTree = "<group>"; };
 		339E6C082A7265970085D7EE /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		33A474242A86532B00C94287 /* Serialize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialize.swift; sourceTree = "<group>"; };
 		33AFE82D2ADD59F000137FCD /* Deserialize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deserialize.swift; sourceTree = "<group>"; };
@@ -54,9 +54,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				339DE1322A4EB16400F68DE2 /* one_coreFFI.xcframework in Frameworks */,
+				339DE1322A4EB16400F68DE2 /* ProcivisOneCoreFFI.xcframework in Frameworks */,
 				15260DE82D561D4300797D80 /* UBQKit.xcframework in Frameworks */,
-				339DE1322A4EB16400F68DE2 /* one_core.xcframework in Frameworks */,
+				339DE1322A4EB16400F68DE2 /* ProcivisOneCore.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +80,7 @@
 				15260DE92D561D6900797D80 /* RSEKeyStorage.swift */,
 				15260DE72D561D4300797D80 /* UBQKit.xcframework */,
 				33F27119292F97400090E4DB /* ProcivisOneCoreModule.m */,
-				339DE1312A4EB16300F68DE2 /* one_core.xcframework */,
+				339DE1312A4EB16300F68DE2 /* ProcivisOneCore.xcframework */,
 				33F2711A292F97400090E4DB /* ProcivisOneCoreModule.swift */,
 				339E6C082A7265970085D7EE /* Util.swift */,
 				33AFE82D2ADD59F000137FCD /* Deserialize.swift */,
