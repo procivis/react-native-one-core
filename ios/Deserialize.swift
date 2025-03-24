@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import one_core
+import ProcivisOneCore
 
 struct SerializationError: LocalizedError {
     let description: String
