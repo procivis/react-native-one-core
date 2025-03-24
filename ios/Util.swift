@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import one_core
+import ProcivisOneCore
 
 // Error handling
 func syncCall<Result>(_ resolve: @escaping RCTPromiseResolveBlock,
