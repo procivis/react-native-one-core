@@ -92,10 +92,7 @@ function wrapFn<Fn extends (...args: any[]) => Promise<any>>(
     // set name on the err handler to display the original function name in callstack
     Object.defineProperty(errHandler, "name", { value: operation });
 
-    // convert undefined parameters to null for proper parameter matching in native code
-    return fn(...args.map((x) => (x === undefined ? null : x))).catch(
-      errHandler
-    ) as unknown as Fn;
+    return fn(...args).catch(errHandler) as unknown as Fn;
   };
 }
 
