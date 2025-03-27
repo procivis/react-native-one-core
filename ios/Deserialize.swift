@@ -426,10 +426,9 @@ func deserializeShareProofRequest(_ request: NSDictionary) throws -> ShareProofR
 
 func deserializeShareProofRequestParams(_ request: NSDictionary) throws -> ShareProofRequestParamsBindingDto {
     return ShareProofRequestParamsBindingDto(
-        clientIdSchema: try opt(request.value(forKey: "clientIdSchema") as? String, deserializeEnum)
+        clientIdScheme: try opt(request.value(forKey: "clientIdScheme") as? String, deserializeEnum)
     )
 }
-
 
 func deserializeKeyCheckCertificateRequest(_ request: NSDictionary) throws -> KeyCheckCertificateRequestBindingDto {
     return KeyCheckCertificateRequestBindingDto(
@@ -701,9 +700,9 @@ extension ProofRoleBindingEnum: CaseIterable {
     }
 }
 
-extension ShareProofRequestClientIdSchemaTypeBindingDto: CaseIterable {
-    public static var allCases: [ShareProofRequestClientIdSchemaTypeBindingDto] {
-        return [.redirectUri, .verifierAttestation]
+extension ClientIdSchemeBindingEnum: CaseIterable {
+    public static var allCases: [ClientIdSchemeBindingEnum] {
+        return [.redirectUri, .verifierAttestation, .did, .x509SanDns]
     }
 }
 

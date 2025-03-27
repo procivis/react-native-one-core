@@ -34,8 +34,10 @@ export var ExactProofFilterColumnEnum;
 (function (ExactProofFilterColumnEnum) {
     ExactProofFilterColumnEnum["NAME"] = "NAME";
 })(ExactProofFilterColumnEnum || (ExactProofFilterColumnEnum = {}));
-export var ShareProofRequestClientIdSchemaType;
-(function (ShareProofRequestClientIdSchemaType) {
-    ShareProofRequestClientIdSchemaType["REDIRECT_URI"] = "REDIRECT_URI";
-    ShareProofRequestClientIdSchemaType["VERIFIER_ATTESTATION"] = "VERIFIER_ATTESTATION";
-})(ShareProofRequestClientIdSchemaType || (ShareProofRequestClientIdSchemaType = {}));
+export var ClientIdSchemeEnum;
+(function (ClientIdSchemeEnum) {
+    ClientIdSchemeEnum["REDIRECT_URI"] = "REDIRECT_URI";
+    ClientIdSchemeEnum["VERIFIER_ATTESTATION"] = "VERIFIER_ATTESTATION";
+    ClientIdSchemeEnum["DID"] = "DID";
+    ClientIdSchemeEnum["X509_SAN_DNS"] = "X509_SAN_DNS";
+})(ClientIdSchemeEnum || (ClientIdSchemeEnum = {}));
