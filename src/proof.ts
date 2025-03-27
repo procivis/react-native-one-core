@@ -177,10 +177,12 @@ export interface ShareProofRequest {
 }
 
 export interface ShareProofRequestParams {
-  clientIdSchema?: ShareProofRequestClientIdSchemaType;
+  clientIdScheme?: ClientIdSchemeEnum;
 }
 
-export enum ShareProofRequestClientIdSchemaType {
+export enum ClientIdSchemeEnum {
   REDIRECT_URI = "REDIRECT_URI",
   VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION",
+  DID = "DID",
+  X509_SAN_DNS = "X509_SAN_DNS",
 }
