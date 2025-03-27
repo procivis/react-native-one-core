@@ -153,9 +153,11 @@ export interface ShareProofRequest {
     params?: ShareProofRequestParams;
 }
 export interface ShareProofRequestParams {
-    clientIdSchema?: ShareProofRequestClientIdSchemaType;
+    clientIdScheme?: ClientIdSchemeEnum;
 }
-export declare enum ShareProofRequestClientIdSchemaType {
+export declare enum ClientIdSchemeEnum {
     REDIRECT_URI = "REDIRECT_URI",
-    VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION"
+    VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION",
+    DID = "DID",
+    X509_SAN_DNS = "X509_SAN_DNS"
 }
