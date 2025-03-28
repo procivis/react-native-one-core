@@ -476,6 +476,7 @@ func serialize(historyListItem: HistoryListItemBindingDto) -> NSDictionary {
         "action": serializeEnumValue(value: historyListItem.action),
         "entityType": serializeEnumValue(value: historyListItem.entityType),
         "organisationId": historyListItem.organisationId,
+        "name": historyListItem.name,
     ]
     result.addOpt("entityId", historyListItem.entityId)
     result.addOpt("metadata", opt(historyListItem.metadata, {data in serialize(historyMetadata: data)}))
