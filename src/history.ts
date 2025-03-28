@@ -74,6 +74,7 @@ export interface HistoryListItem {
   id: string;
   createdDate: string;
   action: HistoryActionEnum;
+  name: string;
   entityId?: string;
   entityType: HistoryEntityTypeEnum;
   organisationId: string;
