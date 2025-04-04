@@ -16,7 +16,7 @@ const config = {
         },
       },
     },
-    UBIQU_RSE: { disabled: false },
+    UBIQU_RSE: { enabled: true },
   },
   issuanceProtocol: {
     OPENID4VCI_DRAFT13: {
