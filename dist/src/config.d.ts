@@ -112,12 +112,13 @@ export type DataTypeParams = {
 };
 export interface Config {
     format: ConfigEntities<FormatCapabilities>;
-    exchange: ConfigEntities;
+    issuanceProtocol: ConfigEntities;
+    verificationProtocol: ConfigEntities;
     transport: ConfigEntities;
     revocation: ConfigEntities<RevocationCapabilities>;
     did: ConfigEntities<DidCapabilities>;
     datatype: ConfigEntities<undefined, DataTypeParams>;
-    keyAlgorithm: ConfigEntities<KeyAlgorithmCapabilities>;
+    keyAlgorithm: ConfigEntities<KeyAlgorithmCapabilities, {}>;
     keyStorage: ConfigEntities<KeyStorageCapabilities>;
     trustManagement: ConfigEntities;
     cacheEntities: ConfigEntities;

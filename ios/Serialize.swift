@@ -52,7 +52,8 @@ func serialize(version: VersionBindingDto) -> NSDictionary {
 func serialize(config: ConfigBindingDto) -> NSDictionary {
     return [
         "format": config.format,
-        "exchange": config.exchange,
+        "issuanceProtocol": config.issuanceProtocol,
+        "verificationProtocol": config.verificationProtocol,
         "transport": config.transport,
         "revocation": config.revocation,
         "did": config.did,
