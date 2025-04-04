@@ -56,7 +56,7 @@ export interface RevocationCapabilities {
     operations: RevocationOperationEnum[];
 }
 export interface ConfigEntity<Capabilities> {
-    disabled?: boolean;
+    enabled?: boolean;
     capabilities: Capabilities;
     display: string;
     order: number;
