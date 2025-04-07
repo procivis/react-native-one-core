@@ -63,27 +63,6 @@ allprojects {
 }
 ```
 
-Add following to your app `android/app/build.gradle` to remove unsupported architectures:
-
-```
-...
-android {
-   defaultConfig {
-        ...
-
-        ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a", "x86"
-        }
-        packagingOptions {
-            exclude 'lib/mips/**'
-            exclude 'lib/mips64/**'
-            exclude 'lib/armeabi/**'
-            exclude 'lib/x86_64/**'
-        }
-    }
-}
-```
-
 ## Usage
 
 ```javascript
