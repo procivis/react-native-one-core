@@ -480,6 +480,7 @@ func serialize(historyListItem: HistoryListItemBindingDto) -> NSDictionary {
         "name": historyListItem.name,
     ]
     result.addOpt("entityId", historyListItem.entityId)
+    result.addOpt("target", historyListItem.target)
     result.addOpt("metadata", opt(historyListItem.metadata, {data in serialize(historyMetadata: data)}))
     return result as NSDictionary
 }
