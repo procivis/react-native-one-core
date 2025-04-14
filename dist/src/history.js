@@ -21,6 +21,8 @@ export var HistoryActionEnum;
     HistoryActionEnum["WITHDRAWN"] = "WITHDRAWN";
     HistoryActionEnum["REMOVED"] = "REMOVED";
     HistoryActionEnum["UPDATED"] = "UPDATED";
+    HistoryActionEnum["REACTIVATED"] = "REACTIVATED";
+    HistoryActionEnum["CSR_GENERATED"] = "CSR_GENERATED";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
@@ -32,6 +34,8 @@ export var HistoryEntityTypeEnum;
     HistoryEntityTypeEnum["PROOF_SCHEMA"] = "PROOF_SCHEMA";
     HistoryEntityTypeEnum["ORGANISATION"] = "ORGANISATION";
     HistoryEntityTypeEnum["BACKUP"] = "BACKUP";
+    HistoryEntityTypeEnum["TRUST_ANCHOR"] = "TRUST_ANCHOR";
+    HistoryEntityTypeEnum["TRUST_ENTITY"] = "TRUST_ENTITY";
 })(HistoryEntityTypeEnum || (HistoryEntityTypeEnum = {}));
 export var HistorySearchTypeEnum;
 (function (HistorySearchTypeEnum) {
