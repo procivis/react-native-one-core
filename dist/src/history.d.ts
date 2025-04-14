@@ -21,7 +21,9 @@ export declare enum HistoryActionEnum {
     ACTIVATED = "ACTIVATED",
     WITHDRAWN = "WITHDRAWN",
     REMOVED = "REMOVED",
-    UPDATED = "UPDATED"
+    UPDATED = "UPDATED",
+    REACTIVATED = "REACTIVATED",
+    CSR_GENERATED = "CSR_GENERATED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
@@ -31,7 +33,9 @@ export declare enum HistoryEntityTypeEnum {
     PROOF = "PROOF",
     PROOF_SCHEMA = "PROOF_SCHEMA",
     ORGANISATION = "ORGANISATION",
-    BACKUP = "BACKUP"
+    BACKUP = "BACKUP",
+    TRUST_ANCHOR = "TRUST_ANCHOR",
+    TRUST_ENTITY = "TRUST_ENTITY"
 }
 export declare enum HistorySearchTypeEnum {
     CLAIM_NAME = "CLAIM_NAME",
