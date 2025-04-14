@@ -23,6 +23,8 @@ export enum HistoryActionEnum {
   WITHDRAWN = "WITHDRAWN",
   REMOVED = "REMOVED",
   UPDATED = "UPDATED",
+  REACTIVATED = 'REACTIVATED',
+  CSR_GENERATED = 'CSR_GENERATED',
 }
 
 export enum HistoryEntityTypeEnum {
@@ -34,6 +36,8 @@ export enum HistoryEntityTypeEnum {
   PROOF_SCHEMA = "PROOF_SCHEMA",
   ORGANISATION = "ORGANISATION",
   BACKUP = "BACKUP",
+  TRUST_ANCHOR = 'TRUST_ANCHOR',
+  TRUST_ENTITY = 'TRUST_ENTITY',
 }
 
 export enum HistorySearchTypeEnum {
