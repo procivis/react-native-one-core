@@ -137,10 +137,19 @@ export type DataTypeParams =
       params?: undefined;
     };
 
+export interface IssuanceProtocolCapabilities {
+  didMethods: string[];
+}
+
+export interface VerificationProtocolCapabilities {
+  didMethods: string[];
+  supportedTransports: string[];
+}
+
 export interface Config {
   format: ConfigEntities<FormatCapabilities>;
-  issuanceProtocol: ConfigEntities;
-  verificationProtocol: ConfigEntities;
+  issuanceProtocol: ConfigEntities<IssuanceProtocolCapabilities>;
+  verificationProtocol: ConfigEntities<VerificationProtocolCapabilities>;
   transport: ConfigEntities;
   revocation: ConfigEntities<RevocationCapabilities>;
   did: ConfigEntities<DidCapabilities>;
