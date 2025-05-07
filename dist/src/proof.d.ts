@@ -3,6 +3,7 @@ import { CredentialSchema } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { ProofInputClaimSchema, ProofSchemaListItem } from "./proofSchema";
 import { DidListItem } from "./did";
+import { IdentifierListItem } from "./identifier";
 export declare enum ProofStateEnum {
     CREATED = "CREATED",
     PENDING = "PENDING",
@@ -35,7 +36,9 @@ export interface ProofDetail {
     role: ProofRoleEnum;
     proofSchema?: ProofSchemaListItem;
     verifierDid?: DidListItem;
+    verifier?: IdentifierListItem;
     holderDid?: DidListItem;
+    holder?: IdentifierListItem;
     exchange: string;
     transport: string;
     redirectUri?: string;
@@ -51,7 +54,8 @@ export interface ProofListItem {
     issuanceDate: string;
     requestedDate?: string;
     completedDate?: string;
-    verifierDid?: string;
+    verifierDid?: DidListItem["id"];
+    verifier?: IdentifierListItem["id"];
     exchange: string;
     transport: string;
     state: ProofStateEnum;
@@ -60,9 +64,9 @@ export interface ProofListItem {
     retainUntilDate?: string;
 }
 export interface CreateProofRequest {
-    proofSchemaId: string;
-    verifierDidId?: string;
-    verifierIdentifierId?: string;
+    proofSchemaId: ProofSchemaListItem["id"];
+    verifierDidId?: DidListItem["id"];
+    verifierIdentifierId?: IdentifierListItem["id"];
     exchange: string;
     redirectUri?: string;
     verifierKey?: string;
@@ -84,6 +88,7 @@ export interface ShareProofResponse {
 }
 export interface PresentationDefinition {
     requestGroups: PresentationDefinitionRequestGroup[];
+    credentials: CredentialDetail[];
 }
 export interface PresentationDefinitionRequestGroup {
     id: string;

@@ -2,6 +2,7 @@ import { DataTypeEnum } from "./config";
 import { CredentialSchema } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { DidListItem } from "./did";
+import { IdentifierListItem } from "./identifier";
 export declare enum CredentialStateEnum {
     CREATED = "CREATED",
     PENDING = "PENDING",
@@ -47,20 +48,23 @@ export interface CredentialListItem {
     issuanceDate: string;
     lastModified: string;
     revocationDate?: string;
-    issuerDid?: string;
+    issuerDid?: DidListItem["id"];
+    issuer?: IdentifierListItem["id"];
     state: CredentialStateEnum;
     schema: CredentialSchema;
     role: CredentialRoleEnum;
     suspendEndDate?: string;
     exchange: string;
 }
-export interface CredentialDetail extends Omit<CredentialListItem, "issuerDid"> {
+export interface CredentialDetail extends Omit<CredentialListItem, "issuerDid" | "issuer"> {
     claims: Claim[];
     redirectUri?: string;
     lvvcIssuanceDate?: string;
     mdocMsoValidity?: MdocMsoValidity;
     issuerDid?: DidListItem;
+    issuer?: IdentifierListItem;
     holderDid?: DidListItem;
+    holder?: IdentifierListItem;
 }
 export interface MdocMsoValidity {
     expiration: string;

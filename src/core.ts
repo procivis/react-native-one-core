@@ -64,6 +64,11 @@ import {
   CreateOrganisationRequest,
   UpsertOrganisationRequest,
 } from "./organisation";
+import {
+  CreateIdentifierRequest,
+  IdentifierListItem,
+  IdentifierListQuery,
+} from "./identifier";
 
 export * from "./backup";
 export * from "./cache";
@@ -111,6 +116,14 @@ export interface ONECore {
   createDid(didRequest: DidRequest): Promise<string>;
 
   getDids(query: DidListQuery): Promise<ItemList<DidListItem>>;
+
+  createIdentifier(identifierRequest: CreateIdentifierRequest): Promise<string>;
+
+  getIdentifiers(
+    query: IdentifierListQuery
+  ): Promise<ItemList<IdentifierListItem>>;
+
+  deleteIdentifier(identifierId: IdentifierListItem["id"]): Promise<void>;
 
   handleInvitation(
     url: string,
@@ -321,6 +334,9 @@ export const interfaceMethodNames = [
   "generateKey",
   "createDid",
   "getDids",
+  "createIdentifier",
+  "getIdentifiers",
+  "deleteIdentifier",
   "handleInvitation",
   "holderAcceptCredential",
   "holderRejectCredential",

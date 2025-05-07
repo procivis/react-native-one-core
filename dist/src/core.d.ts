@@ -11,6 +11,7 @@ import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofS
 import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListItem, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
 import { CacheType } from "./cache";
 import { CreateOrganisationRequest, UpsertOrganisationRequest } from "./organisation";
+import { CreateIdentifierRequest, IdentifierListItem, IdentifierListQuery } from "./identifier";
 export * from "./backup";
 export * from "./cache";
 export * from "./config";
@@ -45,6 +46,9 @@ export interface ONECore {
     generateKey(keyRequest: KeyRequest): Promise<string>;
     createDid(didRequest: DidRequest): Promise<string>;
     getDids(query: DidListQuery): Promise<ItemList<DidListItem>>;
+    createIdentifier(identifierRequest: CreateIdentifierRequest): Promise<string>;
+    getIdentifiers(query: IdentifierListQuery): Promise<ItemList<IdentifierListItem>>;
+    deleteIdentifier(identifierId: IdentifierListItem["id"]): Promise<void>;
     handleInvitation(url: string, organisationId: string, transport: string[] | undefined): Promise<InvitationResult>;
     holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: string, keyId: string | undefined, txCode: string | undefined): Promise<void>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
@@ -122,4 +126,4 @@ export interface ONECore {
      */
     uninitialize(deleteData: boolean): Promise<void>;
 }
-export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "getPresentationDefinition", "holderRejectProof", "holderSubmitProof", "getCredentials", "runTask", "checkCertificate", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "uninitialize"];
+export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "getPresentationDefinition", "holderRejectProof", "holderSubmitProof", "getCredentials", "runTask", "checkCertificate", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "uninitialize"];
