@@ -68,7 +68,8 @@ export interface ProofListItem {
 
 export interface CreateProofRequest {
   proofSchemaId: string;
-  verifierDidId: string;
+  verifierDidId?: string;
+  verifierIdentifierId?: string;
   exchange: string;
   redirectUri?: string;
   verifierKey?: string;
