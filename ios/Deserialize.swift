@@ -408,7 +408,8 @@ func deserializeImportCredentialSchemaCodeProperties(_ request: NSDictionary) th
 func deserializeCreateProofRequest(_ request: NSDictionary) throws -> CreateProofRequestBindingDto {
     return CreateProofRequestBindingDto(
         proofSchemaId: try safeCast(request.value(forKey: "proofSchemaId")),
-        verifierDidId: try safeCast(request.value(forKey: "verifierDidId")),
+        verifierDidId: request.value(forKey: "verifierDidId") as? String,
+        verifierIdentifierId: request.value(forKey: "verifierIdentifierId") as? String,
         exchange: try safeCast(request.value(forKey: "exchange")),
         redirectUri: request.value(forKey: "redirectUri") as? String,
         verifierKey: request.value(forKey: "verifierKey") as? String,
