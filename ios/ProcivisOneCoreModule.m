@@ -12,7 +12,7 @@
 
 + (BOOL)requiresMainQueueSetup
 {
-    return NO;
+  return NO;
 }
 
 RCT_EXTERN_METHOD(supportedEvents)
@@ -44,6 +44,18 @@ RCT_EXTERN_METHOD(createDid:(NSDictionary *)didRequest
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getDids:(NSDictionary *)query
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(createIdentifier:(NSDictionary *)identifierRequest
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getIdentifiers:(NSDictionary *)query
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(deleteIdentifier:(NSString *)identifierId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

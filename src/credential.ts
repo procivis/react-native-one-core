@@ -1,7 +1,8 @@
 import { DataTypeEnum } from "./config";
 import { CredentialSchema } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
-import {DidListItem} from "./did";
+import { DidListItem } from "./did";
+import { IdentifierListItem } from "./identifier";
 
 export enum CredentialStateEnum {
   CREATED = "CREATED",
@@ -57,7 +58,8 @@ export interface CredentialListItem {
   issuanceDate: string;
   lastModified: string;
   revocationDate?: string;
-  issuerDid?: string;
+  issuerDid?: DidListItem["id"];
+  issuer?: IdentifierListItem["id"];
   state: CredentialStateEnum;
   schema: CredentialSchema;
   role: CredentialRoleEnum;
@@ -65,13 +67,16 @@ export interface CredentialListItem {
   exchange: string;
 }
 
-export interface CredentialDetail extends Omit<CredentialListItem, "issuerDid"> {
+export interface CredentialDetail
+  extends Omit<CredentialListItem, "issuerDid" | "issuer"> {
   claims: Claim[];
   redirectUri?: string;
   lvvcIssuanceDate?: string;
   mdocMsoValidity?: MdocMsoValidity;
-  issuerDid?: DidListItem
-  holderDid?: DidListItem
+  issuerDid?: DidListItem;
+  issuer?: IdentifierListItem;
+  holderDid?: DidListItem;
+  holder?: IdentifierListItem;
 }
 
 export interface MdocMsoValidity {
@@ -146,5 +151,5 @@ export interface OpenID4VCITxCode {
 
 export enum OpenID4VCITxCodeInputMode {
   NUMERIC = "NUMERIC",
-  TEXT = "TEXT"
+  TEXT = "TEXT",
 }
