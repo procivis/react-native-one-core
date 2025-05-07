@@ -154,6 +154,29 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun createIdentifier(identifierRequest: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            return@asyncCall getCore().createIdentifier(construct(identifierRequest))
+        }
+    }
+
+    @ReactMethod
+    fun getIdentifiers(query: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            val identifiers = getCore().listIdentifiers(construct(query))
+            return@asyncCall convertToRN(identifiers)
+        }
+    }
+
+    @ReactMethod
+    fun deleteIdentifier(identifierId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().deleteIdentifier(identifierId)
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun handleInvitation(
         url: String,
         organisationId: String,
