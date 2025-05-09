@@ -23,21 +23,22 @@ export enum HistoryActionEnum {
   WITHDRAWN = "WITHDRAWN",
   REMOVED = "REMOVED",
   UPDATED = "UPDATED",
-  REACTIVATED = 'REACTIVATED',
-  CSR_GENERATED = 'CSR_GENERATED',
+  REACTIVATED = "REACTIVATED",
+  CSR_GENERATED = "CSR_GENERATED",
 }
 
 export enum HistoryEntityTypeEnum {
   KEY = "KEY",
   DID = "DID",
+  IDENTIFIER = "IDENTIFIER",
   CREDENTIAL = "CREDENTIAL",
   CREDENTIAL_SCHEMA = "CREDENTIAL_SCHEMA",
   PROOF = "PROOF",
   PROOF_SCHEMA = "PROOF_SCHEMA",
   ORGANISATION = "ORGANISATION",
   BACKUP = "BACKUP",
-  TRUST_ANCHOR = 'TRUST_ANCHOR',
-  TRUST_ENTITY = 'TRUST_ENTITY',
+  TRUST_ANCHOR = "TRUST_ANCHOR",
+  TRUST_ENTITY = "TRUST_ENTITY",
 }
 
 export enum HistorySearchTypeEnum {
@@ -59,7 +60,7 @@ export interface HistoryListQuery extends ListQuery {
   createdDateFrom?: string;
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
   createdDateTo?: string;
-  didId?: string;
+  identifierId?: string;
   credentialId?: string;
   credentialSchemaId?: string;
   proofSchemaId?: string;

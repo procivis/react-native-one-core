@@ -1210,7 +1210,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-one-core (1.41717.0):
+  - react-native-one-core (1.42133.0):
     - React-Core
   - React-nativeconfig (0.77.1)
   - React-NativeModulesApple (0.77.1):

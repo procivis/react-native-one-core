@@ -28,6 +28,7 @@ export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
     HistoryEntityTypeEnum["KEY"] = "KEY";
     HistoryEntityTypeEnum["DID"] = "DID";
+    HistoryEntityTypeEnum["IDENTIFIER"] = "IDENTIFIER";
     HistoryEntityTypeEnum["CREDENTIAL"] = "CREDENTIAL";
     HistoryEntityTypeEnum["CREDENTIAL_SCHEMA"] = "CREDENTIAL_SCHEMA";
     HistoryEntityTypeEnum["PROOF"] = "PROOF";
