@@ -47,6 +47,8 @@ export interface FormatCapabilities {
     datatypes: Array<DataTypeEnum | string>;
     allowedSchemaIds: string[];
     forbiddenClaimNames: string[];
+    issuanceIdentifierTypes: string[];
+    verificationIdentifierTypes: string[];
 }
 export declare enum RevocationOperationEnum {
     REVOKE = "REVOKE",

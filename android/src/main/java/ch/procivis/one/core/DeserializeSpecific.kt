@@ -63,7 +63,7 @@ object DeserializeSpecific {
             },
             createdDateFrom = query.getString("createdDateFrom"),
             createdDateTo = query.getString("createdDateTo"),
-            didId = query.getString("didId"),
+            identifierId = query.getString("identifierId"),
             credentialId = query.getString("credentialId"),
             credentialSchemaId = query.getString("credentialSchemaId"),
             search = historySearch(

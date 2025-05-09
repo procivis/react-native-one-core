@@ -210,6 +210,8 @@ func deserializeIdentifierListQuery(_ query: NSDictionary) throws -> IdentifierL
     type: try opt(query.value(forKey: "type") as? String, deserializeEnum),
     status: try opt(query.value(forKey: "status") as? String, deserializeEnum),
     exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } ),
+    didMethods: try opt(query.value(forKey: "didMethods") as? NSArray, deserializeIds),
+    isRemote: query.value(forKey: "isRemote") as? Bool,
     keyAlgorithms: try opt(query.value(forKey: "keyAlgorithms") as? NSArray, deserializeIds),
     keyRoles: try opt(query.value(forKey: "keyRoles") as? NSArray, { roles in try enumList(roles) }),
     keyStorages: try opt(query.value(forKey: "keyStorages") as? NSArray, deserializeIds)
@@ -226,7 +228,7 @@ func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQue
     action: try opt(query.value(forKey: "action") as? String, deserializeEnum),
     createdDateFrom: query.value(forKey: "createdDateFrom") as? String,
     createdDateTo: query.value(forKey: "createdDateTo") as? String,
-    didId: query.value(forKey: "didId") as? String,
+    identifierId: query.value(forKey: "identifierId") as? String,
     credentialId: query.value(forKey: "credentialId") as? String,
     credentialSchemaId: query.value(forKey: "credentialSchemaId") as? String,
     proofSchemaId: query.value(forKey: "proofSchemaId") as? String,
@@ -642,7 +644,7 @@ extension CredentialListQueryExactColumnBindingEnum: CaseIterable {
 
 extension HistoryEntityTypeBindingEnum: CaseIterable {
   public static var allCases: [HistoryEntityTypeBindingEnum] {
-    return [.key, .did, .credentialSchema, .credential, .proofSchema, .proof, .organisation, .backup]
+    return [.key, .did, .identifier, .credential, .credentialSchema, .proof, .proofSchema, .organisation, .backup, .trustAnchor, .trustEntity]
   }
 }
 
