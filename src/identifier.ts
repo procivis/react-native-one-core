@@ -55,6 +55,8 @@ export interface IdentifierListQuery extends ListQuery {
   type?: IdentifierTypeEnum;
   status?: IdentifierStatusEnum;
   exact?: ExactIdentifierFilterColumnEnum[];
+  didMethods?: string[];
+  isRemote?: boolean;
   keyAlgorithms?: string[];
   keyRoles?: KeyRoleEnum[];
   keyStorages?: string[];
