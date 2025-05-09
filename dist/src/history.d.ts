@@ -28,6 +28,7 @@ export declare enum HistoryActionEnum {
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
     DID = "DID",
+    IDENTIFIER = "IDENTIFIER",
     CREDENTIAL = "CREDENTIAL",
     CREDENTIAL_SCHEMA = "CREDENTIAL_SCHEMA",
     PROOF = "PROOF",
@@ -55,7 +56,7 @@ export interface HistoryListQuery extends ListQuery {
     createdDateFrom?: string;
     /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
     createdDateTo?: string;
-    didId?: string;
+    identifierId?: string;
     credentialId?: string;
     credentialSchemaId?: string;
     proofSchemaId?: string;
