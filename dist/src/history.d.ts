@@ -23,12 +23,14 @@ export declare enum HistoryActionEnum {
     REMOVED = "REMOVED",
     UPDATED = "UPDATED",
     REACTIVATED = "REACTIVATED",
-    CSR_GENERATED = "CSR_GENERATED"
+    CSR_GENERATED = "CSR_GENERATED",
+    EXPIRED = "EXPIRED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
     DID = "DID",
     IDENTIFIER = "IDENTIFIER",
+    CERTIFICATE = "CERTIFICATE",
     CREDENTIAL = "CREDENTIAL",
     CREDENTIAL_SCHEMA = "CREDENTIAL_SCHEMA",
     PROOF = "PROOF",

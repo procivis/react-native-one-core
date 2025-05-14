@@ -193,13 +193,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun holderAcceptCredential(
         interactionId: String,
-        didId: String,
+        didId: String?,
+        identifierId: String?,
         keyId: String?,
         txCode: String?,
         promise: Promise
     ) {
         asyncCall(promise, scope) {
-            getCore().holderAcceptCredential(interactionId, didId, keyId, txCode)
+            getCore().holderAcceptCredential(interactionId, didId, identifierId, keyId, txCode)
             return@asyncCall null
         }
     }
@@ -232,7 +233,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun holderSubmitProof(
         interactionId: String,
         credentials: ReadableMap,
-        didId: String,
+        didId: String?,
+        identifierId: String?,
         keyId: String?,
         promise: Promise
     ) {
@@ -243,7 +245,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 val credential = entry.value as ReadableMap
                 submitCredentials[entry.key] = construct(credential)
             }
-            getCore().holderSubmitProof(interactionId, submitCredentials, didId, keyId)
+            getCore().holderSubmitProof(interactionId, submitCredentials, didId, identifierId, keyId)
             return@asyncCall null
         }
     }
