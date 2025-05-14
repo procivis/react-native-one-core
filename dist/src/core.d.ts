@@ -50,11 +50,11 @@ export interface ONECore {
     getIdentifiers(query: IdentifierListQuery): Promise<ItemList<IdentifierListItem>>;
     deleteIdentifier(identifierId: IdentifierListItem["id"]): Promise<void>;
     handleInvitation(url: string, organisationId: string, transport: string[] | undefined): Promise<InvitationResult>;
-    holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: string, keyId: string | undefined, txCode: string | undefined): Promise<void>;
+    holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined, txCode: string | undefined): Promise<void>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
     getPresentationDefinition(proofId: ProofDetail["id"]): Promise<PresentationDefinition>;
     holderRejectProof(interactionId: InvitationResultProofRequest["interactionId"]): Promise<void>;
-    holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: string, keyId: string | undefined): Promise<void>;
+    holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined): Promise<void>;
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     runTask(task: string): Promise<string>;
     checkCertificate(keyId: KeyListItem["id"], certificate: KeyCheckCertificateRequestBindingDto): Promise<void>;

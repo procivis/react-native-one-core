@@ -96,7 +96,8 @@ func deserializeIdentifierRequest(identifierRequest: NSDictionary) throws -> Cre
     organisationId: try safeCast(identifierRequest.value(forKey: "organisationId")),
     name: try safeCast(identifierRequest.value(forKey: "name")),
     keyId: identifierRequest.value(forKey: "keyId") as? String,
-    did: try opt((identifierRequest.value(forKey: "did") as? NSDictionary), deserializeIdentifierDidRequest)
+    did: try opt((identifierRequest.value(forKey: "did") as? NSDictionary), deserializeIdentifierDidRequest),
+    certificates: try opt((identifierRequest.value(forKey: "certificates") as? NSArray), deserializeIdentifierCertificatesRequest)
   )
 }
 
@@ -113,6 +114,23 @@ func deserializeIdentifierDidRequest(identifierDidRequest: NSDictionary) throws 
   }
 
   return CreateIdentifierDidRequestBindingDto(name: name, method: method, keys: keys, params: params);
+}
+
+func deserializeIdentifierCertificatesRequest(requests: NSArray) throws -> [CreateCertificateRequestBindingDto] {
+  var result: [CreateCertificateRequestBindingDto] = [];
+  try requests.forEach {
+    let request: NSDictionary = try safeCast($0);
+    result.append(try deserializeCertificateRequest(request: request));
+  }
+  return result
+}
+
+func deserializeCertificateRequest(request: NSDictionary) throws -> CreateCertificateRequestBindingDto {
+  return CreateCertificateRequestBindingDto(
+    name: request.value(forKey: "name") as? String,
+    chain: try safeCast(request.value(forKey: "chain")),
+    keyId: try safeCast(request.value(forKey: "keyId"))
+  )
 }
 
 func deserializeHistorySearch(text: String?, type: String?) throws -> HistorySearchBindingDto? {
@@ -208,7 +226,7 @@ func deserializeIdentifierListQuery(_ query: NSDictionary) throws -> IdentifierL
     organisationId: try safeCast(query.value(forKey: "organisationId")),
     name: query.value(forKey: "name") as? String,
     type: try opt(query.value(forKey: "type") as? String, deserializeEnum),
-    status: try opt(query.value(forKey: "status") as? String, deserializeEnum),
+    state: try opt(query.value(forKey: "state") as? String, deserializeEnum),
     exact: try opt(query.value(forKey: "exact") as? NSArray, { columns in try enumList(columns) } ),
     didMethods: try opt(query.value(forKey: "didMethods") as? NSArray, deserializeIds),
     isRemote: query.value(forKey: "isRemote") as? Bool,
@@ -578,7 +596,7 @@ extension DidTypeBindingEnum: CaseIterable {
 
 extension SortableIdentifierColumnBindingEnum: CaseIterable {
   public static var allCases: [SortableIdentifierColumnBindingEnum] {
-    return [.name, .createdDate, .type, .status]
+    return [.name, .createdDate, .type, .state]
   }
 }
 
@@ -588,8 +606,8 @@ extension IdentifierTypeBindingEnum: CaseIterable {
   }
 }
 
-extension IdentifierStatusBindingEnum: CaseIterable {
-  public static var allCases: [IdentifierStatusBindingEnum] {
+extension IdentifierStateBindingEnum: CaseIterable {
+  public static var allCases: [IdentifierStateBindingEnum] {
     return [.active, .deactivated]
   }
 }
@@ -644,7 +662,7 @@ extension CredentialListQueryExactColumnBindingEnum: CaseIterable {
 
 extension HistoryEntityTypeBindingEnum: CaseIterable {
   public static var allCases: [HistoryEntityTypeBindingEnum] {
-    return [.key, .did, .identifier, .credential, .credentialSchema, .proof, .proofSchema, .organisation, .backup, .trustAnchor, .trustEntity]
+    return [.key, .did, .identifier, .certificate, .credential, .credentialSchema, .proof, .proofSchema, .organisation, .backup, .trustAnchor, .trustEntity]
   }
 }
 
@@ -677,7 +695,8 @@ extension HistoryActionBindingEnum: CaseIterable {
       .withdrawn,
       .removed,
       .retracted,
-      .updated
+      .updated,
+      .expired
     ]
   }
 }

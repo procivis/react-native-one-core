@@ -133,7 +133,8 @@ export interface ONECore {
 
   holderAcceptCredential(
     interactionId: InvitationResultCredentialIssuance["interactionId"],
-    didId: string,
+    didId: DidListItem["id"] | undefined,
+    identifierId: IdentifierListItem["id"] | undefined,
     keyId: string | undefined,
     txCode: string | undefined
   ): Promise<void>;
@@ -156,7 +157,8 @@ export interface ONECore {
       PresentationDefinitionRequestedCredential["id"],
       PresentationSubmitCredentialRequest
     >,
-    didId: string,
+    didId: DidListItem["id"] | undefined,
+    identifierId: IdentifierListItem["id"] | undefined,
     keyId: string | undefined
   ): Promise<void>;
 
