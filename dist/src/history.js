@@ -23,12 +23,14 @@ export var HistoryActionEnum;
     HistoryActionEnum["UPDATED"] = "UPDATED";
     HistoryActionEnum["REACTIVATED"] = "REACTIVATED";
     HistoryActionEnum["CSR_GENERATED"] = "CSR_GENERATED";
+    HistoryActionEnum["EXPIRED"] = "EXPIRED";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
     HistoryEntityTypeEnum["KEY"] = "KEY";
     HistoryEntityTypeEnum["DID"] = "DID";
     HistoryEntityTypeEnum["IDENTIFIER"] = "IDENTIFIER";
+    HistoryEntityTypeEnum["CERTIFICATE"] = "CERTIFICATE";
     HistoryEntityTypeEnum["CREDENTIAL"] = "CREDENTIAL";
     HistoryEntityTypeEnum["CREDENTIAL_SCHEMA"] = "CREDENTIAL_SCHEMA";
     HistoryEntityTypeEnum["PROOF"] = "PROOF";

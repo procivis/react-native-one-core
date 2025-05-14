@@ -549,7 +549,7 @@ func serialize(identifierListItem: GetIdentifierListItemBindingDto) -> NSDiction
     "name": identifierListItem.name,
     "type": serializeEnumValue(value: identifierListItem.type),
     "isRemote": identifierListItem.isRemote,
-    "status": serializeEnumValue(value: identifierListItem.status),
+    "state": serializeEnumValue(value: identifierListItem.state),
   ]
 }
 
