@@ -167,16 +167,17 @@ class ProcivisOneCoreModule: RCTEventEmitter {
       }
     }
 
-  @objc(holderAcceptCredential:didId:keyId:txCode:resolver:rejecter:)
+  @objc(holderAcceptCredential:didId:identifierId:keyId:txCode:resolver:rejecter:)
   func holderAcceptCredential(
     interactionId: String,
-    didId: String,
+    didId: String?,
+    identifierId: String?,
     keyId: String?,
     txCode: String?,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock) {
       asyncCall(resolve, reject) {
-        try await self.getCore().holderAcceptCredential(interactionId: interactionId, didId: didId, keyId: keyId, txCode: txCode);
+        try await self.getCore().holderAcceptCredential(interactionId: interactionId, didId: didId, identifierId: identifierId, keyId: keyId, txCode: txCode);
         return nil as NSDictionary?;
       }
     }
@@ -214,11 +215,12 @@ class ProcivisOneCoreModule: RCTEventEmitter {
       }
     }
 
-  @objc(holderSubmitProof:credentials:didId:keyId:resolver:rejecter:)
+  @objc(holderSubmitProof:credentials:didId:identifierId:keyId:resolver:rejecter:)
   func submitProof(
     interactionId: String,
     credentials: NSDictionary,
-    didId: String,
+    didId: String?,
+    identifierId: String?,
     keyId: String?,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock) {
@@ -230,7 +232,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           submitCredentials[key] = try deserializePresentationSubmitCredentialRequest(entry)
         }
 
-        try await self.getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials, didId: didId, keyId: keyId);
+        try await self.getCore().holderSubmitProof(interactionId: interactionId, submitCredentials: submitCredentials, didId: didId, identifierId:identifierId, keyId: keyId);
         return nil as NSDictionary?;
       }
     }
@@ -847,7 +849,7 @@ extension ProcivisOneCoreModule {
   override func stopObserving() {
     ProcivisOneCoreEventEmitter.hasListeners = false
   }
-
+  
   override func sendEvent(withName name: String!, body: Any!) {
     guard ProcivisOneCoreEventEmitter.hasListeners else {
       return

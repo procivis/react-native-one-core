@@ -1,8 +1,8 @@
-export var IdentifierStatusEnum;
-(function (IdentifierStatusEnum) {
-    IdentifierStatusEnum["ACTIVE"] = "ACTIVE";
-    IdentifierStatusEnum["DEACTIVATED"] = "DEACTIVATED";
-})(IdentifierStatusEnum || (IdentifierStatusEnum = {}));
+export var IdentifierStateEnum;
+(function (IdentifierStateEnum) {
+    IdentifierStateEnum["ACTIVE"] = "ACTIVE";
+    IdentifierStateEnum["DEACTIVATED"] = "DEACTIVATED";
+})(IdentifierStateEnum || (IdentifierStateEnum = {}));
 export var IdentifierTypeEnum;
 (function (IdentifierTypeEnum) {
     IdentifierTypeEnum["KEY"] = "KEY";
@@ -14,7 +14,7 @@ export var SortableIdentifierColumnEnum;
     SortableIdentifierColumnEnum["NAME"] = "NAME";
     SortableIdentifierColumnEnum["CREATED_DATE"] = "CREATED_DATE";
     SortableIdentifierColumnEnum["TYPE"] = "TYPE";
-    SortableIdentifierColumnEnum["STATUS"] = "STATUS";
+    SortableIdentifierColumnEnum["STATE"] = "STATE";
 })(SortableIdentifierColumnEnum || (SortableIdentifierColumnEnum = {}));
 export var ExactIdentifierFilterColumnEnum;
 (function (ExactIdentifierFilterColumnEnum) {
