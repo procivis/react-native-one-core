@@ -102,7 +102,7 @@ func deserializeIdentifierRequest(identifierRequest: NSDictionary) throws -> Cre
 }
 
 func deserializeIdentifierDidRequest(identifierDidRequest: NSDictionary) throws -> CreateIdentifierDidRequestBindingDto {
-  let name: String = try safeCast(identifierDidRequest.value(forKey: "name"));
+  let name = identifierDidRequest.value(forKey: "name") as? String;
   let method: String = try safeCast(identifierDidRequest.value(forKey: "method"));
   let keys = try deserializeDidRequestKeys(didRequestKeys: try safeCast(identifierDidRequest.value(forKey: "keys")));
 
