@@ -43,7 +43,7 @@ object Serialize {
         } else if (type == Int::class.java || type == java.lang.Integer::class.java) {
             return Pair(RNType.INT, input as Int)
         } else if (type == Byte::class.java || type == java.lang.Byte::class.java) {
-            return Pair(RNType.INT, (input as Byte).toInt())
+            return Pair(RNType.INT, (input as Byte).toUByte().toInt())
         } else if (type == Short::class.java || type == java.lang.Short::class.java) {
             return Pair(RNType.INT, (input as Short).toInt())
         } else if (type == Long::class.java || type == java.lang.Long::class.java) {
@@ -56,6 +56,8 @@ object Serialize {
             return Pair(RNType.STRING, (input as Char).toString())
         } else if (SerializeSpecific.Str.isCustomConversionType(input)) {
             return Pair(RNType.STRING, SerializeSpecific.Str.convertCustom(input))
+        } else if (SerializeSpecific.Arr.isCustomConversionType(input)) {
+            return Pair(RNType.ARRAY, SerializeSpecific.Arr.convertCustom(input))
         } else {
             return Pair(RNType.MAP, input)
         }
