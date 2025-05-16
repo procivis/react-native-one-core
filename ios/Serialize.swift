@@ -247,6 +247,111 @@ func serialize(credentialList: CredentialListBindingDto) -> NSDictionary {
   ]
 }
 
+func serialize(identifierDetail: GetIdentifierBindingDto) -> NSDictionary {
+  var result: [String: Any] = [
+    "id": identifierDetail.id,
+    "createdDate": identifierDetail.createdDate,
+    "lastModified": identifierDetail.lastModified,
+    "name": identifierDetail.name,
+    "type": serializeEnumValue(value: identifierDetail.type),
+    "isRemote": identifierDetail.isRemote,
+    "state": serializeEnumValue(value: identifierDetail.state),
+  ];
+    
+  result.addOpt("organisationId", identifierDetail.organisationId);
+  result.addOpt("did", opt(identifierDetail.did, {did in serialize(identifierDidDetail: did)}));
+  result.addOpt("key", opt(identifierDetail.key, {key in serialize(identifierKeyDetail: key)}));
+  result.addOpt("certificates", opt(identifierDetail.certificates, {certificates in certificates.map {serialize(certificate: $0)}}));
+  return result as NSDictionary
+}
+
+func serialize(identifierDidDetail: DidResponseBindingDto) -> NSDictionary {
+  var result: [String: Any] = [
+    "id": identifierDidDetail.id,
+    "createdDate": identifierDidDetail.createdDate,
+    "lastModified": identifierDidDetail.lastModified,
+    "name": identifierDidDetail.name,
+    "did": identifierDidDetail.did,
+    "didType": serializeEnumValue(value: identifierDidDetail.didType),
+    "didMethod": identifierDidDetail.didMethod,
+    "keys": serialize(didResponseKeys: identifierDidDetail.keys),
+    "deactivated": identifierDidDetail.deactivated
+  ];
+    
+  result.addOpt("organisationId", identifierDidDetail.organisationId);
+  return result as NSDictionary
+}
+
+func serialize(didResponseKeys: DidResponseKeysBindingDto) -> NSDictionary {
+  return [
+    "authentication": didResponseKeys.authentication.map { serialize(didResponseKeyListItem: $0)},
+    "assertionMethod": didResponseKeys.assertionMethod.map { serialize(didResponseKeyListItem: $0)},
+    "keyAgreement": didResponseKeys.keyAgreement.map { serialize(didResponseKeyListItem: $0)},
+    "capabilityInvocation": didResponseKeys.capabilityInvocation.map { serialize(didResponseKeyListItem: $0)},
+    "capabilityDelegation": didResponseKeys.capabilityDelegation.map { serialize(didResponseKeyListItem: $0)}
+  ]
+}
+
+func serialize(identifierKeyDetail: KeyResponseBindingDto) -> NSDictionary {
+  return [
+    "id": identifierKeyDetail.id,
+    "createdDate": identifierKeyDetail.createdDate,
+    "lastModified": identifierKeyDetail.lastModified,
+    "organisationId": identifierKeyDetail.organisationId,
+    "name": identifierKeyDetail.name,
+    "publicKey": identifierKeyDetail.publicKey,
+    "keyType": identifierKeyDetail.keyType,
+    "storageType": identifierKeyDetail.storageType
+  ];
+}
+
+func serialize(certificate: CertificateResponseBindingDto) -> NSDictionary {
+    var result: [String: Any] = [
+    "id": certificate.id,
+    "createdDate": certificate.createdDate,
+    "lastModified": certificate.lastModified,
+    "state": serializeEnumValue(value: certificate.state),
+    "name": certificate.name,
+    "chain": certificate.chain,
+    "x509Attributes": serialize(x509Attributes: certificate.x509Attributes)
+  ];
+  
+  result.addOpt("key", opt(certificate.key, {key in serialize(didResponseKeyListItem: key)}));
+  return result as NSDictionary
+}
+
+func serialize(x509Attributes: CertificateX509AttributesBindingDto) -> NSDictionary {
+  return [
+    "serialNumber": x509Attributes.serialNumber,
+    "notBefore": x509Attributes.notBefore,
+    "notAfter": x509Attributes.notAfter,
+    "issuer": x509Attributes.issuer,
+    "subject": x509Attributes.subject,
+    "fingerprint": x509Attributes.fingerprint,
+    "extensions": x509Attributes.extensions.map { serialize(x509CertificateExtension: $0) }
+    ]
+}
+
+func serialize(x509CertificateExtension: CertificateX509ExtensionBindingDto) -> NSDictionary {
+  return [
+    "oid": x509CertificateExtension.oid,
+    "value": x509CertificateExtension.value,
+    "critical": x509CertificateExtension.critical
+  ]
+}
+
+func serialize(didResponseKeyListItem: KeyListItemResponseBindingDto) -> NSDictionary {
+  return [
+    "id": didResponseKeyListItem.id,
+    "createdDate": didResponseKeyListItem.createdDate,
+    "lastModified": didResponseKeyListItem.lastModified,
+    "name": didResponseKeyListItem.name,
+    "publicKey": didResponseKeyListItem.publicKey,
+    "keyType": didResponseKeyListItem.keyType,
+    "storageType": didResponseKeyListItem.storageType
+  ]
+}
+
 func serialize(didList: DidListBindingDto) -> NSDictionary {
   return [
     "totalItems": didList.totalItems,

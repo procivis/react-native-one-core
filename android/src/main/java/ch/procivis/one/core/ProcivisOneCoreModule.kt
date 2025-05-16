@@ -169,6 +169,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getIdentifier(identifierId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val identifier = getCore().getIdentifier(identifierId)
+            return@asyncCall convertToRN(identifier)
+        }
+    }
+
+    @ReactMethod
     fun deleteIdentifier(identifierId: String, promise: Promise) {
         asyncCall(promise, scope) {
             getCore().deleteIdentifier(identifierId)
