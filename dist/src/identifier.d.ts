@@ -1,4 +1,4 @@
-import { DidRequestKeys, KeyRoleEnum } from "./did";
+import { DidRequestKeys, DidTypeEnum, KeyRoleEnum } from "./did";
 import { KeyListItem } from "./key";
 import { ListQuery, SortDirection } from "./list";
 export declare enum IdentifierStateEnum {
@@ -27,6 +27,77 @@ export interface CreateIdentifierCertificateRequest {
     name?: string;
     chain: string;
     keyId: string;
+}
+export interface IdentifierDetail {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    organisationId: string;
+    type: IdentifierTypeEnum;
+    isRemote: boolean;
+    state: IdentifierStateEnum;
+    did?: IdentifierDidDetail;
+    key?: IdentifierKeyDetail;
+    certificates?: IdentifierCertificateDetail[];
+}
+export interface IdentifierDidDetail {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    organisationId: string;
+    did: string;
+    didType: DidTypeEnum;
+    didMethod: string;
+    keys: {
+        authentication: KeyListItem[];
+        assertionMethod: KeyListItem[];
+        keyAgreement: KeyListItem[];
+        capabilityInvocation: KeyListItem[];
+        capabilityDelegation: KeyListItem[];
+    };
+    deactivated: boolean;
+}
+export interface IdentifierKeyDetail {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    organisationId: string;
+    name: string;
+    publicKey: number[];
+    keyType: string;
+    storageType: string;
+}
+export interface IdentifierCertificateDetail {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    state: CertificateStateEnum;
+    name: string;
+    chain: string;
+    key: KeyListItem;
+    x509Attributes: X509Attributes;
+}
+export declare enum CertificateStateEnum {
+    NOT_YET_ACTIVE = "NOT_YET_ACTIVE",
+    ACTIVE = "ACTIVE",
+    REVOKED = "REVOKED",
+    EXPIRED = "EXPIRED"
+}
+export interface X509Attributes {
+    serialNumber: string;
+    notBefore: string;
+    notAfter: string;
+    issuer: string;
+    subject: string;
+    fingerprint: string;
+    extensions: X509Extension[];
+}
+export interface X509Extension {
+    oid: string;
+    value: string;
+    critical: boolean;
 }
 export interface IdentifierListItem {
     id: string;
