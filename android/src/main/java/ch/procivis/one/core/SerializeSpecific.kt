@@ -130,4 +130,17 @@ object SerializeSpecific {
             }
         }
     }
+
+    object Arr {
+        fun isCustomConversionType(input: Any?): Boolean {
+            return ByteArray::class.isInstance(input)
+        }
+
+        fun convertCustom(input: Any): List<*> {
+            if (input is ByteArray) {
+                return input.toList()
+            }
+            throw IllegalArgumentException("Invalid array conversion: $input")
+        }
+    }
 }
