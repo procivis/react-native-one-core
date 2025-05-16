@@ -1,6 +1,6 @@
 {
   "name": "@procivis/react-native-one-core",
-  "version": "1.42576.2",
+  "version": "1.42873.0",
   "author": "Procivis AG (https://procivis.ch)",
   "license": "Apache-2.0",
   "description": "ONE core bindings for React Native",
@@ -31,10 +31,10 @@
   "devDependencies": {
     "@babel/core": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
-    "react-native": "0.72.17",
     "babel-jest": "^29.5.0",
     "husky": "^7.0.4",
     "jest": "^29.5.0",
+    "react-native": "0.72.17",
     "typescript": "^5.1.6"
   },
   "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
