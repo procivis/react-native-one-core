@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -49,6 +49,10 @@
 		33F2711A292F97400090E4DB /* ProcivisOneCoreModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcivisOneCoreModule.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		33CF268B2CB97A5700E95B65 /* RNEncoder */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RNEncoder; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		58B511D81A9E6C8500147676 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -79,6 +83,7 @@
 				15260DEB2D561D7F00797D80 /* RSEPinPadManager.m */,
 				15260DE92D561D6900797D80 /* RSEKeyStorage.swift */,
 				15260DE72D561D4300797D80 /* UBQKit.xcframework */,
+				33CF268B2CB97A5700E95B65 /* RNEncoder */,
 				33F27119292F97400090E4DB /* ProcivisOneCoreModule.m */,
 				339DE1312A4EB16300F68DE2 /* ProcivisOneCore.xcframework */,
 				33F2711A292F97400090E4DB /* ProcivisOneCoreModule.swift */,
@@ -104,6 +109,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				33CF268B2CB97A5700E95B65 /* RNEncoder */,
 			);
 			name = ProcivisRNOneCore;
 			productName = RCTDataManager;
