@@ -142,6 +142,17 @@ class ProcivisOneCoreModule: RCTEventEmitter {
       }
     }
 
+  @objc(getIdentifier:resolver:rejecter:)
+  func getIdentifier(
+    identifierId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock) {
+      asyncCall(resolve, reject) {
+        let result = try await self.getCore().getIdentifier(id: identifierId);
+        return serialize(identifierDetail: result)
+      }
+    }
+
   @objc(deleteIdentifier:resolver:rejecter:)
   func deleteIdentifier(
     identifierId: String,

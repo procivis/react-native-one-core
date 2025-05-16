@@ -21,6 +21,7 @@ export const interfaceMethodNames = [
     "createDid",
     "getDids",
     "createIdentifier",
+    "getIdentifier",
     "getIdentifiers",
     "deleteIdentifier",
     "handleInvitation",

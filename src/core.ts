@@ -66,6 +66,7 @@ import {
 } from "./organisation";
 import {
   CreateIdentifierRequest,
+  IdentifierDetail,
   IdentifierListItem,
   IdentifierListQuery,
 } from "./identifier";
@@ -122,6 +123,8 @@ export interface ONECore {
   getIdentifiers(
     query: IdentifierListQuery
   ): Promise<ItemList<IdentifierListItem>>;
+
+  getIdentifier(identifierId: IdentifierListItem["id"]): Promise<IdentifierDetail>;
 
   deleteIdentifier(identifierId: IdentifierListItem["id"]): Promise<void>;
 
@@ -337,6 +340,7 @@ export const interfaceMethodNames = [
   "createDid",
   "getDids",
   "createIdentifier",
+  "getIdentifier",
   "getIdentifiers",
   "deleteIdentifier",
   "handleInvitation",

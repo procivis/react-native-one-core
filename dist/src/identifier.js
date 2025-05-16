@@ -9,6 +9,13 @@ export var IdentifierTypeEnum;
     IdentifierTypeEnum["DID"] = "DID";
     IdentifierTypeEnum["CERTIFICATE"] = "CERTIFICATE";
 })(IdentifierTypeEnum || (IdentifierTypeEnum = {}));
+export var CertificateStateEnum;
+(function (CertificateStateEnum) {
+    CertificateStateEnum["NOT_YET_ACTIVE"] = "NOT_YET_ACTIVE";
+    CertificateStateEnum["ACTIVE"] = "ACTIVE";
+    CertificateStateEnum["REVOKED"] = "REVOKED";
+    CertificateStateEnum["EXPIRED"] = "EXPIRED";
+})(CertificateStateEnum || (CertificateStateEnum = {}));
 export var SortableIdentifierColumnEnum;
 (function (SortableIdentifierColumnEnum) {
     SortableIdentifierColumnEnum["NAME"] = "NAME";
