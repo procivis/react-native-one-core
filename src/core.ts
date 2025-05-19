@@ -77,6 +77,7 @@ export * from "./config";
 export * from "./credential";
 export * from "./credentialSchema";
 export * from "./did";
+export * from "./identifier";
 export * from "./history";
 export * from "./key";
 export * from "./list";
