@@ -51,7 +51,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
       }
 
       if RSEKeyStorage.available {
-        rseKeyStorage = RSEKeyStorage()
+        if let jsonConfigData = configJson.data(using: .utf8),
+           let config = try? JSONSerialization.jsonObject(with: jsonConfigData) as? [String: Any],
+           let keyStorage = config["keyStorage"] as? [String: Any],
+           let ubiquConfig = keyStorage["UBIQU_RSE"] as? [String: Any],
+           let ubiquEnabledFlag = ubiquConfig["enabled"] as? Bool,
+           ubiquEnabledFlag == true {
+          rseKeyStorage = RSEKeyStorage()
+        }
       }
       self.core = try initializeCore(
         configJson: configJson,
