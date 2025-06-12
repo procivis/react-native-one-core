@@ -1210,7 +1210,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-one-core (1.42938.0):
+  - react-native-one-core (1.46030.0):
     - React-Core
   - React-nativeconfig (0.77.1)
   - React-NativeModulesApple (0.77.1):
@@ -1753,7 +1753,7 @@ SPEC CHECKSUMS:
   React-logger: e7eeebaed32b88dcc29b10901aa8c5822dc397c4
   React-Mapbuffer: 73dd1210c4ecf0dfb4e2d4e06f2a13f824a801a9
   React-microtasksnativemodule: d03753688e2abf135edcd4160ab3ce7526da8b0d
-  react-native-one-core: ea9449bca0a633414a83c923d42a9b607327b0b4
+  react-native-one-core: 91d4cb3d2ee2f8e157d3566e40f59a59d42bb008
   React-nativeconfig: cb207ebba7cafce30657c7ad9f1587a8f32e4564
   React-NativeModulesApple: 8411d548b1ad9d2b3e597beb9348e715c8020e0c
   React-perflogger: c4c3b7c18f8a50cdbe2bcdd2f15705ba029a5a02
