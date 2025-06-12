@@ -20,11 +20,7 @@ import {
 } from "./credentialSchema";
 import { DidListItem, DidListQuery, DidRequest } from "./did";
 import { HistoryListItem, HistoryListQuery } from "./history";
-import {
-  KeyCheckCertificateRequestBindingDto,
-  KeyListItem,
-  KeyRequest,
-} from "./key";
+import { KeyRequest } from "./key";
 import { ItemList } from "./list";
 import {
   CreateProofRequest,
@@ -125,7 +121,9 @@ export interface ONECore {
     query: IdentifierListQuery
   ): Promise<ItemList<IdentifierListItem>>;
 
-  getIdentifier(identifierId: IdentifierListItem["id"]): Promise<IdentifierDetail>;
+  getIdentifier(
+    identifierId: IdentifierListItem["id"]
+  ): Promise<IdentifierDetail>;
 
   deleteIdentifier(identifierId: IdentifierListItem["id"]): Promise<void>;
 
@@ -171,11 +169,6 @@ export interface ONECore {
   ): Promise<ItemList<CredentialListItem>>;
 
   runTask(task: string): Promise<string>;
-
-  checkCertificate(
-    keyId: KeyListItem["id"],
-    certificate: KeyCheckCertificateRequestBindingDto
-  ): Promise<void>;
 
   deleteProofClaims(proofId: ProofDetail["id"]): Promise<void>;
 
@@ -352,7 +345,6 @@ export const interfaceMethodNames = [
   "holderSubmitProof",
   "getCredentials",
   "runTask",
-  "checkCertificate",
   "deleteProofClaims",
   "getCredential",
   "deleteCredential",

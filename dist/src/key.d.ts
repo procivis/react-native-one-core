@@ -15,6 +15,3 @@ export interface KeyListItem {
     keyType: string;
     storageType: string;
 }
-export interface KeyCheckCertificateRequestBindingDto {
-    certificate: string;
-}

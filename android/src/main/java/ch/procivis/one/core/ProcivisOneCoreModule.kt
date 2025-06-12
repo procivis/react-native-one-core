@@ -93,14 +93,6 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun checkCertificate(keyId: String, certificate: ReadableMap, promise: Promise) {
-        asyncCall(promise, scope) {
-            getCore().checkCertificate(keyId, construct(certificate))
-            return@asyncCall null
-        }
-    }
-
-    @ReactMethod
     fun shareCredentialSchema(credentialSchemaId: String, promise: Promise) {
         asyncCall(promise, scope) {
             val result = getCore().shareCredentialSchema(credentialSchemaId)
