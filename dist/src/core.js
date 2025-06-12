@@ -33,7 +33,6 @@ export const interfaceMethodNames = [
     "holderSubmitProof",
     "getCredentials",
     "runTask",
-    "checkCertificate",
     "deleteProofClaims",
     "getCredential",
     "deleteCredential",
