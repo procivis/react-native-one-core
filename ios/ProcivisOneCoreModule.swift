@@ -483,22 +483,6 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(checkCertificate:certificate:resolver:rejecter:)
-  func checkCertificate(
-    keyId: String,
-    certificate: NSDictionary,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      try await self.getCore().checkCertificate(
-        keyId: keyId,
-        certificate: try deserialize(certificate)
-      )
-      return nil as NSDictionary?
-    }
-  }
-
   @objc(shareCredentialSchema:resolver:rejecter:)
   func shareCredentialSchema(
     credentialSchemaId: String,

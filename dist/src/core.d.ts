@@ -4,7 +4,7 @@ import { CredentialDetail, CredentialListItem, CredentialListQuery, CredentialRe
 import { CredentialSchema, CredentialSchemaDetail, CredentialSchemaListQuery, ImportCredentialSchemaRequest, ShareCredentialSchemaResponse } from "./credentialSchema";
 import { DidListItem, DidListQuery, DidRequest } from "./did";
 import { HistoryListItem, HistoryListQuery } from "./history";
-import { KeyCheckCertificateRequestBindingDto, KeyListItem, KeyRequest } from "./key";
+import { KeyRequest } from "./key";
 import { ItemList } from "./list";
 import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
@@ -59,7 +59,6 @@ export interface ONECore {
     holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined): Promise<void>;
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     runTask(task: string): Promise<string>;
-    checkCertificate(keyId: KeyListItem["id"], certificate: KeyCheckCertificateRequestBindingDto): Promise<void>;
     deleteProofClaims(proofId: ProofDetail["id"]): Promise<void>;
     getCredential(credentialId: CredentialListItem["id"]): Promise<CredentialDetail>;
     deleteCredential(credentialId: CredentialListItem["id"]): Promise<void>;
@@ -128,4 +127,4 @@ export interface ONECore {
      */
     uninitialize(deleteData: boolean): Promise<void>;
 }
-export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "getPresentationDefinition", "holderRejectProof", "holderSubmitProof", "getCredentials", "runTask", "checkCertificate", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "uninitialize"];
+export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "getPresentationDefinition", "holderRejectProof", "holderSubmitProof", "getCredentials", "runTask", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "uninitialize"];
