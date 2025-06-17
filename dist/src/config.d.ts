@@ -112,8 +112,12 @@ export type DataTypeParams = {
     type: DataTypeEnum.Object;
     params?: undefined;
 };
+export declare enum IssuanceProtocolFeatureEnum {
+    SupportsRejection = "SUPPORTS_REJECTION"
+}
 export interface IssuanceProtocolCapabilities {
     didMethods: string[];
+    features: IssuanceProtocolFeatureEnum[];
 }
 export interface VerificationProtocolCapabilities {
     didMethods: string[];
