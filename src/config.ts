@@ -139,7 +139,7 @@ export type DataTypeParams =
       params?: undefined;
     };
 
-export declare enum IssuanceProtocolFeatureEnum {
+export enum IssuanceProtocolFeatureEnum {
     SupportsRejection = "SUPPORTS_REJECTION",
 }
 
