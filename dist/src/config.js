@@ -42,3 +42,7 @@ export var DataTypeEnum;
     DataTypeEnum["Boolean"] = "BOOLEAN";
     DataTypeEnum["Object"] = "OBJECT";
 })(DataTypeEnum || (DataTypeEnum = {}));
+export var IssuanceProtocolFeatureEnum;
+(function (IssuanceProtocolFeatureEnum) {
+    IssuanceProtocolFeatureEnum["SupportsRejection"] = "SUPPORTS_REJECTION";
+})(IssuanceProtocolFeatureEnum || (IssuanceProtocolFeatureEnum = {}));
