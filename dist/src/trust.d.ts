@@ -1,6 +1,7 @@
 import { ListQuery, SortDirection } from "./list";
 import { DidListItem } from "./did";
 import { CertificateStateEnum, IdentifierListItem, X509Attributes } from "./identifier";
+import { UpsertOrganisationRequest } from "./organisation";
 export type CreateTrustAnchorRequest = {
     name: string;
     type: string;
@@ -92,7 +93,11 @@ export interface CreateTrustEntityRequest {
     privacyUrl?: string;
     role: TrustEntityRoleEnum;
     trustAnchorId: TrustAnchor["id"];
-    didId: DidListItem["id"];
+    didId?: DidListItem["id"];
+    type: TrustEntityTypeEnum;
+    identifierId?: IdentifierListItem["id"];
+    content?: string;
+    organisationId: UpsertOrganisationRequest["id"];
 }
 export interface TrustEntityListQuery {
     sort?: SortableTrustEntityColumnEnum;
@@ -109,8 +114,15 @@ export declare enum SortableTrustEntityColumnEnum {
 export declare enum ExactTrustEntityFilterColumnEnum {
     NAME = "NAME"
 }
-export interface CreateRemoteTrustEntityRequest extends Omit<CreateTrustEntityRequest, "trustAnchorId"> {
+export interface CreateRemoteTrustEntityRequest {
+    name: string;
+    logo?: string;
+    website?: string;
+    termsUrl?: string;
+    privacyUrl?: string;
+    role: TrustEntityRoleEnum;
     trustAnchorId?: TrustAnchor["id"];
+    didId: DidListItem["id"];
 }
 export interface UpdateRemoteTrustEntityRequest {
     didId: DidListItem["id"];
@@ -121,6 +133,7 @@ export interface UpdateRemoteTrustEntityRequest {
     termsUrl?: string | null;
     privacyUrl?: string | null;
     role?: TrustEntityRoleEnum;
+    content?: string;
 }
 export declare enum TrustEntityUpdateActionEnum {
     ACTIVATE = "ACTIVATE",
