@@ -1,3 +1,4 @@
+import { TrustEntityTypeEnum } from "./trust";
 export declare enum KeyAlgorithmFeatureEnum {
     GENERATE_CSR = "GENERATE_CSR"
 }
@@ -123,6 +124,14 @@ export interface VerificationProtocolCapabilities {
     didMethods: string[];
     supportedTransports: string[];
 }
+export declare enum TrustOperation {
+    Publish = "PUBLISH",
+    Lookup = "LOOKUP"
+}
+export interface TrustCapabilities {
+    operations: TrustOperation[];
+    supportedTypes: TrustEntityTypeEnum[];
+}
 export interface Config {
     format: ConfigEntities<FormatCapabilities>;
     issuanceProtocol: ConfigEntities<IssuanceProtocolCapabilities>;
@@ -133,7 +142,7 @@ export interface Config {
     datatype: ConfigEntities<undefined, DataTypeParams>;
     keyAlgorithm: ConfigEntities<KeyAlgorithmCapabilities, {}>;
     keyStorage: ConfigEntities<KeyStorageCapabilities>;
-    trustManagement: ConfigEntities;
+    trustManagement: ConfigEntities<TrustCapabilities>;
     cacheEntities: ConfigEntities;
 }
 export {};

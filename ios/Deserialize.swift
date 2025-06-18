@@ -133,7 +133,7 @@ private func deserializeHistoryListQuery(_ query: NSDictionary) throws -> Histor
     organisationId: try safeCast(query.value(forKey: "organisationId")),
     entityId: query.value(forKey: "entityId") as? String,
     entityTypes: try opt(query.value(forKey: "entityTypes") as? NSArray, enumList),
-    action: try opt(query.value(forKey: "action") as? String, deserializeEnum),
+    actions: try opt(query.value(forKey: "actions") as? NSArray, enumList),
     createdDateFrom: query.value(forKey: "createdDateFrom") as? String,
     createdDateTo: query.value(forKey: "createdDateTo") as? String,
     identifierId: query.value(forKey: "identifierId") as? String,
