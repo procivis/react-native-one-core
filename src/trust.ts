@@ -5,6 +5,7 @@ import {
   IdentifierListItem,
   X509Attributes,
 } from "./identifier";
+import {CreateOrganisationRequest, UpsertOrganisationRequest} from "./organisation";
 
 export type CreateTrustAnchorRequest = {
   name: string;
@@ -114,7 +115,11 @@ export interface CreateTrustEntityRequest {
   privacyUrl?: string;
   role: TrustEntityRoleEnum;
   trustAnchorId: TrustAnchor["id"];
-  didId: DidListItem["id"];
+  didId?: DidListItem["id"];
+  type: TrustEntityTypeEnum;
+  identifierId?: IdentifierListItem["id"];
+  content?: string;
+  organisationId: UpsertOrganisationRequest["id"],
 }
 
 export interface TrustEntityListQuery {
@@ -135,9 +140,15 @@ export enum ExactTrustEntityFilterColumnEnum {
   NAME = "NAME",
 }
 
-export interface CreateRemoteTrustEntityRequest
-  extends Omit<CreateTrustEntityRequest, "trustAnchorId"> {
+export interface CreateRemoteTrustEntityRequest {
+  name: string;
+  logo?: string;
+  website?: string;
+  termsUrl?: string;
+  privacyUrl?: string;
+  role: TrustEntityRoleEnum;
   trustAnchorId?: TrustAnchor["id"];
+  didId: DidListItem["id"];
 }
 
 export interface UpdateRemoteTrustEntityRequest {
@@ -149,6 +160,7 @@ export interface UpdateRemoteTrustEntityRequest {
   termsUrl?: string | null;
   privacyUrl?: string | null;
   role?: TrustEntityRoleEnum;
+  content?: string;
 }
 
 export enum TrustEntityUpdateActionEnum {
