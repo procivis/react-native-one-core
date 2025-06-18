@@ -46,3 +46,8 @@ export var IssuanceProtocolFeatureEnum;
 (function (IssuanceProtocolFeatureEnum) {
     IssuanceProtocolFeatureEnum["SupportsRejection"] = "SUPPORTS_REJECTION";
 })(IssuanceProtocolFeatureEnum || (IssuanceProtocolFeatureEnum = {}));
+export var TrustOperation;
+(function (TrustOperation) {
+    TrustOperation["Publish"] = "PUBLISH";
+    TrustOperation["Lookup"] = "LOOKUP";
+})(TrustOperation || (TrustOperation = {}));

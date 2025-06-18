@@ -1,5 +1,6 @@
 import { ListQuery, SortDirection } from "./list";
 import { DidListItem } from "./did";
+import { CertificateStateEnum, IdentifierListItem, X509Attributes } from "./identifier";
 export type CreateTrustAnchorRequest = {
     name: string;
     type: string;
@@ -50,11 +51,23 @@ export interface TrustEntityListItem {
     privacyUrl?: string;
     role: TrustEntityRoleEnum;
     state: TrustEntityStateEnum;
-    did: DidListItem;
+    did?: DidListItem;
     trustAnchor: TrustAnchor;
 }
-export interface TrustEntity extends TrustEntityListItem {
+export interface RemoteTrustEntity extends TrustEntityListItem {
     organisationId?: string;
+}
+export interface TrustEntity extends RemoteTrustEntity {
+    entityKey: string;
+    type: TrustEntityTypeEnum;
+    identifier?: IdentifierListItem;
+    content?: string;
+    ca?: TrustEntityCertificate;
+}
+export interface TrustEntityCertificate extends X509Attributes {
+    state: CertificateStateEnum;
+    publicKey: string;
+    commonName?: string;
 }
 export declare enum TrustEntityRoleEnum {
     ISSUER = "ISSUER",
@@ -66,6 +79,10 @@ export declare enum TrustEntityStateEnum {
     REMOVED = "REMOVED",
     WITHDRAWN = "WITHDRAWN",
     REMOVED_AND_WITHDRAWN = "REMOVED_AND_WITHDRAWN"
+}
+export declare enum TrustEntityTypeEnum {
+    Did = "DID",
+    CertificateAuthority = "CA"
 }
 export interface CreateTrustEntityRequest {
     name: string;

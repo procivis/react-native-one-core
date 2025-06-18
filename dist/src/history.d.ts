@@ -52,7 +52,7 @@ export declare enum HistorySearchTypeEnum {
 }
 export interface HistoryListQuery extends ListQuery {
     entityId?: string;
-    action?: HistoryActionEnum;
+    actions?: HistoryActionEnum[];
     entityTypes?: HistoryEntityTypeEnum[];
     /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
     createdDateFrom?: string;

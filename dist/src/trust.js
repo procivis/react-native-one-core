@@ -22,6 +22,11 @@ export var TrustEntityStateEnum;
     TrustEntityStateEnum["WITHDRAWN"] = "WITHDRAWN";
     TrustEntityStateEnum["REMOVED_AND_WITHDRAWN"] = "REMOVED_AND_WITHDRAWN";
 })(TrustEntityStateEnum || (TrustEntityStateEnum = {}));
+export var TrustEntityTypeEnum;
+(function (TrustEntityTypeEnum) {
+    TrustEntityTypeEnum["Did"] = "DID";
+    TrustEntityTypeEnum["CertificateAuthority"] = "CA";
+})(TrustEntityTypeEnum || (TrustEntityTypeEnum = {}));
 export var SortableTrustEntityColumnEnum;
 (function (SortableTrustEntityColumnEnum) {
     SortableTrustEntityColumnEnum["NAME"] = "NAME";
