@@ -57,7 +57,9 @@ object DeserializeSpecific {
             pageSize = query.getUInt("pageSize")!!,
             organisationId = query.getString("organisationId").toString(),
             entityId = query.getString("entityId"),
-            action = opt(query.getString("action"), HistoryActionBindingEnum::valueOf),
+            actions = opt(query.getArray("actions")) { types ->
+                enumList(types, HistoryActionBindingEnum::valueOf)
+            },
             entityTypes = opt(query.getArray("entityTypes")) { types ->
                 enumList(types, HistoryEntityTypeBindingEnum::valueOf)
             },

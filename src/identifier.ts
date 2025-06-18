@@ -33,15 +33,19 @@ export interface CreateIdentifierCertificateRequest {
   chain: string;
   keyId: string;
 }
-export interface IdentifierDetail {
+
+export interface IdentifierListItem {
   id: string;
   createdDate: string;
   lastModified: string;
   name: string;
-  organisationId: string;
   type: IdentifierTypeEnum;
   isRemote: boolean;
   state: IdentifierStateEnum;
+  organisationId?: string;
+}
+
+export interface IdentifierDetail extends IdentifierListItem {
   did?: IdentifierDidDetail;
   key?: IdentifierKeyDetail;
   certificates?: IdentifierCertificateDetail[];
@@ -109,16 +113,6 @@ export interface X509Extension {
   oid: string;
   value: string;
   critical: boolean;
-}
-
-export interface IdentifierListItem {
-  id: string;
-  createdDate: string;
-  lastModified: string;
-  name: string;
-  type: IdentifierTypeEnum;
-  isRemote: boolean;
-  state: IdentifierStateEnum;
 }
 
 export enum SortableIdentifierColumnEnum {
