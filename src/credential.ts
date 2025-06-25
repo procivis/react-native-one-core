@@ -64,7 +64,7 @@ export interface CredentialListItem {
   schema: CredentialSchema;
   role: CredentialRoleEnum;
   suspendEndDate?: string;
-  exchange: string;
+  protocol: string;
 }
 
 export interface CredentialDetail
