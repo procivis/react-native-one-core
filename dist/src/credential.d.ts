@@ -54,7 +54,7 @@ export interface CredentialListItem {
     schema: CredentialSchema;
     role: CredentialRoleEnum;
     suspendEndDate?: string;
-    exchange: string;
+    protocol: string;
 }
 export interface CredentialDetail extends Omit<CredentialListItem, "issuerDid" | "issuer"> {
     claims: Claim[];
