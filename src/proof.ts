@@ -44,7 +44,7 @@ export interface ProofDetail {
   verifier?: IdentifierListItem;
   holderDid?: DidListItem;
   holder?: IdentifierListItem;
-  exchange: string;
+  protocol: string;
   transport: string;
   redirectUri?: string;
   retainUntilDate?: string;
@@ -62,7 +62,7 @@ export interface ProofListItem {
   completedDate?: string;
   verifierDid?: DidListItem["id"];
   verifier?: IdentifierListItem["id"];
-  exchange: string;
+  protocol: string;
   transport: string;
   state: ProofStateEnum;
   role: ProofRoleEnum;
@@ -74,7 +74,7 @@ export interface CreateProofRequest {
   proofSchemaId: ProofSchemaListItem["id"];
   verifierDidId?: DidListItem["id"];
   verifierIdentifierId?: IdentifierListItem["id"];
-  exchange: string;
+  protocol: string;
   redirectUri?: string;
   verifierKey?: string;
   scanToVerify?: ScanToVerifyRequest;
