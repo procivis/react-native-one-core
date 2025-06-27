@@ -1,0 +1,14 @@
+{
+    "disableSources": true,
+    "entryPoints": ["src/core.ts"],
+    "exclude": ["src/ubiqu.ts"],
+    "fileExtension": ".mdx",
+    "hidePageHeader": false,
+    "hideBreadcrumbs": false,
+    "hidePageTitle": false,
+    "interfacePropertiesFormat": "list",
+    "plugin": ["typedoc-plugin-markdown"],
+    "readme": "none",
+    "router": "member",
+    "useCodeBlocks": false,
+}

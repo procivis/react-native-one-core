@@ -28,6 +28,7 @@ build/
 ios/ProcivisOneCoreFFI.xcframework
 ios/ProcivisOneCore.xcframework
 android/libs/onecore-*
+docs/
 
 # keep dist
 !dist
