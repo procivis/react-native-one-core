@@ -710,6 +710,18 @@ class ProcivisOneCoreModule: RCTEventEmitter {
       return try serializeAny(trustEntity)
     }
   }
+    
+  @objc(resolveTrustEntityByIdentifier:resolver:rejecter:)
+  func resolveTrustEntityByIdentifier(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let trustEntities = try await self.getCore().resolveTrustEntityByIdentifier(request: try deserialize(request))
+      return try serializeAny(trustEntities)
+    }
+  }
 
   @objc(createRemoteTrustEntity:resolver:rejecter:)
   func createRemoteTrustEntity(
