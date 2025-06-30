@@ -95,10 +95,11 @@ private func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto)
 
 private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) throws -> NSDictionary {
     switch (invitationResponse) {
-    case let .credentialIssuance(interactionId, credentialIds, txCode):
+    case let .credentialIssuance(interactionId, credentialIds, txCode, credentialConfigurationsSupported):
         var result: [String: Any] = [
             "interactionId": interactionId,
-            "credentialIds": credentialIds
+            "credentialIds": credentialIds,
+            "credentialConfigurationsSupported": try serializeAny(credentialConfigurationsSupported)
         ];
         if let txCode = txCode {
             result["txCode"] = try serializeAny(txCode)

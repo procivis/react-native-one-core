@@ -62,6 +62,7 @@ export const interfaceMethodNames = [
     "getTrustEntity",
     "getTrustEntities",
     "getTrustEntityByDid",
+    "resolveTrustEntityByIdentifier",
     "createRemoteTrustEntity",
     "getRemoteTrustEntity",
     "updateRemoteTrustEntity",
