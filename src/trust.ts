@@ -1,7 +1,7 @@
 import { ListQuery, SortDirection } from "./list";
 import { DidListItem } from "./did";
 import {
-  CertificateStateEnum,
+  CertificateStateEnum, IdentifierCertificateDetail,
   IdentifierListItem,
   X509Attributes,
 } from "./identifier";
@@ -167,4 +167,8 @@ export enum TrustEntityUpdateActionEnum {
   ACTIVATE = "ACTIVATE",
   WITHDRAW = "WITHDRAW",
   REMOVE = "REMOVE",
+}
+
+export interface ResolveTrustEntityByIdentifierRequest {
+  identifiers: { id: IdentifierListItem["id"]; certificateId?: IdentifierCertificateDetail["id"]}[]
 }
