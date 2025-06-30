@@ -1,6 +1,6 @@
 import { ListQuery, SortDirection } from "./list";
 import { DidListItem } from "./did";
-import { CertificateStateEnum, IdentifierListItem, X509Attributes } from "./identifier";
+import { CertificateStateEnum, IdentifierCertificateDetail, IdentifierListItem, X509Attributes } from "./identifier";
 import { UpsertOrganisationRequest } from "./organisation";
 export type CreateTrustAnchorRequest = {
     name: string;
@@ -139,4 +139,10 @@ export declare enum TrustEntityUpdateActionEnum {
     ACTIVATE = "ACTIVATE",
     WITHDRAW = "WITHDRAW",
     REMOVE = "REMOVE"
+}
+export interface ResolveTrustEntityByIdentifierRequest {
+    identifiers: {
+        id: IdentifierListItem["id"];
+        certificateId?: IdentifierCertificateDetail["id"];
+    }[];
 }
