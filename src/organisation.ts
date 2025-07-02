@@ -5,6 +5,6 @@ export interface CreateOrganisationRequest {
 
 export interface UpsertOrganisationRequest {
   id: string;
-  name: string;
+  name?: string;
   deactivate?: boolean;
 }
