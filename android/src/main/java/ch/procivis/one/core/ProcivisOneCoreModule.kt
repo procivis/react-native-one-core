@@ -483,7 +483,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getTrustEntityByIdentifier(request: ReadableMap, promise: Promise) {
+    fun resolveTrustEntityByIdentifier(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             val trustEntities = getCore().resolveTrustEntityByIdentifier(construct(request))
             return@asyncCall convertToRN(trustEntities)
