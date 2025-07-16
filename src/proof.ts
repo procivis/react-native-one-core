@@ -40,9 +40,7 @@ export interface ProofDetail {
   state: ProofStateEnum;
   role: ProofRoleEnum;
   proofSchema?: ProofSchemaListItem;
-  verifierDid?: DidListItem;
   verifier?: IdentifierListItem;
-  holderDid?: DidListItem;
   holder?: IdentifierListItem;
   protocol: string;
   transport: string;
@@ -60,7 +58,6 @@ export interface ProofListItem {
   issuanceDate: string;
   requestedDate?: string;
   completedDate?: string;
-  verifierDid?: DidListItem["id"];
   verifier?: IdentifierListItem["id"];
   protocol: string;
   transport: string;
