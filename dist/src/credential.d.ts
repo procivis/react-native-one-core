@@ -1,7 +1,6 @@
 import { DataTypeEnum } from "./config";
 import { CredentialSchema } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
-import { DidListItem } from "./did";
 import { IdentifierListItem } from "./identifier";
 export declare enum CredentialStateEnum {
     CREATED = "CREATED",
@@ -48,7 +47,6 @@ export interface CredentialListItem {
     issuanceDate: string;
     lastModified: string;
     revocationDate?: string;
-    issuerDid?: DidListItem["id"];
     issuer?: IdentifierListItem["id"];
     state: CredentialStateEnum;
     schema: CredentialSchema;
@@ -61,9 +59,7 @@ export interface CredentialDetail extends Omit<CredentialListItem, "issuerDid" |
     redirectUri?: string;
     lvvcIssuanceDate?: string;
     mdocMsoValidity?: MdocMsoValidity;
-    issuerDid?: DidListItem;
     issuer?: IdentifierListItem;
-    holderDid?: DidListItem;
     holder?: IdentifierListItem;
 }
 export interface MdocMsoValidity {
