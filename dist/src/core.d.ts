@@ -8,7 +8,7 @@ import { KeyRequest } from "./key";
 import { ItemList } from "./list";
 import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
-import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, RemoteTrustEntity, ResolveTrustEntityByIdentifierRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListItem, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
+import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, RemoteTrustEntity, ResolvedIdentifierTrustEntity, ResolveTrustEntityByIdentifierRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListItem, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
 import { CacheType } from "./cache";
 import { CreateOrganisationRequest, UpsertOrganisationRequest } from "./organisation";
 import { CreateIdentifierRequest, IdentifierDetail, IdentifierListItem, IdentifierListQuery } from "./identifier";
@@ -88,7 +88,7 @@ export interface ONECore {
     getTrustEntity(trustEntityId: TrustEntityListItem["id"]): Promise<TrustEntity>;
     getTrustEntities(query: TrustEntityListQuery): Promise<ItemList<TrustEntityListItem>>;
     getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
-    resolveTrustEntityByIdentifier(request: ResolveTrustEntityByIdentifierRequest): Promise<Record<string, TrustEntity>>;
+    resolveTrustEntityByIdentifier(request: ResolveTrustEntityByIdentifierRequest): Promise<Record<IdentifierListItem["id"], ResolvedIdentifierTrustEntity[]>>;
     createRemoteTrustEntity(request: CreateRemoteTrustEntityRequest): Promise<RemoteTrustEntity["id"]>;
     getRemoteTrustEntity(didId: DidListItem["id"]): Promise<RemoteTrustEntity>;
     updateRemoteTrustEntity(request: UpdateRemoteTrustEntityRequest): Promise<void>;

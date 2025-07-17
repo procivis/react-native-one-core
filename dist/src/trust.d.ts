@@ -141,8 +141,12 @@ export declare enum TrustEntityUpdateActionEnum {
     REMOVE = "REMOVE"
 }
 export interface ResolveTrustEntityByIdentifierRequest {
-    identifiers: {
+    identifiers: Array<{
         id: IdentifierListItem["id"];
         certificateId?: IdentifierCertificateDetail["id"];
-    }[];
+    }>;
+}
+export interface ResolvedIdentifierTrustEntity {
+    trustEntity: TrustEntity;
+    certificateIds?: Array<IdentifierCertificateDetail["id"]>;
 }
