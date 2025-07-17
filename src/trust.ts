@@ -1,11 +1,15 @@
 import { ListQuery, SortDirection } from "./list";
 import { DidListItem } from "./did";
 import {
-  CertificateStateEnum, IdentifierCertificateDetail,
+  CertificateStateEnum,
+  IdentifierCertificateDetail,
   IdentifierListItem,
   X509Attributes,
 } from "./identifier";
-import {CreateOrganisationRequest, UpsertOrganisationRequest} from "./organisation";
+import {
+  CreateOrganisationRequest,
+  UpsertOrganisationRequest,
+} from "./organisation";
 
 export type CreateTrustAnchorRequest = {
   name: string;
@@ -119,7 +123,7 @@ export interface CreateTrustEntityRequest {
   type: TrustEntityTypeEnum;
   identifierId?: IdentifierListItem["id"];
   content?: string;
-  organisationId: UpsertOrganisationRequest["id"],
+  organisationId: UpsertOrganisationRequest["id"];
 }
 
 export interface TrustEntityListQuery {
@@ -170,5 +174,13 @@ export enum TrustEntityUpdateActionEnum {
 }
 
 export interface ResolveTrustEntityByIdentifierRequest {
-  identifiers: { id: IdentifierListItem["id"]; certificateId?: IdentifierCertificateDetail["id"]}[]
+  identifiers: Array<{
+    id: IdentifierListItem["id"];
+    certificateId?: IdentifierCertificateDetail["id"];
+  }>;
+}
+
+export interface ResolvedIdentifierTrustEntity {
+  trustEntity: TrustEntity;
+  certificateIds?: Array<IdentifierCertificateDetail["id"]>;
 }

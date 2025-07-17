@@ -47,7 +47,9 @@ import {
   CreateRemoteTrustEntityRequest,
   CreateTrustAnchorRequest,
   CreateTrustEntityRequest,
-  RemoteTrustEntity, ResolveTrustEntityByIdentifierRequest,
+  RemoteTrustEntity,
+  ResolvedIdentifierTrustEntity,
+  ResolveTrustEntityByIdentifierRequest,
   TrustAnchor,
   TrustAnchorListItem,
   TrustAnchorListQuery,
@@ -268,7 +270,9 @@ export interface ONECore {
 
   getTrustEntityByDid(didId: DidListItem["id"]): Promise<TrustEntity>;
 
-  resolveTrustEntityByIdentifier(request: ResolveTrustEntityByIdentifierRequest): Promise<Record<string, TrustEntity>>;
+  resolveTrustEntityByIdentifier(
+    request: ResolveTrustEntityByIdentifierRequest
+  ): Promise<Record<IdentifierListItem["id"], ResolvedIdentifierTrustEntity[]>>;
 
   createRemoteTrustEntity(
     request: CreateRemoteTrustEntityRequest
