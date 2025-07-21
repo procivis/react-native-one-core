@@ -13,7 +13,6 @@ variables:
   DOCKER_DRIVER: overlay2
   YARN_CACHE_FOLDER: "./.yarn/cache"
   YARN_ENABLE_GLOBAL_CACHE: "false"
-  GITHUB_PROJECT: "procivis/react-native-one-core"
 
 stages:
   - prepare
@@ -130,7 +129,8 @@ publish:npm:public:
 github:push:
   stage: github
   variables:
-    CMD_ARGS: --ubiqu-cleaning
+    GITHUB_PROJECT: "procivis/react-native-one-core"
+    PROJECT: $CI_PROJECT_NAME
   extends:
     - .ci-tool:open_source_release
 
