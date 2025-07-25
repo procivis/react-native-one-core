@@ -21,7 +21,7 @@ export interface ImportCredentialSchemaRequestSchema {
   layoutType?: LayoutType;
   layoutProperties?: ImportCredentialSchemaLayoutProperties;
   allowSuspension?: boolean;
-  externalSchema: boolean
+  externalSchema: boolean;
 }
 
 export interface ImportCredentialSchemaClaimSchema {
@@ -60,6 +60,7 @@ export enum SortableCredentialSchemaColumnEnum {
 
 export enum ExactCredentialSchemaFilterColumnEnum {
   NAME = "NAME",
+  SCHEMA_ID = "SCHEMA_ID",
 }
 
 export interface CredentialSchemaListQuery extends ListQuery {
@@ -69,6 +70,8 @@ export interface CredentialSchemaListQuery extends ListQuery {
   ids?: string[];
   exact?: ExactCredentialSchemaFilterColumnEnum[];
   include?: CredentialSchemaListIncludeEntityType[];
+  schemaId?: string;
+  formats?: string[];
 }
 
 export enum WalletStorageType {

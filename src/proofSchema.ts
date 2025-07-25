@@ -62,6 +62,7 @@ export interface ProofSchemaListQuery extends ListQuery {
   name?: string;
   exact?: ExactProofSchemaFilterColumnEnum[];
   ids?: Array<ProofSchema["id"]>;
+  formats?: string[];
 }
 
 export interface ImportProofSchemaRequest {

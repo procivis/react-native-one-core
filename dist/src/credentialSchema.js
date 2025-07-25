@@ -11,6 +11,7 @@ export var SortableCredentialSchemaColumnEnum;
 export var ExactCredentialSchemaFilterColumnEnum;
 (function (ExactCredentialSchemaFilterColumnEnum) {
     ExactCredentialSchemaFilterColumnEnum["NAME"] = "NAME";
+    ExactCredentialSchemaFilterColumnEnum["SCHEMA_ID"] = "SCHEMA_ID";
 })(ExactCredentialSchemaFilterColumnEnum || (ExactCredentialSchemaFilterColumnEnum = {}));
 export var WalletStorageType;
 (function (WalletStorageType) {
