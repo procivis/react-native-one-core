@@ -26,7 +26,7 @@ export var PresentationDefinitionRuleTypeEnum;
 export var SortableProofColumnEnum;
 (function (SortableProofColumnEnum) {
     SortableProofColumnEnum["SCHEMA_NAME"] = "SCHEMA_NAME";
-    SortableProofColumnEnum["VERIFIER_DID"] = "VERIFIER_DID";
+    SortableProofColumnEnum["VERIFIER"] = "VERIFIER";
     SortableProofColumnEnum["CREATED_DATE"] = "CREATED_DATE";
     SortableProofColumnEnum["STATE"] = "STATE";
 })(SortableProofColumnEnum || (SortableProofColumnEnum = {}));

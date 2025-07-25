@@ -49,6 +49,7 @@ export interface ProofDetail {
   requestedDate?: string;
   completedDate?: string;
   claimsRemovedAt?: string;
+  profile?: string;
 }
 
 export interface ProofListItem {
@@ -65,6 +66,7 @@ export interface ProofListItem {
   role: ProofRoleEnum;
   schema?: ProofSchemaListItem;
   retainUntilDate?: string;
+  profile?: string;
 }
 
 export interface CreateProofRequest {
@@ -77,6 +79,7 @@ export interface CreateProofRequest {
   scanToVerify?: ScanToVerifyRequest;
   isoMdlEngagement?: string;
   transport?: string[];
+  profile?: string;
 }
 
 export interface ScanToVerifyRequest {
@@ -144,7 +147,7 @@ export interface PresentationSubmitCredentialRequest {
 
 export enum SortableProofColumnEnum {
   SCHEMA_NAME = "SCHEMA_NAME",
-  VERIFIER_DID = "VERIFIER_DID",
+  VERIFIER = "VERIFIER",
   CREATED_DATE = "CREATED_DATE",
   STATE = "STATE",
 }
@@ -162,6 +165,7 @@ export interface ProofListQuery extends ListQuery {
   proofRoles?: ProofRoleEnum[];
   proofSchemaIds?: string[];
   exact?: ExactProofFilterColumnEnum[];
+  profile?: string;
 }
 
 export interface ProposeProofResponse {
