@@ -51,7 +51,8 @@ export declare enum SortableCredentialSchemaColumnEnum {
     CREATED_DATE = "CREATED_DATE"
 }
 export declare enum ExactCredentialSchemaFilterColumnEnum {
-    NAME = "NAME"
+    NAME = "NAME",
+    SCHEMA_ID = "SCHEMA_ID"
 }
 export interface CredentialSchemaListQuery extends ListQuery {
     sort?: SortableCredentialSchemaColumnEnum;
@@ -60,6 +61,8 @@ export interface CredentialSchemaListQuery extends ListQuery {
     ids?: string[];
     exact?: ExactCredentialSchemaFilterColumnEnum[];
     include?: CredentialSchemaListIncludeEntityType[];
+    schemaId?: string;
+    formats?: string[];
 }
 export declare enum WalletStorageType {
     HARDWARE = "HARDWARE",
