@@ -23,7 +23,7 @@ export var SortableCredentialColumnEnum;
 (function (SortableCredentialColumnEnum) {
     SortableCredentialColumnEnum["CREATED_DATE"] = "CREATED_DATE";
     SortableCredentialColumnEnum["SCHEMA_NAME"] = "SCHEMA_NAME";
-    SortableCredentialColumnEnum["ISSUER_DID"] = "ISSUER_DID";
+    SortableCredentialColumnEnum["ISSUER"] = "ISSUER";
     SortableCredentialColumnEnum["STATE"] = "STATE";
 })(SortableCredentialColumnEnum || (SortableCredentialColumnEnum = {}));
 export var CredentialListIncludeEntityType;

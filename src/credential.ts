@@ -63,6 +63,7 @@ export interface CredentialListItem {
   role: CredentialRoleEnum;
   suspendEndDate?: string;
   protocol: string;
+  profile?: string;
 }
 
 export interface CredentialDetail
@@ -94,7 +95,7 @@ export enum CredentialListQueryExactColumnEnum {
 export enum SortableCredentialColumnEnum {
   CREATED_DATE = "CREATED_DATE",
   SCHEMA_NAME = "SCHEMA_NAME",
-  ISSUER_DID = "ISSUER_DID",
+  ISSUER = "ISSUER",
   STATE = "STATE",
 }
 
@@ -116,6 +117,7 @@ export type CredentialListQuery = ListQuery & {
   role?: CredentialRoleEnum;
   ids?: Array<CredentialListItem["id"]>;
   status?: CredentialStateEnum[];
+  profile?: string;
   include?: CredentialListIncludeEntityType[];
 } & (
     | { name?: string; searchType?: never; searchText?: never }
