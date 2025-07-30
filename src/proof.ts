@@ -56,7 +56,6 @@ export interface ProofListItem {
   id: string;
   createdDate: string;
   lastModified: string;
-  issuanceDate: string;
   requestedDate?: string;
   completedDate?: string;
   verifier?: IdentifierListItem["id"];
