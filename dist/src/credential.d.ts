@@ -44,7 +44,7 @@ export type Claim = ClaimValue & {
 export interface CredentialListItem {
     id: string;
     createdDate: string;
-    issuanceDate: string;
+    issuanceDate?: string;
     lastModified: string;
     revocationDate?: string;
     issuer?: IdentifierListItem["id"];
