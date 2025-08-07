@@ -28,6 +28,8 @@ local.properties
 build/
 ios/ProcivisOneCoreFFI.xcframework
 ios/ProcivisOneCore.xcframework
+ios/htmldoc/
+ios/ProcivisOneCore.doccarchive
 android/libs/onecore-*
 docs/
 
