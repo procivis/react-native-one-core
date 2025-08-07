@@ -119,6 +119,7 @@ export interface InvitationResultCredentialIssuance {
     interactionId: string;
     credentialIds: Array<CredentialListItem["id"]>;
     txCode?: OpenID4VCITxCode;
+    credentialConfigurationsSupported: Record<CredentialListItem["id"], CredentialConfigurationSupported>;
 }
 export interface OpenID4VCITxCode {
     inputMode?: OpenID4VCITxCodeInputMode;
@@ -128,4 +129,31 @@ export interface OpenID4VCITxCode {
 export declare enum OpenID4VCITxCodeInputMode {
     NUMERIC = "NUMERIC",
     TEXT = "TEXT"
+}
+export interface InitiateIssuanceRequest {
+    organisationId: string;
+    protocol: string;
+    issuer: string;
+    clientId: string;
+    redirectUri?: string;
+    scope?: string[];
+    authorizationDetails?: InitiateIssuanceAuthorizationDetail[];
+}
+export interface InitiateIssuanceAuthorizationDetail {
+    type: string;
+    credentialConfigurationId: string;
+}
+export interface InitiateIssuanceResponse {
+    url: string;
+}
+export interface ContinueIssuanceResponse {
+    interactionId: string;
+    credentialIds: Array<CredentialListItem["id"]>;
+    credentialConfigurationsSupported: Record<CredentialListItem["id"], CredentialConfigurationSupported>;
+}
+export interface CredentialConfigurationSupported {
+    proofTypesSupported: Record<string, OpenID4VCIProofTypeSupported>;
+}
+export interface OpenID4VCIProofTypeSupported {
+    proofSigningAlgValuesSupported: string[];
 }

@@ -214,6 +214,22 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun initiateIssuance(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            val response = getCore().initiateIssuance(construct(request))
+            return@asyncCall convertToRN(response)
+        }
+    }
+
+    @ReactMethod
+    fun continueIssuance(url: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val response = getCore().continueIssuance(url)
+            return@asyncCall convertToRN(response)
+        }
+    }
+
+    @ReactMethod
     fun getPresentationDefinition(proofId: String, promise: Promise) {
         asyncCall(promise, scope) {
             val presentationDefinition = getCore().getPresentationDefinition(proofId)
