@@ -5,10 +5,13 @@ import {
 } from "./backup";
 import { Config } from "./config";
 import {
+  ContinueIssuanceResponse,
   CredentialDetail,
   CredentialListItem,
   CredentialListQuery,
   CredentialRevocationCheckResponse,
+  InitiateIssuanceRequest,
+  InitiateIssuanceResponse,
   InvitationResultCredentialIssuance,
 } from "./credential";
 import {
@@ -147,6 +150,12 @@ export interface ONECore {
   holderRejectCredential(
     interactionId: InvitationResultCredentialIssuance["interactionId"]
   ): Promise<void>;
+
+  initiateIssuance(
+    request: InitiateIssuanceRequest
+  ): Promise<InitiateIssuanceResponse>;
+
+  continueIssuance(url: string): Promise<ContinueIssuanceResponse>;
 
   getPresentationDefinition(
     proofId: ProofDetail["id"]
@@ -349,6 +358,8 @@ export const interfaceMethodNames = [
   "handleInvitation",
   "holderAcceptCredential",
   "holderRejectCredential",
+  "initiateIssuance",
+  "continueIssuance",
   "getPresentationDefinition",
   "holderRejectProof",
   "holderSubmitProof",
