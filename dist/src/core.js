@@ -28,6 +28,8 @@ export const interfaceMethodNames = [
     "handleInvitation",
     "holderAcceptCredential",
     "holderRejectCredential",
+    "initiateIssuance",
+    "continueIssuance",
     "getPresentationDefinition",
     "holderRejectProof",
     "holderSubmitProof",

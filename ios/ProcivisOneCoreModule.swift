@@ -260,6 +260,30 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(initiateIssuance:resolver:rejecter:)
+  func initiateIssuance(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().initiateIssuance(request: try deserialize(request))
+      return try serializeAny(result)
+    }
+  }
+
+  @objc(continueIssuance:resolver:rejecter:)
+  func continueIssuance(
+    url: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().continueIssuance(url: url)
+      return try serializeAny(result)
+    }
+  }
+
   @objc(getPresentationDefinition:resolver:rejecter:)
   func getPresentationDefinition(
     proofId: String,
@@ -710,7 +734,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
       return try serializeAny(trustEntity)
     }
   }
-    
+
   @objc(resolveTrustEntityByIdentifier:resolver:rejecter:)
   func resolveTrustEntityByIdentifier(
     request: NSDictionary,
