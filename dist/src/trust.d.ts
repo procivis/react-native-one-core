@@ -40,6 +40,14 @@ export interface TrustAnchorListQuery extends Omit<ListQuery, "organisationId"> 
     exact?: ExactTrustAnchorFilterColumnEnum[];
     type?: string;
     isPublisher?: boolean;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateBefore?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    lastModifiedAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    lastModifiedBefore?: string;
 }
 export interface TrustEntityListItem {
     id: string;
@@ -106,6 +114,14 @@ export interface TrustEntityListQuery {
     exact?: ExactTrustEntityFilterColumnEnum[];
     type?: string;
     isPublisher?: boolean;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateBefore?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    lastModifiedAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    lastModifiedBefore?: string;
 }
 export declare enum SortableTrustEntityColumnEnum {
     NAME = "NAME",

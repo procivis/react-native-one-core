@@ -63,6 +63,14 @@ export interface ProofSchemaListQuery extends ListQuery {
   exact?: ExactProofSchemaFilterColumnEnum[];
   ids?: Array<ProofSchema["id"]>;
   formats?: string[];
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  createdDateAfter?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  createdDateBefore?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  lastModifiedAfter?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  lastModifiedBefore?: string;
 }
 
 export interface ImportProofSchemaRequest {

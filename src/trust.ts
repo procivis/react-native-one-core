@@ -58,6 +58,14 @@ export interface TrustAnchorListQuery
   exact?: ExactTrustAnchorFilterColumnEnum[];
   type?: string;
   isPublisher?: boolean;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  createdDateAfter?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  createdDateBefore?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  lastModifiedAfter?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  lastModifiedBefore?: string;
 }
 
 export interface TrustEntityListItem {
@@ -133,6 +141,14 @@ export interface TrustEntityListQuery {
   exact?: ExactTrustEntityFilterColumnEnum[];
   type?: string;
   isPublisher?: boolean;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  createdDateAfter?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  createdDateBefore?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  lastModifiedAfter?: string;
+  /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+  lastModifiedBefore?: string;
 }
 
 export enum SortableTrustEntityColumnEnum {
