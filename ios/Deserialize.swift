@@ -79,17 +79,6 @@ private func deserializeSpecific(_ value: Any, _ type: Any.Type, _ codingPath: [
     return deserializeCredentialSchemaTypeBindingEnum(data)
   }
 
-  if type == HistoryListQueryBindingDto.self {
-    guard let data = value as? NSDictionary else {
-      let description = "Expected to decode \(type) but found '\(value)' instead."
-      throw DecodingError.typeMismatch(
-        type,
-        DecodingError.Context(codingPath: codingPath, debugDescription: description)
-      )
-    }
-    return try deserializeHistoryListQuery(data)
-  }
-
   if type == OptionalString.self {
     if value is NSNull {
       return OptionalString.none
@@ -123,39 +112,4 @@ private func deserializeCredentialSchemaTypeBindingEnum(_ credentialSchemaType: 
   case let other:
     return .other(value: other)
   }
-}
-
-private func deserializeHistoryListQuery(_ query: NSDictionary) throws -> HistoryListQueryBindingDto
-{
-  return HistoryListQueryBindingDto(
-    page: try safeCast(query.value(forKey: "page")),
-    pageSize: try safeCast(query.value(forKey: "pageSize")),
-    organisationId: try safeCast(query.value(forKey: "organisationId")),
-    entityId: query.value(forKey: "entityId") as? String,
-    entityTypes: try opt(query.value(forKey: "entityTypes") as? NSArray, enumList),
-    actions: try opt(query.value(forKey: "actions") as? NSArray, enumList),
-    createdDateFrom: query.value(forKey: "createdDateFrom") as? String,
-    createdDateTo: query.value(forKey: "createdDateTo") as? String,
-    identifierId: query.value(forKey: "identifierId") as? String,
-    credentialId: query.value(forKey: "credentialId") as? String,
-    credentialSchemaId: query.value(forKey: "credentialSchemaId") as? String,
-    proofSchemaId: query.value(forKey: "proofSchemaId") as? String,
-    search: try deserializeHistorySearch(
-      text: query.value(forKey: "searchText") as? String,
-      type: query.value(forKey: "searchType") as? String
-    )
-  )
-}
-
-private func deserializeHistorySearch(text: String?, type: String?) throws
-  -> HistorySearchBindingDto?
-{
-  if text == nil {
-    return nil
-  }
-
-  return HistorySearchBindingDto(
-    text: text!,
-    type: try opt(type, deserializeEnum)
-  )
 }

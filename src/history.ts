@@ -59,15 +59,19 @@ export interface HistoryListQuery extends ListQuery {
   actions?: HistoryActionEnum[];
   entityTypes?: HistoryEntityTypeEnum[];
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
-  createdDateFrom?: string;
+  createdDateAfter?: string;
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
-  createdDateTo?: string;
+  createdDateBefore?: string;
   identifierId?: string;
   credentialId?: string;
   credentialSchemaId?: string;
   proofSchemaId?: string;
-  searchText?: string;
-  searchType?: HistorySearchTypeEnum;
+  search?: HistoryListSearch;
+}
+
+export interface HistoryListSearch {
+  text: string;
+  type?: HistorySearchTypeEnum;
 }
 
 export interface HistoryErrorMetadata {

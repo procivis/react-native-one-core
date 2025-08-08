@@ -51,49 +51,6 @@ object DeserializeSpecific {
         return result
     }
 
-    fun historyListQuery(query: ReadableMap): HistoryListQueryBindingDto {
-        return HistoryListQueryBindingDto(
-            page = query.getUInt("page")!!,
-            pageSize = query.getUInt("pageSize")!!,
-            organisationId = query.getString("organisationId").toString(),
-            entityId = query.getString("entityId"),
-            actions = opt(query.getArray("actions")) { types ->
-                enumList(types, HistoryActionBindingEnum::valueOf)
-            },
-            entityTypes = opt(query.getArray("entityTypes")) { types ->
-                enumList(types, HistoryEntityTypeBindingEnum::valueOf)
-            },
-            createdDateFrom = query.getString("createdDateFrom"),
-            createdDateTo = query.getString("createdDateTo"),
-            identifierId = query.getString("identifierId"),
-            credentialId = query.getString("credentialId"),
-            credentialSchemaId = query.getString("credentialSchemaId"),
-            search = historySearch(
-                query.getString("searchText"),
-                query.getString("searchType"),
-            ),
-            proofSchemaId = query.getString("proofSchemaId"),
-        )
-    }
-
-    private fun historySearch(text: String?, type: String?): HistorySearchBindingDto? {
-        if (text == null) {
-            return null
-        }
-
-        return HistorySearchBindingDto(
-            text = text,
-            type = opt(type, HistorySearchEnumBindingEnum::valueOf),
-        )
-    }
-
-    private fun <F, T> opt(input: F?, fn: (F) -> T): T? {
-        if (input == null) {
-            return null
-        }
-        return fn(input)
-    }
-
     fun <T> enumList(entries: ReadableArray, fn: (String) -> T): List<T> {
         val result = mutableListOf<T>()
         for (n in 0 until entries.size()) {

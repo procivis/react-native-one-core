@@ -145,6 +145,22 @@ export interface ProofListQuery extends ListQuery {
     proofSchemaIds?: string[];
     exact?: ExactProofFilterColumnEnum[];
     profile?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateBefore?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    lastModifiedAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    lastModifiedBefore?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    requestedDateAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    requestedDateBefore?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    completedDateAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    completedDateBefore?: string;
 }
 export interface ProposeProofResponse {
     proofId: string;
