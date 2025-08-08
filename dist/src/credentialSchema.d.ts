@@ -63,6 +63,14 @@ export interface CredentialSchemaListQuery extends ListQuery {
     include?: CredentialSchemaListIncludeEntityType[];
     schemaId?: string;
     formats?: string[];
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    createdDateBefore?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    lastModifiedAfter?: string;
+    /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
+    lastModifiedBefore?: string;
 }
 export declare enum WalletStorageType {
     HARDWARE = "HARDWARE",
