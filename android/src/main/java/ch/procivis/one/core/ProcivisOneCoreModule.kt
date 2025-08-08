@@ -422,8 +422,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getHistory(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val listQuery = DeserializeSpecific.historyListQuery(query)
-            val history = getCore().getHistoryList(listQuery)
+            val history = getCore().getHistoryList(construct(query))
             return@asyncCall convertToRN(history)
         }
     }
