@@ -39,6 +39,8 @@ export var HistoryEntityTypeEnum;
     HistoryEntityTypeEnum["BACKUP"] = "BACKUP";
     HistoryEntityTypeEnum["TRUST_ANCHOR"] = "TRUST_ANCHOR";
     HistoryEntityTypeEnum["TRUST_ENTITY"] = "TRUST_ENTITY";
+    HistoryEntityTypeEnum["WALLET_UNIT"] = "WALLET_UNIT";
+    HistoryEntityTypeEnum["WALLET_UNIT_ATTESTATION"] = "WALLET_UNIT_ATTESTATION";
 })(HistoryEntityTypeEnum || (HistoryEntityTypeEnum = {}));
 export var HistorySearchTypeEnum;
 (function (HistorySearchTypeEnum) {

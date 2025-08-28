@@ -5,6 +5,7 @@ import {
 } from "./backup";
 import { Config } from "./config";
 import {
+  AuthorizationCodeFlow,
   ContinueIssuanceResponse,
   CredentialDetail,
   CredentialListItem,
@@ -72,6 +73,11 @@ import {
   IdentifierListItem,
   IdentifierListQuery,
 } from "./identifier";
+import {
+  HolderAttestationWalletUnitResponse,
+  HolderRefreshWalletUnitRequest,
+  HolderRegisterWalletUnitRequest,
+} from "./walletUnit";
 
 export * from "./backup";
 export * from "./cache";
@@ -87,6 +93,7 @@ export * from "./organisation";
 export * from "./proof";
 export * from "./proofSchema";
 export * from "./trust";
+export * from "./walletUnit";
 
 export interface Version {
   target: string;
@@ -100,7 +107,15 @@ export interface Version {
 
 export type InvitationResult =
   | InvitationResultCredentialIssuance
-  | InvitationResultProofRequest;
+  | InvitationResultProofRequest
+  | AuthorizationCodeFlow;
+
+export interface HandleInvitationRequest {
+  url: string;
+  organisationId: string;
+  transport?: string[];
+  redirectUri?: string;
+}
 
 export interface ResolveJsonLdContextResponse {
   context: string;
@@ -133,11 +148,7 @@ export interface ONECore {
 
   deleteIdentifier(identifierId: IdentifierListItem["id"]): Promise<void>;
 
-  handleInvitation(
-    url: string,
-    organisationId: string,
-    transport: string[] | undefined
-  ): Promise<InvitationResult>;
+  handleInvitation(request: HandleInvitationRequest): Promise<InvitationResult>;
 
   holderAcceptCredential(
     interactionId: InvitationResultCredentialIssuance["interactionId"],
@@ -332,6 +343,18 @@ export interface ONECore {
 
   resolveJsonldContext(url: string): Promise<ResolveJsonLdContextResponse>;
 
+  holderRegisterWalletUnit(
+    request: HolderRegisterWalletUnitRequest
+  ): Promise<void>;
+
+  holderRefreshWalletUnit(
+    request: HolderRefreshWalletUnitRequest
+  ): Promise<void>;
+
+  holderGetWalletUnitAttestation(
+    organisationId: string
+  ): Promise<HolderAttestationWalletUnitResponse>;
+
   /**
    * Uninitialize the core instance
    *
@@ -407,6 +430,9 @@ export const interfaceMethodNames = [
   "finalizeImport",
   "rollbackImport",
   "resolveJsonldContext",
+  "holderRegisterWalletUnit",
+  "holderRefreshWalletUnit",
+  "holderGetWalletUnitAttestation",
   "uninitialize",
 ] as const;
 

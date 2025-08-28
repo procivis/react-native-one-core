@@ -144,5 +144,7 @@ export interface Config {
     keyStorage: ConfigEntities<KeyStorageCapabilities>;
     trustManagement: ConfigEntities<TrustCapabilities>;
     cacheEntities: ConfigEntities;
+    task: ConfigEntities;
+    credentialIssuer: ConfigEntities<undefined, {}>;
 }
 export {};

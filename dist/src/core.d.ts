@@ -1,6 +1,6 @@
 import { BackupCreate, ImportBackupMetadata, UnexportableEntities } from "./backup";
 import { Config } from "./config";
-import { ContinueIssuanceResponse, CredentialDetail, CredentialListItem, CredentialListQuery, CredentialRevocationCheckResponse, InitiateIssuanceRequest, InitiateIssuanceResponse, InvitationResultCredentialIssuance } from "./credential";
+import { AuthorizationCodeFlow, ContinueIssuanceResponse, CredentialDetail, CredentialListItem, CredentialListQuery, CredentialRevocationCheckResponse, InitiateIssuanceRequest, InitiateIssuanceResponse, InvitationResultCredentialIssuance } from "./credential";
 import { CredentialSchema, CredentialSchemaDetail, CredentialSchemaListQuery, ImportCredentialSchemaRequest, ShareCredentialSchemaResponse } from "./credentialSchema";
 import { DidListItem, DidListQuery, DidRequest } from "./did";
 import { HistoryListItem, HistoryListQuery } from "./history";
@@ -12,6 +12,7 @@ import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEn
 import { CacheType } from "./cache";
 import { CreateOrganisationRequest, UpsertOrganisationRequest } from "./organisation";
 import { CreateIdentifierRequest, IdentifierDetail, IdentifierListItem, IdentifierListQuery } from "./identifier";
+import { HolderAttestationWalletUnitResponse, HolderRefreshWalletUnitRequest, HolderRegisterWalletUnitRequest } from "./walletUnit";
 export * from "./backup";
 export * from "./cache";
 export * from "./config";
@@ -26,6 +27,7 @@ export * from "./organisation";
 export * from "./proof";
 export * from "./proofSchema";
 export * from "./trust";
+export * from "./walletUnit";
 export interface Version {
     target: string;
     buildTime: string;
@@ -35,7 +37,13 @@ export interface Version {
     rustVersion: string;
     pipelineId: string;
 }
-export type InvitationResult = InvitationResultCredentialIssuance | InvitationResultProofRequest;
+export type InvitationResult = InvitationResultCredentialIssuance | InvitationResultProofRequest | AuthorizationCodeFlow;
+export interface HandleInvitationRequest {
+    url: string;
+    organisationId: string;
+    transport?: string[];
+    redirectUri?: string;
+}
 export interface ResolveJsonLdContextResponse {
     context: string;
 }
@@ -51,7 +59,7 @@ export interface ONECore {
     getIdentifiers(query: IdentifierListQuery): Promise<ItemList<IdentifierListItem>>;
     getIdentifier(identifierId: IdentifierListItem["id"]): Promise<IdentifierDetail>;
     deleteIdentifier(identifierId: IdentifierListItem["id"]): Promise<void>;
-    handleInvitation(url: string, organisationId: string, transport: string[] | undefined): Promise<InvitationResult>;
+    handleInvitation(request: HandleInvitationRequest): Promise<InvitationResult>;
     holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined, txCode: string | undefined): Promise<void>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
     initiateIssuance(request: InitiateIssuanceRequest): Promise<InitiateIssuanceResponse>;
@@ -121,6 +129,9 @@ export interface ONECore {
      */
     rollbackImport(): Promise<void>;
     resolveJsonldContext(url: string): Promise<ResolveJsonLdContextResponse>;
+    holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<void>;
+    holderRefreshWalletUnit(request: HolderRefreshWalletUnitRequest): Promise<void>;
+    holderGetWalletUnitAttestation(organisationId: string): Promise<HolderAttestationWalletUnitResponse>;
     /**
      * Uninitialize the core instance
      *
@@ -130,4 +141,4 @@ export interface ONECore {
      */
     uninitialize(deleteData: boolean): Promise<void>;
 }
-export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "initiateIssuance", "continueIssuance", "getPresentationDefinition", "holderRejectProof", "holderSubmitProof", "getCredentials", "runTask", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "resolveTrustEntityByIdentifier", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "uninitialize"];
+export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "initiateIssuance", "continueIssuance", "getPresentationDefinition", "holderRejectProof", "holderSubmitProof", "getCredentials", "runTask", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "resolveTrustEntityByIdentifier", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "holderRegisterWalletUnit", "holderRefreshWalletUnit", "holderGetWalletUnitAttestation", "uninitialize"];
