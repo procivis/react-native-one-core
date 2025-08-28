@@ -207,3 +207,8 @@ export interface CredentialConfigurationSupported {
 export interface OpenID4VCIProofTypeSupported {
   proofSigningAlgValuesSupported: string[];
 }
+
+export interface AuthorizationCodeFlow {
+  interactionId: string;
+  authorizationCodeFlowUrl: string;
+}

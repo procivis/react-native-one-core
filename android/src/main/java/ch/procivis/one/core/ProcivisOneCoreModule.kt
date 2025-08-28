@@ -178,14 +178,11 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun handleInvitation(
-        url: String,
-        organisationId: String,
-        transport: ReadableArray?,
+        request: ReadableMap,
         promise: Promise
     ) {
         asyncCall(promise, scope) {
-            val transportList = transport?.let { DeserializeSpecific.ids(it) }
-            val invitationResult = getCore().handleInvitation(url, organisationId, transportList)
+            val invitationResult = getCore().handleInvitation(construct(request))
             return@asyncCall convertToRN(invitationResult)
         }
     }
@@ -585,6 +582,30 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             }
             getCore().deleteCache(cacheTypeList)
             return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun holderRegisterWalletUnit(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().holderRegisterWalletUnit(construct(request))
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun holderRefreshWalletUnit(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().holderRefreshWalletUnit(construct(request))
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun holderGetWalletUnitAttestation(organisationId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().holderGetWalletUnitAttestation(organisationId)
+            return@asyncCall convertToRN(result)
         }
     }
 

@@ -43,6 +43,13 @@ object SerializeSpecific {
 
                 is HistoryMetadataBinding.ErrorMetadata ->
                     return convertToRN(metadata.value) as ReadableMap
+
+                is HistoryMetadataBinding.WalletUnitJwt -> {
+                    val result = Arguments.createMap()
+                    result.putString("jwt", metadata.v1)
+                    return result
+                }
+
             }
         }
 
