@@ -51,6 +51,8 @@ private func serialize(historyMetadata: HistoryMetadataBinding) throws -> Any {
         return try serializeAny(value);
     case let .errorMetadata(value):
         return try serializeAny(value);
+    case let .walletUnitJwt(value):
+        return ["jwt": value] as NSDictionary;
     }
 }
 
@@ -110,6 +112,12 @@ private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) 
         return [
             "interactionId": interactionId,
             "proofId": proofId
+        ];
+
+    case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl):
+        return [
+            "interactionId": interactionId,
+            "authorizationCodeFlowUrl": authorizationCodeFlowUrl
         ];
     }
 }

@@ -12,6 +12,7 @@ export * from "./organisation";
 export * from "./proof";
 export * from "./proofSchema";
 export * from "./trust";
+export * from "./walletUnit";
 // New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
 export const interfaceMethodNames = [
     "getVersion",
@@ -77,6 +78,9 @@ export const interfaceMethodNames = [
     "finalizeImport",
     "rollbackImport",
     "resolveJsonldContext",
+    "holderRegisterWalletUnit",
+    "holderRefreshWalletUnit",
+    "holderGetWalletUnitAttestation",
     "uninitialize",
 ];
 // Typescript automatic assertions to keep ONECore and interfaceMethodNames in sync
