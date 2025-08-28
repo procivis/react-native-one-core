@@ -1,4 +1,4 @@
-import { CredentialDetail, CredentialListItem } from "./credential";
+import { Claim, CredentialDetail, CredentialListItem } from "./credential";
 import { CredentialSchema } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { ProofInputClaimSchema, ProofSchemaListItem } from "./proofSchema";
@@ -120,7 +120,7 @@ export interface PresentationDefinitionField {
     name?: string;
     purpose?: string;
     required: boolean;
-    keyMap: Record<string, string>;
+    keyMap: Record<CredentialListItem["id"], Claim["key"]>;
 }
 export interface PresentationSubmitCredentialRequest {
     credentialId: CredentialListItem["id"];

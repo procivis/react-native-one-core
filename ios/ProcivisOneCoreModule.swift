@@ -208,20 +208,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(handleInvitation:organisationId:transport:resolver:rejecter:)
+  @objc(handleInvitation:resolver:rejecter:)
   func handleInvitation(
-    url: String,
-    organisationId: String,
-    transport: NSArray?,
+    request: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().handleInvitation(
-        url: url,
-        organisationId: organisationId,
-        transport: try deserializeOpt(transport)
-      )
+      let result = try await self.getCore().handleInvitation(request: try deserialize(request))
       return try serializeAny(result)
     }
   }
@@ -861,6 +855,42 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     asyncCall(resolve, reject) {
       try await self.getCore().deleteCache(types: try deserializeOpt(types))
       return nil as NSDictionary?
+    }
+  }
+
+  @objc(holderRegisterWalletUnit:resolver:rejecter:)
+  func holderRegisterWalletUnit(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      try await self.getCore().holderRegisterWalletUnit(request: try deserialize(request))
+      return nil as NSDictionary?
+    }
+  }
+
+  @objc(holderRefreshWalletUnit:resolver:rejecter:)
+  func holderRefreshWalletUnit(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      try await self.getCore().holderRefreshWalletUnit(request: try deserialize(request))
+      return nil as NSDictionary?
+    }
+  }
+
+  @objc(holderGetWalletUnitAttestation:resolver:rejecter:)
+  func holderGetWalletUnitAttestation(
+    organisationId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().holderGetWalletUnitAttestation(organisationId: organisationId)
+      return try serializeAny(result)
     }
   }
 

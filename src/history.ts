@@ -41,6 +41,8 @@ export enum HistoryEntityTypeEnum {
   BACKUP = "BACKUP",
   TRUST_ANCHOR = "TRUST_ANCHOR",
   TRUST_ENTITY = "TRUST_ENTITY",
+  WALLET_UNIT = "WALLET_UNIT",
+  WALLET_UNIT_ATTESTATION = "WALLET_UNIT_ATTESTATION",
 }
 
 export enum HistorySearchTypeEnum {
@@ -79,7 +81,14 @@ export interface HistoryErrorMetadata {
   message: string;
 }
 
-export type HistoryMetadata = UnexportableEntities | HistoryErrorMetadata;
+export interface WalletUnitJWT {
+  jwt: string;
+}
+
+export type HistoryMetadata =
+  | UnexportableEntities
+  | HistoryErrorMetadata
+  | WalletUnitJWT;
 
 export interface HistoryListItem {
   id: string;
