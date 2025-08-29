@@ -18,7 +18,7 @@ export interface WalletProvider {
 export interface HolderRegisterWalletUnitRequest {
   organisationId: string;
   walletProvider: WalletProvider;
-  key: KeyListItem["id"];
+  keyId: KeyListItem["id"];
 }
 
 export interface HolderRefreshWalletUnitRequest {
