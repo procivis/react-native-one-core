@@ -146,9 +146,11 @@ export declare enum OpenID4VCITxCodeInputMode {
     NUMERIC = "NUMERIC",
     TEXT = "TEXT"
 }
+/** OID4VCI authorization request parameters. Use either `scope` or `authorizationDetails`. */
 export interface InitiateIssuanceRequest {
     organisationId: string;
     protocol: string;
+    /** Issuer URL */
     issuer: string;
     clientId: string;
     redirectUri?: string;
@@ -165,6 +167,7 @@ export interface InitiateIssuanceResponse {
 export interface ContinueIssuanceResponse {
     interactionId: string;
     credentialIds: Array<CredentialListItem["id"]>;
+    /** Informs client of API about valid options for issuance including applicable signing algorithms. */
     credentialConfigurationsSupported: Record<CredentialListItem["id"], CredentialConfigurationSupported>;
 }
 export interface CredentialConfigurationSupported {
