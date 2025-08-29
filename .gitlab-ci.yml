@@ -7,6 +7,7 @@ include:
       - "gitlab/rules.gitlab-ci.yml"
       - "gitlab/ci-tools.gitlab-ci.yml"
       - "gitlab/bitrise.gitlab-ci.yml"
+      - "gitlab/azure.gitlab-ci.yml"
 
 variables:
   NODE_OPTIONS: --max_old_space_size=1536
@@ -139,18 +140,18 @@ set_jira_version:
   extends:
     - .ci-tool:set_jira_version
 
-create_core_binding:
+sdk:create_core_binding:
   stage: sdk
-  image: $CI_REGISTRY/procivis/one/one-operations/bitrise-builder:0.2.0
+  extends:
+    - .ci-tool.create-mr
   variables:
-    # NEW_VERSION: required from upstream pipeline
-    MR_ENDPOINT: ${CI_SERVER_URL}/api/v4/projects/${CI_PROJECT_ID}/merge_requests
-    BRANCH_NAME: "auto_sdk-$CI_PIPELINE_ID"
-  script:
-    # Update package.json
-    - jq --arg version "$NEW_VERSION" '.version = $version' package.json > package-updated.json
+    SOURCE_BRANCH: "auto_sdk-$PARENT_PIPELINE_ID"
+    REPO_PATH: $CI_PROJECT_DIR
+    COMMIT_MESSAGE: "Update core bindings from pipeline $NEW_VERSION"
+    MR_TITLE: "Auto SDK: Update Core bindings $CI_COMMIT_REF_NAME"
+  before_script:
+    - jq --arg version "${NEW_VERSION}" '.version = $version' package.json > package-updated.json
     - mv package-updated.json package.json
-    # Update core-sdk.json
     - |
       jq --arg debugUrl "$ANDROID_DEBUG_LINK" \
          --arg debugSha1 "$ANDROID_DEBUG_SHA1" \
@@ -165,31 +166,30 @@ create_core_binding:
           .ios.url = $iosUrl |
           .ios.sha1 = $iosSha1' core-sdk.json > core-sdk-updated.json
     - mv core-sdk-updated.json core-sdk.json
-    # Push and Create MR request
-    - git remote set-url origin "https://gitlab-ci-token:${GITLAB_PRIVATE_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
-    - git add .
-    - >
-      git -c user.email="${GITLAB_USER_EMAIL}" -c user.name="${GITLAB_USER_NAME}"
-      commit --no-verify -m "Update core bindings from pipeline ${NEW_VERSION}"
-    - git push origin HEAD:refs/heads/${BRANCH_NAME}
-    - |-
-      PAYLOAD=$(cat << JSON
-      {
-        "source_branch": "$BRANCH_NAME",
-        "target_branch": "$CI_DEFAULT_BRANCH",
-        "title": "Auto SDK: Update Core bindings $CI_COMMIT_REF_NAME",
-        "remove_source_branch": "true",
-        "assignee_id": "$GITLAB_USER_ID"
-      }
-      JSON
-      )
-    - >
-      curl --fail -X POST ${MR_ENDPOINT}
-      -H "Content-Type: application/json"
-      -H "PRIVATE-TOKEN: ${GITLAB_PRIVATE_TOKEN}"
-      --data-binary "${PAYLOAD}"
   rules:
-    - if: $CI_PIPELINE_SOURCE == "pipeline"
+    - if: $CI_PIPELINE_SOURCE == "pipeline" && $NEW_VERSION && $PARENT_PIPELINE_ID
+      when: always
+
+sdk:generate_docs:
+  stage: sdk
+  image: mcr.microsoft.com/azure-cli:2.63.0
+  extends:
+    - .azure:upload_to_container
+  needs: []
+  variables:
+    RN_CONTAINER_PATH: "react-native/$PARENT_PIPELINE_ID"
+    RN_CONTAINER_DOCS_UPLOAD_PATH: ${AZURE_CONTAINER_NAME}/${RN_CONTAINER_PATH}/docs
+
+  before_script:
+    - apk add npm
+    - npm install -g yarn
+    - yarn install --frozen-lockfile
+    - yarn documentation
+  script:
+    # Upload React native docs
+    - az storage blob upload-batch -d ${RN_CONTAINER_DOCS_UPLOAD_PATH} -s docs
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "pipeline" && $NEW_VERSION && $PARENT_PIPELINE_ID
       when: always
 
 sdk:project-update:
