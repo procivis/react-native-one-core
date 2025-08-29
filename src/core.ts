@@ -162,10 +162,14 @@ export interface ONECore {
     interactionId: InvitationResultCredentialIssuance["interactionId"]
   ): Promise<void>;
 
+  /** For wallets, starts the OID4VCI Authorization Code Flow. */
   initiateIssuance(
     request: InitiateIssuanceRequest
   ): Promise<InitiateIssuanceResponse>;
 
+  /** For wallet-initiated flows, continues the OpenID4VCI issuance process
+   * after completing authorization.
+   */
   continueIssuance(url: string): Promise<ContinueIssuanceResponse>;
 
   getPresentationDefinition(
