@@ -172,25 +172,22 @@ sdk:create_core_binding:
 
 sdk:generate_docs:
   stage: sdk
-  image: mcr.microsoft.com/azure-cli:2.63.0
   extends:
-    - .azure:upload_to_container
+    - .azure:upload_to_onesdk_storage
   needs: []
-  variables:
-    RN_CONTAINER_PATH: "react-native/$PARENT_PIPELINE_ID"
-    RN_CONTAINER_DOCS_UPLOAD_PATH: ${AZURE_CONTAINER_NAME}/${RN_CONTAINER_PATH}/docs
-
   before_script:
-    - apk add npm
+    - apk add npm zip
     - npm install -g yarn
     - yarn install --frozen-lockfile
     - yarn documentation
   script:
+    - zip -r docs.zip docs/
     # Upload React native docs
-    - az storage blob upload-batch -d ${RN_CONTAINER_DOCS_UPLOAD_PATH} -s docs
+    - az storage blob upload -c ${DOCS_CONTAINER_NAME} -n ${PARENT_PIPELINE_ID}/react-native-docs.zip -f docs.zip
   rules:
     - if: $CI_PIPELINE_SOURCE == "pipeline" && $NEW_VERSION && $PARENT_PIPELINE_ID
       when: always
+
 
 sdk:project-update:
   stage: sdk
