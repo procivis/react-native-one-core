@@ -152,9 +152,17 @@ export interface CredentialRevocationCheckResponse {
 }
 
 export interface InvitationResultCredentialIssuance {
+  /** For reference. */
   interactionId: string;
+  /** Offered credential. */
   credentialIds: Array<CredentialListItem["id"]>;
+  /** Metadata for entering a transaction code.
+   * If a pre-authorized code is issued with a transaction code object, the wallet
+   * user must input a transaction code to receive the offered credential. This code
+   * is typically sent through a separate channel such as SMS or email.
+   */
   txCode?: OpenID4VCITxCode;
+  /** Metadata for selecting an appropriate key. */
   credentialConfigurationsSupported: Record<
     CredentialListItem["id"],
     CredentialConfigurationSupported
@@ -194,9 +202,11 @@ export interface InitiateIssuanceResponse {
 }
 
 export interface ContinueIssuanceResponse {
+  /** For reference. */
   interactionId: string;
+  /** Offered credentials. */
   credentialIds: Array<CredentialListItem["id"]>;
-  /** Informs client of API about valid options for issuance including applicable signing algorithms. */
+  /** Metadata for selecting an appropriate key. */
   credentialConfigurationsSupported: Record<
     CredentialListItem["id"],
     CredentialConfigurationSupported
@@ -212,6 +222,9 @@ export interface OpenID4VCIProofTypeSupported {
 }
 
 export interface AuthorizationCodeFlow {
+  /** For reference. */
   interactionId: string;
+  /** For issuer-initiated Authorization Code Flows, use this URL to start
+   * the authorization process with the authorization server. */
   authorizationCodeFlowUrl: string;
 }

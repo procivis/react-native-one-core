@@ -39,9 +39,18 @@ export interface Version {
 }
 export type InvitationResult = InvitationResultCredentialIssuance | InvitationResultProofRequest | AuthorizationCodeFlow;
 export interface HandleInvitationRequest {
+    /** Typically encoded as a QR code or deep link by the issuer or
+     * verifier. For example:
+     * "https://example.com/credential-offer" */
     url: string;
     organisationId: string;
+    /** For configurations with multiple transport protocols enabled
+     * you can specify which one to use for this interaction. */
     transport?: string[];
+    /** For issuer-initiated Authorization Code Flows, provide the
+     * authorization server with the URI it should return the user
+     * to once authorization is complete. For example:
+     * "myapp://example". */
     redirectUri?: string;
 }
 export interface ResolveJsonLdContextResponse {
@@ -59,6 +68,11 @@ export interface ONECore {
     getIdentifiers(query: IdentifierListQuery): Promise<ItemList<IdentifierListItem>>;
     getIdentifier(identifierId: IdentifierListItem["id"]): Promise<IdentifierDetail>;
     deleteIdentifier(identifierId: IdentifierListItem["id"]): Promise<void>;
+    /**
+     * For a wallet, handles the interaction once the wallet connects to a share
+     * endpoint URL (for example, scans the QR code of an offered credential or
+     * request for proof).
+     */
     handleInvitation(request: HandleInvitationRequest): Promise<InvitationResult>;
     holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined, txCode: string | undefined): Promise<void>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
@@ -67,7 +81,11 @@ export interface ONECore {
     /** For wallet-initiated flows, continues the OpenID4VCI issuance process
      * after completing authorization.
      */
-    continueIssuance(url: string): Promise<ContinueIssuanceResponse>;
+    continueIssuance(
+    /** Starts with the `redirectUri` and is used to continue the Authorization
+     * Code Flow issuance process. For example:
+     * "myapp://example/credential-offer?code=xxx&clientId=myWallet&..." */
+    url: string): Promise<ContinueIssuanceResponse>;
     getPresentationDefinition(proofId: ProofDetail["id"]): Promise<PresentationDefinition>;
     holderRejectProof(interactionId: InvitationResultProofRequest["interactionId"]): Promise<void>;
     holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined): Promise<void>;
