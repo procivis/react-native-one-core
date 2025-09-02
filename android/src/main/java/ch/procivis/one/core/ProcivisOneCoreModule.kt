@@ -1,5 +1,6 @@
 package ch.procivis.one.core
 
+import ch.procivis.one.core.nfc.HCE as NfcHCE
 import ch.procivis.one.core.Deserialize.construct
 import ch.procivis.one.core.DeserializeSpecific.enumList
 import ch.procivis.one.core.Serialize.convertToRN
@@ -50,12 +51,15 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             ubiqu = ubiqu ?: UbiquKeyStorage(this.reactApplicationContext)
             oneCore =
                 initializeCore(
-                    configJson = configJson,
                     dataDirPath = dataDirPath,
-                    nativeSecureElement = AndroidKeyStoreKeyStorage(this.reactApplicationContext),
-                    remoteSecureElement = ubiqu,
-                    bleCentral = AndroidBLECentral(this.reactApplicationContext),
-                    blePeripheral = AndroidBLEPeripheral(this.reactApplicationContext)
+                    params = InitParamsDto(
+                        configJson = configJson,
+                        nativeSecureElement = AndroidKeyStoreKeyStorage(this.reactApplicationContext),
+                        remoteSecureElement = ubiqu,
+                        bleCentral = AndroidBLECentral(this.reactApplicationContext),
+                        blePeripheral = AndroidBLEPeripheral(this.reactApplicationContext),
+                        nfcHce = NfcHCE(this.reactApplicationContext)
+                    )
                 )
             return@syncCall null
         }

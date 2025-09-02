@@ -61,12 +61,15 @@ class ProcivisOneCoreModule: RCTEventEmitter {
         }
       }
       self.core = try initializeCore(
-        configJson: configJson,
         dataDirPath: dataDirPath,
-        nativeSecureElement: SecureEnclaveKeyStorage(),
-        remoteSecureElement: rseKeyStorage,
-        bleCentral: IOSBLECentral(),
-        blePeripheral: IOSBLEPeripheral()
+        params: InitParamsDto(
+          configJson: configJson,
+          nativeSecureElement: SecureEnclaveKeyStorage(),
+          remoteSecureElement: rseKeyStorage,
+          bleCentral: IOSBLECentral(),
+          blePeripheral: IOSBLEPeripheral(),
+          nfcHce: nil
+        )
       )
 
       return nil as NSDictionary?
