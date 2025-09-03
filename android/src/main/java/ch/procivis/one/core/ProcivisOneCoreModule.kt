@@ -63,11 +63,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                         bleCentral = AndroidBLECentral(context),
                         blePeripheral = AndroidBLEPeripheral(context),
                         nfcHce = NfcHCE(context),
-                        nfcScanner = NfcScanner(context, object : ActivityAccessor {
-                            override fun getCurrentActivity(): Activity? {
-                                return context.currentActivity
-                            }
-                        })
+                        nfcScanner = NfcScanner(context, { context.currentActivity })
                     )
                 )
             return@syncCall null
@@ -266,10 +262,24 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     ) {
         asyncCall(promise, scope) {
             val submitCredentials =
-                mutableMapOf<String, PresentationSubmitCredentialRequestBindingDto>()
+                mutableMapOf<String, List<PresentationSubmitCredentialRequestBindingDto>>()
             for (entry in credentials.entryIterator) {
-                val credential = entry.value as ReadableMap
-                submitCredentials[entry.key] = construct(credential)
+                val credentialList = when (val credentialValue = entry.value) {
+                    is ReadableMap -> {
+                        // Single credential object - convert to list
+                        listOf(construct<PresentationSubmitCredentialRequestBindingDto>(credentialValue))
+                    }
+                    is ReadableArray -> {
+                        // Array of credentials - convert each one
+                        (0 until credentialValue.size()).map { index ->
+                            construct<PresentationSubmitCredentialRequestBindingDto>(credentialValue.getMap(index)!!)
+                        }
+                    }
+                    else -> {
+                        throw IllegalArgumentException("Credential value must be either a Map or Array")
+                    }
+                }
+                submitCredentials[entry.key] = credentialList
             }
             getCore().holderSubmitProof(
                 interactionId,
