@@ -181,9 +181,9 @@ sdk:generate_docs:
     - yarn install --frozen-lockfile
     - yarn documentation
   script:
-    - zip -r docs.zip docs/
+    - (cd docs && zip -qr ${CI_PROJECT_DIR}/react-native-docs.zip .)
     # Upload React native docs
-    - az storage blob upload -c ${DOCS_CONTAINER_NAME} -n ${PARENT_PIPELINE_ID}/react-native-docs.zip -f docs.zip
+    - az storage blob upload -c ${DOCS_CONTAINER_NAME} -n ${PARENT_PIPELINE_ID}/react-native-docs.zip -f react-native-docs.zip
   rules:
     - if: $CI_PIPELINE_SOURCE == "pipeline" && $NEW_VERSION && $PARENT_PIPELINE_ID
       when: always
