@@ -69,7 +69,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           bleCentral: IOSBLECentral(),
           blePeripheral: IOSBLEPeripheral(),
           nfcHce: nil,
-          nfcScanner: nil
+          nfcScanner: NFCScanner()
         )
       )
 

@@ -203,7 +203,7 @@ export interface ONECore {
     interactionId: InvitationResultProofRequest["interactionId"],
     credentials: Record<
       PresentationDefinitionRequestedCredential["id"],
-      PresentationSubmitCredentialRequest
+      PresentationSubmitCredentialRequest | PresentationSubmitCredentialRequest[]
     >,
     didId: DidListItem["id"] | undefined,
     identifierId: IdentifierListItem["id"] | undefined,

@@ -124,6 +124,7 @@ export enum PresentationDefinitionRuleTypeEnum {
 export interface PresentationDefinitionRequestedCredential {
   id: string;
   name?: string;
+  multiple?: boolean;
   purpose?: string;
   fields: PresentationDefinitionField[];
   applicableCredentials: Array<CredentialListItem["id"]>;
