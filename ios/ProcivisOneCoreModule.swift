@@ -68,7 +68,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           remoteSecureElement: rseKeyStorage,
           bleCentral: IOSBLECentral(),
           blePeripheral: IOSBLEPeripheral(),
-          nfcHce: nil
+          nfcHce: nil,
+          nfcScanner: nil
         )
       )
 

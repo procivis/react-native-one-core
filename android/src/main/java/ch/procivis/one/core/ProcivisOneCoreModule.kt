@@ -1,6 +1,9 @@
 package ch.procivis.one.core
 
+import android.app.Activity
 import ch.procivis.one.core.nfc.HCE as NfcHCE
+import ch.procivis.one.core.nfc.Scanner as NfcScanner
+import ch.procivis.one.core.nfc.ActivityAccessor
 import ch.procivis.one.core.Deserialize.construct
 import ch.procivis.one.core.DeserializeSpecific.enumList
 import ch.procivis.one.core.Serialize.convertToRN
@@ -47,18 +50,24 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun initialize(configJson: String, promise: Promise) {
         syncCall(promise) {
-            val dataDirPath = this.reactApplicationContext.filesDir.absolutePath
-            ubiqu = ubiqu ?: UbiquKeyStorage(this.reactApplicationContext)
+            val context = this.reactApplicationContext
+            val dataDirPath = context.filesDir.absolutePath
+            ubiqu = ubiqu ?: UbiquKeyStorage(context)
             oneCore =
                 initializeCore(
                     dataDirPath = dataDirPath,
                     params = InitParamsDto(
                         configJson = configJson,
-                        nativeSecureElement = AndroidKeyStoreKeyStorage(this.reactApplicationContext),
+                        nativeSecureElement = AndroidKeyStoreKeyStorage(context),
                         remoteSecureElement = ubiqu,
-                        bleCentral = AndroidBLECentral(this.reactApplicationContext),
-                        blePeripheral = AndroidBLEPeripheral(this.reactApplicationContext),
-                        nfcHce = NfcHCE(this.reactApplicationContext)
+                        bleCentral = AndroidBLECentral(context),
+                        blePeripheral = AndroidBLEPeripheral(context),
+                        nfcHce = NfcHCE(context),
+                        nfcScanner = NfcScanner(context, object : ActivityAccessor {
+                            override fun getCurrentActivity(): Activity? {
+                                return context.currentActivity
+                            }
+                        })
                     )
                 )
             return@syncCall null
@@ -262,7 +271,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 val credential = entry.value as ReadableMap
                 submitCredentials[entry.key] = construct(credential)
             }
-            getCore().holderSubmitProof(interactionId, submitCredentials, didId, identifierId, keyId)
+            getCore().holderSubmitProof(
+                interactionId,
+                submitCredentials,
+                didId,
+                identifierId,
+                keyId
+            )
             return@asyncCall null
         }
     }
