@@ -88,7 +88,7 @@ export interface ONECore {
     url: string): Promise<ContinueIssuanceResponse>;
     getPresentationDefinition(proofId: ProofDetail["id"]): Promise<PresentationDefinition>;
     holderRejectProof(interactionId: InvitationResultProofRequest["interactionId"]): Promise<void>;
-    holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest>, didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined): Promise<void>;
+    holderSubmitProof(interactionId: InvitationResultProofRequest["interactionId"], credentials: Record<PresentationDefinitionRequestedCredential["id"], PresentationSubmitCredentialRequest | PresentationSubmitCredentialRequest[]>, didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined): Promise<void>;
     getCredentials(query: CredentialListQuery): Promise<ItemList<CredentialListItem>>;
     runTask(task: string): Promise<string>;
     deleteProofClaims(proofId: ProofDetail["id"]): Promise<void>;
