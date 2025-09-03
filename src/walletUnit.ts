@@ -5,8 +5,10 @@ export enum WalletProviderTypeEnum {
 }
 
 export enum WalletUnitStatusEnum {
+  PENDING = "PENDING",
   ACTIVE = "ACTIVE",
   REVOKED = "REVOKED",
+  ERROR = "ERROR",
 }
 
 export interface WalletProvider {

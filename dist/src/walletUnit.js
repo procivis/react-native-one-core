@@ -4,6 +4,8 @@ export var WalletProviderTypeEnum;
 })(WalletProviderTypeEnum || (WalletProviderTypeEnum = {}));
 export var WalletUnitStatusEnum;
 (function (WalletUnitStatusEnum) {
+    WalletUnitStatusEnum["PENDING"] = "PENDING";
     WalletUnitStatusEnum["ACTIVE"] = "ACTIVE";
     WalletUnitStatusEnum["REVOKED"] = "REVOKED";
+    WalletUnitStatusEnum["ERROR"] = "ERROR";
 })(WalletUnitStatusEnum || (WalletUnitStatusEnum = {}));

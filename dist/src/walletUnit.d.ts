@@ -3,8 +3,10 @@ export declare enum WalletProviderTypeEnum {
     PROCIVIS_ONE = "PROCIVIS_ONE"
 }
 export declare enum WalletUnitStatusEnum {
+    PENDING = "PENDING",
     ACTIVE = "ACTIVE",
-    REVOKED = "REVOKED"
+    REVOKED = "REVOKED",
+    ERROR = "ERROR"
 }
 export interface WalletProvider {
     url: string;
