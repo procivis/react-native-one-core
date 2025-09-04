@@ -7,6 +7,7 @@ export * from "./did";
 export * from "./identifier";
 export * from "./history";
 export * from "./key";
+export * from "./nfc";
 export * from "./list";
 export * from "./organisation";
 export * from "./proof";
@@ -81,6 +82,8 @@ export const interfaceMethodNames = [
     "holderRegisterWalletUnit",
     "holderRefreshWalletUnit",
     "holderGetWalletUnitAttestation",
+    "nfcReadIsoMdlEngagement",
+    "nfcStopIsoMdlEngagement",
     "uninitialize",
 ];
 // Typescript automatic assertions to keep ONECore and interfaceMethodNames in sync
