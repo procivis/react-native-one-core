@@ -78,6 +78,7 @@ import {
   HolderRefreshWalletUnitRequest,
   HolderRegisterWalletUnitRequest,
 } from "./walletUnit";
+import { NfcScanRequest } from "./nfc";
 
 export * from "./backup";
 export * from "./cache";
@@ -88,6 +89,7 @@ export * from "./did";
 export * from "./identifier";
 export * from "./history";
 export * from "./key";
+export * from "./nfc";
 export * from "./list";
 export * from "./organisation";
 export * from "./proof";
@@ -203,7 +205,8 @@ export interface ONECore {
     interactionId: InvitationResultProofRequest["interactionId"],
     credentials: Record<
       PresentationDefinitionRequestedCredential["id"],
-      PresentationSubmitCredentialRequest | PresentationSubmitCredentialRequest[]
+      | PresentationSubmitCredentialRequest
+      | PresentationSubmitCredentialRequest[]
     >,
     didId: DidListItem["id"] | undefined,
     identifierId: IdentifierListItem["id"] | undefined,
@@ -379,6 +382,19 @@ export interface ONECore {
   ): Promise<HolderAttestationWalletUnitResponse>;
 
   /**
+   * Start scanning for ISO 18013-5 NFC engagement
+   *
+   * @param {NfcScanRequest} request system overlay messages to be displayed (iOS only)
+   * @returns {string} encoded NFC engagement to be used for {@link CreateProofRequest.isoMdlEngagement}
+   */
+  nfcReadIsoMdlEngagement(request: NfcScanRequest): Promise<string>;
+
+  /**
+   * Explicitly stop scan started via {@link nfcReadIsoMdlEngagement}
+   */
+  nfcStopIsoMdlEngagement(): Promise<void>;
+
+  /**
    * Uninitialize the core instance
    *
    * Any following calls on this instance will fail.
@@ -456,6 +472,8 @@ export const interfaceMethodNames = [
   "holderRegisterWalletUnit",
   "holderRefreshWalletUnit",
   "holderGetWalletUnitAttestation",
+  "nfcReadIsoMdlEngagement",
+  "nfcStopIsoMdlEngagement",
   "uninitialize",
 ] as const;
 

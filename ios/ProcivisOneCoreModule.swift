@@ -898,6 +898,28 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(nfcReadIsoMdlEngagement:resolver:rejecter:)
+  func nfcReadIsoMdlEngagement(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      return try await self.getCore().nfcReadIsoMdlEngagement(request: try deserialize(request))
+    }
+  }
+
+  @objc(nfcStopIsoMdlEngagement:rejecter:)
+  func nfcStopIsoMdlEngagement(
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      try await self.getCore().nfcStopIsoMdlEngagement()
+      return nil as NSDictionary?
+    }
+  }
+
   @objc(uninitialize:resolver:rejecter:)
   func uninitialize(
     deleteData: Bool,

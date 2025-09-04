@@ -639,6 +639,21 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun nfcReadIsoMdlEngagement(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            return@asyncCall getCore().nfcReadIsoMdlEngagement(construct(request))
+        }
+    }
+
+    @ReactMethod
+    fun nfcStopIsoMdlEngagement(promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().nfcStopIsoMdlEngagement()
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun uninitialize(deleteData: Boolean, promise: Promise) {
         asyncCall(promise, scope) {
             getCore().uninitialize(deleteData)
