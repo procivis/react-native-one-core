@@ -13,6 +13,7 @@ import { CacheType } from "./cache";
 import { CreateOrganisationRequest, UpsertOrganisationRequest } from "./organisation";
 import { CreateIdentifierRequest, IdentifierDetail, IdentifierListItem, IdentifierListQuery } from "./identifier";
 import { HolderAttestationWalletUnitResponse, HolderRefreshWalletUnitRequest, HolderRegisterWalletUnitRequest } from "./walletUnit";
+import { NfcScanRequest } from "./nfc";
 export * from "./backup";
 export * from "./cache";
 export * from "./config";
@@ -22,6 +23,7 @@ export * from "./did";
 export * from "./identifier";
 export * from "./history";
 export * from "./key";
+export * from "./nfc";
 export * from "./list";
 export * from "./organisation";
 export * from "./proof";
@@ -155,6 +157,17 @@ export interface ONECore {
     holderRefreshWalletUnit(request: HolderRefreshWalletUnitRequest): Promise<void>;
     holderGetWalletUnitAttestation(organisationId: string): Promise<HolderAttestationWalletUnitResponse>;
     /**
+     * Start scanning for ISO 18013-5 NFC engagement
+     *
+     * @param {NfcScanRequest} request system overlay messages to be displayed (iOS only)
+     * @returns {string} encoded NFC engagement to be used for {@link CreateProofRequest.isoMdlEngagement}
+     */
+    nfcReadIsoMdlEngagement(request: NfcScanRequest): Promise<string>;
+    /**
+     * Explicitly stop scan started via {@link nfcReadIsoMdlEngagement}
+     */
+    nfcStopIsoMdlEngagement(): Promise<void>;
+    /**
      * Uninitialize the core instance
      *
      * Any following calls on this instance will fail.
@@ -163,4 +176,4 @@ export interface ONECore {
      */
     uninitialize(deleteData: boolean): Promise<void>;
 }
-export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "initiateIssuance", "continueIssuance", "getPresentationDefinition", "holderRejectProof", "holderSubmitProof", "getCredentials", "runTask", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "resolveTrustEntityByIdentifier", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "holderRegisterWalletUnit", "holderRefreshWalletUnit", "holderGetWalletUnitAttestation", "uninitialize"];
+export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "initiateIssuance", "continueIssuance", "getPresentationDefinition", "holderRejectProof", "holderSubmitProof", "getCredentials", "runTask", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "resolveTrustEntityByIdentifier", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "holderRegisterWalletUnit", "holderRefreshWalletUnit", "holderGetWalletUnitAttestation", "nfcReadIsoMdlEngagement", "nfcStopIsoMdlEngagement", "uninitialize"];
