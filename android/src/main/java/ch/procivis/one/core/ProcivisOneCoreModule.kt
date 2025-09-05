@@ -1,9 +1,7 @@
 package ch.procivis.one.core
 
-import android.app.Activity
 import ch.procivis.one.core.nfc.HCE as NfcHCE
 import ch.procivis.one.core.nfc.Scanner as NfcScanner
-import ch.procivis.one.core.nfc.ActivityAccessor
 import ch.procivis.one.core.Deserialize.construct
 import ch.procivis.one.core.DeserializeSpecific.enumList
 import ch.procivis.one.core.Serialize.convertToRN
@@ -63,7 +61,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                         bleCentral = AndroidBLECentral(context),
                         blePeripheral = AndroidBLEPeripheral(context),
                         nfcHce = NfcHCE(context),
-                        nfcScanner = NfcScanner(context, { context.currentActivity })
+                        nfcScanner = NfcScanner(context) { context.currentActivity }
                     )
                 )
             return@syncCall null
@@ -387,9 +385,10 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun proposeProof(exchange: String, organisationId: String, promise: Promise) {
+    fun proposeProof(exchange: String, organisationId: String, engagement: ReadableArray, promise: Promise) {
         asyncCall(promise, scope) {
-            val result = getCore().proposeProof(exchange, organisationId)
+            val engagement = DeserializeSpecific.ids(engagement)
+            val result = getCore().proposeProof(exchange, organisationId, engagement)
             return@asyncCall convertToRN(result)
         }
     }

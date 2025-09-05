@@ -266,7 +266,8 @@ export interface ONECore {
 
   proposeProof(
     exchange: string,
-    organisationId: string
+    organisationId: string,
+    engagement: string[]
   ): Promise<ProposeProofResponse>;
 
   createProofSchema(
