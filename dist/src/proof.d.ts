@@ -45,6 +45,7 @@ export interface ProofDetail {
     completedDate?: string;
     claimsRemovedAt?: string;
     profile?: string;
+    engagement?: string;
 }
 export interface ProofListItem {
     id: string;
@@ -60,6 +61,7 @@ export interface ProofListItem {
     schema?: ProofSchemaListItem;
     retainUntilDate?: string;
     profile?: string;
+    engagement?: string;
 }
 export interface CreateProofRequest {
     proofSchemaId: ProofSchemaListItem["id"];
@@ -72,6 +74,7 @@ export interface CreateProofRequest {
     isoMdlEngagement?: string;
     transport?: string[];
     profile?: string;
+    engagement?: string;
 }
 export interface ScanToVerifyRequest {
     credential: string;
@@ -166,7 +169,7 @@ export interface ProofListQuery extends ListQuery {
 export interface ProposeProofResponse {
     proofId: string;
     interactionId: string;
-    url: string;
+    url?: string;
 }
 export interface InvitationResultProofRequest {
     interactionId: string;
