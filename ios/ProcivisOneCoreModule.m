@@ -190,6 +190,7 @@ RCT_EXTERN_METHOD(deleteProof:(NSString *)proofId
 
 RCT_EXTERN_METHOD(proposeProof:(NSString *)exchange
                   organisationId:(NSString *)organisationId
+                  engagement:(NSArray *)engagement
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

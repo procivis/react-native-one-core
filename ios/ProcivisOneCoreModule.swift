@@ -583,17 +583,19 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(proposeProof:organisationId:resolver:rejecter:)
+  @objc(proposeProof:organisationId:engagement:resolver:rejecter:)
   func proposeProof(
     exchange: String,
     organisationId: String,
+    engagement: NSArray,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
       let result = try await self.getCore().proposeProof(
         exchange: exchange,
-        organisationId: organisationId
+        organisationId: organisationId,
+        engagement: try deserialize(engagement)
       )
       return try serializeAny(result)
     }
