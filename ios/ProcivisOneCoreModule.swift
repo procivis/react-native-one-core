@@ -871,8 +871,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      try await self.getCore().holderRegisterWalletUnit(request: try deserialize(request))
-      return nil as NSDictionary?
+      let result = try await self.getCore().holderRegisterWalletUnit(request: try deserialize(request))
+      return try serializeAny(result)
     }
   }
 
