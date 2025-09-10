@@ -63,6 +63,12 @@ export interface ProofListItem {
     profile?: string;
     engagement?: string;
 }
+/** If protocol is `ISO_MDL`, specify the device engagement
+ * type by referencing an entry from `verificationEngagement`
+ * of your configurationi. `isoMdlEngagement` accepts either
+ * QR code content (for QR device engagement) or NFC engagement
+ * parameters from {@link nfcReadIsoMdlEngagement}.
+ */
 export interface CreateProofRequest {
     proofSchemaId: ProofSchemaListItem["id"];
     verifierDidId?: DidListItem["id"];
