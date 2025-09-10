@@ -243,6 +243,7 @@ export interface ONECore {
     credentialSchemaId: CredentialSchema["id"]
   ): Promise<void>;
 
+  /** For verifiers, creates a proof request. */
   createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
 
   shareProof(
@@ -264,6 +265,10 @@ export interface ONECore {
 
   deleteProof(proofId: ProofDetail["id"]): Promise<void>;
 
+  /** For wallets, initiates device engagement for offline flows.
+   * Reference the `verificationEngagement` entry of your configuration
+   * for your options for `engagement`.
+   */
   proposeProof(
     exchange: string,
     organisationId: string,
