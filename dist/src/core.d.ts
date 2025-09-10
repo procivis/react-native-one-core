@@ -100,6 +100,7 @@ export interface ONECore {
     getCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<CredentialSchemaDetail>;
     getCredentialSchemas(query: CredentialSchemaListQuery): Promise<ItemList<CredentialSchema>>;
     deleteCredentialSchema(credentialSchemaId: CredentialSchema["id"]): Promise<void>;
+    /** For verifiers, creates a proof request. */
     createProof(request: CreateProofRequest): Promise<ProofDetail["id"]>;
     shareProof(proofId: ProofDetail["id"], request: ShareProofRequest): Promise<ShareProofResponse>;
     shareProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ShareProofSchemaResponse>;
@@ -107,6 +108,10 @@ export interface ONECore {
     getProof(proofId: ProofDetail["id"]): Promise<ProofDetail>;
     getProofs(query: ProofListQuery): Promise<ItemList<ProofListItem>>;
     deleteProof(proofId: ProofDetail["id"]): Promise<void>;
+    /** For wallets, initiates device engagement for offline flows.
+     * Reference the `verificationEngagement` entry of your configuration
+     * for your options for `engagement`.
+     */
     proposeProof(exchange: string, organisationId: string, engagement: string[]): Promise<ProposeProofResponse>;
     createProofSchema(request: CreateProofSchemaRequest): Promise<ProofSchema["id"]>;
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
