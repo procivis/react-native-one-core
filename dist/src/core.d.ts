@@ -12,7 +12,7 @@ import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEn
 import { CacheType } from "./cache";
 import { CreateOrganisationRequest, UpsertOrganisationRequest } from "./organisation";
 import { CreateIdentifierRequest, IdentifierDetail, IdentifierListItem, IdentifierListQuery } from "./identifier";
-import { HolderAttestationWalletUnitResponse, HolderRefreshWalletUnitRequest, HolderRegisterWalletUnitRequest } from "./walletUnit";
+import { HolderAttestationWalletUnitResponse, HolderRefreshWalletUnitRequest, HolderRegisterWalletUnitRequest, HolderRegisterWalletUnitResponse } from "./walletUnit";
 import { NfcScanRequest } from "./nfc";
 export * from "./backup";
 export * from "./cache";
@@ -158,7 +158,7 @@ export interface ONECore {
      */
     rollbackImport(): Promise<void>;
     resolveJsonldContext(url: string): Promise<ResolveJsonLdContextResponse>;
-    holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<void>;
+    holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<HolderRegisterWalletUnitResponse>;
     holderRefreshWalletUnit(request: HolderRefreshWalletUnitRequest): Promise<void>;
     holderGetWalletUnitAttestation(organisationId: string): Promise<HolderAttestationWalletUnitResponse>;
     /**

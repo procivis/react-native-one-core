@@ -77,6 +77,7 @@ import {
   HolderAttestationWalletUnitResponse,
   HolderRefreshWalletUnitRequest,
   HolderRegisterWalletUnitRequest,
+  HolderRegisterWalletUnitResponse,
 } from "./walletUnit";
 import { NfcScanRequest } from "./nfc";
 
@@ -377,7 +378,7 @@ export interface ONECore {
 
   holderRegisterWalletUnit(
     request: HolderRegisterWalletUnitRequest
-  ): Promise<void>;
+  ): Promise<HolderRegisterWalletUnitResponse>;
 
   holderRefreshWalletUnit(
     request: HolderRefreshWalletUnitRequest

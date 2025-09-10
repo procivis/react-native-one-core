@@ -12,10 +12,15 @@ export interface WalletProvider {
     url: string;
     type: WalletProviderTypeEnum;
     name: string;
+    appIntegrityCheckRequired: boolean;
 }
 export interface HolderRegisterWalletUnitRequest {
     organisationId: string;
     walletProvider: WalletProvider;
+    keyType: KeyListItem["keyType"];
+}
+export interface HolderRegisterWalletUnitResponse {
+    id: string;
     keyId: KeyListItem["id"];
 }
 export interface HolderRefreshWalletUnitRequest {
