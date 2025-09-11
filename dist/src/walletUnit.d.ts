@@ -25,6 +25,7 @@ export interface HolderRegisterWalletUnitResponse {
 }
 export interface HolderRefreshWalletUnitRequest {
     organisationId: string;
+    appIntegrityCheckRequired: boolean;
 }
 export interface HolderAttestationWalletUnitResponse {
     id: string;
