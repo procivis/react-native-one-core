@@ -146,5 +146,6 @@ export interface Config {
     cacheEntities: ConfigEntities;
     task: ConfigEntities;
     credentialIssuer: ConfigEntities<undefined, {}>;
+    walletProvider: ConfigEntities;
 }
 export {};
