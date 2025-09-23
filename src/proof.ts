@@ -193,6 +193,13 @@ export interface ProofListQuery extends ListQuery {
   completedDateBefore?: string;
 }
 
+export interface ProposeProofRequest {
+  protocol: string;
+  organisationId: string;
+  engagement: string[];
+  uiMessage?: string;
+}
+
 export interface ProposeProofResponse {
   proofId: string;
   interactionId: string;
