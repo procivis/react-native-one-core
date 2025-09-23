@@ -60,6 +60,12 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           rseKeyStorage = RSEKeyStorage()
         }
       }
+
+      var nfcHce: NfcHce? = nil
+      if #available(iOS 17.4, *) {
+        nfcHce = NFCHCE()
+      }
+
       self.core = try initializeCore(
         dataDirPath: dataDirPath,
         params: InitParamsDto(
@@ -68,7 +74,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           remoteSecureElement: rseKeyStorage,
           bleCentral: IOSBLECentral(),
           blePeripheral: IOSBLEPeripheral(),
-          nfcHce: nil,
+          nfcHce: nfcHce,
           nfcScanner: NFCScanner()
         )
       )
@@ -583,20 +589,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(proposeProof:organisationId:engagement:resolver:rejecter:)
+  @objc(proposeProof:resolver:rejecter:)
   func proposeProof(
-    exchange: String,
-    organisationId: String,
-    engagement: NSArray,
+    request: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().proposeProof(
-        exchange: exchange,
-        organisationId: organisationId,
-        engagement: try deserialize(engagement)
-      )
+      let result = try await self.getCore().proposeProof(request: try deserialize(request))
       return try serializeAny(result)
     }
   }

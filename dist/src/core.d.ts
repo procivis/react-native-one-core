@@ -6,7 +6,7 @@ import { DidListItem, DidListQuery, DidRequest } from "./did";
 import { HistoryListItem, HistoryListQuery } from "./history";
 import { KeyRequest } from "./key";
 import { ItemList } from "./list";
-import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
+import { CreateProofRequest, InvitationResultProofRequest, PresentationDefinition, PresentationDefinitionRequestedCredential, PresentationSubmitCredentialRequest, ProofDetail, ProofListItem, ProofListQuery, ProposeProofRequest, ProposeProofResponse, ShareProofRequest, ShareProofResponse } from "./proof";
 import { CreateProofSchemaRequest, ImportProofSchemaRequest, ProofSchema, ProofSchemaListItem, ProofSchemaListQuery, ShareProofSchemaResponse } from "./proofSchema";
 import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEntityRequest, RemoteTrustEntity, ResolvedIdentifierTrustEntity, ResolveTrustEntityByIdentifierRequest, TrustAnchor, TrustAnchorListItem, TrustAnchorListQuery, TrustEntity, TrustEntityListItem, TrustEntityListQuery, UpdateRemoteTrustEntityRequest } from "./trust";
 import { CacheType } from "./cache";
@@ -112,7 +112,7 @@ export interface ONECore {
      * Reference the `verificationEngagement` entry of your configuration
      * for your options for `engagement`.
      */
-    proposeProof(exchange: string, organisationId: string, engagement: string[]): Promise<ProposeProofResponse>;
+    proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
     createProofSchema(request: CreateProofSchemaRequest): Promise<ProofSchema["id"]>;
     getProofSchemas(query: ProofSchemaListQuery): Promise<ItemList<ProofSchemaListItem>>;
     getProofSchema(proofSchemaId: ProofSchema["id"]): Promise<ProofSchema>;

@@ -385,10 +385,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun proposeProof(exchange: String, organisationId: String, engagement: ReadableArray, promise: Promise) {
+    fun proposeProof(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val engagement = DeserializeSpecific.ids(engagement)
-            val result = getCore().proposeProof(exchange, organisationId, engagement)
+            val result = getCore().proposeProof(construct(request))
             return@asyncCall convertToRN(result)
         }
     }

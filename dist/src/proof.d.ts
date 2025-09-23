@@ -172,6 +172,12 @@ export interface ProofListQuery extends ListQuery {
     /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
     completedDateBefore?: string;
 }
+export interface ProposeProofRequest {
+    protocol: string;
+    organisationId: string;
+    engagement: string[];
+    uiMessage?: string;
+}
 export interface ProposeProofResponse {
     proofId: string;
     interactionId: string;

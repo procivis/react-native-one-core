@@ -44,6 +44,13 @@ const config = {
       },
     },
   },
+  verificationEngagement: {
+    NFC: {
+      display: "verificationEngagement.nfc",
+      enabled: true,
+      order: 2,
+    },
+  },
 };
 
 export default function App(): JSX.Element {
