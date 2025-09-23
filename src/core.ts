@@ -35,6 +35,7 @@ import {
   ProofDetail,
   ProofListItem,
   ProofListQuery,
+  ProposeProofRequest,
   ProposeProofResponse,
   ShareProofRequest,
   ShareProofResponse,
@@ -270,11 +271,7 @@ export interface ONECore {
    * Reference the `verificationEngagement` entry of your configuration
    * for your options for `engagement`.
    */
-  proposeProof(
-    exchange: string,
-    organisationId: string,
-    engagement: string[]
-  ): Promise<ProposeProofResponse>;
+  proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
 
   createProofSchema(
     request: CreateProofSchemaRequest
