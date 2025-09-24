@@ -3,6 +3,7 @@ import { Button, SafeAreaView, ScrollView, Text } from "react-native";
 import {
   ONECore,
   initializeCore,
+  isNfcHceSupported,
   Ubiqu,
 } from "@procivis/react-native-one-core";
 
@@ -67,11 +68,13 @@ export default function App(): JSX.Element {
 
   useEffect(() => {
     if (oneCore) {
-      oneCore
-        .getVersion()
-        .then((version) =>
-          setText(`ONE version: ${JSON.stringify(version, undefined, 2)}`)
-        )
+      Promise.all([oneCore.getVersion(), isNfcHceSupported()])
+        .then(([version, nfcHceSupported]) => {
+          const versionStr = JSON.stringify(version, undefined, 2);
+          setText(
+            `ONE version: ${versionStr}\nNFC HCE supported: ${nfcHceSupported}`
+          );
+        })
         .catch((e) => setText(`Error: ${e}`));
     }
   }, [oneCore]);
@@ -130,39 +133,47 @@ export default function App(): JSX.Element {
   const generateIdentifier = useCallback(async () => {
     setText("Generating identifier...");
     const organisationId = await oneCore!.createOrganisation({});
-    await oneCore!.generateKey({
-      organisationId,
-      keyType: "EDDSA",
-      keyParams: {},
-      name: "identifier key",
-      storageType: "INTERNAL",
-      storageParams: {},
-    }).then(async keyId => {
-      await oneCore!.createIdentifier({
+    await oneCore!
+      .generateKey({
         organisationId,
-        name: "test identifier",
-        did: {
-          method: "KEY",
-          params: {},
-          keys: {
-            authentication: [keyId],
-            assertionMethod: [keyId],
-            keyAgreement: [keyId],
-            capabilityInvocation: [keyId],
-            capabilityDelegation: [keyId],
-          },
-        },
-      }).catch(e => {
-        setText(`Error: ${e}`)
-      }).then(async (identifierId) => {
-        await oneCore!.getIdentifier(identifierId!).then(res => {
-          setText(`Identifier created: ${JSON.stringify(res, undefined, 2)}`)
-        })
+        keyType: "EDDSA",
+        keyParams: {},
+        name: "identifier key",
+        storageType: "INTERNAL",
+        storageParams: {},
       })
-    }).catch(e => {
-      setText(`Error: ${e}`)
-    })
-  }, [oneCore])
+      .then(async (keyId) => {
+        await oneCore!
+          .createIdentifier({
+            organisationId,
+            name: "test identifier",
+            did: {
+              method: "KEY",
+              params: {},
+              keys: {
+                authentication: [keyId],
+                assertionMethod: [keyId],
+                keyAgreement: [keyId],
+                capabilityInvocation: [keyId],
+                capabilityDelegation: [keyId],
+              },
+            },
+          })
+          .catch((e) => {
+            setText(`Error: ${e}`);
+          })
+          .then(async (identifierId) => {
+            await oneCore!.getIdentifier(identifierId!).then((res) => {
+              setText(
+                `Identifier created: ${JSON.stringify(res, undefined, 2)}`
+              );
+            });
+          });
+      })
+      .catch((e) => {
+        setText(`Error: ${e}`);
+      });
+  }, [oneCore]);
 
   const changePin = useCallback(async () => {
     setText("Changing PIN...");
@@ -249,7 +260,10 @@ export default function App(): JSX.Element {
         <Text>{text}</Text>
         {oneCore && (
           <>
-            <Button title="Create identifier" onPress={generateIdentifier}></Button>
+            <Button
+              title="Create identifier"
+              onPress={generateIdentifier}
+            ></Button>
             <Button title="Generate Ubiqu Key" onPress={generateKey}></Button>
             <Button title="Change PIN" onPress={changePin}></Button>
             <Button title="Get Biometry setting" onPress={getBiometry}></Button>
