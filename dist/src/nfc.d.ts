@@ -3,3 +3,4 @@ export interface NfcScanRequest {
     failureMessage?: string;
     successMessage?: string;
 }
+export declare const isNfcHceSupported: () => Promise<boolean>;

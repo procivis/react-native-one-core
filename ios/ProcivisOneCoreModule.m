@@ -295,12 +295,15 @@ RCT_EXTERN_METHOD(nfcReadIsoMdlEngagement:(NSDictionary *)request
 RCT_EXTERN_METHOD(nfcStopIsoMdlEngagement:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(deleteCache:(NSArray *)types
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(uninitialize:(BOOL *)deleteData
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(deleteCache:(NSArray *)types
-                  resolver:(RCTPromiseResolveBlock)resolve
+RCT_EXTERN_METHOD(isNfcHceSupported:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(changeRSEPin:(RCTPromiseResolveBlock)resolve

@@ -22,6 +22,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     override fun getName() = "ProcivisOneCoreModule"
 
     private var oneCore: OneCoreBindingInterface? = null
+    private var nfcHce: NfcHce = NfcHCE(reactContext)
     private val scope = CoroutineScope(EmptyCoroutineContext)
 
     private fun getCore(): OneCoreBindingInterface {
@@ -60,7 +61,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                         remoteSecureElement = ubiqu,
                         bleCentral = AndroidBLECentral(context),
                         blePeripheral = AndroidBLEPeripheral(context),
-                        nfcHce = NfcHCE(context),
+                        nfcHce = nfcHce,
                         nfcScanner = NfcScanner(context) { context.currentActivity }
                     )
                 )
@@ -660,6 +661,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 ubiqu?.reset()
             }
             return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun isNfcHceSupported(promise: Promise) {
+        asyncCall(promise, scope) {
+            return@asyncCall nfcHce.isSupported()
         }
     }
 
