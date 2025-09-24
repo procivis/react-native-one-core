@@ -13,6 +13,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   private static let TAG = "ProcivisOneCoreModule"
   private var core: OneCoreBindingProtocol? = nil
   private var rseKeyStorage: NativeKeyStorage? = nil
+  private var nfcHce: NfcHce? = nil
+
+  public override init() {
+    super.init()
+    if #available(iOS 17.4, *) {
+      nfcHce = NFCHCE()
+    }
+  }
 
   @objc(initialize:resolver:rejecter:)
   func initialize(
@@ -59,11 +67,6 @@ class ProcivisOneCoreModule: RCTEventEmitter {
            ubiquEnabledFlag == true {
           rseKeyStorage = RSEKeyStorage()
         }
-      }
-
-      var nfcHce: NfcHce? = nil
-      if #available(iOS 17.4, *) {
-        nfcHce = NFCHCE()
       }
 
       self.core = try initializeCore(
@@ -935,6 +938,19 @@ class ProcivisOneCoreModule: RCTEventEmitter {
         try await rseKeyStorage.delete()
       }
       return nil as NSDictionary?
+    }
+  }
+
+  @objc(isNfcHceSupported:rejecter:)
+  func isNfcHceSupported(
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      if let nfcHce = self.nfcHce {
+        return try await nfcHce.isSupported()
+      }
+      return false
     }
   }
 
