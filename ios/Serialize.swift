@@ -16,15 +16,15 @@ func serializeAny<T: Encodable>(_ value: T) throws -> Any {
 
 // Enum values serialization
 func serializeEnumValue<T>(value: T) -> String {
-  return String(describing: value).snakeCased()
+    return String(describing: value).snakeCased()
 }
 
 private let snakeCaseRegex = try! NSRegularExpression(pattern: "([a-z0-9])([A-Z])", options: [])
 extension String {
-  func snakeCased() -> String {
-    let range = NSRange(location: 0, length: count)
-    return snakeCaseRegex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$1_$2").uppercased()
-  }
+    func snakeCased() -> String {
+        let range = NSRange(location: 0, length: count)
+        return snakeCaseRegex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$1_$2").uppercased()
+    }
 }
 
 private func serializeSpecific(_ value: Encodable) throws -> Any? {
@@ -40,22 +40,13 @@ private func serializeSpecific(_ value: Encodable) throws -> Any? {
     case let data as HandleInvitationResponseBindingEnum:
         return try serialize(invitationResponse: data)
     case let data as CredentialQueryResponseBindingDto:
-      return try serialize(credentialQuery: data)
+        return try serialize(credentialQuery: data)
+    case let data as PresentationDefinitionV2ClaimValueBindingDto:
+        return try serialize(presentationDefinitionV2ClaimValue: data)
 
     default:
         return nil
     }
-}
-
-private func serialize(credentialQuery: CredentialQueryResponseBindingDto) throws -> Any {
-    var result: [String: Any] = ["multiple": credentialQuery.multiple]
-    switch (credentialQuery.credentialOrFailureHint) {
-    case let .applicableCredentials(applicableCredentials: value):
-        result["applicableCredentials"] = try serializeAny(value);
-    case let .failureHint(failureHint: value):
-        result["failureHint"] = try serializeAny(value);
-    }
-    return result as NSDictionary;
 }
 
 private func serialize(historyMetadata: HistoryMetadataBinding) throws -> Any {
@@ -120,7 +111,7 @@ private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) 
             result["txCode"] = try serializeAny(txCode)
         }
         return result as NSDictionary;
-        
+
     case let .proofRequest(interactionId, proofId):
         return [
             "interactionId": interactionId,
@@ -132,5 +123,31 @@ private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) 
             "interactionId": interactionId,
             "authorizationCodeFlowUrl": authorizationCodeFlowUrl
         ];
+    }
+}
+
+private func serialize(credentialQuery: CredentialQueryResponseBindingDto) throws -> Any {
+    var result: [String: Any] = ["multiple": credentialQuery.multiple]
+    switch (credentialQuery.credentialOrFailureHint) {
+    case let .applicableCredentials(applicableCredentials: value):
+        result["applicableCredentials"] = try serializeAny(value);
+    case let .failureHint(failureHint: value):
+        result["failureHint"] = try serializeAny(value);
+    }
+    return result as NSDictionary;
+}
+
+private func serialize(presentationDefinitionV2ClaimValue: PresentationDefinitionV2ClaimValueBindingDto) throws -> Any {
+    switch (presentationDefinitionV2ClaimValue) {
+    case let .boolean(value):
+        return value;
+    case let .float(value):
+        return value;
+    case let .integer(value):
+        return NSNumber(value: value);
+    case let .string(value):
+        return value;
+    case .nested(value: let values):
+        return try values.map { try serializeAny($0) }
     }
 }
