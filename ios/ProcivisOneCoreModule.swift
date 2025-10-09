@@ -303,6 +303,18 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(getPresentationDefinitionV2:resolver:rejecter:)
+  func getPresentationDefinitionV2(
+    proofId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().getPresentationDefinitionV2(proofId: proofId)
+      return try serializeAny(result)
+    }
+  }
+
   @objc(holderRejectProof:resolver:rejecter:)
   func rejectProof(
     interactionId: String,
@@ -332,6 +344,22 @@ class ProcivisOneCoreModule: RCTEventEmitter {
         didId: didId,
         identifierId: identifierId,
         keyId: keyId
+      )
+      return nil as NSDictionary?
+    }
+  }
+
+  @objc(holderSubmitProofV2:submission:resolver:rejecter:)
+  func holderSubmitProofV2(
+    interactionId: String,
+    submission: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      try await self.getCore().holderSubmitProofV2(
+        interactionId: interactionId,
+        submission: try deserialize(submission),
       )
       return nil as NSDictionary?
     }

@@ -243,6 +243,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getPresentationDefinitionV2(proofId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val presentationDefinition = getCore().getPresentationDefinitionV2(proofId)
+            return@asyncCall convertToRN(presentationDefinition)
+        }
+    }
+
+    @ReactMethod
     fun holderRejectProof(interactionId: String, promise: Promise) {
         asyncCall(promise, scope) {
             getCore().holderRejectProof(interactionId)
@@ -286,6 +294,49 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 didId,
                 identifierId,
                 keyId
+            )
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun holderSubmitProofV2(
+        interactionId: String,
+        credentials: ReadableMap,
+        promise: Promise
+    ) {
+        asyncCall(promise, scope) {
+            val submission =
+                mutableMapOf<String, List<PresentationSubmitV2CredentialRequestBindingDto>>()
+            for (entry in credentials.entryIterator) {
+                val credentialList = when (val credentialValue = entry.value) {
+                    is ReadableMap -> {
+                        // Single credential object - convert to list
+                        listOf(
+                            construct<PresentationSubmitV2CredentialRequestBindingDto>(
+                                credentialValue
+                            )
+                        )
+                    }
+
+                    is ReadableArray -> {
+                        // Array of credentials - convert each one
+                        (0 until credentialValue.size()).map { index ->
+                            construct<PresentationSubmitV2CredentialRequestBindingDto>(
+                                credentialValue.getMap(index)!!
+                            )
+                        }
+                    }
+
+                    else -> {
+                        throw IllegalArgumentException("Credential value must be either a Map or Array")
+                    }
+                }
+                submission[entry.key] = credentialList
+            }
+            getCore().holderSubmitProofV2(
+                interactionId,
+                submission
             )
             return@asyncCall null
         }

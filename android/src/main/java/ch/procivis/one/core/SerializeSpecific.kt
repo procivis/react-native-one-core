@@ -12,6 +12,7 @@ object SerializeSpecific {
                 HistoryMetadataBinding::class.java,
                 ClaimBindingDto::class.java,
                 ProofRequestClaimBindingDto::class.java,
+                CredentialQueryResponseRestDto::class.java
             )
 
         fun isCustomConversionType(input: Any?): Boolean {
@@ -33,6 +34,9 @@ object SerializeSpecific {
             if (input is ProofRequestClaimBindingDto) {
                 return proofClaim(input)
             }
+            if (input is CredentialQueryResponseRestDto) {
+                return credentialQuery(input)
+            }
             throw IllegalArgumentException("Invalid map conversion: $input")
         }
 
@@ -51,6 +55,21 @@ object SerializeSpecific {
                 }
 
             }
+        }
+
+        private fun credentialQuery(dto: CredentialQueryResponseRestDto): ReadableMap {
+            val result = Arguments.createMap()
+            result.putBoolean("multiple", dto.multiple)
+            when (val value = dto.credentialOrFailureHint) {
+                is ApplicableCredentialOrFailureHintBindingEnum.ApplicableCredentials -> result.putArray(
+                    "applicableCredentials",
+                    convertToRN(value.applicableCredentials) as ReadableArray
+                )
+                is ApplicableCredentialOrFailureHintBindingEnum.FailureHint -> {
+                    result.putMap("failureHint", convertToRN(value.failureHint) as ReadableMap)
+                }
+            }
+            return result
         }
 
         private fun claim(c: ClaimBindingDto): ReadableMap {
