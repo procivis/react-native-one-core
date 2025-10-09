@@ -39,10 +39,23 @@ private func serializeSpecific(_ value: Encodable) throws -> Any? {
         return try serialize(proofRequestClaimValue: data)
     case let data as HandleInvitationResponseBindingEnum:
         return try serialize(invitationResponse: data)
-        
+    case let data as CredentialQueryResponseRestDto:
+      return try serialize(credentialQuery: data)
+
     default:
         return nil
     }
+}
+
+private func serialize(credentialQuery: CredentialQueryResponseRestDto) throws -> Any {
+    var result: [String: Any] = ["multiple": credentialQuery.multiple]
+    switch (credentialQuery.credentialOrFailureHint) {
+    case let .applicableCredentials(applicableCredentials: value):
+        result["applicableCredentials"] = try serializeAny(value);
+    case let .failureHint(failureHint: value):
+        result["failureHint"] = try serializeAny(value);
+    }
+    return result as NSDictionary;
 }
 
 private func serialize(historyMetadata: HistoryMetadataBinding) throws -> Any {

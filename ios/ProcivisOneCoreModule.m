@@ -91,6 +91,10 @@ RCT_EXTERN_METHOD(getPresentationDefinition:(NSString *)proofId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getPresentationDefinitionV2:(NSString *)proofId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(holderRejectProof:(NSString *)interactionId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
@@ -100,6 +104,11 @@ RCT_EXTERN_METHOD(holderSubmitProof:(NSString *)interactionId
                   didId:(NSString *)didId
                   identifierId:(NSString *)identifierId
                   keyId:(NSString *)keyId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(holderSubmitProofV2:(NSString *)interactionId
+                  submission:(NSDictionary *)submission
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

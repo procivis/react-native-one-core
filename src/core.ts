@@ -30,8 +30,8 @@ import {
   CreateProofRequest,
   InvitationResultProofRequest,
   PresentationDefinition,
-  PresentationDefinitionRequestedCredential,
-  PresentationSubmitCredentialRequest,
+  PresentationDefinitionRequestedCredential, PresentationDefinitionV2,
+  PresentationSubmitCredentialRequest, PresentationSubmitV2CredentialRequest,
   ProofDetail,
   ProofListItem,
   ProofListQuery,
@@ -199,6 +199,10 @@ export interface ONECore {
     proofId: ProofDetail["id"]
   ): Promise<PresentationDefinition>;
 
+  getPresentationDefinitionV2(
+    proofId: ProofDetail["id"]
+  ): Promise<PresentationDefinitionV2>;
+
   holderRejectProof(
     interactionId: InvitationResultProofRequest["interactionId"]
   ): Promise<void>;
@@ -213,6 +217,14 @@ export interface ONECore {
     didId: DidListItem["id"] | undefined,
     identifierId: IdentifierListItem["id"] | undefined,
     keyId: string | undefined
+  ): Promise<void>;
+
+  holderSubmitProofV2(
+    interactionId: InvitationResultProofRequest["interactionId"],
+    credentials: Record<string,
+      | PresentationSubmitV2CredentialRequest
+      | PresentationSubmitV2CredentialRequest[]
+    >,
   ): Promise<void>;
 
   getCredentials(
@@ -427,8 +439,10 @@ export const interfaceMethodNames = [
   "initiateIssuance",
   "continueIssuance",
   "getPresentationDefinition",
+  "getPresentationDefinitionV2",
   "holderRejectProof",
   "holderSubmitProof",
+  "holderSubmitProofV2",
   "getCredentials",
   "runTask",
   "deleteProofClaims",
