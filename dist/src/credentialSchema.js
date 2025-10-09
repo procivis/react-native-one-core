@@ -18,6 +18,7 @@ export var WalletStorageType;
     WalletStorageType["HARDWARE"] = "HARDWARE";
     WalletStorageType["SOFTWARE"] = "SOFTWARE";
     WalletStorageType["REMOTE_SECURE_ELEMENT"] = "REMOTE_SECURE_ELEMENT";
+    WalletStorageType["EUDI_COMPLIANT"] = "EUDI_COMPLIANT";
 })(WalletStorageType || (WalletStorageType = {}));
 export var KnownCredentialSchemaType;
 (function (KnownCredentialSchemaType) {
