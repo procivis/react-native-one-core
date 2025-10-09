@@ -12,7 +12,8 @@ object SerializeSpecific {
                 HistoryMetadataBinding::class.java,
                 ClaimBindingDto::class.java,
                 ProofRequestClaimBindingDto::class.java,
-                CredentialQueryResponseBindingDto::class.java
+                CredentialQueryResponseBindingDto::class.java,
+                PresentationDefinitionV2ClaimBindingDto::class.java
             )
 
         fun isCustomConversionType(input: Any?): Boolean {
@@ -36,6 +37,9 @@ object SerializeSpecific {
             }
             if (input is CredentialQueryResponseBindingDto) {
                 return credentialQuery(input)
+            }
+            if (input is PresentationDefinitionV2ClaimBindingDto) {
+                return presentationDefinitionV2Claim(input)
             }
             throw IllegalArgumentException("Invalid map conversion: $input")
         }
@@ -65,6 +69,7 @@ object SerializeSpecific {
                     "applicableCredentials",
                     convertToRN(value.applicableCredentials) as ReadableArray
                 )
+
                 is ApplicableCredentialOrFailureHintBindingEnum.FailureHint -> {
                     result.putMap("failureHint", convertToRN(value.failureHint) as ReadableMap)
                 }
@@ -89,6 +94,7 @@ object SerializeSpecific {
                         result.putInt("value", value.value.toInt())
                     }
                 }
+
                 is ClaimValueBindingDto.String -> result.putString("value", value.value)
                 is ClaimValueBindingDto.Nested ->
                     result.putArray("value", convertToRN(value.value) as ReadableArray)
@@ -109,6 +115,44 @@ object SerializeSpecific {
                     is ProofRequestClaimValueBindingDto.Claims ->
                         result.putArray("value", convertToRN(value.value) as ReadableArray)
                 }
+            }
+
+            return result
+        }
+
+        private fun presentationDefinitionV2Claim(c: PresentationDefinitionV2ClaimBindingDto): ReadableMap {
+            val result = Arguments.createMap()
+            result.putString("path", c.path)
+            result.putMap("schema", convertToRN(c.schema) as ReadableMap)
+            result.putBoolean("userSelection", c.userSelection)
+            result.putBoolean("required", c.required)
+
+            when (val value = c.value) {
+                is PresentationDefinitionV2ClaimValueBindingDto.Boolean -> result.putBoolean(
+                    "value",
+                    value.value
+                )
+
+                is PresentationDefinitionV2ClaimValueBindingDto.Float -> result.putDouble(
+                    "value",
+                    value.value
+                )
+
+                is PresentationDefinitionV2ClaimValueBindingDto.Integer -> {
+                    if (value.value < Int.MIN_VALUE || value.value > Int.MAX_VALUE) {
+                        result.putDouble("value", value.value.toDouble())
+                    } else {
+                        result.putInt("value", value.value.toInt())
+                    }
+                }
+
+                is PresentationDefinitionV2ClaimValueBindingDto.String -> result.putString(
+                    "value",
+                    value.value
+                )
+
+                is PresentationDefinitionV2ClaimValueBindingDto.Nested ->
+                    result.putArray("value", convertToRN(value.value) as ReadableArray)
             }
 
             return result

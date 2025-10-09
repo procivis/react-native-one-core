@@ -4,7 +4,6 @@ import { ListQuery, SortDirection } from "./list";
 import { ProofInputClaimSchema, ProofSchemaListItem } from "./proofSchema";
 import { DidListItem } from "./did";
 import { IdentifierListItem } from "./identifier";
-import { DataTypeEnum } from "./config";
 
 export enum ProofStateEnum {
   CREATED = "CREATED",
@@ -160,7 +159,7 @@ export interface PresentationDefinitionV2 {
   credentialSets: {
     required: boolean;
     options: Array<Array<string>>;
-  }
+  };
 }
 
 export type PresentationDefinitionV2CredentialQuery = {
@@ -178,7 +177,8 @@ export interface FailureHint {
   };
 }
 
-export interface PresentationDefinitionV2CredentialDetail extends Omit<CredentialDetail, 'claims'> {
+export interface PresentationDefinitionV2CredentialDetail
+  extends Omit<CredentialDetail, "claims"> {
   claims: Array<PresentationDefinitionV2CredentialClaim>;
 }
 
@@ -191,36 +191,10 @@ export interface PresentationDefinitionV2CredentialClaim {
 }
 
 export type PresentationDefinitionV2ClaimValue =
-  | {
-  dataType: DataTypeEnum.String | DataTypeEnum.Date | DataTypeEnum.File;
-  value: string;
-  array: false;
-}
-  | {
-  dataType: DataTypeEnum.Number;
-  value: number;
-  array: false;
-}
-  | {
-  dataType: DataTypeEnum.Boolean;
-  value: boolean;
-  array: false;
-}
-  | {
-  dataType: DataTypeEnum.Object;
-  value: PresentationDefinitionV2CredentialClaim[];
-  array: false;
-}
-  | {
-  dataType: string;
-  value: string | number | boolean;
-  array: false;
-}
-  | {
-  dataType: string;
-  value: PresentationDefinitionV2CredentialClaim[];
-  array: true;
-};
+  | string
+  | number
+  | boolean
+  | PresentationDefinitionV2CredentialClaim[];
 
 export interface PresentationSubmitV2CredentialRequest {
   credentialId: CredentialListItem["id"];
