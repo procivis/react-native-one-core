@@ -1,9 +1,10 @@
 import { Claim, CredentialDetail, CredentialListItem } from "./credential";
-import { CredentialSchema } from "./credentialSchema";
+import { ClaimSchema, CredentialSchema } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { ProofInputClaimSchema, ProofSchemaListItem } from "./proofSchema";
 import { DidListItem } from "./did";
 import { IdentifierListItem } from "./identifier";
+import { DataTypeEnum } from "./config";
 export declare enum ProofStateEnum {
     CREATED = "CREATED",
     PENDING = "PENDING",
@@ -135,6 +136,64 @@ export interface PresentationDefinitionField {
 export interface PresentationSubmitCredentialRequest {
     credentialId: CredentialListItem["id"];
     submitClaims: Array<PresentationDefinitionField["id"]>;
+}
+export interface PresentationDefinitionV2 {
+    credentialQueries: Record<string, PresentationDefinitionV2CredentialQuery>;
+    credentialSets: {
+        required: boolean;
+        options: Array<Array<string>>;
+    };
+}
+export type PresentationDefinitionV2CredentialQuery = {
+    multiple: boolean;
+} & (ApplicableCredentials | FailureHint);
+export interface ApplicableCredentials {
+    applicableCredentials: Array<PresentationDefinitionV2CredentialDetail>;
+}
+export interface FailureHint {
+    failureHint: {
+        credentialSchema?: CredentialSchema;
+        reason: "NO_CREDENTIAL" | "VALIDITY" | "CONSTRAINT";
+    };
+}
+export interface PresentationDefinitionV2CredentialDetail extends Omit<CredentialDetail, 'claims'> {
+    claims: Array<PresentationDefinitionV2CredentialClaim>;
+}
+export interface PresentationDefinitionV2CredentialClaim {
+    path: string;
+    schema: ClaimSchema;
+    value: PresentationDefinitionV2ClaimValue;
+    userSelection: boolean;
+    required: boolean;
+}
+export type PresentationDefinitionV2ClaimValue = {
+    dataType: DataTypeEnum.String | DataTypeEnum.Date | DataTypeEnum.File;
+    value: string;
+    array: false;
+} | {
+    dataType: DataTypeEnum.Number;
+    value: number;
+    array: false;
+} | {
+    dataType: DataTypeEnum.Boolean;
+    value: boolean;
+    array: false;
+} | {
+    dataType: DataTypeEnum.Object;
+    value: PresentationDefinitionV2CredentialClaim[];
+    array: false;
+} | {
+    dataType: string;
+    value: string | number | boolean;
+    array: false;
+} | {
+    dataType: string;
+    value: PresentationDefinitionV2CredentialClaim[];
+    array: true;
+};
+export interface PresentationSubmitV2CredentialRequest {
+    credentialId: CredentialListItem["id"];
+    userSelections: Array<string>;
 }
 export declare enum SortableProofColumnEnum {
     SCHEMA_NAME = "SCHEMA_NAME",
