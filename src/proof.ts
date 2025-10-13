@@ -221,7 +221,7 @@ export interface ProofListQuery extends ListQuery {
   proofRoles?: ProofRoleEnum[];
   proofSchemaIds?: string[];
   exact?: ExactProofFilterColumnEnum[];
-  profile?: string;
+  profiles?: string[];
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
   createdDateAfter?: string;
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */

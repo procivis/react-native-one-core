@@ -114,10 +114,10 @@ export type CredentialListQuery = ListQuery & {
   sort?: SortableCredentialColumnEnum;
   sortDirection?: SortDirection;
   exact?: CredentialListQueryExactColumnEnum[];
-  role?: CredentialRoleEnum;
+  roles?: CredentialRoleEnum[];
   ids?: Array<CredentialListItem["id"]>;
-  status?: CredentialStateEnum[];
-  profile?: string;
+  states?: CredentialStateEnum[];
+  profiles?: string[];
   credentialSchemaIds?: Array<CredentialSchema["id"]>;
   include?: CredentialListIncludeEntityType[];
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */

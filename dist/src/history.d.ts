@@ -65,6 +65,7 @@ export interface HistoryListQuery extends ListQuery {
     credentialSchemaId?: string;
     proofSchemaId?: string;
     search?: HistoryListSearch;
+    user?: string;
 }
 export interface HistoryListSearch {
     text: string;
@@ -88,4 +89,5 @@ export interface HistoryListItem {
     entityType: HistoryEntityTypeEnum;
     organisationId: string;
     metadata?: HistoryMetadata;
+    user?: string;
 }
