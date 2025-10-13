@@ -115,7 +115,7 @@ export interface IdentifierListQuery extends ListQuery {
     sortDirection?: SortDirection;
     name?: string;
     types?: IdentifierTypeEnum[];
-    state?: IdentifierStateEnum;
+    states?: IdentifierStateEnum[];
     exact?: ExactIdentifierFilterColumnEnum[];
     didMethods?: string[];
     isRemote?: boolean;
