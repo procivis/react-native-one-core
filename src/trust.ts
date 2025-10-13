@@ -6,10 +6,7 @@ import {
   IdentifierListItem,
   X509Attributes,
 } from "./identifier";
-import {
-  CreateOrganisationRequest,
-  UpsertOrganisationRequest,
-} from "./organisation";
+import { UpsertOrganisationRequest } from "./organisation";
 
 export type CreateTrustAnchorRequest = {
   name: string;
@@ -134,13 +131,19 @@ export interface CreateTrustEntityRequest {
   organisationId: UpsertOrganisationRequest["id"];
 }
 
-export interface TrustEntityListQuery {
+export interface TrustEntityListQuery
+  extends Omit<ListQuery, "organisationId"> {
   sort?: SortableTrustEntityColumnEnum;
   sortDirection?: SortDirection;
+  organisationId?: string;
   name?: string;
   exact?: ExactTrustEntityFilterColumnEnum[];
-  type?: string;
-  isPublisher?: boolean;
+  role?: TrustEntityRoleEnum;
+  trustAnchor?: TrustAnchor["id"];
+  didId?: DidListItem["id"];
+  types?: TrustEntityTypeEnum[];
+  entityKey?: string;
+  states?: TrustEntityStateEnum[];
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
   createdDateAfter?: string;
   /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
