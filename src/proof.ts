@@ -1,9 +1,9 @@
-import { Claim, CredentialDetail, CredentialListItem } from "./credential";
-import { ClaimSchema, CredentialSchema } from "./credentialSchema";
-import { ListQuery, SortDirection } from "./list";
-import { ProofInputClaimSchema, ProofSchemaListItem } from "./proofSchema";
-import { DidListItem } from "./did";
-import { IdentifierListItem } from "./identifier";
+import {Claim, CredentialDetail, CredentialListItem} from "./credential";
+import {ClaimSchema, CredentialSchema} from "./credentialSchema";
+import {ListQuery, SortDirection} from "./list";
+import {ProofInputClaimSchema, ProofSchemaListItem} from "./proofSchema";
+import {DidListItem} from "./did";
+import {IdentifierListItem} from "./identifier";
 
 export enum ProofStateEnum {
   CREATED = "CREATED",
@@ -156,10 +156,10 @@ export interface PresentationSubmitCredentialRequest {
 
 export interface PresentationDefinitionV2 {
   credentialQueries: Record<string, PresentationDefinitionV2CredentialQuery>;
-  credentialSets: {
+  credentialSets: Array<{
     required: boolean;
     options: Array<Array<string>>;
-  };
+  }>;
 }
 
 export type PresentationDefinitionV2CredentialQuery = {
