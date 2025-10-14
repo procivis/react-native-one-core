@@ -138,10 +138,10 @@ export interface PresentationSubmitCredentialRequest {
 }
 export interface PresentationDefinitionV2 {
     credentialQueries: Record<string, PresentationDefinitionV2CredentialQuery>;
-    credentialSets: {
+    credentialSets: Array<{
         required: boolean;
         options: Array<Array<string>>;
-    };
+    }>;
 }
 export type PresentationDefinitionV2CredentialQuery = {
     multiple: boolean;
