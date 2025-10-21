@@ -244,14 +244,13 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      try await self.getCore().holderAcceptCredential(
+      return try await self.getCore().holderAcceptCredential(
         interactionId: interactionId,
         didId: didId,
         identifierId: identifierId,
         keyId: keyId,
         txCode: txCode
       )
-      return nil as NSDictionary?
     }
   }
 
