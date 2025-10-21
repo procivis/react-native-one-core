@@ -1,5 +1,5 @@
 import { DataTypeEnum } from "./config";
-import { CredentialSchema } from "./credentialSchema";
+import { CredentialSchema, WalletStorageType } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { IdentifierListItem } from "./identifier";
 export declare enum CredentialStateEnum {
@@ -135,16 +135,14 @@ export interface CredentialRevocationCheckResponse {
 export interface InvitationResultCredentialIssuance {
     /** For reference. */
     interactionId: string;
-    /** Offered credential. */
-    credentialIds: Array<CredentialListItem["id"]>;
     /** Metadata for entering a transaction code.
      * If a pre-authorized code is issued with a transaction code object, the wallet
      * user must input a transaction code to receive the offered credential. This code
      * is typically sent through a separate channel such as SMS or email.
      */
     txCode?: OpenID4VCITxCode;
-    /** Metadata for selecting an appropriate key. */
-    credentialConfigurationsSupported: Record<CredentialListItem["id"], CredentialConfigurationSupported>;
+    /** Required storage type for holder binding key */
+    walletStorageType?: WalletStorageType;
 }
 export interface OpenID4VCITxCode {
     inputMode?: OpenID4VCITxCodeInputMode;
@@ -176,13 +174,8 @@ export interface InitiateIssuanceResponse {
 export interface ContinueIssuanceResponse {
     /** For reference. */
     interactionId: string;
-    /** Offered credentials. */
-    credentialIds: Array<CredentialListItem["id"]>;
-    /** Metadata for selecting an appropriate key. */
-    credentialConfigurationsSupported: Record<CredentialListItem["id"], CredentialConfigurationSupported>;
-}
-export interface CredentialConfigurationSupported {
-    proofTypesSupported: Record<string, OpenID4VCIProofTypeSupported>;
+    /** Required storage type for holder binding key */
+    walletStorageType?: WalletStorageType;
 }
 export interface OpenID4VCIProofTypeSupported {
     proofSigningAlgValuesSupported: string[];

@@ -30,8 +30,10 @@ import {
   CreateProofRequest,
   InvitationResultProofRequest,
   PresentationDefinition,
-  PresentationDefinitionRequestedCredential, PresentationDefinitionV2,
-  PresentationSubmitCredentialRequest, PresentationSubmitV2CredentialRequest,
+  PresentationDefinitionRequestedCredential,
+  PresentationDefinitionV2,
+  PresentationSubmitCredentialRequest,
+  PresentationSubmitV2CredentialRequest,
   ProofDetail,
   ProofListItem,
   ProofListQuery,
@@ -174,7 +176,7 @@ export interface ONECore {
     identifierId: IdentifierListItem["id"] | undefined,
     keyId: string | undefined,
     txCode: string | undefined
-  ): Promise<void>;
+  ): Promise<CredentialDetail["id"]>;
 
   holderRejectCredential(
     interactionId: InvitationResultCredentialIssuance["interactionId"]
@@ -221,10 +223,11 @@ export interface ONECore {
 
   holderSubmitProofV2(
     interactionId: InvitationResultProofRequest["interactionId"],
-    credentials: Record<string,
+    credentials: Record<
+      string,
       | PresentationSubmitV2CredentialRequest
       | PresentationSubmitV2CredentialRequest[]
-    >,
+    >
   ): Promise<void>;
 
   getCredentials(

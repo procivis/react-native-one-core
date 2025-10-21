@@ -76,7 +76,7 @@ export interface ONECore {
      * request for proof).
      */
     handleInvitation(request: HandleInvitationRequest): Promise<InvitationResult>;
-    holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined, txCode: string | undefined): Promise<void>;
+    holderAcceptCredential(interactionId: InvitationResultCredentialIssuance["interactionId"], didId: DidListItem["id"] | undefined, identifierId: IdentifierListItem["id"] | undefined, keyId: string | undefined, txCode: string | undefined): Promise<CredentialDetail["id"]>;
     holderRejectCredential(interactionId: InvitationResultCredentialIssuance["interactionId"]): Promise<void>;
     /** For wallets, starts the OID4VCI Authorization Code Flow. */
     initiateIssuance(request: InitiateIssuanceRequest): Promise<InitiateIssuanceResponse>;
