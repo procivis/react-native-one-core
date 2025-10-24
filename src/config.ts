@@ -87,9 +87,11 @@ export enum DataTypeEnum {
   String = "STRING",
   Number = "NUMBER",
   Date = "DATE",
-  File = "FILE",
+  Picture = "PICTURE",
+  SwiyuPicture = "SWIYU_PICTURE",
   Boolean = "BOOLEAN",
   Object = "OBJECT",
+  Array = "ARRAY",
 }
 
 type DataTypeError = string | Record<string, string>;
@@ -133,11 +135,11 @@ export type DataTypeParams =
       params?: DateDataTypeParams;
     }
   | {
-      type: DataTypeEnum.File;
+      type: DataTypeEnum.Picture | DataTypeEnum.SwiyuPicture;
       params?: FileDataTypeParams;
     }
   | {
-      type: DataTypeEnum.Object;
+      type: DataTypeEnum.Object | DataTypeEnum.Array | DataTypeEnum.Boolean;
       params?: undefined;
     };
 

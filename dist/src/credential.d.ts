@@ -13,7 +13,7 @@ export declare enum CredentialStateEnum {
     ERROR = "ERROR"
 }
 export type ClaimValue = {
-    dataType: DataTypeEnum.String | DataTypeEnum.Date | DataTypeEnum.File;
+    dataType: DataTypeEnum.String | DataTypeEnum.Date | DataTypeEnum.Picture | DataTypeEnum.SwiyuPicture;
     value: string;
     array: false;
 } | {
