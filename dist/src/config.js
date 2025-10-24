@@ -38,9 +38,11 @@ export var DataTypeEnum;
     DataTypeEnum["String"] = "STRING";
     DataTypeEnum["Number"] = "NUMBER";
     DataTypeEnum["Date"] = "DATE";
-    DataTypeEnum["File"] = "FILE";
+    DataTypeEnum["Picture"] = "PICTURE";
+    DataTypeEnum["SwiyuPicture"] = "SWIYU_PICTURE";
     DataTypeEnum["Boolean"] = "BOOLEAN";
     DataTypeEnum["Object"] = "OBJECT";
+    DataTypeEnum["Array"] = "ARRAY";
 })(DataTypeEnum || (DataTypeEnum = {}));
 export var IssuanceProtocolFeatureEnum;
 (function (IssuanceProtocolFeatureEnum) {
