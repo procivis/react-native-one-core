@@ -71,9 +71,11 @@ export declare enum DataTypeEnum {
     String = "STRING",
     Number = "NUMBER",
     Date = "DATE",
-    File = "FILE",
+    Picture = "PICTURE",
+    SwiyuPicture = "SWIYU_PICTURE",
     Boolean = "BOOLEAN",
-    Object = "OBJECT"
+    Object = "OBJECT",
+    Array = "ARRAY"
 }
 type DataTypeError = string | Record<string, string>;
 export interface StringDataTypeParams {
@@ -107,10 +109,10 @@ export type DataTypeParams = {
     type: DataTypeEnum.Date;
     params?: DateDataTypeParams;
 } | {
-    type: DataTypeEnum.File;
+    type: DataTypeEnum.Picture | DataTypeEnum.SwiyuPicture;
     params?: FileDataTypeParams;
 } | {
-    type: DataTypeEnum.Object;
+    type: DataTypeEnum.Object | DataTypeEnum.Array | DataTypeEnum.Boolean;
     params?: undefined;
 };
 export declare enum IssuanceProtocolFeatureEnum {
