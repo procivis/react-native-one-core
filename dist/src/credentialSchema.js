@@ -20,13 +20,6 @@ export var WalletStorageType;
     WalletStorageType["REMOTE_SECURE_ELEMENT"] = "REMOTE_SECURE_ELEMENT";
     WalletStorageType["EUDI_COMPLIANT"] = "EUDI_COMPLIANT";
 })(WalletStorageType || (WalletStorageType = {}));
-export var KnownCredentialSchemaType;
-(function (KnownCredentialSchemaType) {
-    KnownCredentialSchemaType["PROCIVIS_ONE_SCHEMA2024"] = "PROCIVIS_ONE_SCHEMA2024";
-    KnownCredentialSchemaType["FALLBACK_SCHEMA2024"] = "FALLBACK_SCHEMA2024";
-    KnownCredentialSchemaType["MDOC"] = "MDOC";
-    KnownCredentialSchemaType["SD_JWT_VC"] = "SD_JWT_VC";
-})(KnownCredentialSchemaType || (KnownCredentialSchemaType = {}));
 export var LayoutType;
 (function (LayoutType) {
     LayoutType["CARD"] = "CARD";
