@@ -15,11 +15,9 @@ export interface ImportCredentialSchemaRequestSchema {
     claims: ImportCredentialSchemaClaimSchema[];
     walletStorageType?: WalletStorageType;
     schemaId: string;
-    schemaType: CredentialSchemaType;
     layoutType?: LayoutType;
     layoutProperties?: ImportCredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
-    externalSchema: boolean;
 }
 export interface ImportCredentialSchemaClaimSchema {
     id: string;
@@ -78,13 +76,6 @@ export declare enum WalletStorageType {
     REMOTE_SECURE_ELEMENT = "REMOTE_SECURE_ELEMENT",
     EUDI_COMPLIANT = "EUDI_COMPLIANT"
 }
-export declare enum KnownCredentialSchemaType {
-    PROCIVIS_ONE_SCHEMA2024 = "PROCIVIS_ONE_SCHEMA2024",
-    FALLBACK_SCHEMA2024 = "FALLBACK_SCHEMA2024",
-    MDOC = "MDOC",
-    SD_JWT_VC = "SD_JWT_VC"
-}
-export type CredentialSchemaType = KnownCredentialSchemaType | string;
 export declare enum LayoutType {
     CARD = "CARD",
     DOCUMENT = "DOCUMENT",
@@ -100,7 +91,6 @@ export interface CredentialSchema {
     walletStorageType?: WalletStorageType;
     schemaId: string;
     importedSourceUrl: string;
-    schemaType: CredentialSchemaType;
     layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
 }
