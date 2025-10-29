@@ -358,7 +358,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     asyncCall(resolve, reject) {
       try await self.getCore().holderSubmitProofV2(
         interactionId: interactionId,
-        submission: try deserialize(submission),
+        submission: try deserialize(submission)
       )
       return nil as NSDictionary?
     }
