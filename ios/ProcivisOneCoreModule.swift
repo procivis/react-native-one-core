@@ -901,32 +901,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().holderRegisterWalletUnit(request: try deserialize(request))
-      return try serializeAny(result)
-    }
-  }
-
-  @objc(holderRefreshWalletUnit:resolver:rejecter:)
-  func holderRefreshWalletUnit(
-    request: NSDictionary,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      try await self.getCore().holderRefreshWalletUnit(request: try deserialize(request))
-      return nil as NSDictionary?
-    }
-  }
-
-  @objc(holderGetWalletUnitAttestation:resolver:rejecter:)
-  func holderGetWalletUnitAttestation(
-    organisationId: String,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      let result = try await self.getCore().holderGetWalletUnitAttestation(organisationId: organisationId)
-      return try serializeAny(result)
+      return try await self.getCore().holderRegisterWalletUnit(request: try deserialize(request))
     }
   }
 
