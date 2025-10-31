@@ -77,10 +77,7 @@ import {
   IdentifierListQuery,
 } from "./identifier";
 import {
-  HolderAttestationWalletUnitResponse,
-  HolderRefreshWalletUnitRequest,
   HolderRegisterWalletUnitRequest,
-  HolderRegisterWalletUnitResponse,
 } from "./walletUnit";
 import { NfcScanRequest } from "./nfc";
 
@@ -390,15 +387,7 @@ export interface ONECore {
 
   holderRegisterWalletUnit(
     request: HolderRegisterWalletUnitRequest
-  ): Promise<HolderRegisterWalletUnitResponse>;
-
-  holderRefreshWalletUnit(
-    request: HolderRefreshWalletUnitRequest
-  ): Promise<void>;
-
-  holderGetWalletUnitAttestation(
-    organisationId: string
-  ): Promise<HolderAttestationWalletUnitResponse>;
+  ): Promise<String>;
 
   /**
    * Start scanning for ISO 18013-5 NFC engagement
@@ -491,8 +480,6 @@ export const interfaceMethodNames = [
   "rollbackImport",
   "resolveJsonldContext",
   "holderRegisterWalletUnit",
-  "holderRefreshWalletUnit",
-  "holderGetWalletUnitAttestation",
   "nfcReadIsoMdlEngagement",
   "nfcStopIsoMdlEngagement",
   "uninitialize",

@@ -666,24 +666,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun holderRegisterWalletUnit(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val result = getCore().holderRegisterWalletUnit(construct(request))
-            return@asyncCall convertToRN(result)
-        }
-    }
-
-    @ReactMethod
-    fun holderRefreshWalletUnit(request: ReadableMap, promise: Promise) {
-        asyncCall(promise, scope) {
-            getCore().holderRefreshWalletUnit(construct(request))
-            return@asyncCall null
-        }
-    }
-
-    @ReactMethod
-    fun holderGetWalletUnitAttestation(organisationId: String, promise: Promise) {
-        asyncCall(promise, scope) {
-            val result = getCore().holderGetWalletUnitAttestation(organisationId)
-            return@asyncCall convertToRN(result)
+            return@asyncCall getCore().holderRegisterWalletUnit(construct(request))
         }
     }
 

@@ -82,8 +82,6 @@ export const interfaceMethodNames = [
     "rollbackImport",
     "resolveJsonldContext",
     "holderRegisterWalletUnit",
-    "holderRefreshWalletUnit",
-    "holderGetWalletUnitAttestation",
     "nfcReadIsoMdlEngagement",
     "nfcStopIsoMdlEngagement",
     "uninitialize",
