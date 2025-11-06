@@ -12,7 +12,7 @@ import { CreateRemoteTrustEntityRequest, CreateTrustAnchorRequest, CreateTrustEn
 import { CacheType } from "./cache";
 import { CreateOrganisationRequest, UpsertOrganisationRequest } from "./organisation";
 import { CreateIdentifierRequest, IdentifierDetail, IdentifierListItem, IdentifierListQuery } from "./identifier";
-import { HolderRegisterWalletUnitRequest } from "./walletUnit";
+import { HolderRegisterWalletUnitRequest, HolderWalletUnitDetail } from "./walletUnit";
 import { NfcScanRequest } from "./nfc";
 export * from "./backup";
 export * from "./cache";
@@ -160,8 +160,9 @@ export interface ONECore {
      */
     rollbackImport(): Promise<void>;
     resolveJsonldContext(url: string): Promise<ResolveJsonLdContextResponse>;
-    holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<String>;
-    holderWalletUnitStatus(walletUnitId: String): Promise<void>;
+    holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<HolderWalletUnitDetail["id"]>;
+    holderWalletUnitStatus(walletUnitId: HolderWalletUnitDetail["id"]): Promise<void>;
+    holderGetWalletUnit(walletUnitId: HolderWalletUnitDetail["id"]): Promise<HolderWalletUnitDetail>;
     /**
      * Start scanning for ISO 18013-5 NFC engagement
      *
@@ -182,4 +183,4 @@ export interface ONECore {
      */
     uninitialize(deleteData: boolean): Promise<void>;
 }
-export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "initiateIssuance", "continueIssuance", "getPresentationDefinition", "getPresentationDefinitionV2", "holderRejectProof", "holderSubmitProof", "holderSubmitProofV2", "getCredentials", "runTask", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "resolveTrustEntityByIdentifier", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "holderRegisterWalletUnit", "holderWalletUnitStatus", "nfcReadIsoMdlEngagement", "nfcStopIsoMdlEngagement", "uninitialize"];
+export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "initiateIssuance", "continueIssuance", "getPresentationDefinition", "getPresentationDefinitionV2", "holderRejectProof", "holderSubmitProof", "holderSubmitProofV2", "getCredentials", "runTask", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "resolveTrustEntityByIdentifier", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "holderRegisterWalletUnit", "holderWalletUnitStatus", "holderGetWalletUnit", "nfcReadIsoMdlEngagement", "nfcStopIsoMdlEngagement", "uninitialize"];

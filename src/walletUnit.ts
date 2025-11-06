@@ -14,3 +14,22 @@ export interface HolderRegisterWalletUnitRequest {
   walletProvider: WalletProvider;
   keyType: KeyListItem["keyType"];
 }
+
+export interface HolderWalletUnitDetail {
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  providerWalletUnitId: string;
+  walletProviderUrl: string;
+  walletProviderType: WalletProviderTypeEnum;
+  walletProviderName: string;
+  status: WalletUnitStatus;
+  authenticationKey: KeyListItem;
+}
+
+export enum WalletUnitStatus {
+  PENDING = "PENDING",
+  ACTIVE = "ACTIVE",
+  REVOKED = "REVOKED",
+  ERROR = "ERROR",
+}
