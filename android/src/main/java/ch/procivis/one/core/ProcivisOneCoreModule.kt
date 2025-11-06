@@ -671,6 +671,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun holderWalletUnitStatus(walletUnitId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().holderWalletUnitStatus(walletUnitId)
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun nfcReadIsoMdlEngagement(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             return@asyncCall getCore().nfcReadIsoMdlEngagement(construct(request))
