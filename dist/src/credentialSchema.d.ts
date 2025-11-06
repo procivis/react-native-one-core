@@ -73,8 +73,7 @@ export interface CredentialSchemaListQuery extends ListQuery {
 export declare enum WalletStorageType {
     HARDWARE = "HARDWARE",
     SOFTWARE = "SOFTWARE",
-    REMOTE_SECURE_ELEMENT = "REMOTE_SECURE_ELEMENT",
-    EUDI_COMPLIANT = "EUDI_COMPLIANT"
+    REMOTE_SECURE_ELEMENT = "REMOTE_SECURE_ELEMENT"
 }
 export declare enum LayoutType {
     CARD = "CARD",
