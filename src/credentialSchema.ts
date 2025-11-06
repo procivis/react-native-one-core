@@ -84,7 +84,6 @@ export enum WalletStorageType {
   HARDWARE = "HARDWARE",
   SOFTWARE = "SOFTWARE",
   REMOTE_SECURE_ELEMENT = "REMOTE_SECURE_ELEMENT",
-  EUDI_COMPLIANT = "EUDI_COMPLIANT",
 }
 
 export enum LayoutType {
