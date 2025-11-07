@@ -11,6 +11,7 @@ import {
   CredentialListItem,
   CredentialListQuery,
   CredentialRevocationCheckResponse,
+  HolderAcceptCredentialRequest,
   InitiateIssuanceRequest,
   InitiateIssuanceResponse,
   InvitationResultCredentialIssuance,
@@ -169,11 +170,7 @@ export interface ONECore {
   handleInvitation(request: HandleInvitationRequest): Promise<InvitationResult>;
 
   holderAcceptCredential(
-    interactionId: InvitationResultCredentialIssuance["interactionId"],
-    didId: DidListItem["id"] | undefined,
-    identifierId: IdentifierListItem["id"] | undefined,
-    keyId: string | undefined,
-    txCode: string | undefined
+    request: HolderAcceptCredentialRequest
   ): Promise<CredentialDetail["id"]>;
 
   holderRejectCredential(

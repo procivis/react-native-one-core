@@ -197,15 +197,11 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun holderAcceptCredential(
-        interactionId: String,
-        didId: String?,
-        identifierId: String?,
-        keyId: String?,
-        txCode: String?,
+        request: ReadableMap,
         promise: Promise
     ) {
         asyncCall(promise, scope) {
-            return@asyncCall getCore().holderAcceptCredential(interactionId, didId, identifierId, keyId, txCode)
+            return@asyncCall getCore().holderAcceptCredential(construct(request))
         }
     }
 

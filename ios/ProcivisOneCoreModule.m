@@ -67,11 +67,7 @@ RCT_EXTERN_METHOD(handleInvitation:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(holderAcceptCredential:(NSString *)interactionId
-                  didId:(NSString *)didId
-                  identifierId:(NSString *)identifierId
-                  keyId:(NSString *)keyId
-                  txCode:(NSString *)txCode
+RCT_EXTERN_METHOD(holderAcceptCredential:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
