@@ -187,3 +187,11 @@ export interface AuthorizationCodeFlow {
      * the authorization process with the authorization server. */
     authorizationCodeFlowUrl: string;
 }
+export interface HolderAcceptCredentialRequest {
+    interactionId: string;
+    didId?: string;
+    identifierId?: string;
+    keyId?: string;
+    txCode?: string;
+    holderWalletUnitId?: string;
+}
