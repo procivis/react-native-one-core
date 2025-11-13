@@ -6,4 +6,7 @@ export var CacheType;
     CacheType["VCT_METADATA"] = "VCT_METADATA";
     CacheType["JSON_SCHEMA"] = "JSON_SCHEMA";
     CacheType["TRUST_LIST"] = "TRUST_LIST";
+    CacheType["X509_CRL"] = "X509_CRL";
+    CacheType["ANDROID_ATTESTATION_CRL"] = "ANDROID_ATTESTATION_CRL";
+    CacheType["OPEN_ID_METADATA"] = "OPEN_ID_METADATA";
 })(CacheType || (CacheType = {}));
