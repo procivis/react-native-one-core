@@ -41,7 +41,6 @@ export interface ProofDetail {
   role: ProofRoleEnum;
   proofSchema?: ProofSchemaListItem;
   verifier?: IdentifierListItem;
-  holder?: IdentifierListItem;
   protocol: string;
   transport: string;
   redirectUri?: string;

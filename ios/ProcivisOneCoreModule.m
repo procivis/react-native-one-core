@@ -97,9 +97,6 @@ RCT_EXTERN_METHOD(holderRejectProof:(NSString *)interactionId
 
 RCT_EXTERN_METHOD(holderSubmitProof:(NSString *)interactionId
                   credentials:(NSDictionary *)credentials
-                  didId:(NSString *)didId
-                  identifierId:(NSString *)identifierId
-                  keyId:(NSString *)keyId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

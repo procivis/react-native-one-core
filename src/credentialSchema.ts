@@ -15,7 +15,7 @@ export interface ImportCredentialSchemaRequestSchema {
   organisationId: string;
   importedSourceUrl: string;
   claims: ImportCredentialSchemaClaimSchema[];
-  walletStorageType?: WalletStorageType;
+  keyStorageSecurity?: KeyStorageSecurity;
   schemaId: string;
   layoutType?: LayoutType;
   layoutProperties?: ImportCredentialSchemaLayoutProperties;
@@ -80,10 +80,11 @@ export interface CredentialSchemaListQuery extends ListQuery {
   lastModifiedBefore?: string;
 }
 
-export enum WalletStorageType {
-  HARDWARE = "HARDWARE",
-  SOFTWARE = "SOFTWARE",
-  REMOTE_SECURE_ELEMENT = "REMOTE_SECURE_ELEMENT",
+export enum KeyStorageSecurity {
+  HIGH = "HIGH",
+  MODERATE = "MODERATE",
+  ENHANCED_BASIC = "ENHANCED_BASIC",
+  BASIC = "BASIC",
 }
 
 export enum LayoutType {
@@ -99,7 +100,7 @@ export interface CredentialSchema {
   name: string;
   format: string;
   revocationMethod: string;
-  walletStorageType?: WalletStorageType;
+  keyStorageSecurity?: KeyStorageSecurity;
   schemaId: string;
   importedSourceUrl: string;
   layoutType?: LayoutType;
