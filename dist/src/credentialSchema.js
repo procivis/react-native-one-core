@@ -13,12 +13,13 @@ export var ExactCredentialSchemaFilterColumnEnum;
     ExactCredentialSchemaFilterColumnEnum["NAME"] = "NAME";
     ExactCredentialSchemaFilterColumnEnum["SCHEMA_ID"] = "SCHEMA_ID";
 })(ExactCredentialSchemaFilterColumnEnum || (ExactCredentialSchemaFilterColumnEnum = {}));
-export var WalletStorageType;
-(function (WalletStorageType) {
-    WalletStorageType["HARDWARE"] = "HARDWARE";
-    WalletStorageType["SOFTWARE"] = "SOFTWARE";
-    WalletStorageType["REMOTE_SECURE_ELEMENT"] = "REMOTE_SECURE_ELEMENT";
-})(WalletStorageType || (WalletStorageType = {}));
+export var KeyStorageSecurity;
+(function (KeyStorageSecurity) {
+    KeyStorageSecurity["HIGH"] = "HIGH";
+    KeyStorageSecurity["MODERATE"] = "MODERATE";
+    KeyStorageSecurity["ENHANCED_BASIC"] = "ENHANCED_BASIC";
+    KeyStorageSecurity["BASIC"] = "BASIC";
+})(KeyStorageSecurity || (KeyStorageSecurity = {}));
 export var LayoutType;
 (function (LayoutType) {
     LayoutType["CARD"] = "CARD";

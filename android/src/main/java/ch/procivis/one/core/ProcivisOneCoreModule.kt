@@ -257,9 +257,6 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun holderSubmitProof(
         interactionId: String,
         credentials: ReadableMap,
-        didId: String?,
-        identifierId: String?,
-        keyId: String?,
         promise: Promise
     ) {
         asyncCall(promise, scope) {
@@ -283,13 +280,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                 }
                 submitCredentials[entry.key] = credentialList
             }
-            getCore().holderSubmitProof(
-                interactionId,
-                submitCredentials,
-                didId,
-                identifierId,
-                keyId
-            )
+            getCore().holderSubmitProof(interactionId, submitCredentials)
             return@asyncCall null
         }
     }

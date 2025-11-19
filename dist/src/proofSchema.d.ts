@@ -1,4 +1,4 @@
-import { CredentialSchema, CredentialSchemaLayoutProperties, LayoutType, WalletStorageType } from "./credentialSchema";
+import { CredentialSchema, CredentialSchemaLayoutProperties, LayoutType, KeyStorageSecurity } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 export interface ProofInputClaimSchema {
     id: string;
@@ -93,7 +93,7 @@ export interface ImportProofSchemaCredentialSchema {
     name: string;
     format: string;
     revocationMethod: string;
-    walletStorageType?: WalletStorageType;
+    keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
     importedSourceUrl: string;
     layoutType?: LayoutType;
