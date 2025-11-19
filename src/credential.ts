@@ -1,5 +1,5 @@
 import { DataTypeEnum } from "./config";
-import { CredentialSchema, WalletStorageType } from "./credentialSchema";
+import { CredentialSchema, KeyStorageSecurity } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { IdentifierListItem } from "./identifier";
 
@@ -165,8 +165,10 @@ export interface InvitationResultCredentialIssuance {
    * is typically sent through a separate channel such as SMS or email.
    */
   txCode?: OpenID4VCITxCode;
-  /** Required storage type for holder binding key */
-  walletStorageType?: WalletStorageType;
+  /** Accepted storage security levels for holder binding key */
+  keyStorageSecurity?: KeyStorageSecurity[];
+  /** Accepted algorithms for holder binding key */
+  keyAlgorithms?: string[];
 }
 
 export interface OpenID4VCITxCode {
@@ -204,8 +206,10 @@ export interface InitiateIssuanceResponse {
 export interface ContinueIssuanceResponse {
   /** For reference. */
   interactionId: string;
-  /** Required storage type for holder binding key */
-  walletStorageType?: WalletStorageType;
+  /** Accepted storage security levels for holder binding key */
+  keyStorageSecurity?: KeyStorageSecurity[];
+  /** Accepted algorithms for holder binding key */
+  keyAlgorithms?: string[];
 }
 
 export interface OpenID4VCIProofTypeSupported {

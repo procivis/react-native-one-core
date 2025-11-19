@@ -316,23 +316,17 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(holderSubmitProof:credentials:didId:identifierId:keyId:resolver:rejecter:)
+  @objc(holderSubmitProof:credentials:resolver:rejecter:)
   func submitProof(
     interactionId: String,
     credentials: NSDictionary,
-    didId: String?,
-    identifierId: String?,
-    keyId: String?,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
       try await self.getCore().holderSubmitProof(
         interactionId: interactionId,
-        submitCredentials: try deserialize(credentials),
-        didId: didId,
-        identifierId: identifierId,
-        keyId: keyId
+        submitCredentials: try deserialize(credentials)
       )
       return nil as NSDictionary?
     }

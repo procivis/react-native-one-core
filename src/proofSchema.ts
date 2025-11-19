@@ -2,7 +2,7 @@ import {
   CredentialSchema,
   CredentialSchemaLayoutProperties,
   LayoutType,
-  WalletStorageType,
+  KeyStorageSecurity,
 } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 
@@ -111,7 +111,7 @@ export interface ImportProofSchemaCredentialSchema {
   name: string;
   format: string;
   revocationMethod: string;
-  walletStorageType?: WalletStorageType;
+  keyStorageSecurity?: KeyStorageSecurity;
   schemaId: string;
   importedSourceUrl: string;
   layoutType?: LayoutType;

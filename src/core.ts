@@ -210,10 +210,7 @@ export interface ONECore {
       PresentationDefinitionRequestedCredential["id"],
       | PresentationSubmitCredentialRequest
       | PresentationSubmitCredentialRequest[]
-    >,
-    didId: DidListItem["id"] | undefined,
-    identifierId: IdentifierListItem["id"] | undefined,
-    keyId: string | undefined
+    >
   ): Promise<void>;
 
   holderSubmitProofV2(
