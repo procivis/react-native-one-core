@@ -142,7 +142,7 @@ export interface InvitationResultCredentialIssuance {
      */
     txCode?: OpenID4VCITxCode;
     /** Accepted storage security levels for holder binding key */
-    keyStorageSecurity?: KeyStorageSecurity[];
+    keyStorageSecurityLevels?: KeyStorageSecurity[];
     /** Accepted algorithms for holder binding key */
     keyAlgorithms?: string[];
 }
@@ -177,7 +177,7 @@ export interface ContinueIssuanceResponse {
     /** For reference. */
     interactionId: string;
     /** Accepted storage security levels for holder binding key */
-    keyStorageSecurity?: KeyStorageSecurity[];
+    keyStorageSecurityLevels?: KeyStorageSecurity[];
     /** Accepted algorithms for holder binding key */
     keyAlgorithms?: string[];
 }
