@@ -101,12 +101,15 @@ private func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto)
 
 private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) throws -> NSDictionary {
     switch (invitationResponse) {
-    case let .credentialIssuance(interactionId, keyStorageSecurity, txCode):
+    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode):
         var result: [String: Any] = [
             "interactionId": interactionId
         ];
-        if let keyStorageSecurity = keyStorageSecurity {
-          result["keyStorageSecurity"] = serializeEnumValue(value: keyStorageSecurity)
+        if let keyStorageSecurityLevels = keyStorageSecurityLevels {
+            result["keyStorageSecurityLevels"] = keyStorageSecurityLevels.map { serializeEnumValue(value: $0) }
+        }
+        if let keyAlgorithms = keyAlgorithms {
+            result["keyAlgorithms"] = try serializeAny(keyAlgorithms)
         }
         if let txCode = txCode {
             result["txCode"] = try serializeAny(txCode)
