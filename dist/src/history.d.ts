@@ -24,7 +24,8 @@ export declare enum HistoryActionEnum {
     UPDATED = "UPDATED",
     REACTIVATED = "REACTIVATED",
     CSR_GENERATED = "CSR_GENERATED",
-    EXPIRED = "EXPIRED"
+    EXPIRED = "EXPIRED",
+    INTERACTION_CREATED = "INTERACTION_CREATED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
@@ -40,7 +41,10 @@ export declare enum HistoryEntityTypeEnum {
     TRUST_ANCHOR = "TRUST_ANCHOR",
     TRUST_ENTITY = "TRUST_ENTITY",
     WALLET_UNIT = "WALLET_UNIT",
-    WALLET_UNIT_ATTESTATION = "WALLET_UNIT_ATTESTATION"
+    USER = "USER",
+    STS_ROLE = "STS_ROLE",
+    STS_ORGANISATION = "STS_ORGANISATION",
+    STS_IAM_ROLE = "STS_IAM_ROLE"
 }
 export declare enum HistorySearchTypeEnum {
     CLAIM_NAME = "CLAIM_NAME",
@@ -53,7 +57,7 @@ export declare enum HistorySearchTypeEnum {
     PROOF_SCHEMA_NAME = "PROOF_SCHEMA_NAME"
 }
 export interface HistoryListQuery extends ListQuery {
-    entityId?: string;
+    entityIds?: string[];
     actions?: HistoryActionEnum[];
     entityTypes?: HistoryEntityTypeEnum[];
     /** accepts the RFC3339 format, e.g. use the {@link Date.toISOString} */
@@ -65,7 +69,7 @@ export interface HistoryListQuery extends ListQuery {
     credentialSchemaId?: string;
     proofSchemaId?: string;
     search?: HistoryListSearch;
-    user?: string;
+    users?: string[];
 }
 export interface HistoryListSearch {
     text: string;
