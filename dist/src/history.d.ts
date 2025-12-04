@@ -25,7 +25,8 @@ export declare enum HistoryActionEnum {
     REACTIVATED = "REACTIVATED",
     CSR_GENERATED = "CSR_GENERATED",
     EXPIRED = "EXPIRED",
-    INTERACTION_CREATED = "INTERACTION_CREATED"
+    INTERACTION_CREATED = "INTERACTION_CREATED",
+    INTERACTION_ERRORED = "INTERACTION_ERRORED"
 }
 export declare enum HistoryEntityTypeEnum {
     KEY = "KEY",
@@ -42,9 +43,12 @@ export declare enum HistoryEntityTypeEnum {
     TRUST_ENTITY = "TRUST_ENTITY",
     WALLET_UNIT = "WALLET_UNIT",
     USER = "USER",
+    PROVIDER = "PROVIDER",
+    WALLET_RELYING_PARTY = "WALLET_RELYING_PARTY",
     STS_ROLE = "STS_ROLE",
     STS_ORGANISATION = "STS_ORGANISATION",
-    STS_IAM_ROLE = "STS_IAM_ROLE"
+    STS_IAM_ROLE = "STS_IAM_ROLE",
+    STS_TOKEN = "STS_TOKEN"
 }
 export declare enum HistorySearchTypeEnum {
     CLAIM_NAME = "CLAIM_NAME",
