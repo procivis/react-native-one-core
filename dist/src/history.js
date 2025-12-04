@@ -25,6 +25,7 @@ export var HistoryActionEnum;
     HistoryActionEnum["CSR_GENERATED"] = "CSR_GENERATED";
     HistoryActionEnum["EXPIRED"] = "EXPIRED";
     HistoryActionEnum["INTERACTION_CREATED"] = "INTERACTION_CREATED";
+    HistoryActionEnum["INTERACTION_ERRORED"] = "INTERACTION_ERRORED";
 })(HistoryActionEnum || (HistoryActionEnum = {}));
 export var HistoryEntityTypeEnum;
 (function (HistoryEntityTypeEnum) {
@@ -42,9 +43,12 @@ export var HistoryEntityTypeEnum;
     HistoryEntityTypeEnum["TRUST_ENTITY"] = "TRUST_ENTITY";
     HistoryEntityTypeEnum["WALLET_UNIT"] = "WALLET_UNIT";
     HistoryEntityTypeEnum["USER"] = "USER";
+    HistoryEntityTypeEnum["PROVIDER"] = "PROVIDER";
+    HistoryEntityTypeEnum["WALLET_RELYING_PARTY"] = "WALLET_RELYING_PARTY";
     HistoryEntityTypeEnum["STS_ROLE"] = "STS_ROLE";
     HistoryEntityTypeEnum["STS_ORGANISATION"] = "STS_ORGANISATION";
     HistoryEntityTypeEnum["STS_IAM_ROLE"] = "STS_IAM_ROLE";
+    HistoryEntityTypeEnum["STS_TOKEN"] = "STS_TOKEN";
 })(HistoryEntityTypeEnum || (HistoryEntityTypeEnum = {}));
 export var HistorySearchTypeEnum;
 (function (HistorySearchTypeEnum) {
