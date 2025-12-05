@@ -129,7 +129,7 @@ export interface PresentationDefinitionField {
     name?: string;
     purpose?: string;
     required: boolean;
-    keyMap: Record<CredentialListItem["id"], Claim["key"]>;
+    keyMap: Record<CredentialListItem["id"], Claim["schema"]["key"]>;
 }
 export interface PresentationSubmitCredentialRequest {
     credentialId: CredentialListItem["id"];
