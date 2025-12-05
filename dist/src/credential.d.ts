@@ -1,5 +1,4 @@
-import { DataTypeEnum } from "./config";
-import { CredentialSchema, KeyStorageSecurity } from "./credentialSchema";
+import { ClaimSchema, CredentialSchema, KeyStorageSecurity } from "./credentialSchema";
 import { ListQuery, SortDirection } from "./list";
 import { IdentifierListItem } from "./identifier";
 export declare enum CredentialStateEnum {
@@ -12,35 +11,12 @@ export declare enum CredentialStateEnum {
     SUSPENDED = "SUSPENDED",
     ERROR = "ERROR"
 }
-export type ClaimValue = {
-    dataType: DataTypeEnum.String | DataTypeEnum.Date | DataTypeEnum.Picture | DataTypeEnum.SwiyuPicture;
-    value: string;
-    array: false;
-} | {
-    dataType: DataTypeEnum.Number;
-    value: number;
-    array: false;
-} | {
-    dataType: DataTypeEnum.Boolean;
-    value: boolean;
-    array: false;
-} | {
-    dataType: DataTypeEnum.Object;
-    value: Claim[];
-    array: false;
-} | {
-    dataType: string;
-    value: string | number | boolean;
-    array: false;
-} | {
-    dataType: string;
-    value: Claim[];
-    array: true;
-};
-export type Claim = ClaimValue & {
-    id: string;
-    key: string;
-};
+export interface Claim {
+    path: string;
+    schema: ClaimSchema;
+    value: ClaimValue;
+}
+export type ClaimValue = string | number | boolean | Claim[];
 export interface CredentialListItem {
     id: string;
     createdDate: string;
