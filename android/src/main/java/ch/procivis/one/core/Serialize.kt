@@ -54,8 +54,6 @@ object Serialize {
             return Pair(RNType.DOUBLE, input as Double)
         } else if (type == Char::class.java || type == java.lang.Character::class.java) {
             return Pair(RNType.STRING, (input as Char).toString())
-        } else if (SerializeSpecific.Str.isCustomConversionType(input)) {
-            return Pair(RNType.STRING, SerializeSpecific.Str.convertCustom(input))
         } else if (SerializeSpecific.Arr.isCustomConversionType(input)) {
             return Pair(RNType.ARRAY, SerializeSpecific.Arr.convertCustom(input))
         } else {

@@ -79,10 +79,8 @@ object SerializeSpecific {
 
         private fun claim(c: ClaimBindingDto): ReadableMap {
             val result = Arguments.createMap()
-            result.putString("id", c.id)
-            result.putString("key", c.key)
-            result.putString("dataType", c.dataType)
-            result.putBoolean("array", c.array)
+            result.putString("path", c.path)
+            result.putMap("schema", convertToRN(c.schema) as ReadableMap)
 
             when (val value = c.value) {
                 is ClaimValueBindingDto.Boolean -> result.putBoolean("value", value.value)
@@ -156,48 +154,6 @@ object SerializeSpecific {
             }
 
             return result
-        }
-    }
-
-    object Str {
-        private val CustomConversionTypes =
-            arrayOf(
-                CredentialSchemaTypeBindingEnum::class.java,
-            )
-
-        fun isCustomConversionType(input: Any?): Boolean {
-            for (customType in CustomConversionTypes) {
-                if (customType.isInstance(input)) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        fun convertCustom(input: Any): String {
-            if (input is CredentialSchemaTypeBindingEnum) {
-                return credentialSchemaType(input)
-            }
-            throw IllegalArgumentException("Invalid string conversion: $input")
-        }
-
-        private fun credentialSchemaType(type: CredentialSchemaTypeBindingEnum): String {
-            return when (type) {
-                is CredentialSchemaTypeBindingEnum.ProcivisOneSchema2024 ->
-                    "PROCIVIS_ONE_SCHEMA2024"
-
-                is CredentialSchemaTypeBindingEnum.FallbackSchema2024 ->
-                    "FALLBACK_SCHEMA2024"
-
-                is CredentialSchemaTypeBindingEnum.Mdoc ->
-                    "MDOC"
-
-                is CredentialSchemaTypeBindingEnum.SdJwtVc ->
-                    "SD_JWT_VC"
-
-                is CredentialSchemaTypeBindingEnum.Other ->
-                    type.value
-            }
         }
     }
 

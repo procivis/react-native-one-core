@@ -68,17 +68,6 @@ func deserializeOpt<T: Decodable>(_ value: Any?) throws -> T? {
 private func deserializeSpecific(_ value: Any, _ type: Any.Type, _ codingPath: [CodingKey]) throws
   -> Any?
 {
-  if type == CredentialSchemaTypeBindingEnum.self {
-    guard let data = value as? String else {
-      let description = "Expected to decode \(type) but found '\(value)' instead."
-      throw DecodingError.typeMismatch(
-        type,
-        DecodingError.Context(codingPath: codingPath, debugDescription: description)
-      )
-    }
-    return deserializeCredentialSchemaTypeBindingEnum(data)
-  }
-
   if type == OptionalString.self {
     if value is NSNull {
       return OptionalString.none
@@ -95,21 +84,4 @@ private func deserializeSpecific(_ value: Any, _ type: Any.Type, _ codingPath: [
   }
 
   return nil
-}
-
-private func deserializeCredentialSchemaTypeBindingEnum(_ credentialSchemaType: String)
-  -> CredentialSchemaTypeBindingEnum
-{
-  switch credentialSchemaType {
-  case "PROCIVIS_ONE_SCHEMA2024":
-    return .procivisOneSchema2024
-  case "FALLBACK_SCHEMA2024":
-    return .fallbackSchema2024
-  case "MDOC":
-    return .mdoc
-  case "SD_JWT_VC":
-    return .sdJwtVc
-  case let other:
-    return .other(value: other)
-  }
 }

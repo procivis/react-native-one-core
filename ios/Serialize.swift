@@ -31,8 +31,6 @@ private func serializeSpecific(_ value: Encodable) throws -> Any? {
     switch value {
     case let data as HistoryMetadataBinding:
         return try serialize(historyMetadata: data)
-    case let data as CredentialSchemaTypeBindingEnum:
-        return serialize(credentialSchemaType: data)
     case let data as ClaimValueBindingDto:
         return try serialize(claimValue: data)
     case let data as ProofRequestClaimValueBindingDto:
@@ -57,21 +55,6 @@ private func serialize(historyMetadata: HistoryMetadataBinding) throws -> Any {
         return try serializeAny(value);
     case let .walletUnitJwt(value):
         return ["jwt": value] as NSDictionary;
-    }
-}
-
-private func serialize(credentialSchemaType: CredentialSchemaTypeBindingEnum) -> String {
-    switch (credentialSchemaType) {
-    case .procivisOneSchema2024:
-        return "PROCIVIS_ONE_SCHEMA2024";
-    case .fallbackSchema2024:
-        return "FALLBACK_SCHEMA2024";
-    case .mdoc:
-        return "MDOC";
-    case .sdJwtVc:
-        return "SD_JWT_VC";
-    case let .other(value):
-        return value;
     }
 }
 
