@@ -14,8 +14,6 @@ object DeserializeSpecific {
 
         fun convertCustom(type: KClass<*>, input: ReadableMap, field: String): Any? {
             return when (type) {
-                CredentialSchemaTypeBindingEnum::class -> input.getString(field)
-                    ?.let { credentialSchemaType(it) }
                 OptionalString::class -> {
                     val value = input.getString(field)
                     if (value == null) {
@@ -28,18 +26,6 @@ object DeserializeSpecific {
                     throw IllegalArgumentException("Invalid map conversion: $input")
                 }
             }
-        }
-    }
-
-    private fun credentialSchemaType(
-        credentialSchemaType: String
-    ): CredentialSchemaTypeBindingEnum {
-        return when (credentialSchemaType) {
-            "PROCIVIS_ONE_SCHEMA2024" -> CredentialSchemaTypeBindingEnum.ProcivisOneSchema2024
-            "FALLBACK_SCHEMA2024" -> CredentialSchemaTypeBindingEnum.FallbackSchema2024
-            "MDOC" -> CredentialSchemaTypeBindingEnum.Mdoc
-            "SD_JWT_VC" -> CredentialSchemaTypeBindingEnum.SdJwtVc
-            else -> CredentialSchemaTypeBindingEnum.Other(credentialSchemaType)
         }
     }
 
