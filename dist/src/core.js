@@ -14,7 +14,10 @@ export * from "./proof";
 export * from "./proofSchema";
 export * from "./trust";
 export * from "./walletUnit";
-// New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
+/**
+ * @hidden
+ * New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
+ */
 export const interfaceMethodNames = [
     "getVersion",
     "getConfig",

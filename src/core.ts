@@ -415,7 +415,10 @@ export interface ONECore {
   uninitialize(deleteData: boolean): Promise<void>;
 }
 
-// New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
+/**
+ * @hidden
+ * New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
+ */
 export const interfaceMethodNames = [
   "getVersion",
   "getConfig",

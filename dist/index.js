@@ -4,6 +4,7 @@ import { interfaceMethodNames } from "./src/core";
 import * as ubiqu from "./src/ubiqu";
 export * from "./src/core";
 export * from "./src/error";
+/** @hidden */
 export const Ubiqu = ubiqu;
 const ONE = NativeModules.ProcivisOneCoreModule;
 // New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221

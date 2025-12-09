@@ -2,7 +2,9 @@ import { ONECore } from "./src/core";
 import * as ubiqu from "./src/ubiqu";
 export * from "./src/core";
 export * from "./src/error";
+/** @hidden */
 export declare const Ubiqu: typeof ubiqu;
+/** @hidden */
 export declare namespace Ubiqu {
     type PinEventType = ubiqu.PinEventType;
     type PinFlowType = ubiqu.PinFlowType;

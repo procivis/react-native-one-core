@@ -1,7 +1,7 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "disableSources": true,
-  "entryPoints": ["src/core.ts"],
+  "entryPoints": ["index.ts"],
   "exclude": ["src/ubiqu.ts"],
   "readme": "none",
   "router": "kind"

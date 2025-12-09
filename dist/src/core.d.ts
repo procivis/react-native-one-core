@@ -183,4 +183,8 @@ export interface ONECore {
      */
     uninitialize(deleteData: boolean): Promise<void>;
 }
+/**
+ * @hidden
+ * New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
+ */
 export declare const interfaceMethodNames: readonly ["getVersion", "getConfig", "createOrganisation", "upsertOrganisation", "generateKey", "createDid", "getDids", "createIdentifier", "getIdentifier", "getIdentifiers", "deleteIdentifier", "handleInvitation", "holderAcceptCredential", "holderRejectCredential", "initiateIssuance", "continueIssuance", "getPresentationDefinition", "getPresentationDefinitionV2", "holderRejectProof", "holderSubmitProof", "holderSubmitProofV2", "getCredentials", "runTask", "deleteProofClaims", "getCredential", "deleteCredential", "importCredentialSchema", "getCredentialSchema", "getCredentialSchemas", "deleteCredentialSchema", "createProof", "shareProof", "shareProofSchema", "shareCredentialSchema", "getProof", "getProofs", "deleteProof", "proposeProof", "createProofSchema", "getProofSchemas", "getProofSchema", "deleteProofSchema", "importProofSchema", "checkRevocation", "createTrustAnchor", "deleteTrustAnchor", "getTrustAnchor", "getTrustAnchors", "createTrustEntity", "getTrustEntity", "getTrustEntities", "getTrustEntityByDid", "resolveTrustEntityByIdentifier", "createRemoteTrustEntity", "getRemoteTrustEntity", "updateRemoteTrustEntity", "getHistory", "getHistoryEntry", "createBackup", "backupInfo", "deleteCache", "unpackBackup", "finalizeImport", "rollbackImport", "resolveJsonldContext", "holderRegisterWalletUnit", "holderWalletUnitStatus", "holderGetWalletUnit", "nfcReadIsoMdlEngagement", "nfcStopIsoMdlEngagement", "uninitialize"];
