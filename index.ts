@@ -6,7 +6,10 @@ import * as ubiqu from "./src/ubiqu";
 export * from "./src/core";
 export * from "./src/error";
 
+/** @hidden */
 export const Ubiqu = ubiqu;
+
+/** @hidden */
 export declare namespace Ubiqu {
   export type PinEventType = ubiqu.PinEventType;
   export type PinFlowType = ubiqu.PinFlowType;
