@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 object DeserializeSpecific {
     object Obj {
-        private val CustomConversionTypes = arrayOf(CredentialSchemaTypeBindingEnum::class, OptionalString::class)
+        private val CustomConversionTypes = arrayOf(OptionalString::class)
 
         fun isCustomConversionType(type: KClass<*>): Boolean {
             return CustomConversionTypes.contains(type)
