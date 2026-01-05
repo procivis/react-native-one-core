@@ -18,8 +18,8 @@ variables:
 stages:
   - prepare
   - build
-  - publish
   - github
+  - publish
   - sync_with_jira
   - sdk
 
@@ -108,25 +108,6 @@ build:swift:
     BITRISE_PROJECT_SLUG: 6ee8c26f-6d7b-4bcb-8ddc-be1ba3cd2687
     BITRISE_WORKFLOW: iOS_RN_Core_LIB
 
-publish:npm:private:
-  stage: publish
-  script:
-    - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
-    - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
-    - npm publish --verbose --access restricted --tag stable
-  extends:
-    - .modules_setup
-    - .only_tag
-
-publish:npm:public:
-  stage: publish
-  script:
-    - npm config set //registry.npmjs.org/:_authToken ${NPMJS_TOKEN}
-    - npm publish --verbose --access public
-  extends:
-    - .modules_setup
-    - .only_manual_tag
-
 github:push:
   stage: github
   variables:
@@ -134,6 +115,37 @@ github:push:
     PROJECT: $CI_PROJECT_NAME
   extends:
     - .ci-tool:open_source_release
+  artifacts:
+    paths:
+      - .
+    exclude:
+      - .git/
+    expire_in: 10d
+
+publish:npm:public:
+  stage: publish
+  needs: 
+    - job: github:push
+      artifacts: true
+  variables:
+    GIT_STRATEGY: none # github:push artifacts - source of truth
+  script:
+    - npm config set //registry.npmjs.org/:_authToken ${NPMJS_TOKEN}
+    - npm publish --verbose --access public
+  extends:
+    - .modules_setup
+    - .only_manual_tag
+
+publish:npm:private:
+  stage: publish
+  needs: []
+  script:
+    - npm config set @procivis:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
+    - npm config set //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
+    - npm publish --verbose --access restricted --tag stable
+  extends:
+    - .modules_setup
+    - .only_tag
 
 set_jira_version:
   stage: sync_with_jira
