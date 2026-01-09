@@ -1,4 +1,7 @@
-import { TrustEntityTypeEnum } from "./trust";
+import {
+  TrustEntityTypeBindingEnum,
+  ConfigBindingDto,
+} from "./one-core-uniffi-intf";
 
 export enum KeyAlgorithmFeatureEnum {
   GENERATE_CSR = "GENERATE_CSR",
@@ -164,7 +167,7 @@ export enum TrustOperation {
 
 export interface TrustCapabilities {
   operations: TrustOperation[];
-  supportedTypes: TrustEntityTypeEnum[];
+  supportedTypes: TrustEntityTypeBindingEnum[];
 }
 
 export interface Config {
@@ -174,6 +177,7 @@ export interface Config {
   transport: ConfigEntities;
   revocation: ConfigEntities<RevocationCapabilities>;
   did: ConfigEntities<DidCapabilities>;
+  identifier: ConfigEntities;
   datatype: ConfigEntities<undefined, DataTypeParams>;
   keyAlgorithm: ConfigEntities<KeyAlgorithmCapabilities, {}>;
   keyStorage: ConfigEntities<KeyStorageCapabilities>;
@@ -183,3 +187,12 @@ export interface Config {
   credentialIssuer: ConfigEntities<undefined, {}>;
   walletProvider: ConfigEntities;
 }
+
+// Typescript automatic assertions to keep the fields of ONECore ConfigBindingDto and typed Config in sync
+/** assert that all fields listed in {@link ConfigBindingDto} exist in {@link Config} */
+const missingFieldsCheck: keyof Config =
+  null as unknown as keyof ConfigBindingDto;
+
+/** assert that all fields listed in {@link Config} exist in {@link ConfigBindingDto} */
+const extraFieldsCheck: keyof ConfigBindingDto =
+  null as unknown as keyof Config;

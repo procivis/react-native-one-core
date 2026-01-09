@@ -5,6 +5,7 @@ import * as ubiqu from "./src/ubiqu";
 
 export * from "./src/core";
 export * from "./src/error";
+export * from "./src/nfc";
 
 /** @hidden */
 export const Ubiqu = ubiqu;

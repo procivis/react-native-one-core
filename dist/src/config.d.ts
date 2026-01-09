@@ -1,4 +1,4 @@
-import { TrustEntityTypeEnum } from "./trust";
+import { TrustEntityTypeBindingEnum } from "./one-core-uniffi-intf";
 export declare enum KeyAlgorithmFeatureEnum {
     GENERATE_CSR = "GENERATE_CSR"
 }
@@ -132,7 +132,7 @@ export declare enum TrustOperation {
 }
 export interface TrustCapabilities {
     operations: TrustOperation[];
-    supportedTypes: TrustEntityTypeEnum[];
+    supportedTypes: TrustEntityTypeBindingEnum[];
 }
 export interface Config {
     format: ConfigEntities<FormatCapabilities>;
@@ -141,6 +141,7 @@ export interface Config {
     transport: ConfigEntities;
     revocation: ConfigEntities<RevocationCapabilities>;
     did: ConfigEntities<DidCapabilities>;
+    identifier: ConfigEntities;
     datatype: ConfigEntities<undefined, DataTypeParams>;
     keyAlgorithm: ConfigEntities<KeyAlgorithmCapabilities, {}>;
     keyStorage: ConfigEntities<KeyStorageCapabilities>;
