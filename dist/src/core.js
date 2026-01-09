@@ -1,19 +1,5 @@
-export * from "./backup";
-export * from "./cache";
+export * from "./one-core-uniffi-intf";
 export * from "./config";
-export * from "./credential";
-export * from "./credentialSchema";
-export * from "./did";
-export * from "./identifier";
-export * from "./history";
-export * from "./key";
-export * from "./nfc";
-export * from "./list";
-export * from "./organisation";
-export * from "./proof";
-export * from "./proofSchema";
-export * from "./trust";
-export * from "./walletUnit";
 /**
  * @hidden
  * New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
@@ -28,7 +14,7 @@ export const interfaceMethodNames = [
     "getDids",
     "createIdentifier",
     "getIdentifier",
-    "getIdentifiers",
+    "listIdentifiers",
     "deleteIdentifier",
     "handleInvitation",
     "holderAcceptCredential",
@@ -66,16 +52,16 @@ export const interfaceMethodNames = [
     "createTrustAnchor",
     "deleteTrustAnchor",
     "getTrustAnchor",
-    "getTrustAnchors",
+    "listTrustAnchors",
     "createTrustEntity",
     "getTrustEntity",
-    "getTrustEntities",
+    "listTrustEntities",
     "getTrustEntityByDid",
     "resolveTrustEntityByIdentifier",
     "createRemoteTrustEntity",
     "getRemoteTrustEntity",
     "updateRemoteTrustEntity",
-    "getHistory",
+    "getHistoryList",
     "getHistoryEntry",
     "createBackup",
     "backupInfo",

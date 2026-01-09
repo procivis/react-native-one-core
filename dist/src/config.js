@@ -53,3 +53,8 @@ export var TrustOperation;
     TrustOperation["Publish"] = "PUBLISH";
     TrustOperation["Lookup"] = "LOOKUP";
 })(TrustOperation || (TrustOperation = {}));
+// Typescript automatic assertions to keep the fields of ONECore ConfigBindingDto and typed Config in sync
+/** assert that all fields listed in {@link ConfigBindingDto} exist in {@link Config} */
+const missingFieldsCheck = null;
+/** assert that all fields listed in {@link Config} exist in {@link ConfigBindingDto} */
+const extraFieldsCheck = null;

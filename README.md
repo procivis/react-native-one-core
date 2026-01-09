@@ -34,10 +34,10 @@ See the [key features][key] and complete solution [architecture][archi].
 
 ### Trial
 
-The fastest way to get started with the *Procivis One Wallet* is to download the app
+The fastest way to get started with the _Procivis One Wallet_ is to download the app
 from the iOS or Android app stores and [join our Trial Environment][trial].
 In the trial environment, you are given control of an organization on our server
-solution, the *Procivis One Desk*, and can quickly begin issuing and verifying credentials.
+solution, the _Procivis One Desk_, and can quickly begin issuing and verifying credentials.
 
 ### Documentation
 
@@ -65,9 +65,10 @@ allprojects {
 
 ## Usage
 
-```javascript
-import ONE from "react-native-one-core";
+```typescript
+import { initializeCore } from "react-native-one-core";
 ...
+const ONE = await initializeCore();
 await ONE.getVersion();
 ```
 
@@ -83,7 +84,7 @@ often referred to as Self-Sovereign Identity, or SSI.
 
 ## eIDAS 2.0
 
-If you want to provide an **EUDI Wallet**, *Procivis One* provides production grade open
+If you want to provide an **EUDI Wallet**, _Procivis One_ provides production grade open
 source components to get certified and connect your organization to the eIDAS 2.0 ecosystem.
 
 ![Procivis One in the eIDAS ARF](https://assets.procivis-one.com/static/diff/eIDAS_Architecture.png)
@@ -97,17 +98,17 @@ use the [Procivis One Core][core].
 
 ## Interoperability and conformance
 
-*Procivis One* is built using [open standards](#supported-standards) and tested to ensure
+_Procivis One_ is built using [open standards](#supported-standards) and tested to ensure
 interoperability with different software vendors and across different international
 regulatory ecosystems.
 
 - W3C standards
   - The W3C offers several test suites for standards conformance. See
-    the latest test results for *Procivis One* at [canivc.com][canivc].
+    the latest test results for _Procivis One_ at [canivc.com][canivc].
 - ISO/IEC 18013-5 mDL
-  - *Procivis One*'s implementation of the ISO mDL standard is compatible with the
-    OpenWallet Foundation's verifier: *Procivis One* can successfully issue mDL
-    credentials to a *Procivis One Wallet*, and these credentials can successfully
+  - _Procivis One_'s implementation of the ISO mDL standard is compatible with the
+    OpenWallet Foundation's verifier: _Procivis One_ can successfully issue mDL
+    credentials to a _Procivis One Wallet_, and these credentials can successfully
     be verified by the OpenWallet Foundation's verifier. See the [OpenWallet Foundation libraries][owf].
 - eIDAS 2.0; EUDI Wallet
   - The EU Digital Wallet is developing [issuer][eudiwi] and [verifier][eudiwv] testing for
@@ -125,10 +126,10 @@ and regulations mature and harden.
 
 - [W3C Verifiable Credentials Data Model 2.0][vcdm] in the following variations:
 
-| Securing mechanism                           | Supported representations                           | Supported proof/signature types                                                          |
-| -------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
-| [W3C Data Integrity Proofs][vcdi] (embedded) | [JSON-LD][jld] in Compacted Document Form | <ul><li>[W3C Data Integrity ECDSA Cryptosuites v1.0][ecd] / [ecdsa-rdfc-2019][ecd2019]</li><li>[W3C Data Integrity EdDSA Cryptosuites v1.0][edd] / [eddsa-rdfc-2022][edd2022]</li><li>[W3C Data Integrity BBS Cryptosuites v1.0][bbs] / [bbs-2023][bbs2023]</li></ul> |
-| [W3C VC-JOSE-COSE][jose] (enveloping)        | <ul><li>[SD-JWT][sdjwt]</li><li>[JWT][jw]</li></ul> | <ul><li>JOSE / ECDSA [ES256][es2]</li><li>JOSE / EdDSA [Ed25519][ed255]</li><li>JOSE / CRYSTALS-DILITHIUM 3 [CRYDI3][crydi3]* |
+| Securing mechanism                           | Supported representations                           | Supported proof/signature types                                                                                                                                                                                                                                       |
+| -------------------------------------------- | --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [W3C Data Integrity Proofs][vcdi] (embedded) | [JSON-LD][jld] in Compacted Document Form           | <ul><li>[W3C Data Integrity ECDSA Cryptosuites v1.0][ecd] / [ecdsa-rdfc-2019][ecd2019]</li><li>[W3C Data Integrity EdDSA Cryptosuites v1.0][edd] / [eddsa-rdfc-2022][edd2022]</li><li>[W3C Data Integrity BBS Cryptosuites v1.0][bbs] / [bbs-2023][bbs2023]</li></ul> |
+| [W3C VC-JOSE-COSE][jose] (enveloping)        | <ul><li>[SD-JWT][sdjwt]</li><li>[JWT][jw]</li></ul> | <ul><li>JOSE / ECDSA [ES256][es2]</li><li>JOSE / EdDSA [Ed25519][ed255]</li><li>JOSE / CRYSTALS-DILITHIUM 3 [CRYDI3][crydi3]\*                                                                                                                                        |
 
 \* CRYSTALS-DILITHIUM is a post-quantum resistant signature scheme, selected by NIST for [Post-Quantum Cryptography Standardization][pqc].
 Support for the recently published [FIPS-204][fips] is planned for the near future.
