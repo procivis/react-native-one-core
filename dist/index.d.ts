@@ -2,6 +2,7 @@ import { ONECore } from "./src/core";
 import * as ubiqu from "./src/ubiqu";
 export * from "./src/core";
 export * from "./src/error";
+export * from "./src/nfc";
 /** @hidden */
 export declare const Ubiqu: typeof ubiqu;
 /** @hidden */

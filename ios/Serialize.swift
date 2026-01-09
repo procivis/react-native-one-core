@@ -37,8 +37,8 @@ private func serializeSpecific(_ value: Encodable) throws -> Any? {
         return try serialize(proofRequestClaimValue: data)
     case let data as HandleInvitationResponseBindingEnum:
         return try serialize(invitationResponse: data)
-    case let data as CredentialQueryResponseBindingDto:
-        return try serialize(credentialQuery: data)
+    case let data as ApplicableCredentialOrFailureHintBindingEnum:
+        return try serialize(applicableCredentialQuery: data)
     case let data as PresentationDefinitionV2ClaimValueBindingDto:
         return try serialize(presentationDefinitionV2ClaimValue: data)
 
@@ -47,38 +47,68 @@ private func serializeSpecific(_ value: Encodable) throws -> Any? {
     }
 }
 
-private func serialize(historyMetadata: HistoryMetadataBinding) throws -> Any {
+private func serialize(historyMetadata: HistoryMetadataBinding) throws -> NSDictionary {
     switch (historyMetadata) {
     case let .unexportableEntities(value):
-        return try serializeAny(value);
+        return [
+            "type_": "UNEXPORTABLE_ENTITIES",
+            "value": try serializeAny(value)
+        ];
     case let .errorMetadata(value):
-        return try serializeAny(value);
+        return [
+            "type_": "ERROR_METADATA",
+            "value": try serializeAny(value)
+        ];
     case let .walletUnitJwt(value):
-        return ["jwt": value] as NSDictionary;
+        return [
+            "type_": "WALLET_UNIT_JWT",
+            "value": [value]
+        ];
     }
 }
 
-private func serialize(claimValue: ClaimValueBindingDto) throws -> Any {
+private func serialize(claimValue: ClaimValueBindingDto) throws -> NSDictionary {
     switch (claimValue) {
     case let .boolean(value):
-        return value;
+        return [
+            "type_": "BOOLEAN",
+            "value": value
+        ];
     case let .float(value):
-        return value;
+        return [
+            "type_": "FLOAT",
+            "value": value
+        ];
     case let .integer(value):
-        return NSNumber(value: value);
+        return [
+            "type_": "INTEGER",
+            "value": NSNumber(value: value)
+        ];
     case let .string(value):
-        return value;
+        return [
+            "type_": "STRING",
+            "value": value
+        ];
     case .nested(value: let values):
-        return try values.map { try serializeAny($0) }
+        return [
+            "type_": "NESTED",
+            "value": try values.map { try serializeAny($0) }
+        ];
     }
 }
 
-private func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto) throws -> Any {
+private func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto) throws -> NSDictionary {
     switch (proofRequestClaimValue) {
     case let .value(value):
-        return value;
+        return [
+            "type_": "VALUE",
+            "value": value
+        ];
     case .claims(value: let values):
-        return try values.map { try serializeAny($0)}
+        return [
+            "type_": "CLAIMS",
+            "value": try values.map { try serializeAny($0)}
+        ];
     }
 }
 
@@ -86,6 +116,7 @@ private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) 
     switch (invitationResponse) {
     case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode):
         var result: [String: Any] = [
+            "type_": "CREDENTIAL_ISSUANCE",
             "interactionId": interactionId
         ];
         if let keyStorageSecurityLevels = keyStorageSecurityLevels {
@@ -101,40 +132,62 @@ private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) 
 
     case let .proofRequest(interactionId, proofId):
         return [
+            "type_": "PROOF_REQUEST",
             "interactionId": interactionId,
             "proofId": proofId
         ];
 
     case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl):
         return [
+            "type_": "AUTHORIZATION_CODE_FLOW",
             "interactionId": interactionId,
             "authorizationCodeFlowUrl": authorizationCodeFlowUrl
         ];
     }
 }
 
-private func serialize(credentialQuery: CredentialQueryResponseBindingDto) throws -> Any {
-    var result: [String: Any] = ["multiple": credentialQuery.multiple]
-    switch (credentialQuery.credentialOrFailureHint) {
+private func serialize(applicableCredentialQuery: ApplicableCredentialOrFailureHintBindingEnum) throws -> NSDictionary {
+    switch (applicableCredentialQuery) {
     case let .applicableCredentials(applicableCredentials: value):
-        result["applicableCredentials"] = try serializeAny(value);
+        return [
+            "type_": "APPLICABLE_CREDENTIALS",
+            "applicableCredentials": try serializeAny(value)
+        ];
+
     case let .failureHint(failureHint: value):
-        result["failureHint"] = try serializeAny(value);
+        return [
+            "type_": "FAILURE_HINT",
+            "failureHint": try serializeAny(value)
+        ];
     }
-    return result as NSDictionary;
 }
 
-private func serialize(presentationDefinitionV2ClaimValue: PresentationDefinitionV2ClaimValueBindingDto) throws -> Any {
+private func serialize(presentationDefinitionV2ClaimValue: PresentationDefinitionV2ClaimValueBindingDto) throws -> NSDictionary {
     switch (presentationDefinitionV2ClaimValue) {
     case let .boolean(value):
-        return value;
+        return [
+            "type_": "BOOLEAN",
+            "value": value
+        ];
     case let .float(value):
-        return value;
+        return [
+            "type_": "FLOAT",
+            "value": value
+        ];
     case let .integer(value):
-        return NSNumber(value: value);
+        return [
+            "type_": "INTEGER",
+            "value": NSNumber(value: value)
+        ];
     case let .string(value):
-        return value;
+        return [
+            "type_": "STRING",
+            "value": value
+        ];
     case .nested(value: let values):
-        return try values.map { try serializeAny($0) }
+        return [
+            "type_": "NESTED",
+            "value": try values.map { try serializeAny($0) }
+        ];
     }
 }
