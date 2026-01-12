@@ -51,7 +51,7 @@ RCT_EXTERN_METHOD(createIdentifier:(NSDictionary *)identifierRequest
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getIdentifiers:(NSDictionary *)query
+RCT_EXTERN_METHOD(listIdentifiers:(NSDictionary *)query
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -199,7 +199,7 @@ RCT_EXTERN_METHOD(checkRevocation:(NSArray *)credentialIds
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getHistory:(NSDictionary *)query
+RCT_EXTERN_METHOD(getHistoryList:(NSDictionary *)query
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -215,7 +215,7 @@ RCT_EXTERN_METHOD(getTrustAnchor:(NSString *)trustAnchorId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getTrustAnchors:(NSDictionary *)query
+RCT_EXTERN_METHOD(listTrustAnchors:(NSDictionary *)query
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -231,7 +231,7 @@ RCT_EXTERN_METHOD(getTrustEntity:(NSString *)trustEntityId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getTrustEntities:(NSDictionary *)query
+RCT_EXTERN_METHOD(listTrustEntities:(NSDictionary *)query
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

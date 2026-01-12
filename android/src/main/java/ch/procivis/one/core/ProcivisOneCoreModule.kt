@@ -161,7 +161,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getIdentifiers(query: ReadableMap, promise: Promise) {
+    fun listIdentifiers(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             val identifiers = getCore().listIdentifiers(construct(query))
             return@asyncCall convertToRN(identifiers)
@@ -482,7 +482,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getHistory(query: ReadableMap, promise: Promise) {
+    fun getHistoryList(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             val history = getCore().getHistoryList(construct(query))
             return@asyncCall convertToRN(history)
@@ -520,7 +520,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getTrustAnchors(query: ReadableMap, promise: Promise) {
+    fun listTrustAnchors(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             val trustAnchors = getCore().listTrustAnchors(construct(query))
             return@asyncCall convertToRN(trustAnchors)
@@ -543,7 +543,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getTrustEntities(query: ReadableMap, promise: Promise) {
+    fun listTrustEntities(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             val trustEntity = getCore().listTrustEntities(construct(query))
             return@asyncCall convertToRN(trustEntity)
