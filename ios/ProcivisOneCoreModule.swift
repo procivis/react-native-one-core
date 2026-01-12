@@ -152,7 +152,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   }
 
   @objc(createDid:resolver:rejecter:)
-  func createLocalKeyDid(
+  func createDid(
     didRequest: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
@@ -185,8 +185,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getIdentifiers:resolver:rejecter:)
-  func getIdentifiers(
+  @objc(listIdentifiers:resolver:rejecter:)
+  func listIdentifiers(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
@@ -317,7 +317,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   }
 
   @objc(holderSubmitProof:credentials:resolver:rejecter:)
-  func submitProof(
+  func holderSubmitProof(
     interactionId: String,
     credentials: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
@@ -631,8 +631,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getHistory:resolver:rejecter:)
-  func getHistory(
+  @objc(getHistoryList:resolver:rejecter:)
+  func getHistoryList(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
@@ -678,8 +678,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getTrustAnchors:resolver:rejecter:)
-  func getTrustAnchors(
+  @objc(listTrustAnchors:resolver:rejecter:)
+  func listTrustAnchors(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
@@ -713,8 +713,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getTrustEntities:resolver:rejecter:)
-  func getTrustEntities(
+  @objc(listTrustEntities:resolver:rejecter:)
+  func listTrustEntities(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
