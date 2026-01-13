@@ -145,8 +145,6 @@ export var HistoryActionBindingEnum;
     HistoryActionBindingEnum["INTERACTION_CREATED"] = "INTERACTION_CREATED";
     HistoryActionBindingEnum["INTERACTION_ERRORED"] = "INTERACTION_ERRORED";
     HistoryActionBindingEnum["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
-    HistoryActionBindingEnum["REGISTRATION_CERTIFICATE_CREATED"] = "REGISTRATION_CERTIFICATE_CREATED";
-    HistoryActionBindingEnum["REGISTRATION_CERTIFICATE_REVOKED"] = "REGISTRATION_CERTIFICATE_REVOKED";
 })(HistoryActionBindingEnum || (HistoryActionBindingEnum = {}));
 export var HistoryEntityTypeBindingEnum;
 (function (HistoryEntityTypeBindingEnum) {
