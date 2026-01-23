@@ -76,6 +76,17 @@ export interface ContinueIssuanceResponseBindingDto {
   keyAlgorithms?: Array<string>;
 }
 
+export interface CreateCaCsrRequestBindingDto {
+  subject: KeyGenerateCsrRequestSubjectBindingDto;
+}
+
+export interface CreateCertificateAuthorityRequestBindingDto {
+  name?: string;
+  keyId: string;
+  chain?: string;
+  selfSigned?: CreateSelfSignedCertificateAuthorityRequestBindingDto;
+}
+
 export interface CreateCertificateRequestBindingDto {
   name?: string;
   chain: string;
@@ -89,12 +100,19 @@ export interface CreateIdentifierDidRequestBindingDto {
   params: Record<string, string>;
 }
 
+export interface CreateIdentifierKeyRequestBindingDto {
+  keyId: string;
+}
+
 export interface CreateIdentifierRequestBindingDto {
   organisationId: string;
   name: string;
+  /** Deprecated. Use the `key` field instead. */
   keyId?: string;
+  key?: CreateIdentifierKeyRequestBindingDto;
   did?: CreateIdentifierDidRequestBindingDto;
   certificates?: Array<CreateCertificateRequestBindingDto>;
+  certificateAuthorities?: Array<CreateCertificateAuthorityRequestBindingDto>;
 }
 
 export interface CreateOrganisationRequestBindingDto {
@@ -145,6 +163,13 @@ export interface CreateRemoteTrustEntityRequestBindingDto {
   privacyUrl?: string;
   website?: string;
   role: TrustEntityRoleBindingEnum;
+}
+
+export interface CreateSelfSignedCertificateAuthorityRequestBindingDto {
+  content: CreateCaCsrRequestBindingDto;
+  signer: string;
+  validityStart?: string;
+  validityEnd?: string;
 }
 
 export interface CreateTrustAnchorRequestBindingDto {
@@ -773,6 +798,22 @@ export interface InitiateIssuanceRequestBindingDto {
 
 export interface InitiateIssuanceResponseBindingDto {
   url: string;
+}
+
+export interface KeyGenerateCsrRequestBindingDto {
+  profile: KeyGenerateCsrRequestProfileBinding;
+  subject: KeyGenerateCsrRequestSubjectBindingDto;
+}
+
+export interface KeyGenerateCsrRequestSubjectBindingDto {
+  /** Two-letter country code. */
+  countryName?: string;
+  /** Common name to include in the CSR, typically the domain name of the organization. */
+  commonName?: string;
+  stateOrProvinceName?: string;
+  organisationName?: string;
+  localityName?: string;
+  serialNumber?: string;
 }
 
 export interface KeyListItemBindingDto {
@@ -1598,6 +1639,13 @@ export enum IdentifierTypeBindingEnum {
   KEY = "KEY",
   DID = "DID",
   CERTIFICATE = "CERTIFICATE",
+  CERTIFICATE_AUTHORITY = "CERTIFICATE_AUTHORITY",
+}
+
+export enum KeyGenerateCsrRequestProfileBinding {
+  GENERIC = "GENERIC",
+  MDL = "MDL",
+  CA = "CA",
 }
 
 export enum KeyRoleBindingEnum {
