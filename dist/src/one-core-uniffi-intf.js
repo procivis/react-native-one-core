@@ -191,7 +191,14 @@ export var IdentifierTypeBindingEnum;
     IdentifierTypeBindingEnum["KEY"] = "KEY";
     IdentifierTypeBindingEnum["DID"] = "DID";
     IdentifierTypeBindingEnum["CERTIFICATE"] = "CERTIFICATE";
+    IdentifierTypeBindingEnum["CERTIFICATE_AUTHORITY"] = "CERTIFICATE_AUTHORITY";
 })(IdentifierTypeBindingEnum || (IdentifierTypeBindingEnum = {}));
+export var KeyGenerateCsrRequestProfileBinding;
+(function (KeyGenerateCsrRequestProfileBinding) {
+    KeyGenerateCsrRequestProfileBinding["GENERIC"] = "GENERIC";
+    KeyGenerateCsrRequestProfileBinding["MDL"] = "MDL";
+    KeyGenerateCsrRequestProfileBinding["CA"] = "CA";
+})(KeyGenerateCsrRequestProfileBinding || (KeyGenerateCsrRequestProfileBinding = {}));
 export var KeyRoleBindingEnum;
 (function (KeyRoleBindingEnum) {
     KeyRoleBindingEnum["AUTHENTICATION"] = "AUTHENTICATION";
