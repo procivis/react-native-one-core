@@ -267,12 +267,13 @@ export interface CredentialSchemaBindingDto {
     lastModified: string;
     name: string;
     format: string;
-    revocationMethod: string;
+    revocationMethod?: string;
     keyStorageSecurity?: KeyStorageSecurityBindingEnum;
     schemaId: string;
     layoutType?: LayoutTypeBindingEnum;
     importedSourceUrl: string;
     layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
+    requiresAppAttestation: boolean;
 }
 export interface CredentialSchemaCodePropertiesBindingDto {
     attribute: string;
@@ -284,7 +285,7 @@ export interface CredentialSchemaDetailBindingDto {
     lastModified: string;
     name: string;
     format: string;
-    revocationMethod: string;
+    revocationMethod?: string;
     claims: Array<CredentialClaimSchemaBindingDto>;
     keyStorageSecurity?: KeyStorageSecurityBindingEnum;
     schemaId: string;
@@ -646,6 +647,7 @@ export interface ImportCredentialSchemaRequestSchemaBindingDto {
     layoutType?: LayoutTypeBindingEnum;
     layoutProperties?: ImportCredentialSchemaLayoutPropertiesBindingDto;
     allowSuspension?: boolean;
+    requiresAppAttestation?: boolean;
 }
 export interface ImportProofSchemaBindingDto {
     id: string;
@@ -670,14 +672,17 @@ export interface ImportProofSchemaCredentialSchemaBindingDto {
     id: string;
     createdDate: string;
     lastModified: string;
+    deletedAt?: string;
     name: string;
     format: string;
-    revocationMethod: string;
+    revocationMethod?: string;
     keyStorageSecurity?: KeyStorageSecurityBindingEnum;
     schemaId: string;
     importedSourceUrl: string;
     layoutType?: LayoutTypeBindingEnum;
     layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
+    allowSuspension?: boolean;
+    requiresAppAttestation?: boolean;
 }
 export interface ImportProofSchemaInputSchemaBindingDto {
     claimSchemas: Array<ImportProofSchemaClaimSchemaBindingDto>;
