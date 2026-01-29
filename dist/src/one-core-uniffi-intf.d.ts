@@ -273,6 +273,7 @@ export interface CredentialSchemaBindingDto {
     layoutType?: LayoutTypeBindingEnum;
     importedSourceUrl: string;
     layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
+    allowSuspension: boolean;
     requiresAppAttestation: boolean;
 }
 export interface CredentialSchemaCodePropertiesBindingDto {
@@ -292,6 +293,8 @@ export interface CredentialSchemaDetailBindingDto {
     importedSourceUrl: string;
     layoutType?: LayoutTypeBindingEnum;
     layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
+    allowSuspension: boolean;
+    requiresAppAttestation: boolean;
 }
 export interface CredentialSchemaLayoutPropertiesBindingDto {
     background?: CredentialSchemaBackgroundPropertiesBindingDto;
