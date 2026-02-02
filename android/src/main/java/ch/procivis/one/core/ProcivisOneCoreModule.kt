@@ -50,11 +50,10 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     fun initialize(configJson: String, promise: Promise) {
         syncCall(promise) {
             val context = this.reactApplicationContext
-            val dataDirPath = context.filesDir.absolutePath
             ubiqu = ubiqu ?: UbiquKeyStorage(context)
             oneCore =
                 initializeCore(
-                    dataDirPath = dataDirPath,
+                    context = context,
                     params = InitParamsDto(
                         configJson = configJson,
                         nativeSecureElement = AndroidKeyStoreKeyStorage(context),

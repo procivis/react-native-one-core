@@ -30,24 +30,6 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   ) {
     ProcivisOneCoreEventEmitter.shared.eventEmitter = self
     syncCall(resolve, reject) {
-      guard
-        let dataDirPath = NSSearchPathForDirectoriesInDomains(
-          .applicationSupportDirectory,
-          .userDomainMask,
-          true
-        ).first
-      else {
-        throw BindingError.ErrorResponse(
-          data: ErrorResponseBindingDto(code: "BR_0000", message: "invalid DataDir", cause: nil)
-        )
-      }
-
-      // create folder if not exists
-      try FileManager.default.createDirectory(
-        atPath: dataDirPath,
-        withIntermediateDirectories: true
-      )
-
       if self.core != nil {
         throw BindingError.ErrorResponse(
           data: ErrorResponseBindingDto(
@@ -70,7 +52,6 @@ class ProcivisOneCoreModule: RCTEventEmitter {
       }
 
       self.core = try initializeCore(
-        dataDirPath: dataDirPath,
         params: InitParamsDto(
           configJson: configJson,
           nativeSecureElement: SecureEnclaveKeyStorage(),
