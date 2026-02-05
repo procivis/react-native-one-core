@@ -295,6 +295,7 @@ export interface CredentialSchemaDetailBindingDto {
     layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
     allowSuspension: boolean;
     requiresAppAttestation: boolean;
+    transactionCode?: CredentialSchemaTransactionCodeBindingDto;
 }
 export interface CredentialSchemaLayoutPropertiesBindingDto {
     background?: CredentialSchemaBackgroundPropertiesBindingDto;
@@ -333,6 +334,11 @@ export interface CredentialSchemaLogoPropertiesBindingDto {
 }
 export interface CredentialSchemaShareResponseBindingDto {
     url: string;
+}
+export interface CredentialSchemaTransactionCodeBindingDto {
+    type: TransactionCodeTypeBindingEnum;
+    length: number;
+    description?: string;
 }
 export interface CredentialSetResponseBindingDto {
     required: boolean;
@@ -651,6 +657,12 @@ export interface ImportCredentialSchemaRequestSchemaBindingDto {
     layoutProperties?: ImportCredentialSchemaLayoutPropertiesBindingDto;
     allowSuspension?: boolean;
     requiresAppAttestation?: boolean;
+    transactionCode?: ImportCredentialSchemaTransactionCodeBindingDto;
+}
+export interface ImportCredentialSchemaTransactionCodeBindingDto {
+    type: TransactionCodeTypeBindingEnum;
+    length: number;
+    description?: string;
 }
 export interface ImportProofSchemaBindingDto {
     id: string;
@@ -1598,6 +1610,10 @@ export declare enum SortableTrustEntityColumnBindings {
     ROLE = "ROLE",
     LAST_MODIFIED = "LAST_MODIFIED",
     STATE = "STATE"
+}
+export declare enum TransactionCodeTypeBindingEnum {
+    NUMERIC = "NUMERIC",
+    ALPHANUMERIC = "ALPHANUMERIC"
 }
 export declare enum TrustEntityRoleBindingEnum {
     ISSUER = "ISSUER",

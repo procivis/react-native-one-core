@@ -324,6 +324,11 @@ export var SortableTrustEntityColumnBindings;
     SortableTrustEntityColumnBindings["LAST_MODIFIED"] = "LAST_MODIFIED";
     SortableTrustEntityColumnBindings["STATE"] = "STATE";
 })(SortableTrustEntityColumnBindings || (SortableTrustEntityColumnBindings = {}));
+export var TransactionCodeTypeBindingEnum;
+(function (TransactionCodeTypeBindingEnum) {
+    TransactionCodeTypeBindingEnum["NUMERIC"] = "NUMERIC";
+    TransactionCodeTypeBindingEnum["ALPHANUMERIC"] = "ALPHANUMERIC";
+})(TransactionCodeTypeBindingEnum || (TransactionCodeTypeBindingEnum = {}));
 export var TrustEntityRoleBindingEnum;
 (function (TrustEntityRoleBindingEnum) {
     TrustEntityRoleBindingEnum["ISSUER"] = "ISSUER";
