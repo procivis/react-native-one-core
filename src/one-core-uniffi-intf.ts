@@ -311,7 +311,7 @@ export interface CredentialSchemaBindingDto {
   importedSourceUrl: string;
   layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
   allowSuspension: boolean;
-  requiresAppAttestation: boolean;
+  requiresWalletInstanceAttestation: boolean;
 }
 
 export interface CredentialSchemaCodePropertiesBindingDto {
@@ -333,7 +333,7 @@ export interface CredentialSchemaDetailBindingDto {
   layoutType?: LayoutTypeBindingEnum;
   layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
   allowSuspension: boolean;
-  requiresAppAttestation: boolean;
+  requiresWalletInstanceAttestation: boolean;
   transactionCode?: CredentialSchemaTransactionCodeBindingDto;
 }
 
@@ -734,7 +734,7 @@ export interface ImportCredentialSchemaRequestSchemaBindingDto {
   layoutType?: LayoutTypeBindingEnum;
   layoutProperties?: ImportCredentialSchemaLayoutPropertiesBindingDto;
   allowSuspension?: boolean;
-  requiresAppAttestation?: boolean;
+  requiresWalletInstanceAttestation?: boolean;
   transactionCode?: ImportCredentialSchemaTransactionCodeBindingDto;
 }
 
@@ -779,7 +779,7 @@ export interface ImportProofSchemaCredentialSchemaBindingDto {
   layoutType?: LayoutTypeBindingEnum;
   layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
   allowSuspension?: boolean;
-  requiresAppAttestation?: boolean;
+  requiresWalletInstanceAttestation?: boolean;
 }
 
 export interface ImportProofSchemaInputSchemaBindingDto {
