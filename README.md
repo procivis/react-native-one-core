@@ -18,7 +18,7 @@ See the [key features][key] and complete solution [architecture][archi].
 - [How to use the One Core SDK](#how-to-use-the-one-core-react-native-sdk)
 - [Getting started](#getting-started)
 - [Background](#background)
-- [eIDAS 2.0](#eidas-20)
+- [EU Digital Identity Ecosystem](#eu-digital-identity-ecosystem)
 - [Interoperability and conformance](#interoperability-and-conformance)
 - [Supported standards](#supported-standards)
 - [Support](#support)
@@ -43,34 +43,8 @@ solution, the _Procivis One Desk_, and can quickly begin issuing and verifying c
 
 See our documentation:
 
-- [SDK Reference][sdkref]
+- [SDK docs][sdkref]
 - [Docs home][docs]
-
-### Installation
-
-`$ yarn add react-native-one-core`
-
-Add following to your app `android/build.gradle`:
-
-```
-...
-allprojects {
-   repositories {
-        ...
-
-        flatDir { dirs "$rootDir/../node_modules/react-native-one-core/android/libs" }
-    }
-}
-```
-
-## Usage
-
-```typescript
-import { initializeCore } from "react-native-one-core";
-...
-const ONE = await initializeCore();
-await ONE.getVersion();
-```
 
 ## Background
 
@@ -82,18 +56,13 @@ the issuer via back-channels, keeping the wallet holder's interactions private b
 those parties directly involved in each interaction. This model of digital identity is
 often referred to as Self-Sovereign Identity, or SSI.
 
-## eIDAS 2.0
+## EU Digital Identity Ecosystem
 
-If you want to provide an **EUDI Wallet**, _Procivis One_ provides production grade open
-source components to get certified and connect your organization to the eIDAS 2.0 ecosystem.
+![Procivis One in the EU Digital Identity Ecosystem](https://onesdk.blob.core.windows.net/doc-assets/img/EUDI_Architecture.png)
 
-![Procivis One in the eIDAS ARF](https://assets.procivis-one.com/static/diff/eIDAS_Architecture.png)
+For an EUDI Wallet, you can also use the [Procivis One Wallet][pow].
 
-For an EUDI Wallet, use the [One Core React Native SDK][rncore] for embedding into
-an existing app, or use the [Procivis One Wallet][pow] with adaptations to fit your
-needs.
-
-If you want to issue into an EUDI Wallet or offer services to an EUDI Wallet holder,
+For issuing into an EUDI Wallet or offering services to an EUDI Wallet holder,
 use the [Procivis One Core][core].
 
 ## Interoperability and conformance
