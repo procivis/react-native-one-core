@@ -8,6 +8,7 @@ export interface Cause {
 }
 export interface CertificateResponseBindingDto {
     id: string;
+    identifierId: string;
     createdDate: string;
     lastModified: string;
     state: CertificateStateBindingEnum;
