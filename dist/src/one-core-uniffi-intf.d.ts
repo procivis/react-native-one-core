@@ -1353,6 +1353,8 @@ export type HandleInvitationResponseBindingEnum = {
      * This code is typically sent through a separate channel such as SMS or email.
      */
     txCode?: OpenId4vciTxCodeBindingDto;
+    protocol: string;
+    requiresWalletInstanceAttestation: boolean;
 } | {
     type_: "AUTHORIZATION_CODE_FLOW";
     /** For reference. */
@@ -1368,6 +1370,7 @@ export type HandleInvitationResponseBindingEnum = {
     interactionId: string;
     /** Proof request. */
     proofId: string;
+    protocol: string;
 };
 export declare enum HistoryActionBindingEnum {
     ACCEPTED = "ACCEPTED",

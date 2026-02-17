@@ -114,10 +114,12 @@ private func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto)
 
 private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) throws -> NSDictionary {
     switch (invitationResponse) {
-    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode):
+    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode, `protocol`, requiresWalletInstanceAttestation):
         var result: [String: Any] = [
             "type_": "CREDENTIAL_ISSUANCE",
-            "interactionId": interactionId
+            "interactionId": interactionId,
+            "protocol": `protocol`,
+            "requiresWalletInstanceAttestation": requiresWalletInstanceAttestation
         ];
         if let keyStorageSecurityLevels = keyStorageSecurityLevels {
             result["keyStorageSecurityLevels"] = keyStorageSecurityLevels.map { serializeEnumValue(value: $0) }
@@ -130,11 +132,12 @@ private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) 
         }
         return result as NSDictionary;
 
-    case let .proofRequest(interactionId, proofId):
+    case let .proofRequest(interactionId, proofId, `protocol`):
         return [
             "type_": "PROOF_REQUEST",
             "interactionId": interactionId,
-            "proofId": proofId
+            "proofId": proofId,
+            "protocol": `protocol`
         ];
 
     case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl):
