@@ -200,6 +200,8 @@ object SerializeSpecific {
                     value.txCode?.let {
                         result.putMap("txCode", convertToRN(it) as ReadableMap)
                     }
+                    result.putString("protocol", value.protocol)
+                    result.putBoolean("requiresWalletInstanceAttestation", value.requiresWalletInstanceAttestation)
                 }
 
                 is HandleInvitationResponseBindingEnum.AuthorizationCodeFlow -> {
@@ -212,6 +214,7 @@ object SerializeSpecific {
                     result.putString("type_", "PROOF_REQUEST")
                     result.putString("interactionId", value.interactionId)
                     result.putString("proofId", value.proofId)
+                    result.putString("protocol", value.protocol)
                 }
             }
             return result
