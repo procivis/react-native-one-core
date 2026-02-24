@@ -136,7 +136,6 @@ export interface CreateProofRequestBindingDto {
   redirectUri?: string;
   verifierKey?: string;
   verifierCertificate?: string;
-  scanToVerify?: ScanToVerifyRequestBindingDto;
   isoMdlEngagement?: string;
   transport?: Array<string>;
   profile?: string;
@@ -223,7 +222,6 @@ export interface CredentialDetailBindingDto {
   claims: Array<ClaimBindingDto>;
   redirectUri?: string;
   role: CredentialRoleBindingDto;
-  lvvcIssuanceDate?: string;
   suspendEndDate?: string;
   mdocMsoValidity?: MdocMsoValidityResponseBindingDto;
   protocol: string;
@@ -786,7 +784,6 @@ export interface ImportProofSchemaCredentialSchemaBindingDto {
 export interface ImportProofSchemaInputSchemaBindingDto {
   claimSchemas: Array<ImportProofSchemaClaimSchemaBindingDto>;
   credentialSchema: ImportProofSchemaCredentialSchemaBindingDto;
-  validityConstraint?: number /*i64*/;
 }
 
 export interface ImportProofSchemaRequestBindingsDto {
@@ -994,7 +991,6 @@ export interface PresentationDefinitionRequestedCredentialBindingDto {
   fields: Array<PresentationDefinitionFieldBindingDto>;
   applicableCredentials: Array<string>;
   inapplicableCredentials: Array<string>;
-  validityCredentialNbf?: string;
   multiple?: boolean;
 }
 
@@ -1027,7 +1023,6 @@ export interface PresentationDefinitionV2CredentialDetailBindingDto {
   claims: Array<PresentationDefinitionV2ClaimBindingDto>;
   redirectUri?: string;
   role: CredentialRoleBindingDto;
-  lvvcIssuanceDate?: string;
   suspendEndDate?: string;
   mdocMsoValidity?: MdocMsoValidityResponseBindingDto;
   protocol: string;
@@ -1063,18 +1058,15 @@ export interface ProofInputBindingDto {
   claims: Array<ProofRequestClaimBindingDto>;
   credential?: CredentialDetailBindingDto;
   credentialSchema: CredentialSchemaBindingDto;
-  validityConstraint?: number /*i64*/;
 }
 
 export interface ProofInputSchemaBindingDto {
   claimSchemas: Array<ProofClaimSchemaBindingDto>;
   credentialSchema: CredentialSchemaBindingDto;
-  validityConstraint?: number /*i64*/;
 }
 
 export interface ProofInputSchemaRequestDto {
   credentialSchemaId: string;
-  validityConstraint?: number /*i64*/;
   claimSchemas: Array<CreateProofSchemaClaimRequestDto>;
 }
 
@@ -1188,12 +1180,6 @@ export interface ResolveTrustEntityRequestBindingDto {
 export interface ResolvedIdentifierTrustEntityResponseBindingDto {
   trustEntity: GetTrustEntityResponseBindingDto;
   certificateIds?: Array<string>;
-}
-
-export interface ScanToVerifyRequestBindingDto {
-  credential: string;
-  barcode: string;
-  barcodeType: ScanToVerifyBarcodeTypeBindingEnum;
 }
 
 export interface ServiceDescriptionBindingDto {
@@ -1605,6 +1591,7 @@ export enum HistoryActionBindingEnum {
   INTERACTION_CREATED = "INTERACTION_CREATED",
   INTERACTION_ERRORED = "INTERACTION_ERRORED",
   INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
+  DELIVERED = "DELIVERED",
 }
 
 export enum HistoryEntityTypeBindingEnum {
@@ -1627,8 +1614,11 @@ export enum HistoryEntityTypeBindingEnum {
   STS_ROLE = "STS_ROLE",
   STS_ORGANISATION = "STS_ORGANISATION",
   STS_IAM_ROLE = "STS_IAM_ROLE",
+  STS_SESSION = "STS_SESSION",
   STS_TOKEN = "STS_TOKEN",
   SIGNATURE = "SIGNATURE",
+  NOTIFICATION = "NOTIFICATION",
+  SUPERVISORY_AUTHORITY = "SUPERVISORY_AUTHORITY",
 }
 
 export type HistoryMetadataBinding =
@@ -1800,11 +1790,6 @@ export enum ProofStateBindingEnum {
   RETRACTED = "RETRACTED",
   ERROR = "ERROR",
   INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
-}
-
-export enum ScanToVerifyBarcodeTypeBindingEnum {
-  MRZ = "MRZ",
-  PDF417 = "PDF417",
 }
 
 export enum SearchTypeBindingEnum {
