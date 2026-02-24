@@ -145,6 +145,7 @@ export var HistoryActionBindingEnum;
     HistoryActionBindingEnum["INTERACTION_CREATED"] = "INTERACTION_CREATED";
     HistoryActionBindingEnum["INTERACTION_ERRORED"] = "INTERACTION_ERRORED";
     HistoryActionBindingEnum["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
+    HistoryActionBindingEnum["DELIVERED"] = "DELIVERED";
 })(HistoryActionBindingEnum || (HistoryActionBindingEnum = {}));
 export var HistoryEntityTypeBindingEnum;
 (function (HistoryEntityTypeBindingEnum) {
@@ -167,8 +168,11 @@ export var HistoryEntityTypeBindingEnum;
     HistoryEntityTypeBindingEnum["STS_ROLE"] = "STS_ROLE";
     HistoryEntityTypeBindingEnum["STS_ORGANISATION"] = "STS_ORGANISATION";
     HistoryEntityTypeBindingEnum["STS_IAM_ROLE"] = "STS_IAM_ROLE";
+    HistoryEntityTypeBindingEnum["STS_SESSION"] = "STS_SESSION";
     HistoryEntityTypeBindingEnum["STS_TOKEN"] = "STS_TOKEN";
     HistoryEntityTypeBindingEnum["SIGNATURE"] = "SIGNATURE";
+    HistoryEntityTypeBindingEnum["NOTIFICATION"] = "NOTIFICATION";
+    HistoryEntityTypeBindingEnum["SUPERVISORY_AUTHORITY"] = "SUPERVISORY_AUTHORITY";
 })(HistoryEntityTypeBindingEnum || (HistoryEntityTypeBindingEnum = {}));
 export var HistorySearchEnumBindingEnum;
 (function (HistorySearchEnumBindingEnum) {
@@ -254,11 +258,6 @@ export var ProofStateBindingEnum;
     ProofStateBindingEnum["ERROR"] = "ERROR";
     ProofStateBindingEnum["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
 })(ProofStateBindingEnum || (ProofStateBindingEnum = {}));
-export var ScanToVerifyBarcodeTypeBindingEnum;
-(function (ScanToVerifyBarcodeTypeBindingEnum) {
-    ScanToVerifyBarcodeTypeBindingEnum["MRZ"] = "MRZ";
-    ScanToVerifyBarcodeTypeBindingEnum["PDF417"] = "PDF417";
-})(ScanToVerifyBarcodeTypeBindingEnum || (ScanToVerifyBarcodeTypeBindingEnum = {}));
 export var SearchTypeBindingEnum;
 (function (SearchTypeBindingEnum) {
     SearchTypeBindingEnum["CLAIM_NAME"] = "CLAIM_NAME";
