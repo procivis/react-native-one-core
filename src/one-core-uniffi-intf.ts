@@ -75,6 +75,8 @@ export interface ContinueIssuanceResponseBindingDto {
   interactionId: string;
   keyStorageSecurityLevels?: Array<KeyStorageSecurityBindingEnum>;
   keyAlgorithms?: Array<string>;
+  requiresWalletInstanceAttestation: boolean;
+  protocol?: string;
 }
 
 export interface CreateCaCsrRequestBindingDto {
@@ -1553,6 +1555,7 @@ export type HandleInvitationResponseBindingEnum =
        * the authorization process with the authorization server.
        */
       authorizationCodeFlowUrl: string;
+      protocol: string;
     }
   | {
       type_: "PROOF_REQUEST";
