@@ -64,7 +64,7 @@ export interface ContinueIssuanceResponseBindingDto {
     keyStorageSecurityLevels?: Array<KeyStorageSecurityBindingEnum>;
     keyAlgorithms?: Array<string>;
     requiresWalletInstanceAttestation: boolean;
-    protocol?: string;
+    protocol: string;
 }
 export interface CreateCaCsrRequestBindingDto {
     subject: KeyGenerateCsrRequestSubjectBindingDto;
