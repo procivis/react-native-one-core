@@ -140,11 +140,12 @@ private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) 
             "protocol": `protocol`
         ];
 
-    case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl):
+    case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl, `protocol`):
         return [
             "type_": "AUTHORIZATION_CODE_FLOW",
             "interactionId": interactionId,
-            "authorizationCodeFlowUrl": authorizationCodeFlowUrl
+            "authorizationCodeFlowUrl": authorizationCodeFlowUrl,
+            "protocol": `protocol`
         ];
     }
 }

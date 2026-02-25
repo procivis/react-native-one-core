@@ -208,6 +208,7 @@ object SerializeSpecific {
                     result.putString("type_", "AUTHORIZATION_CODE_FLOW")
                     result.putString("interactionId", value.interactionId)
                     result.putString("authorizationCodeFlowUrl", value.authorizationCodeFlowUrl)
+                    result.putString("protocol", value.protocol)
                 }
 
                 is HandleInvitationResponseBindingEnum.ProofRequest -> {
