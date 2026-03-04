@@ -79,10 +79,6 @@ export interface ContinueIssuanceResponseBindingDto {
   protocol: string;
 }
 
-export interface CreateCaCsrRequestBindingDto {
-  subject: KeyGenerateCsrRequestSubjectBindingDto;
-}
-
 export interface CreateCertificateAuthorityRequestBindingDto {
   name?: string;
   keyId: string;
@@ -167,11 +163,21 @@ export interface CreateRemoteTrustEntityRequestBindingDto {
   role: TrustEntityRoleBindingEnum;
 }
 
+export interface CreateSelfSignedCaRequestIssuerAlternativeNameBindingDto {
+  type: CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum;
+  name: string;
+}
+
 export interface CreateSelfSignedCertificateAuthorityRequestBindingDto {
-  content: CreateCaCsrRequestBindingDto;
+  content: CreateSelfSignedCertificateAuthorityRequestContentBindingDto;
   signer: string;
   validityStart?: string;
   validityEnd?: string;
+}
+
+export interface CreateSelfSignedCertificateAuthorityRequestContentBindingDto {
+  subject: KeyGenerateCsrRequestSubjectBindingDto;
+  issuerAlternativeName?: CreateSelfSignedCaRequestIssuerAlternativeNameBindingDto;
 }
 
 export interface CreateTrustAnchorRequestBindingDto {
@@ -822,11 +828,6 @@ export interface InitiateIssuanceResponseBindingDto {
   url: string;
 }
 
-export interface KeyGenerateCsrRequestBindingDto {
-  profile: KeyGenerateCsrRequestProfileBinding;
-  subject: KeyGenerateCsrRequestSubjectBindingDto;
-}
-
 export interface KeyGenerateCsrRequestSubjectBindingDto {
   /** Two-letter country code. */
   countryName?: string;
@@ -1458,6 +1459,11 @@ export type ConnectionEventBindingEnum =
       deviceAddress: string;
     };
 
+export enum CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum {
+  EMAIL = "EMAIL",
+  URI = "URI",
+}
+
 export enum CredentialListIncludeEntityTypeBindingEnum {
   LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES",
   CREDENTIAL = "CREDENTIAL",
@@ -1659,12 +1665,6 @@ export enum IdentifierTypeBindingEnum {
   DID = "DID",
   CERTIFICATE = "CERTIFICATE",
   CERTIFICATE_AUTHORITY = "CERTIFICATE_AUTHORITY",
-}
-
-export enum KeyGenerateCsrRequestProfileBinding {
-  GENERIC = "GENERIC",
-  MDL = "MDL",
-  CA = "CA",
 }
 
 export enum KeyRoleBindingEnum {
