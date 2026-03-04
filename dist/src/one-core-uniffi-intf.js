@@ -45,6 +45,11 @@ export var ClientIdSchemeBindingEnum;
     ClientIdSchemeBindingEnum["DID"] = "DID";
     ClientIdSchemeBindingEnum["X509_SAN_DNS"] = "X509_SAN_DNS";
 })(ClientIdSchemeBindingEnum || (ClientIdSchemeBindingEnum = {}));
+export var CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum;
+(function (CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum) {
+    CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum["EMAIL"] = "EMAIL";
+    CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum["URI"] = "URI";
+})(CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum || (CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum = {}));
 export var CredentialListIncludeEntityTypeBindingEnum;
 (function (CredentialListIncludeEntityTypeBindingEnum) {
     CredentialListIncludeEntityTypeBindingEnum["LAYOUT_PROPERTIES"] = "LAYOUT_PROPERTIES";
@@ -197,12 +202,6 @@ export var IdentifierTypeBindingEnum;
     IdentifierTypeBindingEnum["CERTIFICATE"] = "CERTIFICATE";
     IdentifierTypeBindingEnum["CERTIFICATE_AUTHORITY"] = "CERTIFICATE_AUTHORITY";
 })(IdentifierTypeBindingEnum || (IdentifierTypeBindingEnum = {}));
-export var KeyGenerateCsrRequestProfileBinding;
-(function (KeyGenerateCsrRequestProfileBinding) {
-    KeyGenerateCsrRequestProfileBinding["GENERIC"] = "GENERIC";
-    KeyGenerateCsrRequestProfileBinding["MDL"] = "MDL";
-    KeyGenerateCsrRequestProfileBinding["CA"] = "CA";
-})(KeyGenerateCsrRequestProfileBinding || (KeyGenerateCsrRequestProfileBinding = {}));
 export var KeyRoleBindingEnum;
 (function (KeyRoleBindingEnum) {
     KeyRoleBindingEnum["AUTHENTICATION"] = "AUTHENTICATION";
