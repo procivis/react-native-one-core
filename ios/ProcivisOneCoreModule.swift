@@ -11,7 +11,7 @@ import React
 @objc(ProcivisOneCoreModule)
 class ProcivisOneCoreModule: RCTEventEmitter {
   private static let TAG = "ProcivisOneCoreModule"
-  private var core: OneCoreBindingProtocol? = nil
+  private var core: OneCoreProtocol? = nil
   private var rseKeyStorage: NativeKeyStorage? = nil
   private var nfcHce: NfcHce? = nil
 
@@ -31,8 +31,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     ProcivisOneCoreEventEmitter.shared.eventEmitter = self
     syncCall(resolve, reject) {
       if self.core != nil {
-        throw BindingError.ErrorResponse(
-          data: ErrorResponseBindingDto(
+        throw OneCoreError.Response(
+          data: ErrorResponse(
             code: "BR_0183",
             message: "core already initialized",
             cause: nil
@@ -52,7 +52,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
       }
 
       self.core = try initializeCore(
-        params: InitParamsDto(
+        params: InitParams(
           configJson: configJson,
           nativeSecureElement: SecureEnclaveKeyStorage(),
           remoteSecureElement: rseKeyStorage,
@@ -67,10 +67,10 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  private func getCore() throws -> OneCoreBindingProtocol {
+  private func getCore() throws -> OneCoreProtocol {
     guard let result = core else {
-      throw BindingError.ErrorResponse(
-        data: ErrorResponseBindingDto(code: "BR_0184", message: "core not initialized", cause: nil)
+      throw OneCoreError.Response(
+        data: ErrorResponse(code: "BR_0184", message: "core not initialized", cause: nil)
       )
     }
     return result
@@ -143,14 +143,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getDids:resolver:rejecter:)
-  func getDids(
+  @objc(listDids:resolver:rejecter:)
+  func listDids(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().getDids(query: try deserialize(query))
+      let result = try await self.getCore().listDids(query: try deserialize(query))
       return try serializeAny(result)
     }
   }
@@ -329,14 +329,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getCredentials:resolver:rejecter:)
-  func getCredentials(
+  @objc(listCredentials:resolver:rejecter:)
+  func listCredentials(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().getCredentials(query: try deserialize(query))
+      let result = try await self.getCore().listCredentials(query: try deserialize(query))
       return try serializeAny(result)
     }
   }
@@ -390,14 +390,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getCredentialSchemas:resolver:rejecter:)
-  func getCredentialSchemas(
+  @objc(listCredentialSchemas:resolver:rejecter:)
+  func listCredentialSchemas(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().getCredentialSchemas(query: try deserialize(query))
+      let result = try await self.getCore().listCredentialSchemas(query: try deserialize(query))
       return try serializeAny(result)
     }
   }
@@ -425,14 +425,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getProofSchemas:resolver:rejecter:)
-  func getProofSchemas(
+  @objc(listProofSchemas:resolver:rejecter:)
+  func listProofSchemas(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().getProofSchemas(filter: try deserialize(query))
+      let result = try await self.getCore().listProofSchemas(filter: try deserialize(query))
       return try serializeAny(result)
     }
   }
@@ -560,14 +560,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getProofs:resolver:rejecter:)
-  func getProofs(
+  @objc(listProofs:resolver:rejecter:)
+  func listProofs(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().getProofs(query: try deserialize(query))
+      let result = try await self.getCore().listProofs(query: try deserialize(query))
       return try serializeAny(result)
     }
   }
@@ -612,14 +612,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getHistoryList:resolver:rejecter:)
-  func getHistoryList(
+  @objc(listHistory:resolver:rejecter:)
+  func listHistory(
     query: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().getHistoryList(query: try deserialize(query))
+      let result = try await self.getCore().listHistory(query: try deserialize(query))
       return try serializeAny(result)
     }
   }
@@ -954,8 +954,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   ) {
     asyncCall(resolve, reject) {
       guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
-        throw BindingError.ErrorResponse(
-          data: ErrorResponseBindingDto(
+        throw OneCoreError.Response(
+          data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
             cause: nil
@@ -974,8 +974,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   ) {
     asyncCall(resolve, reject) {
       guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
-        throw BindingError.ErrorResponse(
-          data: ErrorResponseBindingDto(
+        throw OneCoreError.Response(
+          data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
             cause: nil
@@ -993,8 +993,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   ) {
     asyncCall(resolve, reject) {
       guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
-        throw BindingError.ErrorResponse(
-          data: ErrorResponseBindingDto(
+        throw OneCoreError.Response(
+          data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
             cause: nil
@@ -1013,8 +1013,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   ) {
     asyncCall(resolve, reject) {
       guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
-        throw BindingError.ErrorResponse(
-          data: ErrorResponseBindingDto(
+        throw OneCoreError.Response(
+          data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
             cause: nil
@@ -1050,8 +1050,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   ) {
     asyncCall(resolve, reject) {
       guard let rseKeyStorage = self.rseKeyStorage as? RSEKeyStorage else {
-        throw BindingError.ErrorResponse(
-          data: ErrorResponseBindingDto(
+        throw OneCoreError.Response(
+          data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
             cause: nil

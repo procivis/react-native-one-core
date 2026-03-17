@@ -1,47 +1,62 @@
-export interface BackupCreateBindingDto {
-    historyId: string;
-    file: string;
-    unexportable: UnexportableEntitiesBindingDto;
+export interface CsrSubject {
+    /** Two-letter country code. */
+    countryName?: string;
+    /** Common name to include in the CSR, typically the domain name of the organization. */
+    commonName?: string;
+    stateOrProvinceName?: string;
+    organisationName?: string;
+    localityName?: string;
+    serialNumber?: string;
 }
 export interface Cause {
     message: string;
 }
-export interface CertificateResponseBindingDto {
+export interface CertificateDetail {
     id: string;
     identifierId: string;
     createdDate: string;
     lastModified: string;
-    state: CertificateStateBindingEnum;
+    state: CertificateState;
     name: string;
     chain: string;
-    key?: KeyListItemResponseBindingDto;
-    x509Attributes: CertificateX509AttributesBindingDto;
+    key?: KeyListItem;
+    x509Attributes: CertificateX509Attributes;
 }
-export interface CertificateX509AttributesBindingDto {
+export interface CertificateX509Attributes {
     serialNumber: string;
     notBefore: string;
     notAfter: string;
     issuer: string;
     subject: string;
     fingerprint: string;
-    extensions: Array<CertificateX509ExtensionBindingDto>;
+    extensions: Array<CertificateX509Extension>;
 }
-export interface CertificateX509ExtensionBindingDto {
+export interface CertificateX509Extension {
     oid: string;
     value: string;
     critical: boolean;
 }
-export interface CharacteristicBindingDto {
+export interface CharacteristicSettings {
     uuid: string;
-    permissions: Array<CharacteristicPermissionBindingEnum>;
-    properties: Array<CharacteristicPropertyBindingEnum>;
+    permissions: Array<CharacteristicPermission>;
+    properties: Array<CharacteristicProperty>;
 }
-export interface ClaimBindingDto {
+export interface Claim {
     path: string;
-    schema: CredentialClaimSchemaBindingDto;
-    value: ClaimValueBindingDto;
+    schema: ClaimSchema;
+    value: ClaimValue;
 }
-export interface ConfigBindingDto {
+export interface ClaimSchema {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    key: string;
+    datatype: string;
+    required: boolean;
+    array: boolean;
+    claims: Array<ClaimSchema>;
+}
+export interface Config {
     format: Record<string, string>;
     issuanceProtocol: Record<string, string>;
     verificationProtocol: Record<string, string>;
@@ -58,45 +73,52 @@ export interface ConfigBindingDto {
     credentialIssuer: Record<string, string>;
     walletProvider: Record<string, string>;
 }
-export interface ContinueIssuanceResponseBindingDto {
+export interface ContinueIssuanceResponse {
     /** For reference. */
     interactionId: string;
-    keyStorageSecurityLevels?: Array<KeyStorageSecurityBindingEnum>;
+    keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
     keyAlgorithms?: Array<string>;
     requiresWalletInstanceAttestation: boolean;
     protocol: string;
 }
-export interface CreateCertificateAuthorityRequestBindingDto {
+export interface CreateCertificateAuthorityRequest {
     name?: string;
     keyId: string;
     chain?: string;
-    selfSigned?: CreateSelfSignedCertificateAuthorityRequestBindingDto;
+    selfSigned?: CreateSelfSignedCertificateAuthorityRequest;
 }
-export interface CreateCertificateRequestBindingDto {
+export interface CreateCertificateRequest {
     name?: string;
     chain: string;
     keyId: string;
 }
-export interface CreateIdentifierDidRequestBindingDto {
-    name?: string;
-    method: string;
-    keys: DidRequestKeysBindingDto;
+export interface CreateDidRequest {
+    organisationId: string;
+    name: string;
+    didMethod: string;
+    keys: DidRequestKeys;
     params: Record<string, string>;
 }
-export interface CreateIdentifierKeyRequestBindingDto {
+export interface CreateIdentifierDidRequest {
+    name?: string;
+    method: string;
+    keys: DidRequestKeys;
+    params: Record<string, string>;
+}
+export interface CreateIdentifierKeyRequest {
     keyId: string;
 }
-export interface CreateIdentifierRequestBindingDto {
+export interface CreateIdentifierRequest {
     organisationId: string;
     name: string;
     /** Deprecated. Use the `key` field instead. */
     keyId?: string;
-    key?: CreateIdentifierKeyRequestBindingDto;
-    did?: CreateIdentifierDidRequestBindingDto;
-    certificates?: Array<CreateCertificateRequestBindingDto>;
-    certificateAuthorities?: Array<CreateCertificateAuthorityRequestBindingDto>;
+    key?: CreateIdentifierKeyRequest;
+    did?: CreateIdentifierDidRequest;
+    certificates?: Array<CreateCertificateRequest>;
+    certificateAuthorities?: Array<CreateCertificateAuthorityRequest>;
 }
-export interface CreateOrganisationRequestBindingDto {
+export interface CreateOrganisationRequest {
     id?: string;
     name?: string;
 }
@@ -107,7 +129,7 @@ export interface CreateOrganisationRequestBindingDto {
  * (for QR device engagement) or NFC engagement parameters from
  * `nfc_read_iso_mdl_engagement`.
  */
-export interface CreateProofRequestBindingDto {
+export interface CreateProofRequest {
     proofSchemaId: string;
     verifierDidId?: string;
     verifierIdentifierId?: string;
@@ -120,17 +142,21 @@ export interface CreateProofRequestBindingDto {
     profile?: string;
     engagement?: string;
 }
-export interface CreateProofSchemaClaimRequestDto {
+export interface CreateProofSchemaInput {
+    credentialSchemaId: string;
+    claimSchemas: Array<CreateProofSchemaInputClaim>;
+}
+export interface CreateProofSchemaInputClaim {
     id: string;
     required: boolean;
 }
-export interface CreateProofSchemaRequestDto {
+export interface CreateProofSchemaRequest {
     name: string;
     organisationId: string;
     expireDuration: number;
-    proofInputSchemas: Array<ProofInputSchemaRequestDto>;
+    proofInputSchemas: Array<CreateProofSchemaInput>;
 }
-export interface CreateRemoteTrustEntityRequestBindingDto {
+export interface CreateRemoteTrustEntityRequest {
     didId: string;
     trustAnchorId?: string;
     name: string;
@@ -138,107 +164,99 @@ export interface CreateRemoteTrustEntityRequestBindingDto {
     termsUrl?: string;
     privacyUrl?: string;
     website?: string;
-    role: TrustEntityRoleBindingEnum;
+    role: TrustEntityRole;
 }
-export interface CreateSelfSignedCaRequestIssuerAlternativeNameBindingDto {
-    type: CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum;
+export interface CreateSelfSignedCertificateAuthorityIssuerAlternativeNameRequest {
+    type: CreateSelfSignedCaRequestIssuerAlternativeNameType;
     name: string;
 }
-export interface CreateSelfSignedCertificateAuthorityRequestBindingDto {
-    content: CreateSelfSignedCertificateAuthorityRequestContentBindingDto;
+export interface CreateSelfSignedCertificateAuthorityRequest {
+    content: CreateSelfSignedCertificateAuthorityRequestContent;
     signer: string;
     validityStart?: string;
     validityEnd?: string;
 }
-export interface CreateSelfSignedCertificateAuthorityRequestContentBindingDto {
-    subject: KeyGenerateCsrRequestSubjectBindingDto;
-    issuerAlternativeName?: CreateSelfSignedCaRequestIssuerAlternativeNameBindingDto;
+export interface CreateSelfSignedCertificateAuthorityRequestContent {
+    subject: CsrSubject;
+    issuerAlternativeName?: CreateSelfSignedCertificateAuthorityIssuerAlternativeNameRequest;
 }
-export interface CreateTrustAnchorRequestBindingDto {
+export interface CreateTrustAnchorRequest {
     name: string;
     type: string;
     isPublisher?: boolean;
     publisherReference?: string;
 }
-export interface CreateTrustEntityRequestBindingDto {
+export interface CreateTrustEntityRequest {
     name: string;
     logo?: string;
     website?: string;
     termsUrl?: string;
     privacyUrl?: string;
-    role: TrustEntityRoleBindingEnum;
+    role: TrustEntityRole;
     trustAnchorId: string;
     didId?: string;
-    type?: TrustEntityTypeBindingEnum;
+    type?: TrustEntityType;
     identifierId?: string;
     content?: string;
     organisationId: string;
 }
-export interface CredentialClaimSchemaBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    key: string;
-    datatype: string;
-    required: boolean;
-    array: boolean;
-    claims: Array<CredentialClaimSchemaBindingDto>;
+export interface CreatedBackup {
+    historyId: string;
+    file: string;
+    unexportable: UnexportableEntities;
 }
-export interface CredentialConfigurationSupportedResponseBindingDto {
-    proofTypesSupported?: Record<string, OpenId4vciProofTypeSupportedBindingDto>;
-}
-export interface CredentialDetailBindingDto {
+export interface CredentialDetail {
     id: string;
     createdDate: string;
     issuanceDate?: string;
     lastModified: string;
     revocationDate?: string;
-    issuer?: GetIdentifierListItemBindingDto;
-    holder?: GetIdentifierListItemBindingDto;
-    state: CredentialStateBindingEnum;
-    schema: CredentialSchemaBindingDto;
-    claims: Array<ClaimBindingDto>;
+    issuer?: IdentifierListItem;
+    holder?: IdentifierListItem;
+    state: CredentialState;
+    schema: CredentialSchemaListItem;
+    claims: Array<Claim>;
     redirectUri?: string;
-    role: CredentialRoleBindingDto;
+    role: CredentialRole;
     suspendEndDate?: string;
-    mdocMsoValidity?: MdocMsoValidityResponseBindingDto;
+    mdocMsoValidity?: MdocMsoValidity;
     protocol: string;
     profile?: string;
 }
-export interface CredentialListBindingDto {
-    values: Array<CredentialListItemBindingDto>;
+export interface CredentialList {
+    values: Array<CredentialListItem>;
     totalPages: number;
     totalItems: number;
 }
-export interface CredentialListItemBindingDto {
+export interface CredentialListItem {
     id: string;
     createdDate: string;
     issuanceDate?: string;
     lastModified: string;
     revocationDate?: string;
     issuer?: string;
-    state: CredentialStateBindingEnum;
-    schema: CredentialSchemaBindingDto;
-    role: CredentialRoleBindingDto;
+    state: CredentialState;
+    schema: CredentialSchemaListItem;
+    role: CredentialRole;
     suspendEndDate?: string;
     protocol: string;
     profile?: string;
 }
-export interface CredentialListQueryBindingDto {
+export interface CredentialListQuery {
     page: number;
     pageSize: number;
-    sort?: SortableCredentialColumnBindingEnum;
+    sort?: SortableCredentialColumn;
     sortDirection?: SortDirection;
     organisationId: string;
     name?: string;
     profiles?: Array<string>;
     searchText?: string;
-    searchType?: Array<SearchTypeBindingEnum>;
-    exact?: Array<CredentialListQueryExactColumnBindingEnum>;
-    roles?: Array<CredentialRoleBindingDto>;
+    searchType?: Array<CredentialListQuerySearchType>;
+    exact?: Array<CredentialListQueryExactColumn>;
+    roles?: Array<CredentialRole>;
     ids?: Array<string>;
-    states?: Array<CredentialStateBindingEnum>;
-    include?: Array<CredentialListIncludeEntityTypeBindingEnum>;
+    states?: Array<CredentialState>;
+    include?: Array<CredentialListIncludeEntityType>;
     credentialSchemaIds?: Array<string>;
     createdDateAfter?: string;
     createdDateBefore?: string;
@@ -249,82 +267,82 @@ export interface CredentialListQueryBindingDto {
     revocationDateAfter?: string;
     revocationDateBefore?: string;
 }
-export interface CredentialQueryFailureHintResponseBindingDto {
-    reason: CredentialQueryFailureReasonBindingEnum;
-    credentialSchema?: CredentialSchemaDetailBindingDto;
-}
-export interface CredentialQueryResponseBindingDto {
+export interface CredentialQuery {
     multiple: boolean;
-    credentialOrFailureHint: ApplicableCredentialOrFailureHintBindingEnum;
+    credentialOrFailureHint: ApplicableCredentialOrFailureHint;
 }
-export interface CredentialRevocationCheckResponseBindingDto {
+export interface CredentialQueryFailureHint {
+    reason: CredentialQueryFailureReason;
+    credentialSchema?: CredentialSchemaDetail;
+}
+export interface CredentialRevocationCheckResponse {
     credentialId: string;
-    status: CredentialStateBindingEnum;
+    status: CredentialState;
     success: boolean;
     reason?: string;
 }
-export interface CredentialSchemaBackgroundPropertiesBindingDto {
+export interface CredentialSchemaBackgroundProperties {
     color?: string;
     image?: string;
 }
-export interface CredentialSchemaBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    format: string;
-    revocationMethod?: string;
-    keyStorageSecurity?: KeyStorageSecurityBindingEnum;
-    schemaId: string;
-    layoutType?: LayoutTypeBindingEnum;
-    importedSourceUrl: string;
-    layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
-    allowSuspension: boolean;
-    requiresWalletInstanceAttestation: boolean;
-}
-export interface CredentialSchemaCodePropertiesBindingDto {
+export interface CredentialSchemaCodeProperties {
     attribute: string;
-    type: CredentialSchemaCodeTypeBindingDto;
+    type: CredentialSchemaCodeType;
 }
-export interface CredentialSchemaDetailBindingDto {
+export interface CredentialSchemaDetail {
     id: string;
     createdDate: string;
     lastModified: string;
     name: string;
     format: string;
     revocationMethod?: string;
-    claims: Array<CredentialClaimSchemaBindingDto>;
-    keyStorageSecurity?: KeyStorageSecurityBindingEnum;
+    claims: Array<ClaimSchema>;
+    keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
     importedSourceUrl: string;
-    layoutType?: LayoutTypeBindingEnum;
-    layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
+    layoutType?: LayoutType;
+    layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
     requiresWalletInstanceAttestation: boolean;
-    transactionCode?: CredentialSchemaTransactionCodeBindingDto;
+    transactionCode?: CredentialSchemaTransactionCode;
 }
-export interface CredentialSchemaLayoutPropertiesBindingDto {
-    background?: CredentialSchemaBackgroundPropertiesBindingDto;
-    logo?: CredentialSchemaLogoPropertiesBindingDto;
+export interface CredentialSchemaLayoutProperties {
+    background?: CredentialSchemaBackgroundProperties;
+    logo?: CredentialSchemaLogoProperties;
     primaryAttribute?: string;
     secondaryAttribute?: string;
     pictureAttribute?: string;
-    code?: CredentialSchemaCodePropertiesBindingDto;
+    code?: CredentialSchemaCodeProperties;
 }
-export interface CredentialSchemaListBindingDto {
-    values: Array<CredentialSchemaBindingDto>;
+export interface CredentialSchemaList {
+    values: Array<CredentialSchemaListItem>;
     totalPages: number;
     totalItems: number;
 }
-export interface CredentialSchemaListQueryBindingDto {
+export interface CredentialSchemaListItem {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    format: string;
+    revocationMethod?: string;
+    keyStorageSecurity?: KeyStorageSecurity;
+    schemaId: string;
+    layoutType?: LayoutType;
+    importedSourceUrl: string;
+    layoutProperties?: CredentialSchemaLayoutProperties;
+    allowSuspension: boolean;
+    requiresWalletInstanceAttestation: boolean;
+}
+export interface CredentialSchemaListQuery {
     page: number;
     pageSize: number;
     organisationId: string;
-    sort?: SortableCredentialSchemaColumnBindingEnum;
+    sort?: SortableCredentialSchemaColumn;
     sortDirection?: SortDirection;
     name?: string;
     ids?: Array<string>;
-    exact?: Array<CredentialSchemaListQueryExactColumnBindingEnum>;
+    exact?: Array<CredentialSchemaListQueryExactColumn>;
     include?: Array<CredentialSchemaListIncludeEntityType>;
     schemaId?: string;
     formats?: Array<string>;
@@ -333,192 +351,103 @@ export interface CredentialSchemaListQueryBindingDto {
     lastModifiedAfter?: string;
     lastModifiedBefore?: string;
 }
-export interface CredentialSchemaLogoPropertiesBindingDto {
+export interface CredentialSchemaLogoProperties {
     fontColor?: string;
     backgroundColor?: string;
     image?: string;
 }
-export interface CredentialSchemaShareResponseBindingDto {
+export interface CredentialSchemaShareResponse {
     url: string;
 }
-export interface CredentialSchemaTransactionCodeBindingDto {
-    type: TransactionCodeTypeBindingEnum;
+export interface CredentialSchemaTransactionCode {
+    type: TransactionCodeType;
     length: number;
     description?: string;
 }
-export interface CredentialSetResponseBindingDto {
+export interface CredentialSet {
     required: boolean;
     options: Array<Array<string>>;
 }
-export interface DeviceInfoBindingDto {
+export interface DeviceInfo {
     address: string;
     mtu: number;
 }
-export interface DidListBindingDto {
-    values: Array<DidListItemBindingDto>;
+export interface DidDetail {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    organisationId?: string;
+    did: string;
+    didType: DidType;
+    didMethod: string;
+    keys: DidKeys;
+    deactivated: boolean;
+}
+export interface DidKeys {
+    authentication: Array<KeyListItem>;
+    assertionMethod: Array<KeyListItem>;
+    keyAgreement: Array<KeyListItem>;
+    capabilityInvocation: Array<KeyListItem>;
+    capabilityDelegation: Array<KeyListItem>;
+}
+export interface DidList {
+    values: Array<DidListItem>;
     totalPages: number;
     totalItems: number;
 }
-export interface DidListItemBindingDto {
+export interface DidListItem {
     id: string;
     createdDate: string;
     lastModified: string;
     name: string;
     did: string;
-    didType: DidTypeBindingEnum;
+    didType: DidType;
     didMethod: string;
     deactivated: boolean;
 }
-export interface DidListQueryBindingDto {
+export interface DidListQuery {
     page: number;
     pageSize: number;
-    sort?: SortableDidColumnBindingEnum;
+    sort?: SortableDidColumn;
     sortDirection?: SortDirection;
     organisationId: string;
     name?: string;
     did?: string;
-    type?: DidTypeBindingEnum;
+    type?: DidType;
     deactivated?: boolean;
-    exact?: Array<ExactDidFilterColumnBindingEnum>;
+    exact?: Array<DidListQueryExactColumn>;
     keyAlgorithms?: Array<string>;
-    keyRoles?: Array<KeyRoleBindingEnum>;
+    keyRoles?: Array<KeyRole>;
     keyStorages?: Array<string>;
     keyIds?: Array<string>;
     didMethods?: Array<string>;
 }
-export interface DidRequestBindingDto {
-    organisationId: string;
-    name: string;
-    didMethod: string;
-    keys: DidRequestKeysBindingDto;
-    params: Record<string, string>;
-}
-export interface DidRequestKeysBindingDto {
+export interface DidRequestKeys {
     authentication: Array<string>;
     assertionMethod: Array<string>;
     keyAgreement: Array<string>;
     capabilityInvocation: Array<string>;
     capabilityDelegation: Array<string>;
 }
-export interface DidResponseBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    organisationId?: string;
-    did: string;
-    didType: DidTypeBindingEnum;
-    didMethod: string;
-    keys: DidResponseKeysBindingDto;
-    deactivated: boolean;
-}
-export interface DidResponseKeysBindingDto {
-    authentication: Array<KeyListItemResponseBindingDto>;
-    assertionMethod: Array<KeyListItemResponseBindingDto>;
-    keyAgreement: Array<KeyListItemResponseBindingDto>;
-    capabilityInvocation: Array<KeyListItemResponseBindingDto>;
-    capabilityDelegation: Array<KeyListItemResponseBindingDto>;
-}
-export interface ErrorResponseBindingDto {
+export interface ErrorResponse {
     code: string;
     message: string;
     cause?: Cause;
 }
-export interface GeneratedKeyBindingDto {
+export interface GenerateKeyRequest {
+    organisationId: string;
+    keyType: string;
+    keyParams: Record<string, string>;
+    name: string;
+    storageType: string;
+    storageParams: Record<string, string>;
+}
+export interface GeneratedKey {
     keyReference: number[];
     publicKey: number[];
 }
-export interface GetIdentifierBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    organisationId?: string;
-    type: IdentifierTypeBindingEnum;
-    isRemote: boolean;
-    state: IdentifierStateBindingEnum;
-    did?: DidResponseBindingDto;
-    key?: KeyResponseBindingDto;
-    certificates?: Array<CertificateResponseBindingDto>;
-}
-export interface GetIdentifierListBindingDto {
-    values: Array<GetIdentifierListItemBindingDto>;
-    totalPages: number;
-    totalItems: number;
-}
-export interface GetIdentifierListItemBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    type: IdentifierTypeBindingEnum;
-    isRemote: boolean;
-    state: IdentifierStateBindingEnum;
-    organisationId?: string;
-}
-export interface GetProofSchemaBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    organisationId: string;
-    expireDuration: number;
-    proofInputSchemas: Array<ProofInputSchemaBindingDto>;
-    importedSourceUrl?: string;
-}
-export interface GetProofSchemaListItemBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    deletedAt?: string;
-    name: string;
-    expireDuration: number;
-}
-export interface GetRemoteTrustEntityResponseBindingDto {
-    id: string;
-    organisationId?: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    logo?: string;
-    website?: string;
-    termsUrl?: string;
-    privacyUrl?: string;
-    role: TrustEntityRoleBindingEnum;
-    trustAnchor: GetTrustAnchorResponseBindingDto;
-    did?: DidListItemBindingDto;
-    state: TrustEntityStateBindingEnum;
-}
-export interface GetTrustAnchorResponseBindingDto {
-    id: string;
-    name: string;
-    createdDate: string;
-    lastModified: string;
-    type: string;
-    isPublisher: boolean;
-    publisherReference: string;
-}
-export interface GetTrustEntityResponseBindingDto {
-    id: string;
-    organisationId?: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    logo?: string;
-    website?: string;
-    termsUrl?: string;
-    privacyUrl?: string;
-    role: TrustEntityRoleBindingEnum;
-    trustAnchor: GetTrustAnchorResponseBindingDto;
-    did?: DidListItemBindingDto;
-    state: TrustEntityStateBindingEnum;
-    entityKey: string;
-    type: TrustEntityTypeBindingEnum;
-    identifier?: GetIdentifierListItemBindingDto;
-    content?: string;
-    ca?: TrustEntityCertificateResponseBindingDto;
-}
-export interface HandleInvitationRequestBindingDto {
+export interface HandleInvitationRequest {
     /**
      * Typically encoded as a QR code or deep link by the issuer or
      * verifier. For example: "https://example.com/credential-offer".
@@ -539,48 +468,48 @@ export interface HandleInvitationRequestBindingDto {
      */
     redirectUri?: string;
 }
-export interface HistoryErrorMetadataBindingDto {
+export interface HistoryErrorMetadata {
     errorCode: string;
     message: string;
 }
-export interface HistoryListBindingDto {
-    values: Array<HistoryListItemBindingDto>;
+export interface HistoryList {
+    values: Array<HistoryListItem>;
     totalPages: number;
     totalItems: number;
 }
-export interface HistoryListItemBindingDto {
+export interface HistoryListItem {
     id: string;
     createdDate: string;
-    action: HistoryActionBindingEnum;
+    action: HistoryAction;
     name: string;
     entityId?: string;
-    entityType: HistoryEntityTypeBindingEnum;
-    metadata?: HistoryMetadataBinding;
+    entityType: HistoryEntityType;
+    metadata?: HistoryMetadata;
     organisationId?: string;
     target?: string;
     user?: string;
 }
-export interface HistoryListQueryBindingDto {
+export interface HistoryListQuery {
     page: number;
     pageSize: number;
     organisationId: string;
     entityIds?: Array<string>;
-    entityTypes?: Array<HistoryEntityTypeBindingEnum>;
-    actions?: Array<HistoryActionBindingEnum>;
+    entityTypes?: Array<HistoryEntityType>;
+    actions?: Array<HistoryAction>;
     createdDateAfter?: string;
     createdDateBefore?: string;
     identifierId?: string;
     credentialId?: string;
     credentialSchemaId?: string;
     proofSchemaId?: string;
-    search?: HistorySearchBindingDto;
+    search?: HistorySearch;
     users?: Array<string>;
 }
-export interface HistorySearchBindingDto {
+export interface HistorySearch {
     text: string;
-    type?: HistorySearchEnumBindingEnum;
+    type?: HistorySearchType;
 }
-export interface HolderAcceptCredentialRequestBindingDto {
+export interface HolderAcceptCredentialRequest {
     interactionId: string;
     didId?: string;
     identifierId?: string;
@@ -588,44 +517,72 @@ export interface HolderAcceptCredentialRequestBindingDto {
     txCode?: string;
     holderWalletUnitId?: string;
 }
-export interface HolderRegisterWalletUnitRequestBindingDto {
+export interface HolderRegisterWalletUnitRequest {
     organisationId: string;
     /** Reference the `walletProvider` configuration of the Wallet Provider. */
-    walletProvider: WalletProviderBindingDto;
+    walletProvider: WalletProvider;
     keyType: string;
 }
-export interface HolderWalletUnitResponseBindingDto {
+export interface HolderWalletUnit {
     id: string;
     createdDate: string;
     lastModified: string;
     providerWalletUnitId: string;
     walletProviderUrl: string;
-    walletProviderType: WalletProviderTypeBindingEnum;
+    walletProviderType: WalletProviderType;
     walletProviderName: string;
-    status: WalletUnitStatusBindingEnum;
-    authenticationKey: KeyListItemResponseBindingDto;
+    status: WalletUnitStatus;
+    authenticationKey: KeyListItem;
 }
-export interface IdentifierListQueryBindingDto {
+export interface IdentifierDetail {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    organisationId?: string;
+    type: IdentifierType;
+    isRemote: boolean;
+    state: IdentifierState;
+    did?: DidDetail;
+    key?: KeyDetail;
+    certificates?: Array<CertificateDetail>;
+}
+export interface IdentifierList {
+    values: Array<IdentifierListItem>;
+    totalPages: number;
+    totalItems: number;
+}
+export interface IdentifierListItem {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    type: IdentifierType;
+    isRemote: boolean;
+    state: IdentifierState;
+    organisationId?: string;
+}
+export interface IdentifierListQuery {
     page: number;
     pageSize: number;
-    sort?: SortableIdentifierColumnBindingEnum;
+    sort?: SortableIdentifierColumn;
     sortDirection?: SortDirection;
     organisationId: string;
     name?: string;
-    types?: Array<IdentifierTypeBindingEnum>;
-    states?: Array<IdentifierStateBindingEnum>;
-    exact?: Array<ExactIdentifierFilterColumnBindingEnum>;
+    types?: Array<IdentifierType>;
+    states?: Array<IdentifierState>;
+    exact?: Array<IdentifierListQueryExactColumn>;
     didMethods?: Array<string>;
     isRemote?: boolean;
     keyAlgorithms?: Array<string>;
-    keyRoles?: Array<KeyRoleBindingEnum>;
+    keyRoles?: Array<KeyRole>;
     keyStorages?: Array<string>;
     createdDateAfter?: string;
     createdDateBefore?: string;
     lastModifiedAfter?: string;
     lastModifiedBefore?: string;
 }
-export interface ImportCredentialSchemaClaimSchemaBindingDto {
+export interface ImportCredentialSchemaClaimSchema {
     id: string;
     createdDate: string;
     lastModified: string;
@@ -633,21 +590,21 @@ export interface ImportCredentialSchemaClaimSchemaBindingDto {
     key: string;
     datatype: string;
     array?: boolean;
-    claims?: Array<ImportCredentialSchemaClaimSchemaBindingDto>;
+    claims?: Array<ImportCredentialSchemaClaimSchema>;
 }
-export interface ImportCredentialSchemaLayoutPropertiesBindingDto {
-    background?: CredentialSchemaBackgroundPropertiesBindingDto;
-    logo?: CredentialSchemaLogoPropertiesBindingDto;
+export interface ImportCredentialSchemaLayoutProperties {
+    background?: CredentialSchemaBackgroundProperties;
+    logo?: CredentialSchemaLogoProperties;
     primaryAttribute?: string;
     secondaryAttribute?: string;
     pictureAttribute?: string;
-    code?: CredentialSchemaCodePropertiesBindingDto;
+    code?: CredentialSchemaCodeProperties;
 }
-export interface ImportCredentialSchemaRequestBindingDto {
+export interface ImportCredentialSchemaRequest {
     organisationId: string;
-    schema: ImportCredentialSchemaRequestSchemaBindingDto;
+    schema: ImportCredentialSchemaRequestSchema;
 }
-export interface ImportCredentialSchemaRequestSchemaBindingDto {
+export interface ImportCredentialSchemaRequestSchema {
     id: string;
     createdDate: string;
     lastModified: string;
@@ -655,22 +612,22 @@ export interface ImportCredentialSchemaRequestSchemaBindingDto {
     format: string;
     revocationMethod: string;
     organisationId: string;
-    claims: Array<ImportCredentialSchemaClaimSchemaBindingDto>;
-    keyStorageSecurity?: KeyStorageSecurityBindingEnum;
+    claims: Array<ImportCredentialSchemaClaimSchema>;
+    keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
     importedSourceUrl: string;
-    layoutType?: LayoutTypeBindingEnum;
-    layoutProperties?: ImportCredentialSchemaLayoutPropertiesBindingDto;
+    layoutType?: LayoutType;
+    layoutProperties?: ImportCredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
     requiresWalletInstanceAttestation?: boolean;
-    transactionCode?: ImportCredentialSchemaTransactionCodeBindingDto;
+    transactionCode?: ImportCredentialSchemaTransactionCode;
 }
-export interface ImportCredentialSchemaTransactionCodeBindingDto {
-    type: TransactionCodeTypeBindingEnum;
+export interface ImportCredentialSchemaTransactionCode {
+    type: TransactionCodeType;
     length: number;
     description?: string;
 }
-export interface ImportProofSchemaBindingDto {
+export interface ImportProofSchema {
     id: string;
     createdDate: string;
     lastModified: string;
@@ -678,18 +635,18 @@ export interface ImportProofSchemaBindingDto {
     organisationId: string;
     expireDuration: number;
     importedSourceUrl: string;
-    proofInputSchemas: Array<ImportProofSchemaInputSchemaBindingDto>;
+    proofInputSchemas: Array<ImportProofSchemaInputSchema>;
 }
-export interface ImportProofSchemaClaimSchemaBindingDto {
+export interface ImportProofSchemaClaimSchema {
     id: string;
     requested: boolean;
     required: boolean;
     key: string;
     dataType: string;
-    claims?: Array<ImportProofSchemaClaimSchemaBindingDto>;
+    claims?: Array<ImportProofSchemaClaimSchema>;
     array: boolean;
 }
-export interface ImportProofSchemaCredentialSchemaBindingDto {
+export interface ImportProofSchemaCredentialSchema {
     id: string;
     createdDate: string;
     lastModified: string;
@@ -697,23 +654,23 @@ export interface ImportProofSchemaCredentialSchemaBindingDto {
     name: string;
     format: string;
     revocationMethod?: string;
-    keyStorageSecurity?: KeyStorageSecurityBindingEnum;
+    keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
     importedSourceUrl: string;
-    layoutType?: LayoutTypeBindingEnum;
-    layoutProperties?: CredentialSchemaLayoutPropertiesBindingDto;
+    layoutType?: LayoutType;
+    layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
     requiresWalletInstanceAttestation?: boolean;
 }
-export interface ImportProofSchemaInputSchemaBindingDto {
-    claimSchemas: Array<ImportProofSchemaClaimSchemaBindingDto>;
-    credentialSchema: ImportProofSchemaCredentialSchemaBindingDto;
+export interface ImportProofSchemaInputSchema {
+    claimSchemas: Array<ImportProofSchemaClaimSchema>;
+    credentialSchema: ImportProofSchemaCredentialSchema;
 }
-export interface ImportProofSchemaRequestBindingsDto {
-    schema: ImportProofSchemaBindingDto;
+export interface ImportProofSchemaRequest {
+    schema: ImportProofSchema;
     organisationId: string;
 }
-export interface InitParamsDto {
+export interface InitParams {
     configJson?: string;
     nativeSecureElement?: NativeKeyStorage;
     remoteSecureElement?: NativeKeyStorage;
@@ -722,59 +679,23 @@ export interface InitParamsDto {
     nfcHce?: NfcHce;
     nfcScanner?: NfcScanner;
 }
-export interface InitiateIssuanceAuthorizationDetailBindingDto {
+export interface InitiateIssuanceAuthorizationDetail {
     type: string;
     credentialConfigurationId: string;
 }
-export interface InitiateIssuanceRequestBindingDto {
+export interface InitiateIssuanceRequest {
     organisationId: string;
     protocol: string;
     issuer: string;
     clientId: string;
     redirectUri?: string;
     scope?: Array<string>;
-    authorizationDetails?: Array<InitiateIssuanceAuthorizationDetailBindingDto>;
+    authorizationDetails?: Array<InitiateIssuanceAuthorizationDetail>;
 }
-export interface InitiateIssuanceResponseBindingDto {
+export interface InitiateIssuanceResponse {
     url: string;
 }
-export interface KeyGenerateCsrRequestSubjectBindingDto {
-    /** Two-letter country code. */
-    countryName?: string;
-    /** Common name to include in the CSR, typically the domain name of the organization. */
-    commonName?: string;
-    stateOrProvinceName?: string;
-    organisationName?: string;
-    localityName?: string;
-    serialNumber?: string;
-}
-export interface KeyListItemBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    publicKey: number[];
-    keyType: string;
-    storageType: string;
-}
-export interface KeyListItemResponseBindingDto {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    name: string;
-    publicKey: number[];
-    keyType: string;
-    storageType: string;
-}
-export interface KeyRequestBindingDto {
-    organisationId: string;
-    keyType: string;
-    keyParams: Record<string, string>;
-    name: string;
-    storageType: string;
-    storageParams: Record<string, string>;
-}
-export interface KeyResponseBindingDto {
+export interface KeyDetail {
     id: string;
     createdDate: string;
     lastModified: string;
@@ -784,183 +705,160 @@ export interface KeyResponseBindingDto {
     keyType: string;
     storageType: string;
 }
-export interface ListProofSchemasFiltersBindingDto {
-    page: number;
-    pageSize: number;
-    sort?: SortableProofSchemaColumnBinding;
-    sortDirection?: SortDirection;
-    organisationId: string;
-    name?: string;
-    exact?: Array<ProofSchemaListQueryExactColumnBinding>;
-    ids?: Array<string>;
-    formats?: Array<string>;
-    createdDateAfter?: string;
-    createdDateBefore?: string;
-    lastModifiedAfter?: string;
-    lastModifiedBefore?: string;
+export interface KeyListItem {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    publicKey: number[];
+    keyType: string;
+    storageType: string;
 }
-export interface ListTrustAnchorsFiltersBindings {
-    page: number;
-    pageSize: number;
-    sort?: SortableTrustAnchorColumnBindings;
-    sortDirection?: SortDirection;
-    name?: string;
-    isPublisher?: boolean;
-    type?: string;
-    exact?: Array<ExactTrustAnchorFilterColumnBindings>;
-    createdDateAfter?: string;
-    createdDateBefore?: string;
-    lastModifiedAfter?: string;
-    lastModifiedBefore?: string;
-}
-export interface ListTrustEntitiesFiltersBindings {
-    page: number;
-    pageSize: number;
-    sort?: SortableTrustEntityColumnBindings;
-    sortDirection?: SortDirection;
-    name?: string;
-    role?: TrustEntityRoleBindingEnum;
-    trustAnchor?: string;
-    didId?: string;
-    organisationId?: string;
-    types?: Array<TrustEntityTypeBindingEnum>;
-    entityKey?: string;
-    states?: Array<TrustEntityStateBindingEnum>;
-    exact?: Array<ExactTrustEntityFilterColumnBindings>;
-    createdDateAfter?: string;
-    createdDateBefore?: string;
-    lastModifiedAfter?: string;
-    lastModifiedBefore?: string;
-}
-export interface MdocMsoValidityResponseBindingDto {
+export interface MdocMsoValidity {
     expiration: string;
     nextUpdate: string;
     lastUpdate: string;
 }
-export interface MetadataBindingDto {
+export interface Metadata {
     dbVersion: string;
     dbHash: string;
     createdAt: string;
 }
 /** Optional messages to be displayed on (iOS) system overlay */
-export interface NfcScanRequestBindingDto {
+export interface NfcScanRequest {
     inProgressMessage?: string;
     failureMessage?: string;
     successMessage?: string;
 }
-export interface OpenId4vciProofTypeSupportedBindingDto {
-    proofSigningAlgValuesSupported: Array<string>;
-}
-export interface OpenId4vciTxCodeBindingDto {
-    inputMode: OpenId4vciTxCodeInputModeBindingEnum;
+export interface OpenId4vciTxCode {
+    inputMode: OpenId4vciTxCodeInputMode;
     length?: number;
     description?: string;
 }
-export interface PeripheralDiscoveryDataBindingDto {
+export interface PeripheralDiscoveryData {
     deviceAddress: string;
     localDeviceName?: string;
     advertisedServices: Array<string>;
     advertisedServiceData?: Record<string, number[]>;
 }
-export interface PresentationDefinitionBindingDto {
-    requestGroups: Array<PresentationDefinitionRequestGroupBindingDto>;
-    credentials: Array<CredentialDetailBindingDto>;
+export interface PresentationDefinition {
+    requestGroups: Array<PresentationDefinitionRequestGroup>;
+    credentials: Array<CredentialDetail>;
 }
-export interface PresentationDefinitionFieldBindingDto {
+export interface PresentationDefinitionField {
     id: string;
     name?: string;
     purpose?: string;
     required: boolean;
     keyMap: Record<string, string>;
 }
-export interface PresentationDefinitionRequestGroupBindingDto {
+export interface PresentationDefinitionRequestGroup {
     id: string;
     name?: string;
     purpose?: string;
-    rule: PresentationDefinitionRuleBindingDto;
-    requestedCredentials: Array<PresentationDefinitionRequestedCredentialBindingDto>;
+    rule: PresentationDefinitionRule;
+    requestedCredentials: Array<PresentationDefinitionRequestedCredential>;
 }
-export interface PresentationDefinitionRequestedCredentialBindingDto {
+export interface PresentationDefinitionRequestedCredential {
     id: string;
     name?: string;
     purpose?: string;
-    fields: Array<PresentationDefinitionFieldBindingDto>;
+    fields: Array<PresentationDefinitionField>;
     applicableCredentials: Array<string>;
     inapplicableCredentials: Array<string>;
     multiple?: boolean;
 }
-export interface PresentationDefinitionRuleBindingDto {
-    type: PresentationDefinitionRuleTypeBindingEnum;
+export interface PresentationDefinitionRule {
+    type: PresentationDefinitionRuleType;
     min?: number;
     max?: number;
     count?: number;
 }
-export interface PresentationDefinitionV2ClaimBindingDto {
+export interface PresentationDefinitionV2 {
+    credentialQueries: Record<string, CredentialQuery>;
+    credentialSets: Array<CredentialSet>;
+}
+export interface PresentationDefinitionV2Claim {
     path: string;
-    schema: CredentialClaimSchemaBindingDto;
-    value: PresentationDefinitionV2ClaimValueBindingDto;
+    schema: ClaimSchema;
+    value: PresentationDefinitionV2ClaimValue;
     userSelection: boolean;
     required: boolean;
 }
-export interface PresentationDefinitionV2CredentialDetailBindingDto {
+export interface PresentationDefinitionV2Credential {
     id: string;
     createdDate: string;
     issuanceDate?: string;
     lastModified: string;
     revocationDate?: string;
-    issuer?: GetIdentifierListItemBindingDto;
-    issuerCertificate?: CertificateResponseBindingDto;
-    holder?: GetIdentifierListItemBindingDto;
-    state: CredentialStateBindingEnum;
-    schema: CredentialSchemaBindingDto;
-    claims: Array<PresentationDefinitionV2ClaimBindingDto>;
+    issuer?: IdentifierListItem;
+    issuerCertificate?: CertificateDetail;
+    holder?: IdentifierListItem;
+    state: CredentialState;
+    schema: CredentialSchemaListItem;
+    claims: Array<PresentationDefinitionV2Claim>;
     redirectUri?: string;
-    role: CredentialRoleBindingDto;
+    role: CredentialRole;
     suspendEndDate?: string;
-    mdocMsoValidity?: MdocMsoValidityResponseBindingDto;
+    mdocMsoValidity?: MdocMsoValidity;
     protocol: string;
     profile?: string;
 }
-export interface PresentationDefinitionV2ResponseBindingDto {
-    credentialQueries: Record<string, CredentialQueryResponseBindingDto>;
-    credentialSets: Array<CredentialSetResponseBindingDto>;
-}
-export interface PresentationSubmitCredentialRequestBindingDto {
+export interface PresentationSubmitCredentialRequest {
     credentialId: string;
     submitClaims: Array<string>;
 }
-export interface PresentationSubmitV2CredentialRequestBindingDto {
+export interface PresentationSubmitV2CredentialRequest {
     credentialId: string;
     userSelections: Array<string>;
 }
-export interface ProofClaimSchemaBindingDto {
+export interface ProofClaim {
+    schema: ProofClaimSchema;
+    value?: ProofClaimValue;
+}
+export interface ProofClaimSchema {
     id: string;
     requested: boolean;
     required: boolean;
     key: string;
     dataType: string;
-    claims: Array<ProofClaimSchemaBindingDto>;
+    claims: Array<ProofClaimSchema>;
     array: boolean;
 }
-export interface ProofInputBindingDto {
-    claims: Array<ProofRequestClaimBindingDto>;
-    credential?: CredentialDetailBindingDto;
-    credentialSchema: CredentialSchemaBindingDto;
+export interface ProofDetail {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    verifier?: IdentifierListItem;
+    state: ProofState;
+    role: ProofRole;
+    proofSchema?: ProofSchemaListItem;
+    protocol: string;
+    engagement?: string;
+    transport: string;
+    redirectUri?: string;
+    proofInputs: Array<ProofInput>;
+    retainUntilDate?: string;
+    requestedDate?: string;
+    completedDate?: string;
+    claimsRemovedAt?: string;
+    profile?: string;
 }
-export interface ProofInputSchemaBindingDto {
-    claimSchemas: Array<ProofClaimSchemaBindingDto>;
-    credentialSchema: CredentialSchemaBindingDto;
+export interface ProofInput {
+    claims: Array<ProofClaim>;
+    credential?: CredentialDetail;
+    credentialSchema: CredentialSchemaListItem;
 }
-export interface ProofInputSchemaRequestDto {
-    credentialSchemaId: string;
-    claimSchemas: Array<CreateProofSchemaClaimRequestDto>;
+export interface ProofInputSchema {
+    claimSchemas: Array<ProofClaimSchema>;
+    credentialSchema: CredentialSchemaListItem;
 }
-export interface ProofListBindingDto {
-    values: Array<ProofListItemBindingDto>;
+export interface ProofList {
+    values: Array<ProofListItem>;
     totalPages: number;
     totalItems: number;
 }
-export interface ProofListItemBindingDto {
+export interface ProofListItem {
     id: string;
     createdDate: string;
     lastModified: string;
@@ -970,25 +868,25 @@ export interface ProofListItemBindingDto {
     protocol: string;
     transport: string;
     engagement?: string;
-    state: ProofStateBindingEnum;
-    role: ProofRoleBindingEnum;
-    schema?: GetProofSchemaListItemBindingDto;
+    state: ProofState;
+    role: ProofRole;
+    schema?: ProofSchemaListItem;
     retainUntilDate?: string;
     profile?: string;
 }
-export interface ProofListQueryBindingDto {
+export interface ProofListQuery {
     page: number;
     pageSize: number;
     organisationId: string;
-    sort?: SortableProofListColumnBinding;
+    sort?: SortableProofColumn;
     sortDirection?: SortDirection;
     name?: string;
     profiles?: Array<string>;
     ids?: Array<string>;
-    proofStates?: Array<ProofStateBindingEnum>;
-    proofRoles?: Array<ProofRoleBindingEnum>;
+    proofStates?: Array<ProofState>;
+    proofRoles?: Array<ProofRole>;
     proofSchemaIds?: Array<string>;
-    exact?: Array<ProofListQueryExactColumnBindingEnum>;
+    exact?: Array<ProofListQueryExactColumn>;
     createdDateAfter?: string;
     createdDateBefore?: string;
     lastModifiedAfter?: string;
@@ -998,84 +896,118 @@ export interface ProofListQueryBindingDto {
     completedDateAfter?: string;
     completedDateBefore?: string;
 }
-export interface ProofRequestClaimBindingDto {
-    schema: ProofClaimSchemaBindingDto;
-    value?: ProofRequestClaimValueBindingDto;
-}
-export interface ProofResponseBindingDto {
+export interface ProofSchemaDetail {
     id: string;
     createdDate: string;
     lastModified: string;
-    verifier?: GetIdentifierListItemBindingDto;
-    state: ProofStateBindingEnum;
-    role: ProofRoleBindingEnum;
-    proofSchema?: GetProofSchemaListItemBindingDto;
-    protocol: string;
-    engagement?: string;
-    transport: string;
-    redirectUri?: string;
-    proofInputs: Array<ProofInputBindingDto>;
-    retainUntilDate?: string;
-    requestedDate?: string;
-    completedDate?: string;
-    claimsRemovedAt?: string;
-    profile?: string;
+    name: string;
+    organisationId: string;
+    expireDuration: number;
+    proofInputSchemas: Array<ProofInputSchema>;
+    importedSourceUrl?: string;
 }
-export interface ProofSchemaListBindingDto {
-    values: Array<GetProofSchemaListItemBindingDto>;
+export interface ProofSchemaList {
+    values: Array<ProofSchemaListItem>;
     totalPages: number;
     totalItems: number;
 }
-export interface ProofSchemaShareResponseBindingDto {
+export interface ProofSchemaListItem {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    deletedAt?: string;
+    name: string;
+    expireDuration: number;
+}
+export interface ProofSchemaListQuery {
+    page: number;
+    pageSize: number;
+    sort?: SortableProofSchemaColumn;
+    sortDirection?: SortDirection;
+    organisationId: string;
+    name?: string;
+    exact?: Array<ProofSchemaListQueryExactColumn>;
+    ids?: Array<string>;
+    formats?: Array<string>;
+    createdDateAfter?: string;
+    createdDateBefore?: string;
+    lastModifiedAfter?: string;
+    lastModifiedBefore?: string;
+}
+export interface ProofSchemaShareResponse {
     url: string;
 }
-export interface ProposeProofRequestBindingDto {
+export interface ProposeProofRequest {
     protocol: string;
     organisationId: string;
     engagement: Array<string>;
     uiMessage?: string;
 }
-export interface ProposeProofResponseBindingDto {
+export interface ProposeProofResponse {
     proofId: string;
     interactionId: string;
     url?: string;
 }
-export interface ResolveJsonLdContextResponseBindingDto {
-    context: string;
+export interface RemoteTrustEntityDetail {
+    id: string;
+    organisationId?: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    logo?: string;
+    website?: string;
+    termsUrl?: string;
+    privacyUrl?: string;
+    role: TrustEntityRole;
+    trustAnchor: TrustAnchorDetail;
+    did?: DidListItem;
+    state: TrustEntityState;
 }
-export interface ResolveTrustEntitiesRequestBindingDto {
-    identifiers: Array<ResolveTrustEntityRequestBindingDto>;
+export interface ResolveTrustEntitiesRequest {
+    identifiers: Array<ResolveTrustEntityRequest>;
 }
-export interface ResolveTrustEntityRequestBindingDto {
+export interface ResolveTrustEntityRequest {
     id: string;
     certificateId?: string;
 }
-export interface ResolvedIdentifierTrustEntityResponseBindingDto {
-    trustEntity: GetTrustEntityResponseBindingDto;
+export interface ResolvedJsonLdContext {
+    context: string;
+}
+export interface ResolvedTrustEntity {
+    trustEntity: TrustEntityDetail;
     certificateIds?: Array<string>;
 }
-export interface ServiceDescriptionBindingDto {
+export interface ServiceDescription {
     uuid: string;
     advertise: boolean;
     advertisedServiceData?: number[];
-    characteristics: Array<CharacteristicBindingDto>;
+    characteristics: Array<CharacteristicSettings>;
 }
-export interface ShareProofRequestBindingDto {
-    params?: ShareProofRequestParamsBindingDto;
+export interface ShareProofRequest {
+    params?: ShareProofRequestParams;
 }
-export interface ShareProofRequestParamsBindingDto {
-    clientIdScheme?: ClientIdSchemeBindingEnum;
+export interface ShareProofRequestParams {
+    clientIdScheme?: ClientIdScheme;
 }
-export interface ShareProofResponseBindingDto {
+export interface ShareProofResponse {
     url: string;
     expiresAt?: string;
 }
-export interface TrustAnchorsListBindingDto {
-    values: Array<TrustAnchorsListItemResponseBindingDto>;
+export interface TrustAnchorDetail {
+    id: string;
+    name: string;
+    createdDate: string;
+    lastModified: string;
+    type: string;
+    isPublisher: boolean;
+    publisherReference: string;
+}
+export interface TrustAnchorList {
+    values: Array<TrustAnchorListItem>;
     totalPages: number;
     totalItems: number;
 }
-export interface TrustAnchorsListItemResponseBindingDto {
+export interface TrustAnchorListItem {
     id: string;
     name: string;
     createdDate: string;
@@ -1085,27 +1017,22 @@ export interface TrustAnchorsListItemResponseBindingDto {
     publisherReference: string;
     entities: number;
 }
-export interface TrustEntitiesListBindingDto {
-    values: Array<TrustEntitiesListItemResponseBindingDto>;
-    totalPages: number;
-    totalItems: number;
+export interface TrustAnchorListQuery {
+    page: number;
+    pageSize: number;
+    sort?: SortableTrustAnchorColumn;
+    sortDirection?: SortDirection;
+    name?: string;
+    isPublisher?: boolean;
+    type?: string;
+    exact?: Array<TrustAnchorListQueryExactColumn>;
+    createdDateAfter?: string;
+    createdDateBefore?: string;
+    lastModifiedAfter?: string;
+    lastModifiedBefore?: string;
 }
-export interface TrustEntitiesListItemResponseBindingDto {
-    id: string;
-    name: string;
-    createdDate: string;
-    lastModified: string;
-    logo?: string;
-    website?: string;
-    termsUrl?: string;
-    state: TrustEntityStateBindingEnum;
-    privacyUrl?: string;
-    role: TrustEntityRoleBindingEnum;
-    trustAnchor: GetTrustAnchorResponseBindingDto;
-    did?: DidListItemBindingDto;
-}
-export interface TrustEntityCertificateResponseBindingDto {
-    state: CertificateStateBindingEnum;
+export interface TrustEntityCertificate {
+    state: CertificateState;
     publicKey: string;
     commonName?: string;
     serialNumber: string;
@@ -1114,36 +1041,94 @@ export interface TrustEntityCertificateResponseBindingDto {
     issuer: string;
     subject: string;
     fingerprint: string;
-    extensions: Array<CertificateX509ExtensionBindingDto>;
+    extensions: Array<CertificateX509Extension>;
 }
-export interface UnexportableEntitiesBindingDto {
-    credentials: Array<CredentialDetailBindingDto>;
-    keys: Array<KeyListItemBindingDto>;
-    dids: Array<DidListItemBindingDto>;
-    identifiers: Array<GetIdentifierListItemBindingDto>;
+export interface TrustEntityDetail {
+    id: string;
+    organisationId?: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    logo?: string;
+    website?: string;
+    termsUrl?: string;
+    privacyUrl?: string;
+    role: TrustEntityRole;
+    trustAnchor: TrustAnchorDetail;
+    did?: DidListItem;
+    state: TrustEntityState;
+    entityKey: string;
+    type: TrustEntityType;
+    identifier?: IdentifierListItem;
+    content?: string;
+    ca?: TrustEntityCertificate;
+}
+export interface TrustEntityList {
+    values: Array<TrustEntityListItem>;
+    totalPages: number;
+    totalItems: number;
+}
+export interface TrustEntityListItem {
+    id: string;
+    name: string;
+    createdDate: string;
+    lastModified: string;
+    logo?: string;
+    website?: string;
+    termsUrl?: string;
+    state: TrustEntityState;
+    privacyUrl?: string;
+    role: TrustEntityRole;
+    trustAnchor: TrustAnchorDetail;
+    did?: DidListItem;
+}
+export interface TrustEntityListQuery {
+    page: number;
+    pageSize: number;
+    sort?: SortableTrustEntityColumn;
+    sortDirection?: SortDirection;
+    name?: string;
+    role?: TrustEntityRole;
+    trustAnchor?: string;
+    didId?: string;
+    organisationId?: string;
+    types?: Array<TrustEntityType>;
+    entityKey?: string;
+    states?: Array<TrustEntityState>;
+    exact?: Array<TrustEntityListQueryExactColumn>;
+    createdDateAfter?: string;
+    createdDateBefore?: string;
+    lastModifiedAfter?: string;
+    lastModifiedBefore?: string;
+}
+export interface UnexportableEntities {
+    credentials: Array<CredentialDetail>;
+    keys: Array<KeyListItem>;
+    dids: Array<DidListItem>;
+    identifiers: Array<IdentifierListItem>;
     totalCredentials: number;
     totalKeys: number;
     totalDids: number;
     totalIdentifiers: number;
 }
-export interface UpdateRemoteTrustEntityFromDidRequestBindingDto {
+export interface UpdateRemoteTrustEntityRequest {
     didId: string;
-    action?: TrustEntityUpdateActionBindingEnum;
+    action?: TrustEntityUpdateAction;
     name?: string;
     logo?: string | null;
     website?: string | null;
     termsUrl?: string | null;
     privacyUrl?: string | null;
-    role?: TrustEntityRoleBindingEnum;
+    role?: TrustEntityRole;
 }
-export interface UpsertOrganisationRequestBindingDto {
+export interface UpsertOrganisationRequest {
     id: string;
     name?: string;
     deactivate?: boolean;
     walletProvider?: string | null;
     walletProviderIssuer?: string | null;
 }
-export interface VersionBindingDto {
+export interface Version {
     target: string;
     buildTime: string;
     branch: string;
@@ -1152,20 +1137,16 @@ export interface VersionBindingDto {
     rustVersion: string;
     pipelineId: string;
 }
-export interface WalletProviderBindingDto {
+export interface WalletProvider {
     url: string;
-    type: WalletProviderTypeBindingEnum;
+    type: WalletProviderType;
 }
-export type ApplicableCredentialOrFailureHintBindingEnum = {
+export type ApplicableCredentialOrFailureHint = {
     type_: "APPLICABLE_CREDENTIALS";
-    applicableCredentials: Array<PresentationDefinitionV2CredentialDetailBindingDto>;
+    applicableCredentials: Array<PresentationDefinitionV2Credential>;
 } | {
     type_: "FAILURE_HINT";
-    failureHint: CredentialQueryFailureHintResponseBindingDto;
-};
-export type BindingError = {
-    type_: "ERROR_RESPONSE";
-    data: ErrorResponseBindingDto;
+    failureHint: CredentialQueryFailureHint;
 };
 export type BleError = {
     type_: "ADAPTER_NOT_ENABLED";
@@ -1211,7 +1192,7 @@ export type BleError = {
     type_: "UNKNOWN";
     reason: string;
 };
-export declare enum CacheTypeBindingDto {
+export declare enum CacheType {
     DID_DOCUMENT = "DID_DOCUMENT",
     JSON_LD_CONTEXT = "JSON_LD_CONTEXT",
     STATUS_LIST_CREDENTIAL = "STATUS_LIST_CREDENTIAL",
@@ -1222,28 +1203,28 @@ export declare enum CacheTypeBindingDto {
     ANDROID_ATTESTATION_CRL = "ANDROID_ATTESTATION_CRL",
     OPEN_ID_METADATA = "OPEN_ID_METADATA"
 }
-export declare enum CertificateStateBindingEnum {
+export declare enum CertificateState {
     NOT_YET_ACTIVE = "NOT_YET_ACTIVE",
     ACTIVE = "ACTIVE",
     REVOKED = "REVOKED",
     EXPIRED = "EXPIRED"
 }
-export declare enum CharacteristicPermissionBindingEnum {
+export declare enum CharacteristicPermission {
     READ = "READ",
     WRITE = "WRITE"
 }
-export declare enum CharacteristicPropertyBindingEnum {
+export declare enum CharacteristicProperty {
     READ = "READ",
     WRITE = "WRITE",
     NOTIFY = "NOTIFY",
     WRITE_WITHOUT_RESPONSE = "WRITE_WITHOUT_RESPONSE",
     INDICATE = "INDICATE"
 }
-export declare enum CharacteristicWriteTypeBindingEnum {
+export declare enum CharacteristicWriteType {
     WITH_RESPONSE = "WITH_RESPONSE",
     WITHOUT_RESPONSE = "WITHOUT_RESPONSE"
 }
-export type ClaimValueBindingDto = {
+export type ClaimValue = {
     type_: "BOOLEAN";
     value: boolean;
 } | {
@@ -1257,43 +1238,48 @@ export type ClaimValueBindingDto = {
     value: string;
 } | {
     type_: "NESTED";
-    value: Array<ClaimBindingDto>;
+    value: Array<Claim>;
 };
-export declare enum ClientIdSchemeBindingEnum {
+export declare enum ClientIdScheme {
     REDIRECT_URI = "REDIRECT_URI",
     VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION",
     DID = "DID",
     X509_SAN_DNS = "X509_SAN_DNS"
 }
-export type ConnectionEventBindingEnum = {
+export type ConnectionEvent = {
     type_: "CONNECTED";
-    deviceInfo: DeviceInfoBindingDto;
+    deviceInfo: DeviceInfo;
 } | {
     type_: "DISCONNECTED";
     deviceAddress: string;
 };
-export declare enum CreateSelfSignedCaRequestIssuerAlternativeNameTypeBindingEnum {
+export declare enum CreateSelfSignedCaRequestIssuerAlternativeNameType {
     EMAIL = "EMAIL",
     URI = "URI"
 }
-export declare enum CredentialListIncludeEntityTypeBindingEnum {
+export declare enum CredentialListIncludeEntityType {
     LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES",
     CREDENTIAL = "CREDENTIAL"
 }
-export declare enum CredentialListQueryExactColumnBindingEnum {
+export declare enum CredentialListQueryExactColumn {
     NAME = "NAME"
 }
-export declare enum CredentialQueryFailureReasonBindingEnum {
+export declare enum CredentialListQuerySearchType {
+    CLAIM_NAME = "CLAIM_NAME",
+    CLAIM_VALUE = "CLAIM_VALUE",
+    CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME"
+}
+export declare enum CredentialQueryFailureReason {
     NO_CREDENTIAL = "NO_CREDENTIAL",
     VALIDITY = "VALIDITY",
     CONSTRAINT = "CONSTRAINT"
 }
-export declare enum CredentialRoleBindingDto {
+export declare enum CredentialRole {
     HOLDER = "HOLDER",
     ISSUER = "ISSUER",
     VERIFIER = "VERIFIER"
 }
-export declare enum CredentialSchemaCodeTypeBindingDto {
+export declare enum CredentialSchemaCodeType {
     BARCODE = "BARCODE",
     MRZ = "MRZ",
     QR_CODE = "QR_CODE"
@@ -1301,11 +1287,11 @@ export declare enum CredentialSchemaCodeTypeBindingDto {
 export declare enum CredentialSchemaListIncludeEntityType {
     LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES"
 }
-export declare enum CredentialSchemaListQueryExactColumnBindingEnum {
+export declare enum CredentialSchemaListQueryExactColumn {
     NAME = "NAME",
     SCHEMA_ID = "SCHEMA_ID"
 }
-export declare enum CredentialStateBindingEnum {
+export declare enum CredentialState {
     CREATED = "CREATED",
     PENDING = "PENDING",
     OFFERED = "OFFERED",
@@ -1316,29 +1302,19 @@ export declare enum CredentialStateBindingEnum {
     ERROR = "ERROR",
     INTERACTION_EXPIRED = "INTERACTION_EXPIRED"
 }
-export declare enum DidTypeBindingEnum {
-    LOCAL = "LOCAL",
-    REMOTE = "REMOTE"
-}
-export declare enum ExactDidFilterColumnBindingEnum {
+export declare enum DidListQueryExactColumn {
     NAME = "NAME",
     DID = "DID"
 }
-export declare enum ExactIdentifierFilterColumnBindingEnum {
-    NAME = "NAME"
+export declare enum DidType {
+    LOCAL = "LOCAL",
+    REMOTE = "REMOTE"
 }
-export declare enum ExactTrustAnchorFilterColumnBindings {
-    NAME = "NAME",
-    TYPE = "TYPE"
-}
-export declare enum ExactTrustEntityFilterColumnBindings {
-    NAME = "NAME"
-}
-export type HandleInvitationResponseBindingEnum = {
+export type HandleInvitationResponse = {
     type_: "CREDENTIAL_ISSUANCE";
     /** For reference. */
     interactionId: string;
-    keyStorageSecurityLevels?: Array<KeyStorageSecurityBindingEnum>;
+    keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
     keyAlgorithms?: Array<string>;
     /**
      * Metadata for entering a transaction code
@@ -1346,7 +1322,7 @@ export type HandleInvitationResponseBindingEnum = {
      * wallet user must input a transaction code to receive the offered credential.
      * This code is typically sent through a separate channel such as SMS or email.
      */
-    txCode?: OpenId4vciTxCodeBindingDto;
+    txCode?: OpenId4vciTxCode;
     protocol: string;
     requiresWalletInstanceAttestation: boolean;
 } | {
@@ -1367,7 +1343,7 @@ export type HandleInvitationResponseBindingEnum = {
     proofId: string;
     protocol: string;
 };
-export declare enum HistoryActionBindingEnum {
+export declare enum HistoryAction {
     ACCEPTED = "ACCEPTED",
     CREATED = "CREATED",
     CSR_GENERATED = "CSR_GENERATED",
@@ -1397,7 +1373,7 @@ export declare enum HistoryActionBindingEnum {
     INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
     DELIVERED = "DELIVERED"
 }
-export declare enum HistoryEntityTypeBindingEnum {
+export declare enum HistoryEntityType {
     KEY = "KEY",
     DID = "DID",
     IDENTIFIER = "IDENTIFIER",
@@ -1421,19 +1397,20 @@ export declare enum HistoryEntityTypeBindingEnum {
     STS_TOKEN = "STS_TOKEN",
     SIGNATURE = "SIGNATURE",
     NOTIFICATION = "NOTIFICATION",
-    SUPERVISORY_AUTHORITY = "SUPERVISORY_AUTHORITY"
+    SUPERVISORY_AUTHORITY = "SUPERVISORY_AUTHORITY",
+    TRUST_LIST_PUBLICATION = "TRUST_LIST_PUBLICATION"
 }
-export type HistoryMetadataBinding = {
+export type HistoryMetadata = {
     type_: "UNEXPORTABLE_ENTITIES";
-    value: UnexportableEntitiesBindingDto;
+    value: UnexportableEntities;
 } | {
     type_: "ERROR_METADATA";
-    value: HistoryErrorMetadataBindingDto;
+    value: HistoryErrorMetadata;
 } | {
     type_: "WALLET_UNIT_JWT";
     value: [string];
 };
-export declare enum HistorySearchEnumBindingEnum {
+export declare enum HistorySearchType {
     CLAIM_NAME = "CLAIM_NAME",
     CLAIM_VALUE = "CLAIM_VALUE",
     CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME",
@@ -1443,30 +1420,33 @@ export declare enum HistorySearchEnumBindingEnum {
     VERIFIER_NAME = "VERIFIER_NAME",
     PROOF_SCHEMA_NAME = "PROOF_SCHEMA_NAME"
 }
-export declare enum IdentifierStateBindingEnum {
+export declare enum IdentifierListQueryExactColumn {
+    NAME = "NAME"
+}
+export declare enum IdentifierState {
     ACTIVE = "ACTIVE",
     DEACTIVATED = "DEACTIVATED"
 }
-export declare enum IdentifierTypeBindingEnum {
+export declare enum IdentifierType {
     KEY = "KEY",
     DID = "DID",
     CERTIFICATE = "CERTIFICATE",
     CERTIFICATE_AUTHORITY = "CERTIFICATE_AUTHORITY"
 }
-export declare enum KeyRoleBindingEnum {
+export declare enum KeyRole {
     AUTHENTICATION = "AUTHENTICATION",
     ASSERTION_METHOD = "ASSERTION_METHOD",
     KEY_AGREEMENT = "KEY_AGREEMENT",
     CAPABILITY_INVOCATION = "CAPABILITY_INVOCATION",
     CAPABILITY_DELEGATION = "CAPABILITY_DELEGATION"
 }
-export declare enum KeyStorageSecurityBindingEnum {
+export declare enum KeyStorageSecurity {
     HIGH = "HIGH",
     MODERATE = "MODERATE",
     ENHANCED_BASIC = "ENHANCED_BASIC",
     BASIC = "BASIC"
 }
-export declare enum LayoutTypeBindingEnum {
+export declare enum LayoutType {
     CARD = "CARD",
     DOCUMENT = "DOCUMENT",
     SINGLE_ATTRIBUTE = "SINGLE_ATTRIBUTE"
@@ -1499,15 +1479,19 @@ export type NfcError = {
     type_: "UNKNOWN";
     reason: string;
 };
-export declare enum OpenId4vciTxCodeInputModeBindingEnum {
+export type OneCoreError = {
+    type_: "RESPONSE";
+    data: ErrorResponse;
+};
+export declare enum OpenId4vciTxCodeInputMode {
     NUMERIC = "NUMERIC",
     TEXT = "TEXT"
 }
-export declare enum PresentationDefinitionRuleTypeBindingEnum {
+export declare enum PresentationDefinitionRuleType {
     ALL = "ALL",
     PICK = "PICK"
 }
-export type PresentationDefinitionV2ClaimValueBindingDto = {
+export type PresentationDefinitionV2ClaimValue = {
     type_: "BOOLEAN";
     value: boolean;
 } | {
@@ -1521,26 +1505,26 @@ export type PresentationDefinitionV2ClaimValueBindingDto = {
     value: string;
 } | {
     type_: "NESTED";
-    value: Array<PresentationDefinitionV2ClaimBindingDto>;
+    value: Array<PresentationDefinitionV2Claim>;
 };
-export declare enum ProofListQueryExactColumnBindingEnum {
-    NAME = "NAME"
-}
-export type ProofRequestClaimValueBindingDto = {
+export type ProofClaimValue = {
     type_: "VALUE";
     value: string;
 } | {
     type_: "CLAIMS";
-    value: Array<ProofRequestClaimBindingDto>;
+    value: Array<ProofClaim>;
 };
-export declare enum ProofRoleBindingEnum {
+export declare enum ProofListQueryExactColumn {
+    NAME = "NAME"
+}
+export declare enum ProofRole {
     HOLDER = "HOLDER",
     VERIFIER = "VERIFIER"
 }
-export declare enum ProofSchemaListQueryExactColumnBinding {
+export declare enum ProofSchemaListQueryExactColumn {
     NAME = "NAME"
 }
-export declare enum ProofStateBindingEnum {
+export declare enum ProofState {
     CREATED = "CREATED",
     PENDING = "PENDING",
     REQUESTED = "REQUESTED",
@@ -1550,27 +1534,22 @@ export declare enum ProofStateBindingEnum {
     ERROR = "ERROR",
     INTERACTION_EXPIRED = "INTERACTION_EXPIRED"
 }
-export declare enum SearchTypeBindingEnum {
-    CLAIM_NAME = "CLAIM_NAME",
-    CLAIM_VALUE = "CLAIM_VALUE",
-    CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME"
-}
 export declare enum SortDirection {
     ASCENDING = "ASCENDING",
     DESCENDING = "DESCENDING"
 }
-export declare enum SortableCredentialColumnBindingEnum {
+export declare enum SortableCredentialColumn {
     CREATED_DATE = "CREATED_DATE",
     SCHEMA_NAME = "SCHEMA_NAME",
     ISSUER = "ISSUER",
     STATE = "STATE"
 }
-export declare enum SortableCredentialSchemaColumnBindingEnum {
+export declare enum SortableCredentialSchemaColumn {
     NAME = "NAME",
     FORMAT = "FORMAT",
     CREATED_DATE = "CREATED_DATE"
 }
-export declare enum SortableDidColumnBindingEnum {
+export declare enum SortableDidColumn {
     NAME = "NAME",
     CREATED_DATE = "CREATED_DATE",
     METHOD = "METHOD",
@@ -1578,105 +1557,112 @@ export declare enum SortableDidColumnBindingEnum {
     DID = "DID",
     DEACTIVATED = "DEACTIVATED"
 }
-export declare enum SortableIdentifierColumnBindingEnum {
+export declare enum SortableIdentifierColumn {
     NAME = "NAME",
     CREATED_DATE = "CREATED_DATE",
     TYPE = "TYPE",
     STATE = "STATE"
 }
-export declare enum SortableProofListColumnBinding {
+export declare enum SortableProofColumn {
     SCHEMA_NAME = "SCHEMA_NAME",
     VERIFIER = "VERIFIER",
     STATE = "STATE",
     CREATED_DATE = "CREATED_DATE"
 }
-export declare enum SortableProofSchemaColumnBinding {
+export declare enum SortableProofSchemaColumn {
     NAME = "NAME",
     CREATED_DATE = "CREATED_DATE"
 }
-export declare enum SortableTrustAnchorColumnBindings {
+export declare enum SortableTrustAnchorColumn {
     NAME = "NAME",
     CREATED_DATE = "CREATED_DATE",
     TYPE = "TYPE"
 }
-export declare enum SortableTrustEntityColumnBindings {
+export declare enum SortableTrustEntityColumn {
     NAME = "NAME",
     ROLE = "ROLE",
     LAST_MODIFIED = "LAST_MODIFIED",
     STATE = "STATE"
 }
-export declare enum TransactionCodeTypeBindingEnum {
+export declare enum TransactionCodeType {
     NUMERIC = "NUMERIC",
     ALPHANUMERIC = "ALPHANUMERIC"
 }
-export declare enum TrustEntityRoleBindingEnum {
+export declare enum TrustAnchorListQueryExactColumn {
+    NAME = "NAME",
+    TYPE = "TYPE"
+}
+export declare enum TrustEntityListQueryExactColumn {
+    NAME = "NAME"
+}
+export declare enum TrustEntityRole {
     ISSUER = "ISSUER",
     VERIFIER = "VERIFIER",
     BOTH = "BOTH"
 }
-export declare enum TrustEntityStateBindingEnum {
+export declare enum TrustEntityState {
     ACTIVE = "ACTIVE",
     REMOVED = "REMOVED",
     WITHDRAWN = "WITHDRAWN",
     REMOVED_AND_WITHDRAWN = "REMOVED_AND_WITHDRAWN"
 }
-export declare enum TrustEntityTypeBindingEnum {
+export declare enum TrustEntityType {
     DID = "DID",
     /** certificate authority */
     CA = "CA"
 }
-export declare enum TrustEntityUpdateActionBindingEnum {
+export declare enum TrustEntityUpdateAction {
     ADMIN_ACTIVATE = "ADMIN_ACTIVATE",
     ACTIVATE = "ACTIVATE",
     WITHDRAW = "WITHDRAW",
     REMOVE = "REMOVE"
 }
-export declare enum WalletProviderTypeBindingEnum {
+export declare enum WalletProviderType {
     PROCIVIS_ONE = "PROCIVIS_ONE"
 }
-export declare enum WalletUnitStatusBindingEnum {
+export declare enum WalletUnitStatus {
     PENDING = "PENDING",
     ACTIVE = "ACTIVE",
     REVOKED = "REVOKED",
     ERROR = "ERROR"
 }
 export interface BleCentral {
-    isAdapterEnabled(): Promise<boolean>;
-    startScan(filterServices: Array<string> | undefined): Promise<void>;
-    stopScan(): Promise<void>;
-    isScanning(): Promise<boolean>;
-    writeData(peripheral: string, service: string, characteristic: string, data: number[], writeType: CharacteristicWriteTypeBindingEnum): Promise<void>;
-    readData(peripheral: string, service: string, characteristic: string): Promise<number[]>;
     connect(peripheral: string): Promise<number>;
     disconnect(peripheral: string): Promise<void>;
-    getDiscoveredDevices(): Promise<Array<PeripheralDiscoveryDataBindingDto>>;
+    getDiscoveredDevices(): Promise<Array<PeripheralDiscoveryData>>;
+    getNotifications(peripheral: string, service: string, characteristic: string): Promise<Array<number[]>>;
+    isAdapterEnabled(): Promise<boolean>;
+    isScanning(): Promise<boolean>;
+    readData(peripheral: string, service: string, characteristic: string): Promise<number[]>;
+    startScan(filterServices: Array<string> | undefined): Promise<void>;
+    stopScan(): Promise<void>;
     subscribeToCharacteristicNotifications(peripheral: string, service: string, characteristic: string): Promise<void>;
     unsubscribeFromCharacteristicNotifications(peripheral: string, service: string, characteristic: string): Promise<void>;
-    getNotifications(peripheral: string, service: string, characteristic: string): Promise<Array<number[]>>;
+    writeData(peripheral: string, service: string, characteristic: string, data: number[], writeType: CharacteristicWriteType): Promise<void>;
 }
 export interface BlePeripheral {
-    isAdapterEnabled(): Promise<boolean>;
-    startAdvertisement(deviceName: string | undefined, services: Array<ServiceDescriptionBindingDto>): Promise<string | undefined>;
-    stopAdvertisement(): Promise<void>;
-    isAdvertising(): Promise<boolean>;
-    setCharacteristicData(service: string, characteristic: string, data: number[]): Promise<void>;
-    notifyCharacteristicData(deviceAddress: string, service: string, characteristic: string, data: number[]): Promise<void>;
-    getConnectionChangeEvents(): Promise<Array<ConnectionEventBindingEnum>>;
     getCharacteristicWrites(device: string, service: string, characteristic: string): Promise<Array<number[]>>;
-    waitForCharacteristicRead(device: string, service: string, characteristic: string): Promise<void>;
+    getConnectionChangeEvents(): Promise<Array<ConnectionEvent>>;
+    isAdapterEnabled(): Promise<boolean>;
+    isAdvertising(): Promise<boolean>;
+    notifyCharacteristicData(deviceAddress: string, service: string, characteristic: string, data: number[]): Promise<void>;
+    setCharacteristicData(service: string, characteristic: string, data: number[]): Promise<void>;
+    startAdvertisement(deviceName: string | undefined, services: Array<ServiceDescription>): Promise<string | undefined>;
+    stopAdvertisement(): Promise<void>;
     stopServer(): Promise<void>;
+    waitForCharacteristicRead(device: string, service: string, characteristic: string): Promise<void>;
 }
 export interface NativeKeyStorage {
-    generateKey(keyAlias: string): Promise<GeneratedKeyBindingDto>;
-    sign(keyReference: number[], message: number[]): Promise<number[]>;
-    generateAttestationKey(keyAlias: string, nonce: string | undefined): Promise<GeneratedKeyBindingDto>;
     generateAttestation(keyReference: number[], nonce: string | undefined): Promise<Array<string>>;
+    generateAttestationKey(keyAlias: string, nonce: string | undefined): Promise<GeneratedKey>;
+    generateKey(keyAlias: string): Promise<GeneratedKey>;
+    sign(keyReference: number[], message: number[]): Promise<number[]>;
     signWithAttestationKey(keyReference: number[], message: number[]): Promise<number[]>;
 }
 /** Provider of NFC host-card emulation (HCE) */
 export interface NfcHce {
-    isSupported(): Promise<boolean>;
     isEnabled(): Promise<boolean>;
+    isSupported(): Promise<boolean>;
     /**
      * Starts NFC host-card emulation (HCE)
      * * `handler` implementation for handling NFC events
@@ -1699,10 +1685,16 @@ export interface NfcHceHandler {
 }
 /** Provider of NFC scanner functionality */
 export interface NfcScanner {
-    /** Check whether NFC scanning is supported on the device */
-    isSupported(): Promise<boolean>;
+    /**
+     * Stops scanning previously started via `scan`
+     * or disconnects the established session
+     * * `error_message` - error UI message to display on the system NFC overlay (iOS)
+     */
+    cancelScan(errorMessage: string | undefined): Promise<void>;
     /** Check whether NFC adapter is enabled on the device (android only, iOS always enabled) */
     isEnabled(): Promise<boolean>;
+    /** Check whether NFC scanning is supported on the device */
+    isSupported(): Promise<boolean>;
     /**
      * Starts scanning for ISO 7816-4 NFC tag
      * * `message` - UI message to display on the system NFC overlay (iOS)
@@ -1715,18 +1707,12 @@ export interface NfcScanner {
     scan(message: string | undefined): Promise<void>;
     /** Update UI message on the system NFC scanner overlay (iOS) - previously set via `scan` */
     setMessage(message: string): Promise<void>;
-    /**
-     * Stops scanning previously started via `scan`
-     * or disconnects the established session
-     * * `error_message` - error UI message to display on the system NFC overlay (iOS)
-     */
-    cancelScan(errorMessage: string | undefined): Promise<void>;
     /** Send APDU request and wait for response APDU */
     transceive(commandApdu: number[]): Promise<number[]>;
 }
-export interface OneCoreBinding {
-    backupInfo(): Promise<UnexportableEntitiesBindingDto>;
-    checkRevocation(credentialIds: Array<string>, forceRefresh: boolean | undefined): Promise<Array<CredentialRevocationCheckResponseBindingDto>>;
+export interface OneCore {
+    backupInfo(): Promise<UnexportableEntities>;
+    checkRevocation(credentialIds: Array<string>, forceRefresh: boolean | undefined): Promise<Array<CredentialRevocationCheckResponse>>;
     /**
      * For wallet-initiated flows, continues the OpenID4VCI issuance
      * process after completing authorization.
@@ -1735,18 +1721,18 @@ export interface OneCoreBinding {
      * Authorization Code Flow issuance process. For example:
      * `myapp://example/credential-offer?code=xxx&clientId=myWallet&...`
      */
-    continueIssuance(url: string): Promise<ContinueIssuanceResponseBindingDto>;
-    createBackup(password: string, outputPath: string): Promise<BackupCreateBindingDto>;
-    createDid(request: DidRequestBindingDto): Promise<string>;
-    createIdentifier(request: CreateIdentifierRequestBindingDto): Promise<string>;
-    createOrganisation(request: CreateOrganisationRequestBindingDto): Promise<string>;
+    continueIssuance(url: string): Promise<ContinueIssuanceResponse>;
+    createBackup(password: string, outputPath: string): Promise<CreatedBackup>;
+    createDid(request: CreateDidRequest): Promise<string>;
+    createIdentifier(request: CreateIdentifierRequest): Promise<string>;
+    createOrganisation(request: CreateOrganisationRequest): Promise<string>;
     /** For verifiers, creates a proof request. */
-    createProof(request: CreateProofRequestBindingDto): Promise<string>;
-    createProofSchema(request: CreateProofSchemaRequestDto): Promise<string>;
-    createRemoteTrustEntity(request: CreateRemoteTrustEntityRequestBindingDto): Promise<string>;
-    createTrustAnchor(anchor: CreateTrustAnchorRequestBindingDto): Promise<string>;
-    createTrustEntity(request: CreateTrustEntityRequestBindingDto): Promise<string>;
-    deleteCache(types: Array<CacheTypeBindingDto> | undefined): Promise<void>;
+    createProof(request: CreateProofRequest): Promise<string>;
+    createProofSchema(request: CreateProofSchemaRequest): Promise<string>;
+    createRemoteTrustEntity(request: CreateRemoteTrustEntityRequest): Promise<string>;
+    createTrustAnchor(anchor: CreateTrustAnchorRequest): Promise<string>;
+    createTrustEntity(request: CreateTrustEntityRequest): Promise<string>;
+    deleteCache(types: Array<CacheType> | undefined): Promise<void>;
     deleteCredential(credentialId: string): Promise<void>;
     deleteCredentialSchema(credentialSchemaId: string): Promise<void>;
     deleteIdentifier(id: string): Promise<void>;
@@ -1755,60 +1741,60 @@ export interface OneCoreBinding {
     deleteProofSchema(proofSchemaId: string): Promise<void>;
     deleteTrustAnchor(anchorId: string): Promise<void>;
     finalizeImport(): Promise<void>;
-    generateKey(request: KeyRequestBindingDto): Promise<string>;
-    getConfig(): Promise<ConfigBindingDto>;
-    getCredential(credentialId: string): Promise<CredentialDetailBindingDto>;
-    getCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaDetailBindingDto>;
-    getCredentialSchemas(query: CredentialSchemaListQueryBindingDto): Promise<CredentialSchemaListBindingDto>;
-    getCredentials(query: CredentialListQueryBindingDto): Promise<CredentialListBindingDto>;
-    getDids(query: DidListQueryBindingDto): Promise<DidListBindingDto>;
-    getHistoryEntry(historyId: string): Promise<HistoryListItemBindingDto>;
-    getHistoryList(query: HistoryListQueryBindingDto): Promise<HistoryListBindingDto>;
-    getIdentifier(id: string): Promise<GetIdentifierBindingDto>;
-    getPresentationDefinition(proofId: string): Promise<PresentationDefinitionBindingDto>;
-    getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2ResponseBindingDto>;
-    getProof(proofId: string): Promise<ProofResponseBindingDto>;
-    getProofSchema(proofSchemaId: string): Promise<GetProofSchemaBindingDto>;
-    getProofSchemas(filter: ListProofSchemasFiltersBindingDto): Promise<ProofSchemaListBindingDto>;
-    getProofs(query: ProofListQueryBindingDto): Promise<ProofListBindingDto>;
-    getRemoteTrustEntity(didId: string): Promise<GetRemoteTrustEntityResponseBindingDto>;
-    getTrustAnchor(trustAnchorId: string): Promise<GetTrustAnchorResponseBindingDto>;
-    getTrustEntity(trustEntityId: string): Promise<GetTrustEntityResponseBindingDto>;
-    getTrustEntityByDid(didId: string): Promise<GetTrustEntityResponseBindingDto>;
+    generateKey(request: GenerateKeyRequest): Promise<string>;
+    getConfig(): Promise<Config>;
+    getCredential(credentialId: string): Promise<CredentialDetail>;
+    getCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaDetail>;
+    getHistoryEntry(historyId: string): Promise<HistoryListItem>;
+    getIdentifier(id: string): Promise<IdentifierDetail>;
+    getPresentationDefinition(proofId: string): Promise<PresentationDefinition>;
+    getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2>;
+    getProof(proofId: string): Promise<ProofDetail>;
+    getProofSchema(proofSchemaId: string): Promise<ProofSchemaDetail>;
+    getRemoteTrustEntity(didId: string): Promise<RemoteTrustEntityDetail>;
+    getTrustAnchor(trustAnchorId: string): Promise<TrustAnchorDetail>;
+    getTrustEntity(trustEntityId: string): Promise<TrustEntityDetail>;
+    getTrustEntityByDid(didId: string): Promise<TrustEntityDetail>;
     /**
      * For a wallet, handles the interaction once the wallet connects to a share
      * endpoint URL (for example, scans the QR code of an offered credential or
      * request for proof).
      */
-    handleInvitation(request: HandleInvitationRequestBindingDto): Promise<HandleInvitationResponseBindingEnum>;
+    handleInvitation(request: HandleInvitationRequest): Promise<HandleInvitationResponse>;
     /**
      * Accepts an offered credential. The system will generate a new
      * identifier that matches issuer's restrictions. Alternatively,
      * you can specify an existing identifier.
      */
-    holderAcceptCredential(request: HolderAcceptCredentialRequestBindingDto): Promise<string>;
-    holderGetWalletUnit(id: string): Promise<HolderWalletUnitResponseBindingDto>;
+    holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
+    holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
     /** Register with a Wallet Provider. */
-    holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequestBindingDto): Promise<string>;
+    holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<string>;
     /** Rejects an offered credential. */
     holderRejectCredential(interactionId: string): Promise<void>;
     holderRejectProof(interactionId: string): Promise<void>;
-    holderSubmitProof(interactionId: string, submitCredentials: Record<string, Array<PresentationSubmitCredentialRequestBindingDto>>): Promise<void>;
-    holderSubmitProofV2(interactionId: string, submission: Record<string, Array<PresentationSubmitV2CredentialRequestBindingDto>>): Promise<void>;
+    holderSubmitProof(interactionId: string, submitCredentials: Record<string, Array<PresentationSubmitCredentialRequest>>): Promise<void>;
+    holderSubmitProofV2(interactionId: string, submission: Record<string, Array<PresentationSubmitV2CredentialRequest>>): Promise<void>;
     /**
      * Check status of wallet unit with the Wallet Provider. Will return an error
      * if the unit has been revoked.
      */
     holderWalletUnitStatus(id: string): Promise<void>;
-    importCredentialSchema(request: ImportCredentialSchemaRequestBindingDto): Promise<string>;
-    importProofSchema(request: ImportProofSchemaRequestBindingsDto): Promise<string>;
+    importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<string>;
+    importProofSchema(request: ImportProofSchemaRequest): Promise<string>;
     /** For wallets, starts the OpenID4VCI Authorization Code Flow. */
-    initiateIssuance(request: InitiateIssuanceRequestBindingDto): Promise<InitiateIssuanceResponseBindingDto>;
-    listIdentifiers(query: IdentifierListQueryBindingDto): Promise<GetIdentifierListBindingDto>;
-    listTrustAnchors(filters: ListTrustAnchorsFiltersBindings): Promise<TrustAnchorsListBindingDto>;
-    listTrustEntities(filters: ListTrustEntitiesFiltersBindings): Promise<TrustEntitiesListBindingDto>;
+    initiateIssuance(request: InitiateIssuanceRequest): Promise<InitiateIssuanceResponse>;
+    listCredentialSchemas(query: CredentialSchemaListQuery): Promise<CredentialSchemaList>;
+    listCredentials(query: CredentialListQuery): Promise<CredentialList>;
+    listDids(query: DidListQuery): Promise<DidList>;
+    listHistory(query: HistoryListQuery): Promise<HistoryList>;
+    listIdentifiers(query: IdentifierListQuery): Promise<IdentifierList>;
+    listProofSchemas(filter: ProofSchemaListQuery): Promise<ProofSchemaList>;
+    listProofs(query: ProofListQuery): Promise<ProofList>;
+    listTrustAnchors(filters: TrustAnchorListQuery): Promise<TrustAnchorList>;
+    listTrustEntities(filters: TrustEntityListQuery): Promise<TrustEntityList>;
     /** Scan NFC for ISO 18013-5 engagment */
-    nfcReadIsoMdlEngagement(request: NfcScanRequestBindingDto): Promise<string>;
+    nfcReadIsoMdlEngagement(request: NfcScanRequest): Promise<string>;
     /** Cancel previously started NFC scan via `nfc_read_iso_mdl_engagement` */
     nfcStopIsoMdlEngagement(): Promise<void>;
     /**
@@ -1816,17 +1802,17 @@ export interface OneCoreBinding {
      * the `verificationEngagement` entry of your configuration for your
      * options for `engagement`.
      */
-    proposeProof(request: ProposeProofRequestBindingDto): Promise<ProposeProofResponseBindingDto>;
-    resolveJsonldContext(url: string): Promise<ResolveJsonLdContextResponseBindingDto>;
-    resolveTrustEntityByIdentifier(request: ResolveTrustEntitiesRequestBindingDto): Promise<Record<string, Array<ResolvedIdentifierTrustEntityResponseBindingDto>>>;
+    proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
+    resolveJsonldContext(url: string): Promise<ResolvedJsonLdContext>;
+    resolveTrustEntityByIdentifier(request: ResolveTrustEntitiesRequest): Promise<Record<string, Array<ResolvedTrustEntity>>>;
     rollbackImport(): Promise<void>;
     runTask(task: string): Promise<string>;
-    shareCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaShareResponseBindingDto>;
-    shareProof(proofId: string, params: ShareProofRequestBindingDto): Promise<ShareProofResponseBindingDto>;
-    shareProofSchema(proofSchemaId: string): Promise<ProofSchemaShareResponseBindingDto>;
+    shareCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaShareResponse>;
+    shareProof(proofId: string, params: ShareProofRequest): Promise<ShareProofResponse>;
+    shareProofSchema(proofSchemaId: string): Promise<ProofSchemaShareResponse>;
     uninitialize(deleteData: boolean): Promise<void>;
-    unpackBackup(password: string, inputPath: string): Promise<MetadataBindingDto>;
-    updateRemoteTrustEntity(request: UpdateRemoteTrustEntityFromDidRequestBindingDto): Promise<void>;
-    upsertOrganisation(request: UpsertOrganisationRequestBindingDto): Promise<void>;
-    version(): VersionBindingDto;
+    unpackBackup(password: string, inputPath: string): Promise<Metadata>;
+    updateRemoteTrustEntity(request: UpdateRemoteTrustEntityRequest): Promise<void>;
+    upsertOrganisation(request: UpsertOrganisationRequest): Promise<void>;
+    version(): Version;
 }

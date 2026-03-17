@@ -21,13 +21,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
     override fun getName() = "ProcivisOneCoreModule"
 
-    private var oneCore: OneCoreBindingInterface? = null
+    private var oneCore: OneCoreInterface? = null
     private var nfcHce: NfcHce = NfcHCE(reactContext)
     private val scope = CoroutineScope(EmptyCoroutineContext)
 
-    private fun getCore(): OneCoreBindingInterface {
-        return oneCore ?: throw BindingException.ErrorResponse(
-            ErrorResponseBindingDto(
+    private fun getCore(): OneCoreInterface {
+        return oneCore ?: throw OneCoreException.Response(
+            ErrorResponse(
                 "BR_0184",
                 "core not initialized",
                 null
@@ -37,8 +37,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
 
     private var ubiqu: UbiquKeyStorage? = null
     private fun getUbiqu(): UbiquKeyStorage {
-        return ubiqu ?: throw BindingException.ErrorResponse(
-            ErrorResponseBindingDto(
+        return ubiqu ?: throw OneCoreException.Response(
+            ErrorResponse(
                 "BR_0184",
                 "ubiqu not initialized",
                 null
@@ -54,7 +54,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             oneCore =
                 initializeCore(
                     context = context,
-                    params = InitParamsDto(
+                    params = InitParams(
                         configJson = configJson,
                         nativeSecureElement = AndroidKeyStoreKeyStorage(context),
                         remoteSecureElement = ubiqu,
@@ -145,9 +145,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getDids(query: ReadableMap, promise: Promise) {
+    fun listDids(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val dids = getCore().getDids(construct(query))
+            val dids = getCore().listDids(construct(query))
             return@asyncCall convertToRN(dids)
         }
     }
@@ -260,17 +260,17 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     ) {
         asyncCall(promise, scope) {
             val submitCredentials =
-                mutableMapOf<String, List<PresentationSubmitCredentialRequestBindingDto>>()
+                mutableMapOf<String, List<PresentationSubmitCredentialRequest>>()
             for (entry in credentials.entryIterator) {
                 val credentialList = when (val credentialValue = entry.value) {
                     is ReadableMap -> {
                         // Single credential object - convert to list
-                        listOf(construct<PresentationSubmitCredentialRequestBindingDto>(credentialValue))
+                        listOf(construct<PresentationSubmitCredentialRequest>(credentialValue))
                     }
                     is ReadableArray -> {
                         // Array of credentials - convert each one
                         (0 until credentialValue.size()).map { index ->
-                            construct<PresentationSubmitCredentialRequestBindingDto>(credentialValue.getMap(index)!!)
+                            construct<PresentationSubmitCredentialRequest>(credentialValue.getMap(index)!!)
                         }
                     }
                     else -> {
@@ -292,13 +292,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     ) {
         asyncCall(promise, scope) {
             val submission =
-                mutableMapOf<String, List<PresentationSubmitV2CredentialRequestBindingDto>>()
+                mutableMapOf<String, List<PresentationSubmitV2CredentialRequest>>()
             for (entry in credentials.entryIterator) {
                 val credentialList = when (val credentialValue = entry.value) {
                     is ReadableMap -> {
                         // Single credential object - convert to list
                         listOf(
-                            construct<PresentationSubmitV2CredentialRequestBindingDto>(
+                            construct<PresentationSubmitV2CredentialRequest>(
                                 credentialValue
                             )
                         )
@@ -307,7 +307,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                     is ReadableArray -> {
                         // Array of credentials - convert each one
                         (0 until credentialValue.size()).map { index ->
-                            construct<PresentationSubmitV2CredentialRequestBindingDto>(
+                            construct<PresentationSubmitV2CredentialRequest>(
                                 credentialValue.getMap(index)!!
                             )
                         }
@@ -328,9 +328,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getCredentials(query: ReadableMap, promise: Promise) {
+    fun listCredentials(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val credentials = getCore().getCredentials(construct(query))
+            val credentials = getCore().listCredentials(construct(query))
             return@asyncCall convertToRN(credentials)
         }
     }
@@ -367,9 +367,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getCredentialSchemas(query: ReadableMap, promise: Promise) {
+    fun listCredentialSchemas(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val schemas = getCore().getCredentialSchemas(construct(query))
+            val schemas = getCore().listCredentialSchemas(construct(query))
             return@asyncCall convertToRN(schemas)
         }
     }
@@ -406,9 +406,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getProofs(query: ReadableMap, promise: Promise) {
+    fun listProofs(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val proofs = getCore().getProofs(construct(query))
+            val proofs = getCore().listProofs(construct(query))
             return@asyncCall convertToRN(proofs)
         }
     }
@@ -437,9 +437,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getProofSchemas(query: ReadableMap, promise: Promise) {
+    fun listProofSchemas(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val schemas = getCore().getProofSchemas(construct(query))
+            val schemas = getCore().listProofSchemas(construct(query))
             return@asyncCall convertToRN(schemas)
         }
     }
@@ -481,9 +481,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getHistoryList(query: ReadableMap, promise: Promise) {
+    fun listHistory(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val history = getCore().getHistoryList(construct(query))
+            val history = getCore().listHistory(construct(query))
             return@asyncCall convertToRN(history)
         }
     }
@@ -640,9 +640,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun deleteCache(types: ReadableArray?, promise: Promise) {
         asyncCall(promise, scope) {
-            var cacheTypeList: List<CacheTypeBindingDto>? = null;
+            var cacheTypeList: List<CacheType>? = null;
             if (types != null) {
-                cacheTypeList = enumList(types, CacheTypeBindingDto::valueOf)
+                cacheTypeList = enumList(types, CacheType::valueOf)
             }
             getCore().deleteCache(cacheTypeList)
             return@asyncCall null

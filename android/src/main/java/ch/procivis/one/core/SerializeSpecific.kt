@@ -9,12 +9,12 @@ object SerializeSpecific {
     object Obj {
         private val CustomConversionTypes =
             arrayOf(
-                HistoryMetadataBinding::class.java,
-                ClaimValueBindingDto::class.java,
-                ProofRequestClaimValueBindingDto::class.java,
-                ApplicableCredentialOrFailureHintBindingEnum::class.java,
-                PresentationDefinitionV2ClaimValueBindingDto::class.java,
-                HandleInvitationResponseBindingEnum::class.java,
+                HistoryMetadata::class.java,
+                ClaimValue::class.java,
+                ProofClaimValue::class.java,
+                ApplicableCredentialOrFailureHint::class.java,
+                PresentationDefinitionV2ClaimValue::class.java,
+                HandleInvitationResponse::class.java,
             )
 
         fun isCustomConversionType(input: Any?): Boolean {
@@ -27,31 +27,31 @@ object SerializeSpecific {
         }
 
         fun convertCustom(input: Any): ReadableMap {
-            if (input is HistoryMetadataBinding) {
+            if (input is HistoryMetadata) {
                 return historyMetadata(input)
             }
-            if (input is ClaimValueBindingDto) {
+            if (input is ClaimValue) {
                 return claimValue(input)
             }
-            if (input is ProofRequestClaimValueBindingDto) {
+            if (input is ProofClaimValue) {
                 return proofClaimValue(input)
             }
-            if (input is ApplicableCredentialOrFailureHintBindingEnum) {
+            if (input is ApplicableCredentialOrFailureHint) {
                 return credentialQuery(input)
             }
-            if (input is PresentationDefinitionV2ClaimValueBindingDto) {
+            if (input is PresentationDefinitionV2ClaimValue) {
                 return presentationDefinitionV2ClaimValue(input)
             }
-            if (input is HandleInvitationResponseBindingEnum) {
+            if (input is HandleInvitationResponse) {
                 return invitationResponse(input)
             }
             throw IllegalArgumentException("Invalid map conversion: $input")
         }
 
-        private fun historyMetadata(metadata: HistoryMetadataBinding): ReadableMap {
+        private fun historyMetadata(metadata: HistoryMetadata): ReadableMap {
             val result = Arguments.createMap()
             when (metadata) {
-                is HistoryMetadataBinding.UnexportableEntities -> {
+                is HistoryMetadata.UnexportableEntities -> {
                     result.putString("type_", "UNEXPORTABLE_ENTITIES")
                     result.putMap(
                         "value",
@@ -59,7 +59,7 @@ object SerializeSpecific {
                     )
                 }
 
-                is HistoryMetadataBinding.ErrorMetadata -> {
+                is HistoryMetadata.ErrorMetadata -> {
                     result.putString("type_", "ERROR_METADATA")
                     result.putMap(
                         "value",
@@ -67,7 +67,7 @@ object SerializeSpecific {
                     )
                 }
 
-                is HistoryMetadataBinding.WalletUnitJwt -> {
+                is HistoryMetadata.WalletUnitJwt -> {
                     result.putString("type_", "WALLET_UNIT_JWT")
                     val values = Arguments.createArray()
                     values.pushString(metadata.v1)
@@ -77,10 +77,10 @@ object SerializeSpecific {
             return result
         }
 
-        private fun credentialQuery(query: ApplicableCredentialOrFailureHintBindingEnum): ReadableMap {
+        private fun credentialQuery(query: ApplicableCredentialOrFailureHint): ReadableMap {
             val result = Arguments.createMap()
             when (query) {
-                is ApplicableCredentialOrFailureHintBindingEnum.ApplicableCredentials -> {
+                is ApplicableCredentialOrFailureHint.ApplicableCredentials -> {
                     result.putString("type_", "APPLICABLE_CREDENTIALS")
                     result.putArray(
                         "applicableCredentials",
@@ -88,7 +88,7 @@ object SerializeSpecific {
                     )
                 }
 
-                is ApplicableCredentialOrFailureHintBindingEnum.FailureHint -> {
+                is ApplicableCredentialOrFailureHint.FailureHint -> {
                     result.putString("type_", "FAILURE_HINT")
                     result.putMap("failureHint", convertToRN(query.failureHint) as ReadableMap)
                 }
@@ -96,20 +96,20 @@ object SerializeSpecific {
             return result
         }
 
-        private fun claimValue(value: ClaimValueBindingDto): ReadableMap {
+        private fun claimValue(value: ClaimValue): ReadableMap {
             val result = Arguments.createMap()
             when (value) {
-                is ClaimValueBindingDto.Boolean -> {
+                is ClaimValue.Boolean -> {
                     result.putString("type_", "BOOLEAN")
                     result.putBoolean("value", value.value)
                 }
 
-                is ClaimValueBindingDto.Float -> {
+                is ClaimValue.Float -> {
                     result.putString("type_", "FLOAT")
                     result.putDouble("value", value.value)
                 }
 
-                is ClaimValueBindingDto.Integer -> {
+                is ClaimValue.Integer -> {
                     result.putString("type_", "INTEGER")
                     if (value.value < Int.MIN_VALUE || value.value > Int.MAX_VALUE) {
                         result.putDouble("value", value.value.toDouble())
@@ -118,12 +118,12 @@ object SerializeSpecific {
                     }
                 }
 
-                is ClaimValueBindingDto.String -> {
+                is ClaimValue.String -> {
                     result.putString("type_", "STRING")
                     result.putString("value", value.value)
                 }
 
-                is ClaimValueBindingDto.Nested -> {
+                is ClaimValue.Nested -> {
                     result.putString("type_", "NESTED")
                     result.putArray("value", convertToRN(value.value) as ReadableArray)
                 }
@@ -131,15 +131,15 @@ object SerializeSpecific {
             return result
         }
 
-        private fun proofClaimValue(value: ProofRequestClaimValueBindingDto): ReadableMap {
+        private fun proofClaimValue(value: ProofClaimValue): ReadableMap {
             val result = Arguments.createMap()
             when (value) {
-                is ProofRequestClaimValueBindingDto.Value -> {
+                is ProofClaimValue.Value -> {
                     result.putString("type_", "VALUE")
                     result.putString("value", value.value)
                 }
 
-                is ProofRequestClaimValueBindingDto.Claims -> {
+                is ProofClaimValue.Claims -> {
                     result.putString("type_", "CLAIMS")
                     result.putArray("value", convertToRN(value.value) as ReadableArray)
                 }
@@ -147,20 +147,20 @@ object SerializeSpecific {
             return result
         }
 
-        private fun presentationDefinitionV2ClaimValue(value: PresentationDefinitionV2ClaimValueBindingDto): ReadableMap {
+        private fun presentationDefinitionV2ClaimValue(value: PresentationDefinitionV2ClaimValue): ReadableMap {
             val result = Arguments.createMap()
             when (value) {
-                is PresentationDefinitionV2ClaimValueBindingDto.Boolean -> {
+                is PresentationDefinitionV2ClaimValue.Boolean -> {
                     result.putString("type_", "BOOLEAN")
                     result.putBoolean("value", value.value)
                 }
 
-                is PresentationDefinitionV2ClaimValueBindingDto.Float -> {
+                is PresentationDefinitionV2ClaimValue.Float -> {
                     result.putString("type_", "FLOAT")
                     result.putDouble("value", value.value)
                 }
 
-                is PresentationDefinitionV2ClaimValueBindingDto.Integer -> {
+                is PresentationDefinitionV2ClaimValue.Integer -> {
                     result.putString("type_", "INTEGER")
                     if (value.value < Int.MIN_VALUE || value.value > Int.MAX_VALUE) {
                         result.putDouble("value", value.value.toDouble())
@@ -169,12 +169,12 @@ object SerializeSpecific {
                     }
                 }
 
-                is PresentationDefinitionV2ClaimValueBindingDto.String -> {
+                is PresentationDefinitionV2ClaimValue.String -> {
                     result.putString("type_", "STRING")
                     result.putString("value", value.value)
                 }
 
-                is PresentationDefinitionV2ClaimValueBindingDto.Nested -> {
+                is PresentationDefinitionV2ClaimValue.Nested -> {
                     result.putString("type_", "NESTED")
                     result.putArray("value", convertToRN(value.value) as ReadableArray)
                 }
@@ -182,10 +182,10 @@ object SerializeSpecific {
             return result
         }
 
-        private fun invitationResponse(value: HandleInvitationResponseBindingEnum): ReadableMap {
+        private fun invitationResponse(value: HandleInvitationResponse): ReadableMap {
             val result = Arguments.createMap()
             when (value) {
-                is HandleInvitationResponseBindingEnum.CredentialIssuance -> {
+                is HandleInvitationResponse.CredentialIssuance -> {
                     result.putString("type_", "CREDENTIAL_ISSUANCE")
                     result.putString("interactionId", value.interactionId)
                     value.keyStorageSecurityLevels?.let {
@@ -204,14 +204,14 @@ object SerializeSpecific {
                     result.putBoolean("requiresWalletInstanceAttestation", value.requiresWalletInstanceAttestation)
                 }
 
-                is HandleInvitationResponseBindingEnum.AuthorizationCodeFlow -> {
+                is HandleInvitationResponse.AuthorizationCodeFlow -> {
                     result.putString("type_", "AUTHORIZATION_CODE_FLOW")
                     result.putString("interactionId", value.interactionId)
                     result.putString("authorizationCodeFlowUrl", value.authorizationCodeFlowUrl)
                     result.putString("protocol", value.protocol)
                 }
 
-                is HandleInvitationResponseBindingEnum.ProofRequest -> {
+                is HandleInvitationResponse.ProofRequest -> {
                     result.putString("type_", "PROOF_REQUEST")
                     result.putString("interactionId", value.interactionId)
                     result.putString("proofId", value.proofId)

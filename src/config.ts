@@ -1,56 +1,56 @@
 import {
-  TrustEntityTypeBindingEnum,
-  ConfigBindingDto,
+  TrustEntityType,
+  Config,
+  IdentifierType,
 } from "./one-core-uniffi-intf";
 
-export enum KeyAlgorithmFeatureEnum {
+export enum KeyAlgorithmFeature {
   GENERATE_CSR = "GENERATE_CSR",
 }
 
 export interface KeyAlgorithmCapabilities {
-  features: KeyAlgorithmFeatureEnum[];
+  features: KeyAlgorithmFeature[];
 }
 
-export enum KeyStorageSecurityEnum {
-  HARDWARE = "HARDWARE",
-  SOFTWARE = "SOFTWARE",
-}
-
-export enum KeyStorageFeatureEnum {
+export enum KeyStorageFeature {
   EXPORTABLE = "EXPORTABLE",
+  IMPORTABLE = "IMPORTABLE",
+  ATTESTATION = "ATTESTATION",
 }
 
 export interface KeyStorageCapabilities {
   algorithms: string[];
-  features: KeyStorageFeatureEnum[];
-  security: KeyStorageSecurityEnum[];
+  features: KeyStorageFeature[];
 }
 
-export enum DidOperationEnum {
+export enum DidOperation {
   RESOLVE = "RESOLVE",
   CREATE = "CREATE",
   DEACTIVATE = "DEACTIVATE",
 }
 
 export interface DidCapabilities {
-  operations: DidOperationEnum[];
+  operations: DidOperation[];
   keyAlgorithms: string[];
 }
 
-export enum FormatFeatureEnum {
+export enum FormatFeature {
   SelectiveDisclosure = "SELECTIVE_DISCLOSURE",
   SupportsCredentialDesign = "SUPPORTS_CREDENTIAL_DESIGN",
-  RequiresSchemaId = "REQUIRES_SCHEMA_ID",
+  SupportsSchemaId = "SUPPORTS_SCHEMA_ID",
+  RequiresPresentationEncryption = "REQUIRES_PRESENTATION_ENCRYPTION",
+  SupportsCombinedPresentation = "SUPPORTS_COMBINED_PRESENTATION",
+  SupportsTxCode = "SUPPORTS_TX_CODE",
 }
 
-export enum FormatSelectiveDisclosureEnum {
+export enum FormatSelectiveDisclosure {
   AnyLevel = "ANY_LEVEL",
   SecondLevel = "SECOND_LEVEL",
 }
 
 export interface FormatCapabilities {
-  features: FormatFeatureEnum[];
-  selectiveDisclosure: FormatSelectiveDisclosureEnum[];
+  features: FormatFeature[];
+  selectiveDisclosure: FormatSelectiveDisclosure[];
   issuanceDidMethods: string[];
   issuanceExchangeProtocols: string[];
   proofExchangeProtocols: string[];
@@ -58,20 +58,23 @@ export interface FormatCapabilities {
   signingKeyAlgorithms: string[];
   verificationKeyAlgorithms: string[];
   verificationKeyStorages: string[];
-  datatypes: Array<DataTypeEnum | string>;
-  allowedSchemaIds: string[];
+  datatypes: Array<DataType | string>;
   forbiddenClaimNames: string[];
   issuanceIdentifierTypes: string[];
   verificationIdentifierTypes: string[];
+  holderIdentifierTypes: string[];
+  holderKeyAlgorithms: string[];
+  holderDidMethods: string[];
+  ecosystemSchemaIds: string[];
 }
 
-export enum RevocationOperationEnum {
+export enum RevocationOperation {
   REVOKE = "REVOKE",
   SUSPEND = "SUSPEND",
 }
 
 export interface RevocationCapabilities {
-  operations: RevocationOperationEnum[];
+  operations: RevocationOperation[];
 }
 
 export interface ConfigEntity<Capabilities> {
@@ -83,10 +86,10 @@ export interface ConfigEntity<Capabilities> {
 
 export type ConfigEntities<
   Capabilities = undefined,
-  Params = { type: string }
+  Params = { type: string },
 > = Record<string, ConfigEntity<Capabilities> & Params>;
 
-export enum DataTypeEnum {
+export enum DataType {
   String = "STRING",
   Number = "NUMBER",
   Date = "DATE",
@@ -126,38 +129,51 @@ export interface FileDataTypeParams {
 
 export type DataTypeParams =
   | {
-      type: DataTypeEnum.String;
+      type: DataType.String;
       params?: StringDataTypeParams;
     }
   | {
-      type: DataTypeEnum.Number;
+      type: DataType.Number;
       params?: NumberDataTypeParams;
     }
   | {
-      type: DataTypeEnum.Date;
+      type: DataType.Date;
       params?: DateDataTypeParams;
     }
   | {
-      type: DataTypeEnum.Picture | DataTypeEnum.SwiyuPicture;
+      type: DataType.Picture | DataType.SwiyuPicture;
       params?: FileDataTypeParams;
     }
   | {
-      type: DataTypeEnum.Object | DataTypeEnum.Array | DataTypeEnum.Boolean;
+      type: DataType.Object | DataType.Array | DataType.Boolean;
       params?: undefined;
     };
 
-export enum IssuanceProtocolFeatureEnum {
+export enum IssuanceProtocolFeature {
   SupportsRejection = "SUPPORTS_REJECTION",
+  SupportsWebhooks = "SUPPORTS_WEBHOOKS",
 }
 
 export interface IssuanceProtocolCapabilities {
   didMethods: string[];
-  features: IssuanceProtocolFeatureEnum[];
+  features: IssuanceProtocolFeature[];
+}
+
+export enum VerificationProtocolFeature {
+  SupportsWebhooks = "SUPPORTS_WEBHOOKS",
+}
+
+export enum PresentationDefinitionVersion {
+  V1 = "V1",
+  V2 = "V2",
 }
 
 export interface VerificationProtocolCapabilities {
+  features: VerificationProtocolFeature[];
   didMethods: string[];
   supportedTransports: string[];
+  verifierIdentifierTypes: IdentifierType[];
+  supportedPresentationDefinition: PresentationDefinitionVersion[];
 }
 
 export enum TrustOperation {
@@ -167,10 +183,10 @@ export enum TrustOperation {
 
 export interface TrustCapabilities {
   operations: TrustOperation[];
-  supportedTypes: TrustEntityTypeBindingEnum[];
+  supportedTypes: TrustEntityType[];
 }
 
-export interface Config {
+export interface CoreConfig {
   format: ConfigEntities<FormatCapabilities>;
   issuanceProtocol: ConfigEntities<IssuanceProtocolCapabilities>;
   verificationProtocol: ConfigEntities<VerificationProtocolCapabilities>;
@@ -188,11 +204,9 @@ export interface Config {
   walletProvider: ConfigEntities;
 }
 
-// Typescript automatic assertions to keep the fields of ONECore ConfigBindingDto and typed Config in sync
-/** assert that all fields listed in {@link ConfigBindingDto} exist in {@link Config} */
-const missingFieldsCheck: keyof Config =
-  null as unknown as keyof ConfigBindingDto;
+// Typescript automatic assertions to keep the fields of ONECore Config and typed Config in sync
+/** assert that all fields listed in {@link CoreConfig} exist in {@link Config} */
+const missingFieldsCheck: keyof Config = null as unknown as keyof CoreConfig;
 
-/** assert that all fields listed in {@link Config} exist in {@link ConfigBindingDto} */
-const extraFieldsCheck: keyof ConfigBindingDto =
-  null as unknown as keyof Config;
+/** assert that all fields listed in {@link Config} exist in {@link CoreConfig} */
+const extraFieldsCheck: keyof CoreConfig = null as unknown as keyof Config;

@@ -1,43 +1,43 @@
-import { TrustEntityTypeBindingEnum } from "./one-core-uniffi-intf";
-export declare enum KeyAlgorithmFeatureEnum {
+import { TrustEntityType, IdentifierType } from "./one-core-uniffi-intf";
+export declare enum KeyAlgorithmFeature {
     GENERATE_CSR = "GENERATE_CSR"
 }
 export interface KeyAlgorithmCapabilities {
-    features: KeyAlgorithmFeatureEnum[];
+    features: KeyAlgorithmFeature[];
 }
-export declare enum KeyStorageSecurityEnum {
-    HARDWARE = "HARDWARE",
-    SOFTWARE = "SOFTWARE"
-}
-export declare enum KeyStorageFeatureEnum {
-    EXPORTABLE = "EXPORTABLE"
+export declare enum KeyStorageFeature {
+    EXPORTABLE = "EXPORTABLE",
+    IMPORTABLE = "IMPORTABLE",
+    ATTESTATION = "ATTESTATION"
 }
 export interface KeyStorageCapabilities {
     algorithms: string[];
-    features: KeyStorageFeatureEnum[];
-    security: KeyStorageSecurityEnum[];
+    features: KeyStorageFeature[];
 }
-export declare enum DidOperationEnum {
+export declare enum DidOperation {
     RESOLVE = "RESOLVE",
     CREATE = "CREATE",
     DEACTIVATE = "DEACTIVATE"
 }
 export interface DidCapabilities {
-    operations: DidOperationEnum[];
+    operations: DidOperation[];
     keyAlgorithms: string[];
 }
-export declare enum FormatFeatureEnum {
+export declare enum FormatFeature {
     SelectiveDisclosure = "SELECTIVE_DISCLOSURE",
     SupportsCredentialDesign = "SUPPORTS_CREDENTIAL_DESIGN",
-    RequiresSchemaId = "REQUIRES_SCHEMA_ID"
+    SupportsSchemaId = "SUPPORTS_SCHEMA_ID",
+    RequiresPresentationEncryption = "REQUIRES_PRESENTATION_ENCRYPTION",
+    SupportsCombinedPresentation = "SUPPORTS_COMBINED_PRESENTATION",
+    SupportsTxCode = "SUPPORTS_TX_CODE"
 }
-export declare enum FormatSelectiveDisclosureEnum {
+export declare enum FormatSelectiveDisclosure {
     AnyLevel = "ANY_LEVEL",
     SecondLevel = "SECOND_LEVEL"
 }
 export interface FormatCapabilities {
-    features: FormatFeatureEnum[];
-    selectiveDisclosure: FormatSelectiveDisclosureEnum[];
+    features: FormatFeature[];
+    selectiveDisclosure: FormatSelectiveDisclosure[];
     issuanceDidMethods: string[];
     issuanceExchangeProtocols: string[];
     proofExchangeProtocols: string[];
@@ -45,18 +45,21 @@ export interface FormatCapabilities {
     signingKeyAlgorithms: string[];
     verificationKeyAlgorithms: string[];
     verificationKeyStorages: string[];
-    datatypes: Array<DataTypeEnum | string>;
-    allowedSchemaIds: string[];
+    datatypes: Array<DataType | string>;
     forbiddenClaimNames: string[];
     issuanceIdentifierTypes: string[];
     verificationIdentifierTypes: string[];
+    holderIdentifierTypes: string[];
+    holderKeyAlgorithms: string[];
+    holderDidMethods: string[];
+    ecosystemSchemaIds: string[];
 }
-export declare enum RevocationOperationEnum {
+export declare enum RevocationOperation {
     REVOKE = "REVOKE",
     SUSPEND = "SUSPEND"
 }
 export interface RevocationCapabilities {
-    operations: RevocationOperationEnum[];
+    operations: RevocationOperation[];
 }
 export interface ConfigEntity<Capabilities> {
     enabled?: boolean;
@@ -67,7 +70,7 @@ export interface ConfigEntity<Capabilities> {
 export type ConfigEntities<Capabilities = undefined, Params = {
     type: string;
 }> = Record<string, ConfigEntity<Capabilities> & Params>;
-export declare enum DataTypeEnum {
+export declare enum DataType {
     String = "STRING",
     Number = "NUMBER",
     Date = "DATE",
@@ -100,31 +103,42 @@ export interface FileDataTypeParams {
     showAs: "IMAGE" | "VIDEO" | "FILE";
 }
 export type DataTypeParams = {
-    type: DataTypeEnum.String;
+    type: DataType.String;
     params?: StringDataTypeParams;
 } | {
-    type: DataTypeEnum.Number;
+    type: DataType.Number;
     params?: NumberDataTypeParams;
 } | {
-    type: DataTypeEnum.Date;
+    type: DataType.Date;
     params?: DateDataTypeParams;
 } | {
-    type: DataTypeEnum.Picture | DataTypeEnum.SwiyuPicture;
+    type: DataType.Picture | DataType.SwiyuPicture;
     params?: FileDataTypeParams;
 } | {
-    type: DataTypeEnum.Object | DataTypeEnum.Array | DataTypeEnum.Boolean;
+    type: DataType.Object | DataType.Array | DataType.Boolean;
     params?: undefined;
 };
-export declare enum IssuanceProtocolFeatureEnum {
-    SupportsRejection = "SUPPORTS_REJECTION"
+export declare enum IssuanceProtocolFeature {
+    SupportsRejection = "SUPPORTS_REJECTION",
+    SupportsWebhooks = "SUPPORTS_WEBHOOKS"
 }
 export interface IssuanceProtocolCapabilities {
     didMethods: string[];
-    features: IssuanceProtocolFeatureEnum[];
+    features: IssuanceProtocolFeature[];
+}
+export declare enum VerificationProtocolFeature {
+    SupportsWebhooks = "SUPPORTS_WEBHOOKS"
+}
+export declare enum PresentationDefinitionVersion {
+    V1 = "V1",
+    V2 = "V2"
 }
 export interface VerificationProtocolCapabilities {
+    features: VerificationProtocolFeature[];
     didMethods: string[];
     supportedTransports: string[];
+    verifierIdentifierTypes: IdentifierType[];
+    supportedPresentationDefinition: PresentationDefinitionVersion[];
 }
 export declare enum TrustOperation {
     Publish = "PUBLISH",
@@ -132,9 +146,9 @@ export declare enum TrustOperation {
 }
 export interface TrustCapabilities {
     operations: TrustOperation[];
-    supportedTypes: TrustEntityTypeBindingEnum[];
+    supportedTypes: TrustEntityType[];
 }
-export interface Config {
+export interface CoreConfig {
     format: ConfigEntities<FormatCapabilities>;
     issuanceProtocol: ConfigEntities<IssuanceProtocolCapabilities>;
     verificationProtocol: ConfigEntities<VerificationProtocolCapabilities>;
