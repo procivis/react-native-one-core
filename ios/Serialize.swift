@@ -29,17 +29,17 @@ extension String {
 
 private func serializeSpecific(_ value: Encodable) throws -> Any? {
     switch value {
-    case let data as HistoryMetadataBinding:
+    case let data as HistoryMetadata:
         return try serialize(historyMetadata: data)
-    case let data as ClaimValueBindingDto:
+    case let data as ClaimValue:
         return try serialize(claimValue: data)
-    case let data as ProofRequestClaimValueBindingDto:
+    case let data as ProofClaimValue:
         return try serialize(proofRequestClaimValue: data)
-    case let data as HandleInvitationResponseBindingEnum:
+    case let data as HandleInvitationResponse:
         return try serialize(invitationResponse: data)
-    case let data as ApplicableCredentialOrFailureHintBindingEnum:
+    case let data as ApplicableCredentialOrFailureHint:
         return try serialize(applicableCredentialQuery: data)
-    case let data as PresentationDefinitionV2ClaimValueBindingDto:
+    case let data as PresentationDefinitionV2ClaimValue:
         return try serialize(presentationDefinitionV2ClaimValue: data)
 
     default:
@@ -47,7 +47,7 @@ private func serializeSpecific(_ value: Encodable) throws -> Any? {
     }
 }
 
-private func serialize(historyMetadata: HistoryMetadataBinding) throws -> NSDictionary {
+private func serialize(historyMetadata: HistoryMetadata) throws -> NSDictionary {
     switch (historyMetadata) {
     case let .unexportableEntities(value):
         return [
@@ -67,7 +67,7 @@ private func serialize(historyMetadata: HistoryMetadataBinding) throws -> NSDict
     }
 }
 
-private func serialize(claimValue: ClaimValueBindingDto) throws -> NSDictionary {
+private func serialize(claimValue: ClaimValue) throws -> NSDictionary {
     switch (claimValue) {
     case let .boolean(value):
         return [
@@ -97,7 +97,7 @@ private func serialize(claimValue: ClaimValueBindingDto) throws -> NSDictionary 
     }
 }
 
-private func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto) throws -> NSDictionary {
+private func serialize(proofRequestClaimValue: ProofClaimValue) throws -> NSDictionary {
     switch (proofRequestClaimValue) {
     case let .value(value):
         return [
@@ -112,7 +112,7 @@ private func serialize(proofRequestClaimValue: ProofRequestClaimValueBindingDto)
     }
 }
 
-private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) throws -> NSDictionary {
+private func serialize(invitationResponse: HandleInvitationResponse) throws -> NSDictionary {
     switch (invitationResponse) {
     case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode, `protocol`, requiresWalletInstanceAttestation):
         var result: [String: Any] = [
@@ -150,7 +150,7 @@ private func serialize(invitationResponse: HandleInvitationResponseBindingEnum) 
     }
 }
 
-private func serialize(applicableCredentialQuery: ApplicableCredentialOrFailureHintBindingEnum) throws -> NSDictionary {
+private func serialize(applicableCredentialQuery: ApplicableCredentialOrFailureHint) throws -> NSDictionary {
     switch (applicableCredentialQuery) {
     case let .applicableCredentials(applicableCredentials: value):
         return [
@@ -166,7 +166,7 @@ private func serialize(applicableCredentialQuery: ApplicableCredentialOrFailureH
     }
 }
 
-private func serialize(presentationDefinitionV2ClaimValue: PresentationDefinitionV2ClaimValueBindingDto) throws -> NSDictionary {
+private func serialize(presentationDefinitionV2ClaimValue: PresentationDefinitionV2ClaimValue) throws -> NSDictionary {
     switch (presentationDefinitionV2ClaimValue) {
     case let .boolean(value):
         return [

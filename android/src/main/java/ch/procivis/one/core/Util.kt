@@ -13,7 +13,7 @@ object Util {
             override fun run() {
                 try {
                     promise.resolve(function())
-                } catch (error: BindingException.ErrorResponse) {
+                } catch (error: OneCoreException.Response) {
                     handleBindingException(promise, error)
                 } catch (error: Throwable) {
                     promise.reject(error)
@@ -26,7 +26,7 @@ object Util {
         scope.launch {
             try {
                 promise.resolve(function())
-            } catch (error: BindingException.ErrorResponse) {
+            } catch (error: OneCoreException.Response) {
                 handleBindingException(promise, error)
             } catch (error: Throwable) {
                 promise.reject(error)
@@ -34,7 +34,7 @@ object Util {
         }
     }
 
-    private fun handleBindingException(promise: Promise, error: BindingException.ErrorResponse) {
+    private fun handleBindingException(promise: Promise, error: OneCoreException.Response) {
         val userInfo = Arguments.createMap()
         val cause = error.data.cause?.message
         if (!cause.isNullOrEmpty()) {

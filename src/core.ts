@@ -1,12 +1,12 @@
-import { Config } from "./config";
-import { OneCoreBinding } from "./one-core-uniffi-intf";
-
-export * from "./one-core-uniffi-intf";
+import { CoreConfig } from "./config";
 export * from "./config";
 
-export interface ONECore extends Omit<OneCoreBinding, "version" | "getConfig"> {
-  getVersion(): Promise<ReturnType<OneCoreBinding["version"]>>;
-  getConfig(): Promise<Config>;
+import { Version, OneCore } from "./one-core-uniffi-intf";
+export * from "./one-core-uniffi-intf";
+
+export interface ONECore extends Omit<OneCore, "version" | "getConfig"> {
+  getVersion(): Promise<Version>;
+  getConfig(): Promise<CoreConfig>;
 }
 
 /**
@@ -20,7 +20,7 @@ export const interfaceMethodNames = [
   "upsertOrganisation",
   "generateKey",
   "createDid",
-  "getDids",
+  "listDids",
   "createIdentifier",
   "getIdentifier",
   "listIdentifiers",
@@ -35,25 +35,25 @@ export const interfaceMethodNames = [
   "holderRejectProof",
   "holderSubmitProof",
   "holderSubmitProofV2",
-  "getCredentials",
+  "listCredentials",
   "runTask",
   "deleteProofClaims",
   "getCredential",
   "deleteCredential",
   "importCredentialSchema",
   "getCredentialSchema",
-  "getCredentialSchemas",
+  "listCredentialSchemas",
   "deleteCredentialSchema",
   "createProof",
   "shareProof",
   "shareProofSchema",
   "shareCredentialSchema",
   "getProof",
-  "getProofs",
+  "listProofs",
   "deleteProof",
   "proposeProof",
   "createProofSchema",
-  "getProofSchemas",
+  "listProofSchemas",
   "getProofSchema",
   "deleteProofSchema",
   "importProofSchema",
@@ -70,7 +70,7 @@ export const interfaceMethodNames = [
   "createRemoteTrustEntity",
   "getRemoteTrustEntity",
   "updateRemoteTrustEntity",
-  "getHistoryList",
+  "listHistory",
   "getHistoryEntry",
   "createBackup",
   "backupInfo",
