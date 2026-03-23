@@ -483,14 +483,15 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(runTask:resolver:rejecter:)
+  @objc(runTask:params:resolver:rejecter:)
   func runTask(
     task: String,
+    params: String,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      return try await self.getCore().runTask(task: task)
+      return try await self.getCore().runTask(task: task, params: params)
     }
   }
 
@@ -866,7 +867,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      return try await self.getCore().holderRegisterWalletUnit(request: try deserialize(request))
+      let result = try await self.getCore().holderRegisterWalletUnit(request: try deserialize(request))
+      return try serializeAny(result)
     }
   }
 
@@ -882,6 +884,19 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(holderWalletUnitUpdate:request:resolver:rejecter:)
+  func holderWalletUnitUpdate(
+    walletUnitId: String,
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      try await self.getCore().holderWalletUnitUpdate(id: walletUnitId, request: try deserialize(request))
+      return nil as NSDictionary?
+    }
+  }
+
   @objc(holderGetWalletUnit:resolver:rejecter:)
   func holderGetWalletUnit(
     walletUnitId: String,
@@ -890,6 +905,18 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   ) {
     asyncCall(resolve, reject) {
       let result = try await self.getCore().holderGetWalletUnit(id: walletUnitId)
+      return try serializeAny(result)
+    }
+  }
+
+  @objc(holderGetWalletUnitTrustCollections:resolver:rejecter:)
+  func holderGetWalletUnitTrustCollections(
+    walletUnitId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().holderGetWalletUnitTrustCollections(id: walletUnitId)
       return try serializeAny(result)
     }
   }

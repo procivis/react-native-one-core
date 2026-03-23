@@ -158,6 +158,7 @@ RCT_EXTERN_METHOD(createProof:(NSDictionary *)request
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(runTask:(NSString *)task
+                  params:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -287,6 +288,15 @@ RCT_EXTERN_METHOD(holderWalletUnitStatus:(NSString *)walletUnitId
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(holderGetWalletUnit:(NSString *)walletUnitId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(holderWalletUnitUpdate:(NSString *)walletUnitId
+                  request:(NSDictionary *)request
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(holderGetWalletUnitTrustCollections:(NSString *)walletUnitId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

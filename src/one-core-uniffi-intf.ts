@@ -487,6 +487,11 @@ export interface DidRequestKeys {
   capabilityDelegation: Array<string>;
 }
 
+export interface DisplayName {
+  lang: string;
+  value: string;
+}
+
 export interface ErrorResponse {
   code: string;
   message: string;
@@ -591,6 +596,11 @@ export interface HolderRegisterWalletUnitRequest {
   keyType: string;
 }
 
+export interface HolderRegisterWalletUnitResponse {
+  id: string;
+  status: WalletUnitStatus;
+}
+
 export interface HolderWalletUnit {
   id: string;
   createdDate: string;
@@ -600,7 +610,11 @@ export interface HolderWalletUnit {
   walletProviderType: WalletProviderType;
   walletProviderName: string;
   status: WalletUnitStatus;
-  authenticationKey: KeyListItem;
+  authenticationKey?: KeyListItem;
+}
+
+export interface HolderWalletUnitUpdateRequest {
+  trustCollections: Array<string>;
 }
 
 export interface IdentifierDetail {
@@ -1163,6 +1177,19 @@ export interface TrustAnchorListQuery {
   lastModifiedBefore?: string;
 }
 
+export interface TrustCollectionInfo {
+  selected: boolean;
+  id: string;
+  name: string;
+  logo: string;
+  displayName: Array<DisplayName>;
+  description: Array<DisplayName>;
+}
+
+export interface TrustCollections {
+  trustCollections: Array<TrustCollectionInfo>;
+}
+
 export interface TrustEntityCertificate {
   state: CertificateState;
   publicKey: string;
@@ -1598,6 +1625,8 @@ export enum HistoryEntityType {
   NOTIFICATION = "NOTIFICATION",
   SUPERVISORY_AUTHORITY = "SUPERVISORY_AUTHORITY",
   TRUST_LIST_PUBLICATION = "TRUST_LIST_PUBLICATION",
+  TRUST_COLLECTION = "TRUST_COLLECTION",
+  TRUST_LIST_SUBSCRIPTION = "TRUST_LIST_SUBSCRIPTION",
 }
 
 export type HistoryMetadata =
@@ -1882,6 +1911,7 @@ export enum WalletUnitStatus {
   PENDING = "PENDING",
   ACTIVE = "ACTIVE",
   REVOKED = "REVOKED",
+  UNATTESTED = "UNATTESTED",
   ERROR = "ERROR",
 }
 
@@ -2037,8 +2067,9 @@ export interface OneCore {
    */
   holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
   holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
+  holderGetWalletUnitTrustCollections(id: string): Promise<TrustCollections>;
   /** Register with a Wallet Provider. */
-  holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<string>;
+  holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<HolderRegisterWalletUnitResponse>;
   /** Rejects an offered credential. */
   holderRejectCredential(interactionId: string): Promise<void>;
   holderRejectProof(interactionId: string): Promise<void>;
@@ -2049,6 +2080,8 @@ export interface OneCore {
    * if the unit has been revoked.
    */
   holderWalletUnitStatus(id: string): Promise<void>;
+  /** Edit holder wallet unit */
+  holderWalletUnitUpdate(id: string, request: HolderWalletUnitUpdateRequest): Promise<void>;
   importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<string>;
   importProofSchema(request: ImportProofSchemaRequest): Promise<string>;
   /** For wallets, starts the OpenID4VCI Authorization Code Flow. */
@@ -2075,7 +2108,7 @@ export interface OneCore {
   resolveJsonldContext(url: string): Promise<ResolvedJsonLdContext>;
   resolveTrustEntityByIdentifier(request: ResolveTrustEntitiesRequest): Promise<Record<string, Array<ResolvedTrustEntity>>>;
   rollbackImport(): Promise<void>;
-  runTask(task: string): Promise<string>;
+  runTask(task: string, params: string | undefined): Promise<string>;
   shareCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaShareResponse>;
   shareProof(proofId: string, params: ShareProofRequest): Promise<ShareProofResponse>;
   shareProofSchema(proofSchemaId: string): Promise<ProofSchemaShareResponse>;
