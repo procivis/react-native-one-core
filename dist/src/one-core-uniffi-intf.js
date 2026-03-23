@@ -172,6 +172,8 @@ export var HistoryEntityType;
     HistoryEntityType["NOTIFICATION"] = "NOTIFICATION";
     HistoryEntityType["SUPERVISORY_AUTHORITY"] = "SUPERVISORY_AUTHORITY";
     HistoryEntityType["TRUST_LIST_PUBLICATION"] = "TRUST_LIST_PUBLICATION";
+    HistoryEntityType["TRUST_COLLECTION"] = "TRUST_COLLECTION";
+    HistoryEntityType["TRUST_LIST_SUBSCRIPTION"] = "TRUST_LIST_SUBSCRIPTION";
 })(HistoryEntityType || (HistoryEntityType = {}));
 export var HistorySearchType;
 (function (HistorySearchType) {
@@ -363,5 +365,6 @@ export var WalletUnitStatus;
     WalletUnitStatus["PENDING"] = "PENDING";
     WalletUnitStatus["ACTIVE"] = "ACTIVE";
     WalletUnitStatus["REVOKED"] = "REVOKED";
+    WalletUnitStatus["UNATTESTED"] = "UNATTESTED";
     WalletUnitStatus["ERROR"] = "ERROR";
 })(WalletUnitStatus || (WalletUnitStatus = {}));

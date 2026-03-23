@@ -73,6 +73,8 @@ export const interfaceMethodNames = [
     "holderRegisterWalletUnit",
     "holderWalletUnitStatus",
     "holderGetWalletUnit",
+    "holderWalletUnitUpdate",
+    "holderGetWalletUnitTrustCollections",
     "nfcReadIsoMdlEngagement",
     "nfcStopIsoMdlEngagement",
     "uninitialize",

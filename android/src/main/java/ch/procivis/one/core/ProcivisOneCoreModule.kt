@@ -85,9 +85,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun runTask(task: String, promise: Promise) {
+    fun runTask(task: String, params: String?, promise: Promise) {
         asyncCall(promise, scope) {
-            return@asyncCall getCore().runTask(task)
+            return@asyncCall getCore().runTask(task, params)
         }
     }
 
@@ -652,7 +652,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun holderRegisterWalletUnit(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            return@asyncCall getCore().holderRegisterWalletUnit(construct(request))
+            val result = getCore().holderRegisterWalletUnit(construct(request))
+            return@asyncCall convertToRN(result)
         }
     }
 
@@ -665,9 +666,25 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun holderWalletUnitUpdate(walletUnitId: String, request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().holderWalletUnitUpdate(walletUnitId, construct(request))
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun holderGetWalletUnit(walletUnitId: String, promise: Promise) {
         asyncCall(promise, scope) {
             val result = getCore().holderGetWalletUnit(walletUnitId)
+            return@asyncCall convertToRN(result)
+        }
+    }
+
+    @ReactMethod
+    fun holderGetWalletUnitTrustCollections(walletUnitId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().holderGetWalletUnitTrustCollections(walletUnitId)
             return@asyncCall convertToRN(result)
         }
     }
