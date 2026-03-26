@@ -690,6 +690,30 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun registerVerifierInstance(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().registerVerifierInstance(construct(request))
+            return@asyncCall convertToRN(result)
+        }
+    }
+
+    @ReactMethod
+    fun updateVerifierInstance(verifierInstanceId: String, request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().updateVerifierInstance(verifierInstanceId, construct(request))
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun getVerifierInstanceTrustCollections(verifierInstanceId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().getVerifierInstanceTrustCollections(verifierInstanceId)
+            return@asyncCall convertToRN(result)
+        }
+    }
+
+    @ReactMethod
     fun nfcReadIsoMdlEngagement(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             return@asyncCall getCore().nfcReadIsoMdlEngagement(construct(request))

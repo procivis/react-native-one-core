@@ -921,6 +921,43 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(registerVerifierInstance:resolver:rejecter:)
+  func registerVerifierInstance(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().registerVerifierInstance(request: try deserialize(request))
+      return try serializeAny(result)
+    }
+  }
+
+  @objc(updateVerifierInstance:request:resolver:rejecter:)
+  func updateVerifierInstance(
+    verifierInstanceId: String,
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      try await self.getCore().updateVerifierInstance(id: verifierInstanceId, request: try deserialize(request))
+      return nil as NSDictionary?
+    }
+  }
+
+  @objc(getVerifierInstanceTrustCollections:resolver:rejecter:)
+  func getVerifierInstanceTrustCollections(
+    verifierInstanceId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().getVerifierInstanceTrustCollections(id: verifierInstanceId)
+      return try serializeAny(result)
+    }
+  }
+
   @objc(nfcReadIsoMdlEngagement:resolver:rejecter:)
   func nfcReadIsoMdlEngagement(
     request: NSDictionary,

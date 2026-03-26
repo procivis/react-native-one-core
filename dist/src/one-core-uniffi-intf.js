@@ -174,6 +174,7 @@ export var HistoryEntityType;
     HistoryEntityType["TRUST_LIST_PUBLICATION"] = "TRUST_LIST_PUBLICATION";
     HistoryEntityType["TRUST_COLLECTION"] = "TRUST_COLLECTION";
     HistoryEntityType["TRUST_LIST_SUBSCRIPTION"] = "TRUST_LIST_SUBSCRIPTION";
+    HistoryEntityType["VERIFIER_INSTANCE"] = "VERIFIER_INSTANCE";
 })(HistoryEntityType || (HistoryEntityType = {}));
 export var HistorySearchType;
 (function (HistorySearchType) {

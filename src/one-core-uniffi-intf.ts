@@ -69,29 +69,51 @@ export interface ClaimSchema {
 }
 
 export interface Config {
+  /** Credential formats. */
   format: Record<string, string>;
+  /** Protocols used for issuance. */
   issuanceProtocol: Record<string, string>;
+  /** Protocols used for presentation and verification. */
   verificationProtocol: Record<string, string>;
+  /** Protocols used for communicating. */
   transport: Record<string, string>;
+  /** Methods for managing credential status. */
   revocation: Record<string, string>;
+  /** DID methods for identifying agents. */
   did: Record<string, string>;
+  /** Identifier types for representing agent's identities. */
   identifier: Record<string, string>;
+  /** Data types for validation. */
   datatype: Record<string, string>;
+  /** Key algorithms used for signatures. */
   keyAlgorithm: Record<string, string>;
+  /** Storage options for keys. */
   keyStorage: Record<string, string>;
+  /** Trust management solutions. */
   trustManagement: Record<string, string>;
+  /** Entities held in temporary storage. */
   cacheEntities: Record<string, string>;
+  /** Tasks which can be run via the `runTask` method. */
   task: Record<string, string>;
+  /** Configuration for wallet-initiated issuance flows. */
   credentialIssuer: Record<string, string>;
+  /**
+   * Configurations from the Wallet Provider, including version
+   * management, trust collections, and feature flags.
+   */
   walletProvider: Record<string, string>;
 }
 
 export interface ContinueIssuanceResponse {
   /** For reference. */
   interactionId: string;
+  /** Key storage required to complete issuance. */
   keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
+  /** Key algorithms suitable for issuance. */
   keyAlgorithms?: Array<string>;
+  /** Whether a valid WIA is required to complete issuance. */
   requiresWalletInstanceAttestation: boolean;
+  /** Protocol used for issuance. */
   protocol: string;
 }
 
@@ -139,7 +161,9 @@ export interface CreateIdentifierRequest {
 }
 
 export interface CreateOrganisationRequest {
+  /** If no UUID is passed, one will be created. */
   id?: string;
+  /** If no name is passed, the UUID will be used. */
   name?: string;
 }
 
@@ -151,16 +175,47 @@ export interface CreateOrganisationRequest {
  * `nfc_read_iso_mdl_engagement`.
  */
 export interface CreateProofRequest {
+  /** Choose a proof schema to use. */
   proofSchemaId: string;
+  /** Deprecated. Use `verifierIdentifierId`. */
   verifierDidId?: string;
+  /** Choose the identifier to use to make the request. */
   verifierIdentifierId?: string;
+  /**
+   * Choose the protocol to use for verification. Check the
+   * `verificationProtocol` object of your configuration for
+   * supported options and reference the configuration instance.
+   */
   protocol: string;
+  /**
+   * When a shared proof is accepted, the wallet will be redirected
+   * to the resource specified here, if redirects are enabled in the
+   * configuration. The URI must use a scheme that is allowed by the
+   * configuration.
+   */
   redirectUri?: string;
+  /**
+   * If the identifier contains multiple keys, use this to specify
+   * which key to use. If omitted, the first suitable key is used.
+   */
   verifierKey?: string;
+  /**
+   * If the identifier contains multiple certificates, use this to
+   * specify which key to use. If omitted, the first suitable
+   * certificate is used.
+   */
   verifierCertificate?: string;
+  /** Use to specify device engagement type. */
   isoMdlEngagement?: string;
+  /**
+   * Choose the transport protocol for the exchange. Check the
+   * `transport` object of your configuration for supported
+   * options and reference the configuration instance.
+   */
   transport?: Array<string>;
+  /** Country profile to associate with this request. */
   profile?: string;
+  /** Use for ISO mDL verification over BLE. */
   engagement?: string;
 }
 
@@ -178,6 +233,7 @@ export interface CreateProofSchemaRequest {
   name: string;
   organisationId: string;
   expireDuration: number /*u32*/;
+  /** Set of all claims to request. */
   proofInputSchemas: Array<CreateProofSchemaInput>;
 }
 
@@ -243,16 +299,30 @@ export interface CredentialDetail {
   issuanceDate?: string;
   lastModified: string;
   revocationDate?: string;
+  /** Credential issuer metadata. */
   issuer?: IdentifierListItem;
+  /** Credential holder metadata. */
   holder?: IdentifierListItem;
+  /** State representation of the credential in the system. */
   state: CredentialState;
+  /** Schema of the credential. */
   schema: CredentialSchemaListItem;
   claims: Array<Claim>;
   redirectUri?: string;
+  /**
+   * The role the system has in relation to the credential. For example,
+   * if the system received the credential as a wallet this value will
+   * be `HOLDER`. If the system verified this credential during a presentation,
+   * this value will be `VERIFIER`.
+   */
   role: CredentialRole;
+  /** Scheduled date for credential reactivation. */
   suspendEndDate?: string;
+  /** Validity details for ISO mdocs. */
   mdocMsoValidity?: MdocMsoValidity;
+  /** Protocol used to issue the credential. */
   protocol: string;
+  /** Country profile associated with the credential. */
   profile?: string;
 }
 
@@ -268,38 +338,106 @@ export interface CredentialListItem {
   issuanceDate?: string;
   lastModified: string;
   revocationDate?: string;
+  /** Credential issuer metadata. */
   issuer?: string;
+  /** State representation of the credential in the system. */
   state: CredentialState;
+  /** Schema of the credential. */
   schema: CredentialSchemaListItem;
+  /**
+   * The role the system has in relation to the credential. For example,
+   * if the system received the credential as a wallet this value will
+   * be `HOLDER`. If the system verified this credential during a presentation,
+   * this value will be `VERIFIER`.
+   */
   role: CredentialRole;
+  /** Scheduled date for credential reactivation. */
   suspendEndDate?: string;
+  /** Protocol used to issue the credential. */
   protocol: string;
+  /** Country profile associated with the credential. */
   profile?: string;
 }
 
 export interface CredentialListQuery {
+  /** Page number to retrieve (0-based indexing). */
   page: number /*u32*/;
+  /** Number of items to return per page. */
   pageSize: number /*u32*/;
+  /** Field value to sort results by. */
   sort?: SortableCredentialColumn;
+  /** Direction to sort results by. */
   sortDirection?: SortDirection;
+  /** Specifies the organizational context for this operation. */
   organisationId: string;
+  /** Return only credentials with a name starting with this string. */
   name?: string;
+  /** Filter by one or more country profiles. */
   profiles?: Array<string>;
+  /** Search for a string. */
   searchText?: string;
+  /**
+   * Changes where `searchText` is searched. Choose one or more
+   * `searchType`s and pass a `searchText`.
+   */
   searchType?: Array<CredentialListQuerySearchType>;
+  /** Set which filters apply in an exact way. */
   exact?: Array<CredentialListQueryExactColumn>;
+  /**
+   * Filter credentials by one or more roles: issued by the system,
+   * verified by the system, or held by the system as a wallet.
+   */
   roles?: Array<CredentialRole>;
+  /** Filter by one or more UUIDs. */
   ids?: Array<string>;
+  /** Filter by one or more credential states. */
   states?: Array<CredentialState>;
+  /**
+   * Additional fields to include in response objects. Omitting
+   * this keeps responses shorter.
+   */
   include?: Array<CredentialListIncludeEntityType>;
+  /** Return only credentials with the specified credential schema(s). */
   credentialSchemaIds?: Array<string>;
+  /**
+   * Return only credentials created after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   createdDateAfter?: string;
+  /**
+   * Return only credentials created before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   createdDateBefore?: string;
+  /**
+   * Return only credentials last modified after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   lastModifiedAfter?: string;
+  /**
+   * Return only credentials last modified before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   lastModifiedBefore?: string;
+  /**
+   * Return only credentials issued after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   issuanceDateAfter?: string;
+  /**
+   * Return only credentials issued before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   issuanceDateBefore?: string;
+  /**
+   * Return only credentials revoked after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   revocationDateAfter?: string;
+  /**
+   * Return only credentials revoked before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   revocationDateBefore?: string;
 }
 
@@ -499,10 +637,21 @@ export interface ErrorResponse {
 }
 
 export interface GenerateKeyRequest {
+  /** Specifies the organizational context of this operation. */
   organisationId: string;
+  /**
+   * Choose which key algorithm to use to create the key pair. Check
+   * `keyAlgorithm` of your configuration for supported options and
+   * reference the configured instance.
+   */
   keyType: string;
   keyParams: Record<string, string>;
+  /** Internal label for created key pair. */
   name: string;
+  /**
+   * Choose how to store the key. Check `keyStorage` of your configuration
+   * for supported options and reference the configured instance.
+   */
   storageType: string;
   storageParams: Record<string, string>;
 }
@@ -518,6 +667,7 @@ export interface HandleInvitationRequest {
    * verifier. For example: "https://example.com/credential-offer".
    */
   url: string;
+  /** Specifies the organizational context for this operation. */
   organisationId: string;
   /**
    * For configurations with multiple transport protocols enabled you
@@ -559,19 +709,39 @@ export interface HistoryListItem {
 }
 
 export interface HistoryListQuery {
+  /** Page number to retrieve (0-based indexing). */
   page: number /*u32*/;
+  /** Number of items to return per page. */
   pageSize: number /*u32*/;
+  /** Specifies the organizational context for this operation. */
   organisationId: string;
+  /** Return only events associated with the provided entity IDs. */
   entityIds?: Array<string>;
+  /** Return only events associated with the provided entity types. */
   entityTypes?: Array<HistoryEntityType>;
+  /** Return only the provided events. */
   actions?: Array<HistoryAction>;
+  /**
+   * Return only entries created after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   createdDateAfter?: string;
+  /**
+   * Return only entries created before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   createdDateBefore?: string;
+  /** Return only events associated with the provided identifier ID. */
   identifierId?: string;
+  /** Return only events associated with the provided credential ID. */
   credentialId?: string;
+  /** Return only events associated with the provided credential schema ID. */
   credentialSchemaId?: string;
+  /** Return only events associated with the provided proof schema ID. */
   proofSchemaId?: string;
+  /** Search for a string. */
   search?: HistorySearch;
+  /** Return only events associated with the provided user(s). */
   users?: Array<string>;
 }
 
@@ -581,17 +751,26 @@ export interface HistorySearch {
 }
 
 export interface HolderAcceptCredentialRequest {
+  /** ID for this issuance. */
   interactionId: string;
+  /** Deprecated. Use `identifierId`. */
   didId?: string;
   identifierId?: string;
+  /**
+   * If you are using an identifier with multiple keys for authentication,
+   * specify which key to use. If no key is specified, the first suitable
+   * key listed will be used.
+   */
   keyId?: string;
+  /** User-provided transaction code. */
   txCode?: string;
   holderWalletUnitId?: string;
 }
 
 export interface HolderRegisterWalletUnitRequest {
+  /** Specifies the organizational context for this operation. */
   organisationId: string;
-  /** Reference the `walletProvider` configuration of the Wallet Provider. */
+  /** Reference the `walletProvider` configuration. */
   walletProvider: WalletProvider;
   keyType: string;
 }
@@ -724,9 +903,17 @@ export interface ImportProofSchema {
   createdDate: string;
   lastModified: string;
   name: string;
+  /** Specifies the organizational context for this operation. */
   organisationId: string;
+  /**
+   * Defines how long the system will store data received from wallets. After
+   * the defined duration, the received proof and its data are deleted from
+   * the system. If 0, proofs received when using this schema will not be
+   * deleted.
+   */
   expireDuration: number /*u32*/;
   importedSourceUrl: string;
+  /** Set of all claims to request. */
   proofInputSchemas: Array<ImportProofSchemaInputSchema>;
 }
 
@@ -768,8 +955,11 @@ export interface ImportProofSchemaRequest {
 }
 
 export interface InitParams {
+  /** Pass a serialized JSON to override the default configuration. */
   configJson?: string;
+  /** Create an instance of the native implementation of Secure Element and pass it here. */
   nativeSecureElement?: NativeKeyStorage;
+  /** Create a custom implementation of HSM and pass it. */
   remoteSecureElement?: NativeKeyStorage;
   bleCentral?: BleCentral;
   blePeripheral?: BlePeripheral;
@@ -783,12 +973,19 @@ export interface InitiateIssuanceAuthorizationDetail {
 }
 
 export interface InitiateIssuanceRequest {
+  /** Specifies the organizational context for this operation. */
   organisationId: string;
+  /** Choose a protocol to complete issuance. */
   protocol: string;
+  /** OpenID4VCI authorization request parameter. */
   issuer: string;
+  /** OpenID4VCI authorization request parameter. */
   clientId: string;
+  /** OpenID4VCI authorization request parameter. */
   redirectUri?: string;
+  /** OpenID4VCI authorization request parameter. */
   scope?: Array<string>;
+  /** OpenID4VCI authorization request parameter. */
   authorizationDetails?: Array<InitiateIssuanceAuthorizationDetail>;
 }
 
@@ -829,7 +1026,7 @@ export interface Metadata {
   createdAt: string;
 }
 
-/** Optional messages to be displayed on (iOS) system overlay */
+/** Optional messages to be displayed on (iOS) system overlay. */
 export interface NfcScanRequest {
   inProgressMessage?: string;
   failureMessage?: string;
@@ -837,8 +1034,14 @@ export interface NfcScanRequest {
 }
 
 export interface OpenId4vciTxCode {
+  /** For validation. */
   inputMode: OpenId4vciTxCodeInputMode;
+  /** Character length of code, to assist the user. */
   length?: number /*i64*/;
+  /**
+   * Guidance text displayed in the wallet, describing how to
+   * obtain the transaction code.
+   */
   description?: string;
 }
 
@@ -921,12 +1124,20 @@ export interface PresentationDefinitionV2Credential {
 }
 
 export interface PresentationSubmitCredentialRequest {
+  /** ID of the credential to submit. */
   credentialId: string;
   submitClaims: Array<string>;
 }
 
 export interface PresentationSubmitV2CredentialRequest {
+  /** ID of the credential to submit. */
   credentialId: string;
+  /**
+   * Array of claim paths for claims where `userSelection: true` that the
+   * holder chooses to share. Only include paths for optional claims the
+   * holder selects. Omit entirely or use an empty array if withholding all
+   * optional claims.
+   */
   userSelections: Array<string>;
 }
 
@@ -949,25 +1160,48 @@ export interface ProofDetail {
   id: string;
   createdDate: string;
   lastModified: string;
+  /** Identifier of the verifier of this request. */
   verifier?: IdentifierListItem;
   state: ProofState;
+  /** The role the system has in relation to this request. */
   role: ProofRole;
+  /** Schema used for this request. */
   proofSchema?: ProofSchemaListItem;
+  /** Protocol used for verification. */
   protocol: string;
+  /** Engagement method used for this request. */
   engagement?: string;
+  /** Channel used for this request. */
   transport: string;
+  /**
+   * The wallet is redirected to this resource once a shared proof
+   * is accepted.
+   */
   redirectUri?: string;
+  /** Credential and claim data shared by the wallet holder. */
   proofInputs: Array<ProofInput>;
+  /**
+   * Time at which the data shared by the wallet holder for this request
+   * will be deleted. Determined by the `expireDuration` parameter of the
+   * proof schema.
+   */
   retainUntilDate?: string;
+  /** When the request was shared with the wallet holder. */
   requestedDate?: string;
+  /** When the wallet holder submitted valid proof. */
   completedDate?: string;
+  /** When claim data was deleted. */
   claimsRemovedAt?: string;
+  /** Country profile associated with this request. */
   profile?: string;
 }
 
 export interface ProofInput {
+  /** Set of claims asserted by the shared credential. */
   claims: Array<ProofClaim>;
+  /** Shared credential metadata. */
   credential?: CredentialDetail;
+  /** Credential schema metadata. */
   credentialSchema: CredentialSchemaListItem;
 }
 
@@ -987,38 +1221,97 @@ export interface ProofListItem {
   createdDate: string;
   lastModified: string;
   requestedDate?: string;
+  /** When the wallet holder submitted valid proof. */
   completedDate?: string;
   verifier?: string;
+  /** Protocol used for verification. */
   protocol: string;
+  /** Channel used for this request. */
   transport: string;
+  /** Engagement method used for this request. */
   engagement?: string;
+  /** State representation of this request. */
   state: ProofState;
+  /** The role the system has in relation to this request. */
   role: ProofRole;
   schema?: ProofSchemaListItem;
+  /**
+   * Time at which the data shared by the wallet holder for this request
+   * will be deleted. Determined by the `expireDuration` parameter of the
+   * proof schema.
+   */
   retainUntilDate?: string;
+  /** Country profile associated with this request. */
   profile?: string;
 }
 
 export interface ProofListQuery {
+  /** Page number to retrieve (0-based indexing). */
   page: number /*u32*/;
+  /** Number of items to return per page. */
   pageSize: number /*u32*/;
+  /** Specifies the organizational context for this operation. */
   organisationId: string;
+  /** Field value to sort results by. */
   sort?: SortableProofColumn;
+  /** Direction to sort results by. */
   sortDirection?: SortDirection;
+  /** Return only proof requests with a name starting with this string. */
   name?: string;
+  /** Filter by one or more country profiles. */
   profiles?: Array<string>;
+  /** Filter by one or more UUIDs. */
   ids?: Array<string>;
+  /** Filter by one or more proof request states. */
   proofStates?: Array<ProofState>;
+  /**
+   * Filter proof requests by one or more roles: requested by the
+   * system (`VERIFIER`) or received by the system (`HOLDER`).
+   */
   proofRoles?: Array<ProofRole>;
+  /** Filter by associated proof schemas. */
   proofSchemaIds?: Array<string>;
+  /** Set which filters apply in an exact way. */
   exact?: Array<ProofListQueryExactColumn>;
+  /**
+   * Return only proof requests created after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   createdDateAfter?: string;
+  /**
+   * Return only proof requests created before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   createdDateBefore?: string;
+  /**
+   * Return only proof requests last modified after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   lastModifiedAfter?: string;
+  /**
+   * Return only proof requests last modified before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   lastModifiedBefore?: string;
+  /**
+   * Return only proofs requested after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   requestedDateAfter?: string;
+  /**
+   * Return only proofs requested before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   requestedDateBefore?: string;
+  /**
+   * Return only proofs requested completed after this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   completedDateAfter?: string;
+  /**
+   * Return only proofs requested completed before this time. Timestamp in
+   * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
+   */
   completedDateBefore?: string;
 }
 
@@ -1027,9 +1320,18 @@ export interface ProofSchemaDetail {
   createdDate: string;
   lastModified: string;
   name: string;
+  /** Specifies organizational context for this operation. */
   organisationId: string;
+  /**
+   * Defines how long the system will store data received from wallets. After
+   * the defined duration, the received proof and its data are deleted from
+   * the system. If 0, proofs received when using this schema will not be
+   * deleted.
+   */
   expireDuration: number /*u32*/;
+  /** Set of requested claims. */
   proofInputSchemas: Array<ProofInputSchema>;
+  /** Source URL for imported schema. */
   importedSourceUrl?: string;
 }
 
@@ -1045,6 +1347,12 @@ export interface ProofSchemaListItem {
   lastModified: string;
   deletedAt?: string;
   name: string;
+  /**
+   * Defines how long the system will store data received from wallets. After
+   * the defined duration, the received proof and its data are deleted from
+   * the system. If 0, proofs received when using this schema will not be
+   * deleted.
+   */
   expireDuration: number /*u32*/;
 }
 
@@ -1079,6 +1387,16 @@ export interface ProposeProofResponse {
   proofId: string;
   interactionId: string;
   url?: string;
+}
+
+export interface RegisterVerifierInstanceRequest {
+  organisationId: string;
+  verifierProviderUrl: string;
+  type: string;
+}
+
+export interface RegisterVerifierInstanceResponse {
+  id: string;
 }
 
 export interface RemoteTrustEntityDetail {
@@ -1127,6 +1445,11 @@ export interface ShareProofRequest {
 }
 
 export interface ShareProofRequestParams {
+  /**
+   * For requests made with OpenID4VC, a Client ID Scheme can be
+   * specified here. If no scheme is specified the default scheme
+   * from the configuration is used.
+   */
   clientIdScheme?: ClientIdScheme;
 }
 
@@ -1287,11 +1610,20 @@ export interface UpdateRemoteTrustEntityRequest {
   role?: TrustEntityRole;
 }
 
+export interface UpdateVerifierInstanceRequest {
+  trustCollections: Array<string>;
+}
+
 export interface UpsertOrganisationRequest {
+  /** Unique identifier of the organization to create or update. */
   id: string;
+  /** Organization's display name. */
   name?: string;
+  /** Set to `true` to deactivate the organization. */
   deactivate?: boolean;
+  /** Wallet Provider use only. */
   walletProvider?: string | null /* pass null to clear the value */;
+  /** Wallet Provider use only. */
   walletProviderIssuer?: string | null /* pass null to clear the value */;
 }
 
@@ -1536,7 +1868,9 @@ export type HandleInvitationResponse =
       type_: "CREDENTIAL_ISSUANCE";
       /** For reference. */
       interactionId: string;
+      /** Key storage required to complete issuance. */
       keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
+      /** Key algorithms suitable for issuance. */
       keyAlgorithms?: Array<string>;
       /**
        * Metadata for entering a transaction code
@@ -1545,7 +1879,9 @@ export type HandleInvitationResponse =
        * This code is typically sent through a separate channel such as SMS or email.
        */
       txCode?: OpenId4vciTxCode;
+      /** Protocol used for issuance. */
       protocol: string;
+      /** Whether a valid WIA is required to complete issuance. */
       requiresWalletInstanceAttestation: boolean;
     }
   | {
@@ -1557,6 +1893,7 @@ export type HandleInvitationResponse =
        * the authorization process with the authorization server.
        */
       authorizationCodeFlowUrl: string;
+      /** Protocol used for issuance. */
       protocol: string;
     }
   | {
@@ -1565,6 +1902,7 @@ export type HandleInvitationResponse =
       interactionId: string;
       /** Proof request. */
       proofId: string;
+      /** Protocol used for issuance. */
       protocol: string;
     };
 
@@ -1627,6 +1965,7 @@ export enum HistoryEntityType {
   TRUST_LIST_PUBLICATION = "TRUST_LIST_PUBLICATION",
   TRUST_COLLECTION = "TRUST_COLLECTION",
   TRUST_LIST_SUBSCRIPTION = "TRUST_LIST_SUBSCRIPTION",
+  VERIFIER_INSTANCE = "VERIFIER_INSTANCE",
 }
 
 export type HistoryMetadata =
@@ -2010,7 +2349,22 @@ export interface NfcScanner {
 }
 
 export interface OneCore {
+  /**
+   * Returns information about items that will be excluded from the
+   * export.
+   */
   backupInfo(): Promise<UnexportableEntities>;
+  /**
+   * Checks whether a held credential has been suspended or revoked.
+   *
+   * For list-based revocation methods, the signed lists and any DID
+   * documents containing public keys used to verify the lists are
+   * cached. Use `forceRefresh` to force the system to retrieve these
+   * from the external resource.
+   *
+   * For modcs, use `forceRefresh` to force the system to request a
+   * new MSO.
+   */
   checkRevocation(credentialIds: Array<string>, forceRefresh: boolean | undefined): Promise<Array<CredentialRevocationCheckResponse>>;
   /**
    * For wallet-initiated flows, continues the OpenID4VCI issuance
@@ -2021,39 +2375,80 @@ export interface OneCore {
    * `myapp://example/credential-offer?code=xxx&clientId=myWallet&...`
    */
   continueIssuance(url: string): Promise<ContinueIssuanceResponse>;
+  /** Creates a backup of the current database and writes it to a file. */
   createBackup(password: string, outputPath: string): Promise<CreatedBackup>;
+  /** Deprecated. Use the `createIdentifier` method. */
   createDid(request: CreateDidRequest): Promise<string>;
+  /** Creates a new identifier. */
   createIdentifier(request: CreateIdentifierRequest): Promise<string>;
+  /** Creates an organization. */
   createOrganisation(request: CreateOrganisationRequest): Promise<string>;
-  /** For verifiers, creates a proof request. */
+  /**
+   * For verifiers, creates a proof request. Choose what information to
+   * request via a proof schema, an identifier, and which protocol to use
+   * for making the request.
+   */
   createProof(request: CreateProofRequest): Promise<string>;
+  /**
+   * Creates a proof schema, which defines the credentials and claims to
+   * request from a wallet. Proof schemas reference credential schemas
+   * already created in your own system; create or import those first
+   * before building a proof schema that includes their claims.
+   */
   createProofSchema(request: CreateProofSchemaRequest): Promise<string>;
   createRemoteTrustEntity(request: CreateRemoteTrustEntityRequest): Promise<string>;
   createTrustAnchor(anchor: CreateTrustAnchorRequest): Promise<string>;
   createTrustEntity(request: CreateTrustEntityRequest): Promise<string>;
+  /**
+   * Deletes the system cache. See the
+   * [Caching](https://docs.procivis.ch/configure/caching#cached-entities)
+   * guide for details on cached entities.
+   */
   deleteCache(types: Array<CacheType> | undefined): Promise<void>;
   deleteCredential(credentialId: string): Promise<void>;
+  /** Permanently removes a credential schema. */
   deleteCredentialSchema(credentialSchemaId: string): Promise<void>;
   deleteIdentifier(id: string): Promise<void>;
+  /**
+   * Deletes an incomplete proof request. If the request is in `REQUESTED`
+   * state the proof is retracted instead, retaining history of the interaction.
+   */
   deleteProof(proofId: string): Promise<void>;
   deleteProofClaims(proofId: string): Promise<void>;
   deleteProofSchema(proofSchemaId: string): Promise<void>;
   deleteTrustAnchor(anchorId: string): Promise<void>;
+  /**
+   * Commits to the restored database, replacing the original. The old
+   * database is deleted.
+   */
   finalizeImport(): Promise<void>;
   generateKey(request: GenerateKeyRequest): Promise<string>;
+  /** Returns the system configuration. */
   getConfig(): Promise<Config>;
+  /** Returns detailed information about a credential in the system. */
   getCredential(credentialId: string): Promise<CredentialDetail>;
+  /**
+   * Returns detailed information about a credential schema.
+   * A credential schema defines the structure and format of a credential,
+   * including the attributes that issuers make claims about. Schemas also
+   * specify how issued credentials should be presented in wallets, whether
+   * a revocation method is used to manage credential status, and issuer
+   * preferences for suitable key storage types for wallets to use.
+   */
   getCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaDetail>;
+  /** Returns details on a single event. */
   getHistoryEntry(historyId: string): Promise<HistoryListItem>;
   getIdentifier(id: string): Promise<IdentifierDetail>;
   getPresentationDefinition(proofId: string): Promise<PresentationDefinition>;
   getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2>;
+  /** Returns detailed information about a proof request. */
   getProof(proofId: string): Promise<ProofDetail>;
   getProofSchema(proofSchemaId: string): Promise<ProofSchemaDetail>;
   getRemoteTrustEntity(didId: string): Promise<RemoteTrustEntityDetail>;
   getTrustAnchor(trustAnchorId: string): Promise<TrustAnchorDetail>;
   getTrustEntity(trustEntityId: string): Promise<TrustEntityDetail>;
   getTrustEntityByDid(didId: string): Promise<TrustEntityDetail>;
+  getVerifierInstanceTrustCollections(id: string): Promise<TrustCollections>;
   /**
    * For a wallet, handles the interaction once the wallet connects to a share
    * endpoint URL (for example, scans the QR code of an offered credential or
@@ -2066,14 +2461,24 @@ export interface OneCore {
    * you can specify an existing identifier.
    */
   holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
+  /** Returns wallet registration details from the Wallet Provider. */
   holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
   holderGetWalletUnitTrustCollections(id: string): Promise<TrustCollections>;
-  /** Register with a Wallet Provider. */
+  /** Registers with a Wallet Provider. */
   holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<HolderRegisterWalletUnitResponse>;
   /** Rejects an offered credential. */
   holderRejectCredential(interactionId: string): Promise<void>;
+  /** Rejects a proof request. */
   holderRejectProof(interactionId: string): Promise<void>;
+  /**
+   * Submits a presentation using Presentation Exchange as the query
+   * language; this should be used after `getPresentationDefinition`.
+   */
   holderSubmitProof(interactionId: string, submitCredentials: Record<string, Array<PresentationSubmitCredentialRequest>>): Promise<void>;
+  /**
+   * Submits a presentation using DCQL as a query language; this should
+   * be used after `getPresentationDefinitionv2`.
+   */
   holderSubmitProofV2(interactionId: string, submission: Record<string, Array<PresentationSubmitV2CredentialRequest>>): Promise<void>;
   /**
    * Check status of wallet unit with the Wallet Provider. Will return an error
@@ -2082,22 +2487,32 @@ export interface OneCore {
   holderWalletUnitStatus(id: string): Promise<void>;
   /** Edit holder wallet unit */
   holderWalletUnitUpdate(id: string, request: HolderWalletUnitUpdateRequest): Promise<void>;
+  /**
+   * Imports a credential schema shared from another mobile verifier device
+   * using the one-core.
+   */
   importCredentialSchema(request: ImportCredentialSchemaRequest): Promise<string>;
   importProofSchema(request: ImportProofSchemaRequest): Promise<string>;
   /** For wallets, starts the OpenID4VCI Authorization Code Flow. */
   initiateIssuance(request: InitiateIssuanceRequest): Promise<InitiateIssuanceResponse>;
+  /** Returns a filterable list of credential schemas. */
   listCredentialSchemas(query: CredentialSchemaListQuery): Promise<CredentialSchemaList>;
+  /** Returns a filterable list of credentials in the system. */
   listCredentials(query: CredentialListQuery): Promise<CredentialList>;
+  /** Deprecated. Use the `listIdentifiers` method. */
   listDids(query: DidListQuery): Promise<DidList>;
+  /** Returns a filterable list of history events. */
   listHistory(query: HistoryListQuery): Promise<HistoryList>;
+  /** Returns a filterable list of identifiers. */
   listIdentifiers(query: IdentifierListQuery): Promise<IdentifierList>;
   listProofSchemas(filter: ProofSchemaListQuery): Promise<ProofSchemaList>;
+  /** Returns a filterable list of proof requests. */
   listProofs(query: ProofListQuery): Promise<ProofList>;
   listTrustAnchors(filters: TrustAnchorListQuery): Promise<TrustAnchorList>;
   listTrustEntities(filters: TrustEntityListQuery): Promise<TrustEntityList>;
-  /** Scan NFC for ISO 18013-5 engagment */
+  /** Scan NFC for ISO 18013-5 engagment. */
   nfcReadIsoMdlEngagement(request: NfcScanRequest): Promise<string>;
-  /** Cancel previously started NFC scan via `nfc_read_iso_mdl_engagement` */
+  /** Cancel previously started NFC scan via `nfc_read_iso_mdl_engagement`. */
   nfcStopIsoMdlEngagement(): Promise<void>;
   /**
    * For wallets, initiates device engagement for offline flows. Reference
@@ -2105,16 +2520,45 @@ export interface OneCore {
    * options for `engagement`.
    */
   proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
+  registerVerifierInstance(request: RegisterVerifierInstanceRequest): Promise<RegisterVerifierInstanceResponse>;
+  /** Returns the @context of a JSON-LD credential. The result is cached. */
   resolveJsonldContext(url: string): Promise<ResolvedJsonLdContext>;
   resolveTrustEntityByIdentifier(request: ResolveTrustEntitiesRequest): Promise<Record<string, Array<ResolvedTrustEntity>>>;
+  /** Discards the restored database and continues using the original. */
   rollbackImport(): Promise<void>;
+  /**
+   * Runs a task. Check the `task` object of your configuration and reference
+   * the configured instance.
+   */
   runTask(task: string, params: string | undefined): Promise<string>;
+  /**
+   * Produces a URL for sharing a credential schema with another mobile
+   * verifier device using the one-core.
+   */
   shareCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaShareResponse>;
+  /**
+   * Creates a share URL from a proof request. A wallet holder can use this
+   * URL to access the request.
+   */
   shareProof(proofId: string, params: ShareProofRequest): Promise<ShareProofResponse>;
   shareProofSchema(proofSchemaId: string): Promise<ProofSchemaShareResponse>;
+  /**
+   * Deleting data while uninitializing the Core erases all wallet data permanently.
+   * If data is not deleted it is reused when Core is reinitialized.
+   */
   uninitialize(deleteData: boolean): Promise<void>;
+  /**
+   * Makes the restored database active for calls.
+   * Follow by calling either `finalizeImport` or `rollbackImport`.
+   */
   unpackBackup(password: string, inputPath: string): Promise<Metadata>;
   updateRemoteTrustEntity(request: UpdateRemoteTrustEntityRequest): Promise<void>;
+  updateVerifierInstance(id: string, request: UpdateVerifierInstanceRequest): Promise<void>;
+  /**
+   * Updates or deactivates an organization if it exists, otherwise
+   * creates a new organization using the provided UUID and name.
+   */
   upsertOrganisation(request: UpsertOrganisationRequest): Promise<void>;
+  /** Returns build information. */
   version(): Version;
 }
