@@ -1,6 +1,5 @@
 #import <React/RCTComponent.h>
 #import <React/RCTViewManager.h>
-#import <UBQKit/UBQKit.h>
 #import "react_native_one_core-Swift.h"
 
 @interface RSEPinPadManager : RCTViewManager
