@@ -73,6 +73,13 @@ object SerializeSpecific {
                     values.pushString(metadata.v1)
                     result.putArray("value", values)
                 }
+
+                is HistoryMetadata.Certificate -> {
+                    result.putString("type_", "CERTIFICATE")
+                    val values = Arguments.createArray()
+                    values.pushString(metadata.v1)
+                    result.putArray("value", values)
+                }
             }
             return result
         }

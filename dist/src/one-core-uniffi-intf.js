@@ -13,6 +13,17 @@ export var CacheType;
     CacheType["ANDROID_ATTESTATION_CRL"] = "ANDROID_ATTESTATION_CRL";
     CacheType["OPEN_ID_METADATA"] = "OPEN_ID_METADATA";
 })(CacheType || (CacheType = {}));
+export var CertificateRole;
+(function (CertificateRole) {
+    CertificateRole["AUTHENTICATION"] = "AUTHENTICATION";
+    CertificateRole["ASSERTION_METHOD"] = "ASSERTION_METHOD";
+})(CertificateRole || (CertificateRole = {}));
+/** The mode used to match certificate roles. Default any. */
+export var CertificateRolesMatchMode;
+(function (CertificateRolesMatchMode) {
+    CertificateRolesMatchMode["ALL"] = "ALL";
+    CertificateRolesMatchMode["ANY"] = "ANY";
+})(CertificateRolesMatchMode || (CertificateRolesMatchMode = {}));
 export var CertificateState;
 (function (CertificateState) {
     CertificateState["NOT_YET_ACTIVE"] = "NOT_YET_ACTIVE";
@@ -144,6 +155,8 @@ export var HistoryAction;
     HistoryAction["INTERACTION_ERRORED"] = "INTERACTION_ERRORED";
     HistoryAction["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
     HistoryAction["DELIVERED"] = "DELIVERED";
+    HistoryAction["WRP_AC_RECEIVED"] = "WRP_AC_RECEIVED";
+    HistoryAction["WRP_RC_RECEIVED"] = "WRP_RC_RECEIVED";
 })(HistoryAction || (HistoryAction = {}));
 export var HistoryEntityType;
 (function (HistoryEntityType) {
@@ -178,6 +191,7 @@ export var HistoryEntityType;
 })(HistoryEntityType || (HistoryEntityType = {}));
 export var HistorySearchType;
 (function (HistorySearchType) {
+    HistorySearchType["ALL"] = "ALL";
     HistorySearchType["CLAIM_NAME"] = "CLAIM_NAME";
     HistorySearchType["CLAIM_VALUE"] = "CLAIM_VALUE";
     HistorySearchType["CREDENTIAL_SCHEMA_NAME"] = "CREDENTIAL_SCHEMA_NAME";
@@ -196,6 +210,10 @@ export var IdentifierState;
     IdentifierState["ACTIVE"] = "ACTIVE";
     IdentifierState["DEACTIVATED"] = "DEACTIVATED";
 })(IdentifierState || (IdentifierState = {}));
+export var IdentifierTrustInformationType;
+(function (IdentifierTrustInformationType) {
+    IdentifierTrustInformationType["REGISTRATION_CERTIFICATE"] = "REGISTRATION_CERTIFICATE";
+})(IdentifierTrustInformationType || (IdentifierTrustInformationType = {}));
 export var IdentifierType;
 (function (IdentifierType) {
     IdentifierType["KEY"] = "KEY";
@@ -285,6 +303,15 @@ export var SortableDidColumn;
     SortableDidColumn["DID"] = "DID";
     SortableDidColumn["DEACTIVATED"] = "DEACTIVATED";
 })(SortableDidColumn || (SortableDidColumn = {}));
+export var SortableHistoryColumn;
+(function (SortableHistoryColumn) {
+    SortableHistoryColumn["CREATED_DATE"] = "CREATED_DATE";
+    SortableHistoryColumn["ACTION"] = "ACTION";
+    SortableHistoryColumn["ENTITY_TYPE"] = "ENTITY_TYPE";
+    SortableHistoryColumn["SOURCE"] = "SOURCE";
+    SortableHistoryColumn["USER"] = "USER";
+    SortableHistoryColumn["ORGANISATION_ID"] = "ORGANISATION_ID";
+})(SortableHistoryColumn || (SortableHistoryColumn = {}));
 export var SortableIdentifierColumn;
 (function (SortableIdentifierColumn) {
     SortableIdentifierColumn["NAME"] = "NAME";

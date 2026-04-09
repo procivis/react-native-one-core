@@ -21,6 +21,7 @@ export interface CertificateDetail {
     chain: string;
     key?: KeyListItem;
     x509Attributes: CertificateX509Attributes;
+    roles: Array<CertificateRole>;
 }
 export interface CertificateX509Attributes {
     serialNumber: string;
@@ -113,6 +114,7 @@ export interface CreateCertificateRequest {
     name?: string;
     chain: string;
     keyId: string;
+    roles: Array<CertificateRole>;
 }
 export interface CreateDidRequest {
     organisationId: string;
@@ -139,6 +141,11 @@ export interface CreateIdentifierRequest {
     did?: CreateIdentifierDidRequest;
     certificates?: Array<CreateCertificateRequest>;
     certificateAuthorities?: Array<CreateCertificateAuthorityRequest>;
+    trustInformation: Array<CreateIdentifierTrustInformationRequest>;
+}
+export interface CreateIdentifierTrustInformationRequest {
+    data: string;
+    type: IdentifierTrustInformationType;
 }
 export interface CreateOrganisationRequest {
     /** If no UUID is passed, one will be created. */
@@ -648,6 +655,10 @@ export interface HistoryListQuery {
     page: number;
     /** Number of items to return per page. */
     pageSize: number;
+    /** Field value to sort results by. */
+    sort?: SortableHistoryColumn;
+    /** Direction to sort results by. */
+    sortDirection?: SortDirection;
     /** Specifies the organizational context for this operation. */
     organisationId: string;
     /** Return only events associated with the provided entity IDs. */
@@ -672,6 +683,8 @@ export interface HistoryListQuery {
     credentialId?: string;
     /** Return only events associated with the provided credential schema ID. */
     credentialSchemaId?: string;
+    /** Return only events associated with the provided proof ID. */
+    proofId?: string;
     /** Return only events associated with the provided proof schema ID. */
     proofSchemaId?: string;
     /** Search for a string. */
@@ -697,10 +710,9 @@ export interface HolderAcceptCredentialRequest {
     keyId?: string;
     /** User-provided transaction code. */
     txCode?: string;
-    holderWalletUnitId?: string;
 }
 export interface HolderRegisterWalletUnitRequest {
-    /** Specifies the organizational context for this operation. */
+    /** The wallet unit's organization. */
     organisationId: string;
     /** Reference the `walletProvider` configuration. */
     walletProvider: WalletProvider;
@@ -736,6 +748,7 @@ export interface IdentifierDetail {
     did?: DidDetail;
     key?: KeyDetail;
     certificates?: Array<CertificateDetail>;
+    trustInformation: Array<IdentifierTrustInformationResponseDto>;
 }
 export interface IdentifierList {
     values: Array<IdentifierListItem>;
@@ -758,6 +771,7 @@ export interface IdentifierListQuery {
     sort?: SortableIdentifierColumn;
     sortDirection?: SortDirection;
     organisationId: string;
+    ids?: Array<string>;
     name?: string;
     types?: Array<IdentifierType>;
     states?: Array<IdentifierState>;
@@ -767,10 +781,20 @@ export interface IdentifierListQuery {
     keyAlgorithms?: Array<string>;
     keyRoles?: Array<KeyRole>;
     keyStorages?: Array<string>;
+    certificateRoles?: Array<CertificateRole>;
+    certificateRolesMatchMode?: CertificateRolesMatchMode;
+    trustIssuanceSchemaId?: string;
+    trustVerificationSchemaId?: string;
     createdDateAfter?: string;
     createdDateBefore?: string;
     lastModifiedAfter?: string;
     lastModifiedBefore?: string;
+}
+export interface IdentifierTrustInformationResponseDto {
+    data: string;
+    type: IdentifierTrustInformationType;
+    validFrom?: string;
+    validTo?: string;
 }
 export interface ImportCredentialSchemaClaimSchema {
     id: string;
@@ -1268,8 +1292,11 @@ export interface ProposeProofResponse {
     url?: string;
 }
 export interface RegisterVerifierInstanceRequest {
+    /** The verifier unit's organization. */
     organisationId: string;
+    /** The Verifier Provider's reference URL. */
     verifierProviderUrl: string;
+    /** Reference a configured `verifierProvider` instance. */
     type: string;
 }
 export interface RegisterVerifierInstanceResponse {
@@ -1554,6 +1581,15 @@ export declare enum CacheType {
     ANDROID_ATTESTATION_CRL = "ANDROID_ATTESTATION_CRL",
     OPEN_ID_METADATA = "OPEN_ID_METADATA"
 }
+export declare enum CertificateRole {
+    AUTHENTICATION = "AUTHENTICATION",
+    ASSERTION_METHOD = "ASSERTION_METHOD"
+}
+/** The mode used to match certificate roles. Default any. */
+export declare enum CertificateRolesMatchMode {
+    ALL = "ALL",
+    ANY = "ANY"
+}
 export declare enum CertificateState {
     NOT_YET_ACTIVE = "NOT_YET_ACTIVE",
     ACTIVE = "ACTIVE",
@@ -1728,7 +1764,9 @@ export declare enum HistoryAction {
     INTERACTION_CREATED = "INTERACTION_CREATED",
     INTERACTION_ERRORED = "INTERACTION_ERRORED",
     INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
-    DELIVERED = "DELIVERED"
+    DELIVERED = "DELIVERED",
+    WRP_AC_RECEIVED = "WRP_AC_RECEIVED",
+    WRP_RC_RECEIVED = "WRP_RC_RECEIVED"
 }
 export declare enum HistoryEntityType {
     KEY = "KEY",
@@ -1769,8 +1807,12 @@ export type HistoryMetadata = {
 } | {
     type_: "WALLET_UNIT_JWT";
     value: [string];
+} | {
+    type_: "CERTIFICATE";
+    value: [string];
 };
 export declare enum HistorySearchType {
+    ALL = "ALL",
     CLAIM_NAME = "CLAIM_NAME",
     CLAIM_VALUE = "CLAIM_VALUE",
     CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME",
@@ -1786,6 +1828,9 @@ export declare enum IdentifierListQueryExactColumn {
 export declare enum IdentifierState {
     ACTIVE = "ACTIVE",
     DEACTIVATED = "DEACTIVATED"
+}
+export declare enum IdentifierTrustInformationType {
+    REGISTRATION_CERTIFICATE = "REGISTRATION_CERTIFICATE"
 }
 export declare enum IdentifierType {
     KEY = "KEY",
@@ -1916,6 +1961,14 @@ export declare enum SortableDidColumn {
     TYPE = "TYPE",
     DID = "DID",
     DEACTIVATED = "DEACTIVATED"
+}
+export declare enum SortableHistoryColumn {
+    CREATED_DATE = "CREATED_DATE",
+    ACTION = "ACTION",
+    ENTITY_TYPE = "ENTITY_TYPE",
+    SOURCE = "SOURCE",
+    USER = "USER",
+    ORGANISATION_ID = "ORGANISATION_ID"
 }
 export declare enum SortableIdentifierColumn {
     NAME = "NAME",
@@ -2171,6 +2224,7 @@ export interface OneCore {
     getTrustAnchor(trustAnchorId: string): Promise<TrustAnchorDetail>;
     getTrustEntity(trustEntityId: string): Promise<TrustEntityDetail>;
     getTrustEntityByDid(didId: string): Promise<TrustEntityDetail>;
+    /** Returns trust collections curated by the Verifier Provider. */
     getVerifierInstanceTrustCollections(id: string): Promise<TrustCollections>;
     /**
      * For a wallet, handles the interaction once the wallet connects to a share
@@ -2186,8 +2240,9 @@ export interface OneCore {
     holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
     /** Returns wallet registration details from the Wallet Provider. */
     holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
+    /** Returns trust collections curated by the Wallet Provider. */
     holderGetWalletUnitTrustCollections(id: string): Promise<TrustCollections>;
-    /** Registers with a Wallet Provider. */
+    /** Registers the wallet unit with a Wallet Provider. */
     holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<HolderRegisterWalletUnitResponse>;
     /** Rejects an offered credential. */
     holderRejectCredential(interactionId: string): Promise<void>;
@@ -2208,7 +2263,7 @@ export interface OneCore {
      * if the unit has been revoked.
      */
     holderWalletUnitStatus(id: string): Promise<void>;
-    /** Edit holder wallet unit */
+    /** Modifies wallet unit's settings. */
     holderWalletUnitUpdate(id: string, request: HolderWalletUnitUpdateRequest): Promise<void>;
     /**
      * Imports a credential schema shared from another mobile verifier device
@@ -2243,6 +2298,7 @@ export interface OneCore {
      * options for `engagement`.
      */
     proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
+    /** Registers the verifier unit with a Verifier Provider. */
     registerVerifierInstance(request: RegisterVerifierInstanceRequest): Promise<RegisterVerifierInstanceResponse>;
     /** Returns the @context of a JSON-LD credential. The result is cached. */
     resolveJsonldContext(url: string): Promise<ResolvedJsonLdContext>;
@@ -2276,6 +2332,7 @@ export interface OneCore {
      */
     unpackBackup(password: string, inputPath: string): Promise<Metadata>;
     updateRemoteTrustEntity(request: UpdateRemoteTrustEntityRequest): Promise<void>;
+    /** Modifies verifier unit's settings. */
     updateVerifierInstance(id: string, request: UpdateVerifierInstanceRequest): Promise<void>;
     /**
      * Updates or deactivates an organization if it exists, otherwise

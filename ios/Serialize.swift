@@ -64,6 +64,11 @@ private func serialize(historyMetadata: HistoryMetadata) throws -> NSDictionary 
             "type_": "WALLET_UNIT_JWT",
             "value": [value]
         ];
+    case let .certificate(value):
+        return [
+            "type_": "CERTIFICATE",
+            "value": [value]
+        ];
     }
 }
 
