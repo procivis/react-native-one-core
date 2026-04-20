@@ -64,10 +64,10 @@ private func serialize(historyMetadata: HistoryMetadata) throws -> NSDictionary 
             "type_": "WALLET_UNIT_JWT",
             "value": [value]
         ];
-    case let .certificate(value):
+    case let .walletRelyingParty(value):
         return [
-            "type_": "CERTIFICATE",
-            "value": [value]
+            "type_": "WALLET_RELYING_PARTY",
+            "value": try serializeAny(value)
         ];
     }
 }
@@ -157,10 +157,11 @@ private func serialize(invitationResponse: HandleInvitationResponse) throws -> N
 
 private func serialize(applicableCredentialQuery: ApplicableCredentialOrFailureHint) throws -> NSDictionary {
     switch (applicableCredentialQuery) {
-    case let .applicableCredentials(applicableCredentials: value):
+    case let .applicableCredentials(applicableCredentials, purpose):
         return [
             "type_": "APPLICABLE_CREDENTIALS",
-            "applicableCredentials": try serializeAny(value)
+            "applicableCredentials": try serializeAny(applicableCredentials),
+            "purpose": purpose
         ];
 
     case let .failureHint(failureHint: value):

@@ -74,11 +74,12 @@ object SerializeSpecific {
                     result.putArray("value", values)
                 }
 
-                is HistoryMetadata.Certificate -> {
-                    result.putString("type_", "CERTIFICATE")
-                    val values = Arguments.createArray()
-                    values.pushString(metadata.v1)
-                    result.putArray("value", values)
+                is HistoryMetadata.WalletRelyingParty -> {
+                    result.putString("type_", "WALLET_RELYING_PARTY")
+                    result.putMap(
+                        "value",
+                        convertToRN(metadata.value) as ReadableMap
+                    )
                 }
             }
             return result
@@ -93,6 +94,12 @@ object SerializeSpecific {
                         "applicableCredentials",
                         convertToRN(query.applicableCredentials) as ReadableArray
                     )
+                    query.purpose?.let {
+                        val purpose = Arguments.createMap()
+                        it.forEach { (key, value) -> purpose.putString(key, value) }
+                        result.putMap("purpose", purpose)
+                    }
+
                 }
 
                 is ApplicableCredentialOrFailureHint.FailureHint -> {

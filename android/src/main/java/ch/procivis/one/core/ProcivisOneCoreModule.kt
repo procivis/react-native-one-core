@@ -344,6 +344,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getCredentialTrustInformation(credentialId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().getCredentialTrustInformation(credentialId)
+            return@asyncCall convertToRN(result)
+        }
+    }
+
+    @ReactMethod
     fun deleteCredential(credentialId: String, promise: Promise) {
         asyncCall(promise, scope) {
             getCore().deleteCredential(credentialId)
@@ -402,6 +410,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         asyncCall(promise, scope) {
             val proof = getCore().getProof(proofId)
             return@asyncCall convertToRN(proof)
+        }
+    }
+
+    @ReactMethod
+    fun getProofTrustInformation(proofId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().getProofTrustInformation(proofId)
+            return@asyncCall convertToRN(result)
         }
     }
 

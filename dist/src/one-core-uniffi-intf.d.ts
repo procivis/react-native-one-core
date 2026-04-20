@@ -152,6 +152,7 @@ export interface CreateOrganisationRequest {
     id?: string;
     /** If no name is passed, the UUID will be used. */
     name?: string;
+    parentOrganisation?: string;
 }
 /**
  * If protocol is `ISO_MDL`, specify the device engagement type
@@ -584,6 +585,31 @@ export interface ErrorResponse {
     message: string;
     cause?: Cause;
 }
+export interface EudiIntermediary {
+    name?: string;
+    identifier: string;
+    website: string;
+    email?: string;
+    phone?: string;
+    country: string;
+}
+export interface EudiSupervisoryAuthority {
+    email: string;
+    phone: string;
+    uri: string;
+}
+export interface EudiTrustInformation {
+    name: string;
+    website: string;
+    email?: string;
+    phone?: string;
+    country: string;
+    identifier: string;
+    serviceDescription: Array<Record<string, string>>;
+    supervisoryAuthority: EudiSupervisoryAuthority;
+    intermediary?: EudiIntermediary;
+    isPublicSector: boolean;
+}
 export interface GenerateKeyRequest {
     /** Specifies the organizational context of this operation. */
     organisationId: string;
@@ -955,6 +981,10 @@ export interface Metadata {
     dbVersion: string;
     dbHash: string;
     createdAt: string;
+}
+export interface MultiLangString {
+    lang: string;
+    value: string;
 }
 /** Optional messages to be displayed on (iOS) system overlay. */
 export interface NfcScanRequest {
@@ -1471,6 +1501,9 @@ export interface TrustEntityListQuery {
     lastModifiedAfter?: string;
     lastModifiedBefore?: string;
 }
+export interface TrustInformationDetail {
+    eudiEcosystem?: EudiTrustInformation;
+}
 export interface UnexportableEntities {
     credentials: Array<CredentialDetail>;
     keys: Array<KeyListItem>;
@@ -1505,6 +1538,7 @@ export interface UpsertOrganisationRequest {
     walletProvider?: string | null;
     /** Wallet Provider use only. */
     walletProviderIssuer?: string | null;
+    parentOrganisation?: string | null;
 }
 export interface Version {
     target: string;
@@ -1519,9 +1553,13 @@ export interface WalletProvider {
     url: string;
     type: WalletProviderType;
 }
+export interface WalletRelyingPartyMetadata {
+    name: string;
+}
 export type ApplicableCredentialOrFailureHint = {
     type_: "APPLICABLE_CREDENTIALS";
     applicableCredentials: Array<PresentationDefinitionV2Credential>;
+    purpose?: Record<string, string>;
 } | {
     type_: "FAILURE_HINT";
     failureHint: CredentialQueryFailureHint;
@@ -1579,7 +1617,8 @@ export declare enum CacheType {
     TRUST_LIST = "TRUST_LIST",
     X509_CRL = "X509_CRL",
     ANDROID_ATTESTATION_CRL = "ANDROID_ATTESTATION_CRL",
-    OPEN_ID_METADATA = "OPEN_ID_METADATA"
+    OPEN_ID_METADATA_HOLDER = "OPEN_ID_METADATA_HOLDER",
+    OPEN_ID_METADATA_ISSUER = "OPEN_ID_METADATA_ISSUER"
 }
 export declare enum CertificateRole {
     AUTHENTICATION = "AUTHENTICATION",
@@ -1766,7 +1805,8 @@ export declare enum HistoryAction {
     INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
     DELIVERED = "DELIVERED",
     WRP_AC_RECEIVED = "WRP_AC_RECEIVED",
-    WRP_RC_RECEIVED = "WRP_RC_RECEIVED"
+    WRP_RC_RECEIVED = "WRP_RC_RECEIVED",
+    WRP_NR_RECEIVED = "WRP_NR_RECEIVED"
 }
 export declare enum HistoryEntityType {
     KEY = "KEY",
@@ -1808,8 +1848,8 @@ export type HistoryMetadata = {
     type_: "WALLET_UNIT_JWT";
     value: [string];
 } | {
-    type_: "CERTIFICATE";
-    value: [string];
+    type_: "WALLET_RELYING_PARTY";
+    value: WalletRelyingPartyMetadata;
 };
 export declare enum HistorySearchType {
     ALL = "ALL",
@@ -2212,6 +2252,8 @@ export interface OneCore {
      * preferences for suitable key storage types for wallets to use.
      */
     getCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaDetail>;
+    /** Returns detailed trust information about a credential issuer. */
+    getCredentialTrustInformation(credentialId: string): Promise<TrustInformationDetail>;
     /** Returns details on a single event. */
     getHistoryEntry(historyId: string): Promise<HistoryListItem>;
     getIdentifier(id: string): Promise<IdentifierDetail>;
@@ -2220,6 +2262,8 @@ export interface OneCore {
     /** Returns detailed information about a proof request. */
     getProof(proofId: string): Promise<ProofDetail>;
     getProofSchema(proofSchemaId: string): Promise<ProofSchemaDetail>;
+    /** Returns detailed trust information about a proof request verifier. */
+    getProofTrustInformation(proofId: string): Promise<TrustInformationDetail>;
     getRemoteTrustEntity(didId: string): Promise<RemoteTrustEntityDetail>;
     getTrustAnchor(trustAnchorId: string): Promise<TrustAnchorDetail>;
     getTrustEntity(trustEntityId: string): Promise<TrustEntityDetail>;

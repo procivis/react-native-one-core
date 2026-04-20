@@ -11,7 +11,8 @@ export var CacheType;
     CacheType["TRUST_LIST"] = "TRUST_LIST";
     CacheType["X509_CRL"] = "X509_CRL";
     CacheType["ANDROID_ATTESTATION_CRL"] = "ANDROID_ATTESTATION_CRL";
-    CacheType["OPEN_ID_METADATA"] = "OPEN_ID_METADATA";
+    CacheType["OPEN_ID_METADATA_HOLDER"] = "OPEN_ID_METADATA_HOLDER";
+    CacheType["OPEN_ID_METADATA_ISSUER"] = "OPEN_ID_METADATA_ISSUER";
 })(CacheType || (CacheType = {}));
 export var CertificateRole;
 (function (CertificateRole) {
@@ -157,6 +158,7 @@ export var HistoryAction;
     HistoryAction["DELIVERED"] = "DELIVERED";
     HistoryAction["WRP_AC_RECEIVED"] = "WRP_AC_RECEIVED";
     HistoryAction["WRP_RC_RECEIVED"] = "WRP_RC_RECEIVED";
+    HistoryAction["WRP_NR_RECEIVED"] = "WRP_NR_RECEIVED";
 })(HistoryAction || (HistoryAction = {}));
 export var HistoryEntityType;
 (function (HistoryEntityType) {

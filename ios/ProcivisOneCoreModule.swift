@@ -353,6 +353,18 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(getCredentialTrustInformation:resolver:rejecter:)
+  func getCredentialTrustInformation(
+    credentialId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().getCredentialTrustInformation(credentialId: credentialId)
+      return try serializeAny(result)
+    }
+  }
+
   @objc(deleteCredential:resolver:rejecter:)
   func deleteCredential(
     credentialId: String,
@@ -557,6 +569,18 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   ) {
     asyncCall(resolve, reject) {
       let result = try await self.getCore().getProof(proofId: proofId)
+      return try serializeAny(result)
+    }
+  }
+
+  @objc(getProofTrustInformation:resolver:rejecter:)
+  func getProofTrustInformation(
+    proofId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().getProofTrustInformation(proofId: proofId)
       return try serializeAny(result)
     }
   }
