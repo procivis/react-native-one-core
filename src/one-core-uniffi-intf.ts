@@ -171,8 +171,6 @@ export interface CreateIdentifierTrustInformationRequest {
 export interface CreateOrganisationRequest {
   /** If no UUID is passed, one will be created. */
   id?: string;
-  /** If no name is passed, the UUID will be used. */
-  name?: string;
   parentOrganisation?: string;
 }
 
@@ -1652,6 +1650,10 @@ export interface TrustEntityListQuery {
 }
 
 export interface TrustInformationDetail {
+  /**
+   * EUDI trust information received from Access Certificates, Registration
+   * Certificates, or National Registry public APIs.
+   */
   eudiEcosystem?: EudiTrustInformation;
 }
 
@@ -1684,8 +1686,6 @@ export interface UpdateVerifierInstanceRequest {
 export interface UpsertOrganisationRequest {
   /** Unique identifier of the organization to create or update. */
   id: string;
-  /** Organization's display name. */
-  name?: string;
   /** Set to `true` to deactivate the organization. */
   deactivate?: boolean;
   /** Wallet Provider use only. */
@@ -2552,7 +2552,10 @@ export interface OneCore {
   /** Returns detailed information about a proof request. */
   getProof(proofId: string): Promise<ProofDetail>;
   getProofSchema(proofSchemaId: string): Promise<ProofSchemaDetail>;
-  /** Returns detailed trust information about a proof request verifier. */
+  /**
+   * Returns detailed trust information about the requesting entity for a
+   * proof request.
+   */
   getProofTrustInformation(proofId: string): Promise<TrustInformationDetail>;
   getRemoteTrustEntity(didId: string): Promise<RemoteTrustEntityDetail>;
   getTrustAnchor(trustAnchorId: string): Promise<TrustAnchorDetail>;

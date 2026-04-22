@@ -84,7 +84,7 @@ export default function App(): JSX.Element {
         .then(([version, nfcHceSupported]) => {
           const versionStr = JSON.stringify(version, undefined, 2);
           setText(
-            `ONE version: ${versionStr}\nNFC HCE supported: ${nfcHceSupported}`
+            `ONE version: ${versionStr}\nNFC HCE supported: ${nfcHceSupported}`,
           );
         })
         .catch((e) => setText(`Error: ${e}`));
@@ -113,12 +113,12 @@ export default function App(): JSX.Element {
             break;
           case Ubiqu.PinEventType.PIN_STAGE:
             setUbiquPin(
-              (prev) => prev && { ...prev, stage: event.stage, entered: 0 }
+              (prev) => prev && { ...prev, stage: event.stage, entered: 0 },
             );
             break;
           case Ubiqu.PinEventType.DIGITS_ENTERED:
             setUbiquPin(
-              (prev) => prev && { ...prev, entered: event.digitsEntered }
+              (prev) => prev && { ...prev, entered: event.digitsEntered },
             );
             break;
         }
@@ -170,6 +170,7 @@ export default function App(): JSX.Element {
                 capabilityDelegation: [keyId],
               },
             },
+            trustInformation: [],
           })
           .catch((e) => {
             setText(`Error: ${e}`);
@@ -177,7 +178,7 @@ export default function App(): JSX.Element {
           .then(async (identifierId) => {
             await oneCore!.getIdentifier(identifierId!).then((res) => {
               setText(
-                `Identifier created: ${JSON.stringify(res, undefined, 2)}`
+                `Identifier created: ${JSON.stringify(res, undefined, 2)}`,
               );
             });
           });
@@ -198,7 +199,7 @@ export default function App(): JSX.Element {
   const getBiometry = useCallback(async () => {
     setText("Getting biometry settings...");
     const supported = await Ubiqu.areBiometricsSupported().catch((e) =>
-      setText(`Error: ${e}`)
+      setText(`Error: ${e}`),
     );
     if (supported) {
       await Ubiqu.areBiometricsEnabled()
