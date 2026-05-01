@@ -13,6 +13,8 @@ export var CacheType;
     CacheType["ANDROID_ATTESTATION_CRL"] = "ANDROID_ATTESTATION_CRL";
     CacheType["OPEN_ID_METADATA_HOLDER"] = "OPEN_ID_METADATA_HOLDER";
     CacheType["OPEN_ID_METADATA_ISSUER"] = "OPEN_ID_METADATA_ISSUER";
+    CacheType["WALLET_PROVIDER_METADATA"] = "WALLET_PROVIDER_METADATA";
+    CacheType["REMOTE_TRUST_COLLECTION"] = "REMOTE_TRUST_COLLECTION";
 })(CacheType || (CacheType = {}));
 export var CertificateRole;
 (function (CertificateRole) {
@@ -159,6 +161,7 @@ export var HistoryAction;
     HistoryAction["WRP_AC_RECEIVED"] = "WRP_AC_RECEIVED";
     HistoryAction["WRP_RC_RECEIVED"] = "WRP_RC_RECEIVED";
     HistoryAction["WRP_NR_RECEIVED"] = "WRP_NR_RECEIVED";
+    HistoryAction["TRUST_RESOLVED"] = "TRUST_RESOLVED";
 })(HistoryAction || (HistoryAction = {}));
 export var HistoryEntityType;
 (function (HistoryEntityType) {
@@ -386,6 +389,12 @@ export var TrustEntityUpdateAction;
     TrustEntityUpdateAction["WITHDRAW"] = "WITHDRAW";
     TrustEntityUpdateAction["REMOVE"] = "REMOVE";
 })(TrustEntityUpdateAction || (TrustEntityUpdateAction = {}));
+export var TrustResolutionResult;
+(function (TrustResolutionResult) {
+    TrustResolutionResult["TRUSTED"] = "TRUSTED";
+    TrustResolutionResult["UNTRUSTED"] = "UNTRUSTED";
+    TrustResolutionResult["UNKNOWN"] = "UNKNOWN";
+})(TrustResolutionResult || (TrustResolutionResult = {}));
 export var WalletProviderType;
 (function (WalletProviderType) {
     WalletProviderType["PROCIVIS_ONE"] = "PROCIVIS_ONE";

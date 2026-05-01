@@ -81,6 +81,14 @@ object SerializeSpecific {
                         convertToRN(metadata.value) as ReadableMap
                     )
                 }
+
+                is HistoryMetadata.TrustResolution -> {
+                    result.putString("type_", "TRUST_RESOLUTION")
+                    result.putMap(
+                        "value",
+                        convertToRN(metadata.value) as ReadableMap
+                    )
+                }
             }
             return result
         }

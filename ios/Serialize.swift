@@ -69,6 +69,11 @@ private func serialize(historyMetadata: HistoryMetadata) throws -> NSDictionary 
             "type_": "WALLET_RELYING_PARTY",
             "value": try serializeAny(value)
         ];
+    case let .trustResolution(value):
+        return [
+            "type_": "TRUST_RESOLUTION",
+            "value": try serializeAny(value)
+        ];
     }
 }
 

@@ -298,6 +298,7 @@ export interface CredentialDetail {
     protocol: string;
     /** Country profile associated with the credential. */
     profile?: string;
+    trustInformation?: TrustInformation;
 }
 export interface CredentialList {
     values: Array<CredentialListItem>;
@@ -738,9 +739,14 @@ export interface HolderAcceptCredentialRequest {
 export interface HolderRegisterWalletUnitRequest {
     /** The wallet unit's organization. */
     organisationId: string;
-    /** Reference the `walletProvider` configuration. */
+    /** Wallet Provider details. */
     walletProvider: WalletProvider;
+    /**
+     * Choose a key type and the system will generate a key to use for
+     * registration.
+     */
     keyType: string;
+    trustedRpRequired: boolean;
 }
 export interface HolderRegisterWalletUnitResponse {
     id: string;
@@ -756,9 +762,11 @@ export interface HolderWalletUnit {
     walletProviderName: string;
     status: WalletUnitStatus;
     authenticationKey?: KeyListItem;
+    trustedRpRequired: boolean;
 }
 export interface HolderWalletUnitUpdateRequest {
-    trustCollections: Array<string>;
+    trustCollections?: Array<string>;
+    trustedRpRequired?: boolean;
 }
 export interface IdentifierDetail {
     id: string;
@@ -1326,6 +1334,7 @@ export interface RegisterVerifierInstanceRequest {
     verifierProviderUrl: string;
     /** Reference a configured `verifierProvider` instance. */
     type: string;
+    trustedIssuerRequired: boolean;
 }
 export interface RegisterVerifierInstanceResponse {
     id: string;
@@ -1499,12 +1508,20 @@ export interface TrustEntityListQuery {
     lastModifiedAfter?: string;
     lastModifiedBefore?: string;
 }
+export interface TrustInformation {
+    receivedAt: string;
+    name?: string;
+    result: TrustResolutionResult;
+}
 export interface TrustInformationDetail {
     /**
      * EUDI trust information received from Access Certificates, Registration
      * Certificates, or National Registry public APIs.
      */
     eudiEcosystem?: EudiTrustInformation;
+}
+export interface TrustResolutionMetadata {
+    result: TrustResolutionResult;
 }
 export interface UnexportableEntities {
     credentials: Array<CredentialDetail>;
@@ -1527,7 +1544,8 @@ export interface UpdateRemoteTrustEntityRequest {
     role?: TrustEntityRole;
 }
 export interface UpdateVerifierInstanceRequest {
-    trustCollections: Array<string>;
+    trustCollections?: Array<string>;
+    trustedIssuerRequired?: boolean;
 }
 export interface UpsertOrganisationRequest {
     /** Unique identifier of the organization to create or update. */
@@ -1550,7 +1568,12 @@ export interface Version {
     pipelineId: string;
 }
 export interface WalletProvider {
+    /**
+     * Full URL for the GET Wallet Provider metadata endpoint,
+     * for example: <domain>/ssi/wallet-provider/v1/<walletProvider>
+     */
     url: string;
+    /** Choose the Wallet Provider implementation. */
     type: WalletProviderType;
 }
 export interface WalletRelyingPartyMetadata {
@@ -1618,7 +1641,9 @@ export declare enum CacheType {
     X509_CRL = "X509_CRL",
     ANDROID_ATTESTATION_CRL = "ANDROID_ATTESTATION_CRL",
     OPEN_ID_METADATA_HOLDER = "OPEN_ID_METADATA_HOLDER",
-    OPEN_ID_METADATA_ISSUER = "OPEN_ID_METADATA_ISSUER"
+    OPEN_ID_METADATA_ISSUER = "OPEN_ID_METADATA_ISSUER",
+    WALLET_PROVIDER_METADATA = "WALLET_PROVIDER_METADATA",
+    REMOTE_TRUST_COLLECTION = "REMOTE_TRUST_COLLECTION"
 }
 export declare enum CertificateRole {
     AUTHENTICATION = "AUTHENTICATION",
@@ -1806,7 +1831,8 @@ export declare enum HistoryAction {
     DELIVERED = "DELIVERED",
     WRP_AC_RECEIVED = "WRP_AC_RECEIVED",
     WRP_RC_RECEIVED = "WRP_RC_RECEIVED",
-    WRP_NR_RECEIVED = "WRP_NR_RECEIVED"
+    WRP_NR_RECEIVED = "WRP_NR_RECEIVED",
+    TRUST_RESOLVED = "TRUST_RESOLVED"
 }
 export declare enum HistoryEntityType {
     KEY = "KEY",
@@ -1850,6 +1876,9 @@ export type HistoryMetadata = {
 } | {
     type_: "WALLET_RELYING_PARTY";
     value: WalletRelyingPartyMetadata;
+} | {
+    type_: "TRUST_RESOLUTION";
+    value: TrustResolutionMetadata;
 };
 export declare enum HistorySearchType {
     ALL = "ALL",
@@ -2069,6 +2098,11 @@ export declare enum TrustEntityUpdateAction {
     ACTIVATE = "ACTIVATE",
     WITHDRAW = "WITHDRAW",
     REMOVE = "REMOVE"
+}
+export declare enum TrustResolutionResult {
+    TRUSTED = "TRUSTED",
+    UNTRUSTED = "UNTRUSTED",
+    UNKNOWN = "UNKNOWN"
 }
 export declare enum WalletProviderType {
     PROCIVIS_ONE = "PROCIVIS_ONE"

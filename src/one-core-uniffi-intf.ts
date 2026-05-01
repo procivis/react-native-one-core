@@ -331,6 +331,7 @@ export interface CredentialDetail {
   protocol: string;
   /** Country profile associated with the credential. */
   profile?: string;
+  trustInformation?: TrustInformation;
 }
 
 export interface CredentialList {
@@ -810,9 +811,14 @@ export interface HolderAcceptCredentialRequest {
 export interface HolderRegisterWalletUnitRequest {
   /** The wallet unit's organization. */
   organisationId: string;
-  /** Reference the `walletProvider` configuration. */
+  /** Wallet Provider details. */
   walletProvider: WalletProvider;
+  /**
+   * Choose a key type and the system will generate a key to use for
+   * registration.
+   */
   keyType: string;
+  trustedRpRequired: boolean;
 }
 
 export interface HolderRegisterWalletUnitResponse {
@@ -830,10 +836,12 @@ export interface HolderWalletUnit {
   walletProviderName: string;
   status: WalletUnitStatus;
   authenticationKey?: KeyListItem;
+  trustedRpRequired: boolean;
 }
 
 export interface HolderWalletUnitUpdateRequest {
-  trustCollections: Array<string>;
+  trustCollections?: Array<string>;
+  trustedRpRequired?: boolean;
 }
 
 export interface IdentifierDetail {
@@ -1454,6 +1462,7 @@ export interface RegisterVerifierInstanceRequest {
   verifierProviderUrl: string;
   /** Reference a configured `verifierProvider` instance. */
   type: string;
+  trustedIssuerRequired: boolean;
 }
 
 export interface RegisterVerifierInstanceResponse {
@@ -1649,12 +1658,22 @@ export interface TrustEntityListQuery {
   lastModifiedBefore?: string;
 }
 
+export interface TrustInformation {
+  receivedAt: string;
+  name?: string;
+  result: TrustResolutionResult;
+}
+
 export interface TrustInformationDetail {
   /**
    * EUDI trust information received from Access Certificates, Registration
    * Certificates, or National Registry public APIs.
    */
   eudiEcosystem?: EudiTrustInformation;
+}
+
+export interface TrustResolutionMetadata {
+  result: TrustResolutionResult;
 }
 
 export interface UnexportableEntities {
@@ -1680,7 +1699,8 @@ export interface UpdateRemoteTrustEntityRequest {
 }
 
 export interface UpdateVerifierInstanceRequest {
-  trustCollections: Array<string>;
+  trustCollections?: Array<string>;
+  trustedIssuerRequired?: boolean;
 }
 
 export interface UpsertOrganisationRequest {
@@ -1706,7 +1726,12 @@ export interface Version {
 }
 
 export interface WalletProvider {
+  /**
+   * Full URL for the GET Wallet Provider metadata endpoint,
+   * for example: <domain>/ssi/wallet-provider/v1/<walletProvider>
+   */
   url: string;
+  /** Choose the Wallet Provider implementation. */
   type: WalletProviderType;
 }
 
@@ -1802,6 +1827,8 @@ export enum CacheType {
   ANDROID_ATTESTATION_CRL = "ANDROID_ATTESTATION_CRL",
   OPEN_ID_METADATA_HOLDER = "OPEN_ID_METADATA_HOLDER",
   OPEN_ID_METADATA_ISSUER = "OPEN_ID_METADATA_ISSUER",
+  WALLET_PROVIDER_METADATA = "WALLET_PROVIDER_METADATA",
+  REMOTE_TRUST_COLLECTION = "REMOTE_TRUST_COLLECTION",
 }
 
 export enum CertificateRole {
@@ -2023,6 +2050,7 @@ export enum HistoryAction {
   WRP_AC_RECEIVED = "WRP_AC_RECEIVED",
   WRP_RC_RECEIVED = "WRP_RC_RECEIVED",
   WRP_NR_RECEIVED = "WRP_NR_RECEIVED",
+  TRUST_RESOLVED = "TRUST_RESOLVED",
 }
 
 export enum HistoryEntityType {
@@ -2072,6 +2100,10 @@ export type HistoryMetadata =
   | {
       type_: "WALLET_RELYING_PARTY";
       value: WalletRelyingPartyMetadata;
+    }
+  | {
+      type_: "TRUST_RESOLUTION";
+      value: TrustResolutionMetadata;
     };
 
 export enum HistorySearchType {
@@ -2346,6 +2378,12 @@ export enum TrustEntityUpdateAction {
   ACTIVATE = "ACTIVATE",
   WITHDRAW = "WITHDRAW",
   REMOVE = "REMOVE",
+}
+
+export enum TrustResolutionResult {
+  TRUSTED = "TRUSTED",
+  UNTRUSTED = "UNTRUSTED",
+  UNKNOWN = "UNKNOWN",
 }
 
 export enum WalletProviderType {
