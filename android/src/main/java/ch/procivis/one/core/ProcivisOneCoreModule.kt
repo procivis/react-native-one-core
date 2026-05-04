@@ -131,6 +131,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getOrganisation(organisationId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val organisation = getCore().getOrganisation(organisationId)
+            return@asyncCall convertToRN(organisation)
+        }
+    }
+
+    @ReactMethod
     fun generateKey(keyRequest: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             return@asyncCall getCore().generateKey(construct(keyRequest))

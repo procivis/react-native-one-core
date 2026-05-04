@@ -121,6 +121,18 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+    @objc(getOrganisation:resolver:rejecter:)
+    func getOrganisation(
+      organisationId: String,
+      resolve: @escaping RCTPromiseResolveBlock,
+      reject: @escaping RCTPromiseRejectBlock
+    ) {
+      asyncCall(resolve, reject) {
+        let result = try await self.getCore().getOrganisation(id: organisationId)
+        return try serializeAny(result)
+      }
+    }
+
   @objc(generateKey:resolver:rejecter:)
   func generateKey(
     keyRequest: NSDictionary,

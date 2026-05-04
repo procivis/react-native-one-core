@@ -826,6 +826,14 @@ export interface HolderRegisterWalletUnitResponse {
   status: WalletUnitStatus;
 }
 
+export interface HolderWalletInstanceDetail {
+  id: string;
+  trustedRpRequired: boolean;
+  walletProviderUrl: string;
+  walletProviderName: string;
+  authenticationKeyType: string;
+}
+
 export interface HolderWalletUnit {
   id: string;
   createdDate: string;
@@ -1109,6 +1117,29 @@ export interface OpenId4vciTxCode {
    * obtain the transaction code.
    */
   description?: string;
+}
+
+export interface OrganisationDetail {
+  id: string;
+  createdDate: string;
+  lastModified: string;
+  deactivatedAt?: string;
+  /**
+   * The parent organization this organization inherits policy-level
+   * configuration from, if any.
+   */
+  parentOrganisation?: string;
+  walletProvider?: WalletProviderDetail;
+  /**
+   * Wallet registration details for this organization's Business
+   * Wallet.
+   */
+  walletInstance?: HolderWalletInstanceDetail;
+  /**
+   * Wallet registration details for this organization's Business
+   * Wallet.
+   */
+  verifierInstance?: VerifierInstanceDetail;
 }
 
 export interface PeripheralDiscoveryData {
@@ -1715,6 +1746,11 @@ export interface UpsertOrganisationRequest {
   parentOrganisation?: string | null /* pass null to clear the value */;
 }
 
+export interface VerifierInstanceDetail {
+  id: string;
+  trustedIssuerRequired: boolean;
+}
+
 export interface Version {
   target: string;
   buildTime: string;
@@ -1733,6 +1769,16 @@ export interface WalletProvider {
   url: string;
   /** Choose the Wallet Provider implementation. */
   type: WalletProviderType;
+}
+
+export interface WalletProviderDetail {
+  /**
+   * Wallet Provider configuration used by this organization to provide
+   * wallets.
+   */
+  providerName?: string;
+  /** Identifier used by this organization to provide wallets. */
+  issuer?: IdentifierListItem;
 }
 
 export interface WalletRelyingPartyMetadata {
@@ -2585,6 +2631,8 @@ export interface OneCore {
   /** Returns details on a single event. */
   getHistoryEntry(historyId: string): Promise<HistoryListItem>;
   getIdentifier(id: string): Promise<IdentifierDetail>;
+  /** Returns details of an existing organization. */
+  getOrganisation(id: string): Promise<OrganisationDetail>;
   getPresentationDefinition(proofId: string): Promise<PresentationDefinition>;
   getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2>;
   /** Returns detailed information about a proof request. */
