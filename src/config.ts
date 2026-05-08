@@ -202,6 +202,7 @@ export interface CoreConfig {
   task: ConfigEntities;
   credentialIssuer: ConfigEntities<undefined, {}>;
   walletProvider: ConfigEntities;
+  verifierProvider: ConfigEntities<undefined, {}>;
 }
 
 // Typescript automatic assertions to keep the fields of ONECore Config and typed Config in sync

@@ -164,5 +164,6 @@ export interface CoreConfig {
     task: ConfigEntities;
     credentialIssuer: ConfigEntities<undefined, {}>;
     walletProvider: ConfigEntities;
+    verifierProvider: ConfigEntities<undefined, {}>;
 }
 export {};

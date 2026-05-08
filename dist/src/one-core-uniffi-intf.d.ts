@@ -91,6 +91,7 @@ export interface Config {
      * management, trust collections, and feature flags.
      */
     walletProvider: Record<string, string>;
+    verifierProvider: Record<string, string>;
 }
 export interface ContinueIssuanceResponse {
     /** For reference. */
@@ -746,6 +747,11 @@ export interface HolderRegisterWalletUnitRequest {
      * registration.
      */
     keyType: string;
+    /**
+     * When true, the wallet will only interact with entities that can be
+     * verified as trusted. Requires the Wallet Provider to have the
+     * `trustEcosystemsEnabled` feature flag enabled.
+     */
     trustedRpRequired: boolean;
 }
 export interface HolderRegisterWalletUnitResponse {
@@ -772,7 +778,19 @@ export interface HolderWalletUnit {
     trustedRpRequired: boolean;
 }
 export interface HolderWalletUnitUpdateRequest {
+    /**
+     * The trust collections the wallet subscribes to, selected from those
+     * made available by the Wallet Provider. The wallet will evaluate trust
+     * against the lists contained in these collections. To keep subscribed
+     * collections in sync with the Wallet Provider, run the
+     * `TRUST_COLLECTION_SYNC` task.
+     */
     trustCollections?: Array<string>;
+    /**
+     * When true, the wallet will only interact with entities that can be
+     * verified as trusted. Requires the Wallet Provider to have the
+     * `trustEcosystemsEnabled` feature flag enabled.
+     */
     trustedRpRequired?: boolean;
 }
 export interface IdentifierDetail {
@@ -1363,6 +1381,12 @@ export interface RegisterVerifierInstanceRequest {
     verifierProviderUrl: string;
     /** Reference a configured `verifierProvider` instance. */
     type: string;
+    /**
+     * When true, the verifier will only validate presentations of
+     * credentials issued by trusted issuers. Requires the Verifier
+     * Provider to have the `trustEcosystemsEnabled` feature flag
+     * enabled.
+     */
     trustedIssuerRequired: boolean;
 }
 export interface RegisterVerifierInstanceResponse {
@@ -1457,6 +1481,7 @@ export interface TrustAnchorListQuery {
     lastModifiedBefore?: string;
 }
 export interface TrustCollectionInfo {
+    /** When true, the wallet is subscribed to this trust collection. */
     selected: boolean;
     id: string;
     name: string;
@@ -1465,6 +1490,7 @@ export interface TrustCollectionInfo {
     description: Array<DisplayName>;
 }
 export interface TrustCollections {
+    /** Trust collections available from the Wallet Provider. */
     trustCollections: Array<TrustCollectionInfo>;
 }
 export interface TrustEntityCertificate {
@@ -1573,7 +1599,20 @@ export interface UpdateRemoteTrustEntityRequest {
     role?: TrustEntityRole;
 }
 export interface UpdateVerifierInstanceRequest {
+    /**
+     * The trust collections the verifier subscribes to, selected from
+     * those made available by the Verifier Provider. The verifier will
+     * evaluate trust against the lists contained in these collections.
+     * To keep subscribed collections in sync with the Verifier Provider,
+     * run the `TRUST_COLLECTION_SYNC` task.
+     */
     trustCollections?: Array<string>;
+    /**
+     * When true, the verifier will only validate presentations of
+     * credentials issued by trusted issuers. Requires the Verifier
+     * Provider to have the `trustEcosystemsEnabled` feature flag
+     * enabled.
+     */
     trustedIssuerRequired?: boolean;
 }
 export interface UpsertOrganisationRequest {
@@ -1585,10 +1624,20 @@ export interface UpsertOrganisationRequest {
     walletProvider?: string | null;
     /** Wallet Provider use only. */
     walletProviderIssuer?: string | null;
+    /**
+     * The parent organization this organization inherits policy-level
+     * configuration from, if any.
+     */
     parentOrganisation?: string | null;
 }
 export interface VerifierInstanceDetail {
     id: string;
+    /**
+     * When true, the verifier will only validate presentations of
+     * credentials issued by trusted issuers. Requires the Verifier
+     * Provider to have the `trustEcosystemsEnabled` feature flag
+     * enabled.
+     */
     trustedIssuerRequired: boolean;
 }
 export interface Version {
