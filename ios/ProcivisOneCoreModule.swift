@@ -510,7 +510,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   @objc(runTask:params:resolver:rejecter:)
   func runTask(
     task: String,
-    params: String,
+    params: String?,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
