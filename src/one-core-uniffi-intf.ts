@@ -90,8 +90,6 @@ export interface Config {
   keyAlgorithm: Record<string, string>;
   /** Storage options for keys. */
   keyStorage: Record<string, string>;
-  /** Trust management solutions. */
-  trustManagement: Record<string, string>;
   /** Entities held in temporary storage. */
   cacheEntities: Record<string, string>;
   /** Tasks which can be run via the `runTask` method. */
@@ -245,17 +243,6 @@ export interface CreateProofSchemaRequest {
   proofInputSchemas: Array<CreateProofSchemaInput>;
 }
 
-export interface CreateRemoteTrustEntityRequest {
-  didId: string;
-  trustAnchorId?: string;
-  name: string;
-  logo?: string;
-  termsUrl?: string;
-  privacyUrl?: string;
-  website?: string;
-  role: TrustEntityRole;
-}
-
 export interface CreateSelfSignedCertificateAuthorityIssuerAlternativeNameRequest {
   type: CreateSelfSignedCaRequestIssuerAlternativeNameType;
   name: string;
@@ -271,28 +258,6 @@ export interface CreateSelfSignedCertificateAuthorityRequest {
 export interface CreateSelfSignedCertificateAuthorityRequestContent {
   subject: CsrSubject;
   issuerAlternativeName?: CreateSelfSignedCertificateAuthorityIssuerAlternativeNameRequest;
-}
-
-export interface CreateTrustAnchorRequest {
-  name: string;
-  type: string;
-  isPublisher?: boolean;
-  publisherReference?: string;
-}
-
-export interface CreateTrustEntityRequest {
-  name: string;
-  logo?: string;
-  website?: string;
-  termsUrl?: string;
-  privacyUrl?: string;
-  role: TrustEntityRole;
-  trustAnchorId: string;
-  didId?: string;
-  type?: TrustEntityType;
-  identifierId?: string;
-  content?: string;
-  organisationId: string;
 }
 
 export interface CreatedBackup {
@@ -537,7 +502,10 @@ export interface CredentialSchemaListQuery {
   exact?: Array<CredentialSchemaListQueryExactColumn>;
   include?: Array<CredentialSchemaListIncludeEntityType>;
   schemaId?: string;
+  schemaIds?: Array<string>;
   formats?: Array<string>;
+  usesBatchIssuance?: boolean;
+  isMultiformatSchema?: boolean;
   createdDateAfter?: string;
   createdDateBefore?: string;
   lastModifiedAfter?: string;
@@ -1524,38 +1492,8 @@ export interface RegisterVerifierInstanceResponse {
   id: string;
 }
 
-export interface RemoteTrustEntityDetail {
-  id: string;
-  organisationId?: string;
-  createdDate: string;
-  lastModified: string;
-  name: string;
-  logo?: string;
-  website?: string;
-  termsUrl?: string;
-  privacyUrl?: string;
-  role: TrustEntityRole;
-  trustAnchor: TrustAnchorDetail;
-  did?: DidListItem;
-  state: TrustEntityState;
-}
-
-export interface ResolveTrustEntitiesRequest {
-  identifiers: Array<ResolveTrustEntityRequest>;
-}
-
-export interface ResolveTrustEntityRequest {
-  id: string;
-  certificateId?: string;
-}
-
 export interface ResolvedJsonLdContext {
   context: string;
-}
-
-export interface ResolvedTrustEntity {
-  trustEntity: TrustEntityDetail;
-  certificateIds?: Array<string>;
 }
 
 export interface ServiceDescription {
@@ -1583,48 +1521,6 @@ export interface ShareProofResponse {
   expiresAt?: string;
 }
 
-export interface TrustAnchorDetail {
-  id: string;
-  name: string;
-  createdDate: string;
-  lastModified: string;
-  type: string;
-  isPublisher: boolean;
-  publisherReference: string;
-}
-
-export interface TrustAnchorList {
-  values: Array<TrustAnchorListItem>;
-  totalPages: number /*u64*/;
-  totalItems: number /*u64*/;
-}
-
-export interface TrustAnchorListItem {
-  id: string;
-  name: string;
-  createdDate: string;
-  lastModified: string;
-  type: string;
-  isPublisher: boolean;
-  publisherReference: string;
-  entities: number /*u64*/;
-}
-
-export interface TrustAnchorListQuery {
-  page: number /*u32*/;
-  pageSize: number /*u32*/;
-  sort?: SortableTrustAnchorColumn;
-  sortDirection?: SortDirection;
-  name?: string;
-  isPublisher?: boolean;
-  type?: string;
-  exact?: Array<TrustAnchorListQueryExactColumn>;
-  createdDateAfter?: string;
-  createdDateBefore?: string;
-  lastModifiedAfter?: string;
-  lastModifiedBefore?: string;
-}
-
 export interface TrustCollectionInfo {
   /** When true, the wallet is subscribed to this trust collection. */
   selected: boolean;
@@ -1638,81 +1534,6 @@ export interface TrustCollectionInfo {
 export interface TrustCollections {
   /** Trust collections available from the Wallet Provider. */
   trustCollections: Array<TrustCollectionInfo>;
-}
-
-export interface TrustEntityCertificate {
-  state: CertificateState;
-  publicKey: string;
-  commonName?: string;
-  serialNumber: string;
-  notBefore: string;
-  notAfter: string;
-  issuer: string;
-  subject: string;
-  fingerprint: string;
-  extensions: Array<CertificateX509Extension>;
-}
-
-export interface TrustEntityDetail {
-  id: string;
-  organisationId?: string;
-  createdDate: string;
-  lastModified: string;
-  name: string;
-  logo?: string;
-  website?: string;
-  termsUrl?: string;
-  privacyUrl?: string;
-  role: TrustEntityRole;
-  trustAnchor: TrustAnchorDetail;
-  did?: DidListItem;
-  state: TrustEntityState;
-  entityKey: string;
-  type: TrustEntityType;
-  identifier?: IdentifierListItem;
-  content?: string;
-  ca?: TrustEntityCertificate;
-}
-
-export interface TrustEntityList {
-  values: Array<TrustEntityListItem>;
-  totalPages: number /*u64*/;
-  totalItems: number /*u64*/;
-}
-
-export interface TrustEntityListItem {
-  id: string;
-  name: string;
-  createdDate: string;
-  lastModified: string;
-  logo?: string;
-  website?: string;
-  termsUrl?: string;
-  state: TrustEntityState;
-  privacyUrl?: string;
-  role: TrustEntityRole;
-  trustAnchor: TrustAnchorDetail;
-  did?: DidListItem;
-}
-
-export interface TrustEntityListQuery {
-  page: number /*u32*/;
-  pageSize: number /*u32*/;
-  sort?: SortableTrustEntityColumn;
-  sortDirection?: SortDirection;
-  name?: string;
-  role?: TrustEntityRole;
-  trustAnchor?: string;
-  didId?: string;
-  organisationId?: string;
-  types?: Array<TrustEntityType>;
-  entityKey?: string;
-  states?: Array<TrustEntityState>;
-  exact?: Array<TrustEntityListQueryExactColumn>;
-  createdDateAfter?: string;
-  createdDateBefore?: string;
-  lastModifiedAfter?: string;
-  lastModifiedBefore?: string;
 }
 
 export interface TrustInformation {
@@ -1742,17 +1563,6 @@ export interface UnexportableEntities {
   totalKeys: number /*u64*/;
   totalDids: number /*u64*/;
   totalIdentifiers: number /*u64*/;
-}
-
-export interface UpdateRemoteTrustEntityRequest {
-  didId: string;
-  action?: TrustEntityUpdateAction;
-  name?: string;
-  logo?: string | null /* pass null to clear the value */;
-  website?: string | null /* pass null to clear the value */;
-  termsUrl?: string | null /* pass null to clear the value */;
-  privacyUrl?: string | null /* pass null to clear the value */;
-  role?: TrustEntityRole;
 }
 
 export interface UpdateVerifierInstanceRequest {
@@ -2159,8 +1969,6 @@ export enum HistoryEntityType {
   PROOF_SCHEMA = "PROOF_SCHEMA",
   ORGANISATION = "ORGANISATION",
   BACKUP = "BACKUP",
-  TRUST_ANCHOR = "TRUST_ANCHOR",
-  TRUST_ENTITY = "TRUST_ENTITY",
   WALLET_UNIT = "WALLET_UNIT",
   USER = "USER",
   PROVIDER = "PROVIDER",
@@ -2422,57 +2230,9 @@ export enum SortableProofSchemaColumn {
   CREATED_DATE = "CREATED_DATE",
 }
 
-export enum SortableTrustAnchorColumn {
-  NAME = "NAME",
-  CREATED_DATE = "CREATED_DATE",
-  TYPE = "TYPE",
-}
-
-export enum SortableTrustEntityColumn {
-  NAME = "NAME",
-  ROLE = "ROLE",
-  LAST_MODIFIED = "LAST_MODIFIED",
-  STATE = "STATE",
-}
-
 export enum TransactionCodeType {
   NUMERIC = "NUMERIC",
   ALPHANUMERIC = "ALPHANUMERIC",
-}
-
-export enum TrustAnchorListQueryExactColumn {
-  NAME = "NAME",
-  TYPE = "TYPE",
-}
-
-export enum TrustEntityListQueryExactColumn {
-  NAME = "NAME",
-}
-
-export enum TrustEntityRole {
-  ISSUER = "ISSUER",
-  VERIFIER = "VERIFIER",
-  BOTH = "BOTH",
-}
-
-export enum TrustEntityState {
-  ACTIVE = "ACTIVE",
-  REMOVED = "REMOVED",
-  WITHDRAWN = "WITHDRAWN",
-  REMOVED_AND_WITHDRAWN = "REMOVED_AND_WITHDRAWN",
-}
-
-export enum TrustEntityType {
-  DID = "DID",
-  /** certificate authority */
-  CA = "CA",
-}
-
-export enum TrustEntityUpdateAction {
-  ADMIN_ACTIVATE = "ADMIN_ACTIVATE",
-  ACTIVATE = "ACTIVATE",
-  WITHDRAW = "WITHDRAW",
-  REMOVE = "REMOVE",
 }
 
 export enum TrustResolutionResult {
@@ -2635,9 +2395,6 @@ export interface OneCore {
    * before building a proof schema that includes their claims.
    */
   createProofSchema(request: CreateProofSchemaRequest): Promise<string>;
-  createRemoteTrustEntity(request: CreateRemoteTrustEntityRequest): Promise<string>;
-  createTrustAnchor(anchor: CreateTrustAnchorRequest): Promise<string>;
-  createTrustEntity(request: CreateTrustEntityRequest): Promise<string>;
   /**
    * Deletes the system cache. See the
    * [Caching](https://docs.procivis.ch/configure/caching#cached-entities)
@@ -2655,7 +2412,6 @@ export interface OneCore {
   deleteProof(proofId: string): Promise<void>;
   deleteProofClaims(proofId: string): Promise<void>;
   deleteProofSchema(proofSchemaId: string): Promise<void>;
-  deleteTrustAnchor(anchorId: string): Promise<void>;
   /**
    * Commits to the restored database, replacing the original. The old
    * database is deleted.
@@ -2692,10 +2448,6 @@ export interface OneCore {
    * proof request.
    */
   getProofTrustInformation(proofId: string): Promise<TrustInformationDetail>;
-  getRemoteTrustEntity(didId: string): Promise<RemoteTrustEntityDetail>;
-  getTrustAnchor(trustAnchorId: string): Promise<TrustAnchorDetail>;
-  getTrustEntity(trustEntityId: string): Promise<TrustEntityDetail>;
-  getTrustEntityByDid(didId: string): Promise<TrustEntityDetail>;
   /** Returns trust collections curated by the Verifier Provider. */
   getVerifierInstanceTrustCollections(id: string): Promise<TrustCollections>;
   /**
@@ -2758,8 +2510,6 @@ export interface OneCore {
   listProofSchemas(filter: ProofSchemaListQuery): Promise<ProofSchemaList>;
   /** Returns a filterable list of proof requests. */
   listProofs(query: ProofListQuery): Promise<ProofList>;
-  listTrustAnchors(filters: TrustAnchorListQuery): Promise<TrustAnchorList>;
-  listTrustEntities(filters: TrustEntityListQuery): Promise<TrustEntityList>;
   /** Scan NFC for ISO 18013-5 engagment. */
   nfcReadIsoMdlEngagement(request: NfcScanRequest): Promise<string>;
   /** Cancel previously started NFC scan via `nfc_read_iso_mdl_engagement`. */
@@ -2774,7 +2524,6 @@ export interface OneCore {
   registerVerifierInstance(request: RegisterVerifierInstanceRequest): Promise<RegisterVerifierInstanceResponse>;
   /** Returns the @context of a JSON-LD credential. The result is cached. */
   resolveJsonldContext(url: string): Promise<ResolvedJsonLdContext>;
-  resolveTrustEntityByIdentifier(request: ResolveTrustEntitiesRequest): Promise<Record<string, Array<ResolvedTrustEntity>>>;
   /** Discards the restored database and continues using the original. */
   rollbackImport(): Promise<void>;
   /**
@@ -2803,7 +2552,6 @@ export interface OneCore {
    * Follow by calling either `finalizeImport` or `rollbackImport`.
    */
   unpackBackup(password: string, inputPath: string): Promise<Metadata>;
-  updateRemoteTrustEntity(request: UpdateRemoteTrustEntityRequest): Promise<void>;
   /** Modifies verifier unit's settings. */
   updateVerifierInstance(id: string, request: UpdateVerifierInstanceRequest): Promise<void>;
   /**

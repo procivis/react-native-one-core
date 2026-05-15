@@ -1,4 +1,4 @@
-import { TrustEntityType, IdentifierType } from "./one-core-uniffi-intf";
+import { IdentifierType } from "./one-core-uniffi-intf";
 export declare enum KeyAlgorithmFeature {
     GENERATE_CSR = "GENERATE_CSR"
 }
@@ -140,14 +140,6 @@ export interface VerificationProtocolCapabilities {
     verifierIdentifierTypes: IdentifierType[];
     supportedPresentationDefinition: PresentationDefinitionVersion[];
 }
-export declare enum TrustOperation {
-    Publish = "PUBLISH",
-    Lookup = "LOOKUP"
-}
-export interface TrustCapabilities {
-    operations: TrustOperation[];
-    supportedTypes: TrustEntityType[];
-}
 export interface CoreConfig {
     format: ConfigEntities<FormatCapabilities>;
     issuanceProtocol: ConfigEntities<IssuanceProtocolCapabilities>;
@@ -159,7 +151,6 @@ export interface CoreConfig {
     datatype: ConfigEntities<undefined, DataTypeParams>;
     keyAlgorithm: ConfigEntities<KeyAlgorithmCapabilities, {}>;
     keyStorage: ConfigEntities<KeyStorageCapabilities>;
-    trustManagement: ConfigEntities<TrustCapabilities>;
     cacheEntities: ConfigEntities;
     task: ConfigEntities;
     credentialIssuer: ConfigEntities<undefined, {}>;

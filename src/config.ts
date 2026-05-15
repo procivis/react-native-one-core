@@ -1,5 +1,4 @@
 import {
-  TrustEntityType,
   Config,
   IdentifierType,
 } from "./one-core-uniffi-intf";
@@ -176,16 +175,6 @@ export interface VerificationProtocolCapabilities {
   supportedPresentationDefinition: PresentationDefinitionVersion[];
 }
 
-export enum TrustOperation {
-  Publish = "PUBLISH",
-  Lookup = "LOOKUP",
-}
-
-export interface TrustCapabilities {
-  operations: TrustOperation[];
-  supportedTypes: TrustEntityType[];
-}
-
 export interface CoreConfig {
   format: ConfigEntities<FormatCapabilities>;
   issuanceProtocol: ConfigEntities<IssuanceProtocolCapabilities>;
@@ -197,7 +186,6 @@ export interface CoreConfig {
   datatype: ConfigEntities<undefined, DataTypeParams>;
   keyAlgorithm: ConfigEntities<KeyAlgorithmCapabilities, {}>;
   keyStorage: ConfigEntities<KeyStorageCapabilities>;
-  trustManagement: ConfigEntities<TrustCapabilities>;
   cacheEntities: ConfigEntities;
   task: ConfigEntities;
   credentialIssuer: ConfigEntities<undefined, {}>;

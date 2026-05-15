@@ -175,8 +175,6 @@ export var HistoryEntityType;
     HistoryEntityType["PROOF_SCHEMA"] = "PROOF_SCHEMA";
     HistoryEntityType["ORGANISATION"] = "ORGANISATION";
     HistoryEntityType["BACKUP"] = "BACKUP";
-    HistoryEntityType["TRUST_ANCHOR"] = "TRUST_ANCHOR";
-    HistoryEntityType["TRUST_ENTITY"] = "TRUST_ENTITY";
     HistoryEntityType["WALLET_UNIT"] = "WALLET_UNIT";
     HistoryEntityType["USER"] = "USER";
     HistoryEntityType["PROVIDER"] = "PROVIDER";
@@ -336,59 +334,11 @@ export var SortableProofSchemaColumn;
     SortableProofSchemaColumn["NAME"] = "NAME";
     SortableProofSchemaColumn["CREATED_DATE"] = "CREATED_DATE";
 })(SortableProofSchemaColumn || (SortableProofSchemaColumn = {}));
-export var SortableTrustAnchorColumn;
-(function (SortableTrustAnchorColumn) {
-    SortableTrustAnchorColumn["NAME"] = "NAME";
-    SortableTrustAnchorColumn["CREATED_DATE"] = "CREATED_DATE";
-    SortableTrustAnchorColumn["TYPE"] = "TYPE";
-})(SortableTrustAnchorColumn || (SortableTrustAnchorColumn = {}));
-export var SortableTrustEntityColumn;
-(function (SortableTrustEntityColumn) {
-    SortableTrustEntityColumn["NAME"] = "NAME";
-    SortableTrustEntityColumn["ROLE"] = "ROLE";
-    SortableTrustEntityColumn["LAST_MODIFIED"] = "LAST_MODIFIED";
-    SortableTrustEntityColumn["STATE"] = "STATE";
-})(SortableTrustEntityColumn || (SortableTrustEntityColumn = {}));
 export var TransactionCodeType;
 (function (TransactionCodeType) {
     TransactionCodeType["NUMERIC"] = "NUMERIC";
     TransactionCodeType["ALPHANUMERIC"] = "ALPHANUMERIC";
 })(TransactionCodeType || (TransactionCodeType = {}));
-export var TrustAnchorListQueryExactColumn;
-(function (TrustAnchorListQueryExactColumn) {
-    TrustAnchorListQueryExactColumn["NAME"] = "NAME";
-    TrustAnchorListQueryExactColumn["TYPE"] = "TYPE";
-})(TrustAnchorListQueryExactColumn || (TrustAnchorListQueryExactColumn = {}));
-export var TrustEntityListQueryExactColumn;
-(function (TrustEntityListQueryExactColumn) {
-    TrustEntityListQueryExactColumn["NAME"] = "NAME";
-})(TrustEntityListQueryExactColumn || (TrustEntityListQueryExactColumn = {}));
-export var TrustEntityRole;
-(function (TrustEntityRole) {
-    TrustEntityRole["ISSUER"] = "ISSUER";
-    TrustEntityRole["VERIFIER"] = "VERIFIER";
-    TrustEntityRole["BOTH"] = "BOTH";
-})(TrustEntityRole || (TrustEntityRole = {}));
-export var TrustEntityState;
-(function (TrustEntityState) {
-    TrustEntityState["ACTIVE"] = "ACTIVE";
-    TrustEntityState["REMOVED"] = "REMOVED";
-    TrustEntityState["WITHDRAWN"] = "WITHDRAWN";
-    TrustEntityState["REMOVED_AND_WITHDRAWN"] = "REMOVED_AND_WITHDRAWN";
-})(TrustEntityState || (TrustEntityState = {}));
-export var TrustEntityType;
-(function (TrustEntityType) {
-    TrustEntityType["DID"] = "DID";
-    /** certificate authority */
-    TrustEntityType["CA"] = "CA";
-})(TrustEntityType || (TrustEntityType = {}));
-export var TrustEntityUpdateAction;
-(function (TrustEntityUpdateAction) {
-    TrustEntityUpdateAction["ADMIN_ACTIVATE"] = "ADMIN_ACTIVATE";
-    TrustEntityUpdateAction["ACTIVATE"] = "ACTIVATE";
-    TrustEntityUpdateAction["WITHDRAW"] = "WITHDRAW";
-    TrustEntityUpdateAction["REMOVE"] = "REMOVE";
-})(TrustEntityUpdateAction || (TrustEntityUpdateAction = {}));
 export var TrustResolutionResult;
 (function (TrustResolutionResult) {
     TrustResolutionResult["TRUSTED"] = "TRUSTED";

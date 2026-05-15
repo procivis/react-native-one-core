@@ -58,11 +58,6 @@ export var PresentationDefinitionVersion;
     PresentationDefinitionVersion["V1"] = "V1";
     PresentationDefinitionVersion["V2"] = "V2";
 })(PresentationDefinitionVersion || (PresentationDefinitionVersion = {}));
-export var TrustOperation;
-(function (TrustOperation) {
-    TrustOperation["Publish"] = "PUBLISH";
-    TrustOperation["Lookup"] = "LOOKUP";
-})(TrustOperation || (TrustOperation = {}));
 // Typescript automatic assertions to keep the fields of ONECore Config and typed Config in sync
 /** assert that all fields listed in {@link CoreConfig} exist in {@link Config} */
 const missingFieldsCheck = null;
