@@ -208,7 +208,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         promise: Promise
     ) {
         asyncCall(promise, scope) {
-            return@asyncCall getCore().holderAcceptCredential(construct(request))
+            val result = getCore().holderAcceptCredential(construct(request))
+            return@asyncCall convertToRN(result)
         }
     }
 
@@ -217,6 +218,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         asyncCall(promise, scope) {
             getCore().holderRejectCredential(interactionId)
             return@asyncCall null
+        }
+    }
+
+    @ReactMethod
+    fun holderRefreshCredential(interactionId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().holderRefreshCredential(interactionId)
+            return@asyncCall convertToRN(result)
         }
     }
 

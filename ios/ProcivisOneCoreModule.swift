@@ -233,7 +233,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      return try await self.getCore().holderAcceptCredential(request: try deserialize(request))
+      let result = try await self.getCore().holderAcceptCredential(request: try deserialize(request))
+      return try serializeAny(result)
     }
   }
 
@@ -246,6 +247,18 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     asyncCall(resolve, reject) {
       try await self.getCore().holderRejectCredential(interactionId: interactionId)
       return nil as NSDictionary?
+    }
+  }
+
+  @objc(holderRefreshCredential:resolver:rejecter:)
+  func holderRefreshCredential(
+    interactionId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().holderRefreshCredential(interactionId: interactionId)
+      return try serializeAny(result)
     }
   }
 

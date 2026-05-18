@@ -259,6 +259,7 @@ export interface CredentialDetail {
      * this value will be `VERIFIER`.
      */
     role: CredentialRole;
+    interactionId?: string;
     /** Scheduled date for credential reactivation. */
     suspendEndDate?: string;
     /** Validity details for ISO mdocs. */
@@ -707,6 +708,12 @@ export interface HolderAcceptCredentialRequest {
     keyId?: string;
     /** User-provided transaction code. */
     txCode?: string;
+}
+export interface HolderAcceptCredentialResponse {
+    credentialIds: Array<string>;
+}
+export interface HolderRefreshCredentialResponse {
+    credentialIds: Array<string>;
 }
 export interface HolderRegisterWalletUnitRequest {
     /** The wallet unit's organization. */
@@ -2188,11 +2195,13 @@ export interface OneCore {
      * identifier that matches issuer's restrictions. Alternatively,
      * you can specify an existing identifier.
      */
-    holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
+    holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<HolderAcceptCredentialResponse>;
     /** Returns wallet registration details from the Wallet Provider. */
     holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
     /** Returns trust collections curated by the Wallet Provider. */
     holderGetWalletUnitTrustCollections(id: string): Promise<TrustCollections>;
+    /** Receive a new credential batch */
+    holderRefreshCredential(interactionId: string): Promise<HolderRefreshCredentialResponse>;
     /** Registers the wallet unit with a Wallet Provider. */
     holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<HolderRegisterWalletUnitResponse>;
     /** Rejects an offered credential. */
