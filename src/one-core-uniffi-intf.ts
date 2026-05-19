@@ -67,6 +67,7 @@ export interface ClaimSchema {
   required: boolean;
   array: boolean;
   claims: Array<ClaimSchema>;
+  translations: CredentialClaimSchemaTranslations;
 }
 
 export interface Config {
@@ -266,6 +267,10 @@ export interface CreatedBackup {
   unexportable: UnexportableEntities;
 }
 
+export interface CredentialClaimSchemaTranslations {
+  name: Record<string, string>;
+}
+
 export interface CredentialDetail {
   id: string;
   createdDate: string;
@@ -459,6 +464,7 @@ export interface CredentialSchemaDetail {
   allowSuspension: boolean;
   requiresWalletInstanceAttestation: boolean;
   transactionCode?: CredentialSchemaTransactionCode;
+  translations: CredentialSchemaTranslations;
 }
 
 export interface CredentialSchemaLayoutProperties {
@@ -490,6 +496,7 @@ export interface CredentialSchemaListItem {
   layoutProperties?: CredentialSchemaLayoutProperties;
   allowSuspension: boolean;
   requiresWalletInstanceAttestation: boolean;
+  translations: CredentialSchemaTranslations;
 }
 
 export interface CredentialSchemaListQuery {
@@ -527,6 +534,11 @@ export interface CredentialSchemaTransactionCode {
   type: TransactionCodeType;
   length: number /*u32*/;
   description?: string;
+}
+
+export interface CredentialSchemaTranslations {
+  name: Record<string, string>;
+  description?: Record<string, string>;
 }
 
 export interface CredentialSet {
@@ -1286,6 +1298,8 @@ export interface ProofDetail {
   claimsRemovedAt?: string;
   /** Country profile associated with this request. */
   profile?: string;
+  /** Trust information of the verifier, if any. */
+  trustInformation?: TrustInformation;
 }
 
 export interface ProofInput {

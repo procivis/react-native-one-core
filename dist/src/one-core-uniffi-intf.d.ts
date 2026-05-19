@@ -56,6 +56,7 @@ export interface ClaimSchema {
     required: boolean;
     array: boolean;
     claims: Array<ClaimSchema>;
+    translations: CredentialClaimSchemaTranslations;
 }
 export interface Config {
     /** Credential formats. */
@@ -235,6 +236,9 @@ export interface CreatedBackup {
     historyId: string;
     file: string;
     unexportable: UnexportableEntities;
+}
+export interface CredentialClaimSchemaTranslations {
+    name: Record<string, string>;
 }
 export interface CredentialDetail {
     id: string;
@@ -420,6 +424,7 @@ export interface CredentialSchemaDetail {
     allowSuspension: boolean;
     requiresWalletInstanceAttestation: boolean;
     transactionCode?: CredentialSchemaTransactionCode;
+    translations: CredentialSchemaTranslations;
 }
 export interface CredentialSchemaLayoutProperties {
     background?: CredentialSchemaBackgroundProperties;
@@ -448,6 +453,7 @@ export interface CredentialSchemaListItem {
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
     requiresWalletInstanceAttestation: boolean;
+    translations: CredentialSchemaTranslations;
 }
 export interface CredentialSchemaListQuery {
     page: number;
@@ -481,6 +487,10 @@ export interface CredentialSchemaTransactionCode {
     type: TransactionCodeType;
     length: number;
     description?: string;
+}
+export interface CredentialSchemaTranslations {
+    name: Record<string, string>;
+    description?: Record<string, string>;
 }
 export interface CredentialSet {
     required: boolean;
@@ -1170,6 +1180,8 @@ export interface ProofDetail {
     claimsRemovedAt?: string;
     /** Country profile associated with this request. */
     profile?: string;
+    /** Trust information of the verifier, if any. */
+    trustInformation?: TrustInformation;
 }
 export interface ProofInput {
     /** Set of claims asserted by the shared credential. */
