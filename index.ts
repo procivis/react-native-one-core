@@ -31,11 +31,14 @@ const originalGetConfig: () => Promise<
 > = ONE?.getConfig;
 if (originalGetConfig) {
   ONE.getConfig = () =>
-    originalGetConfig().then((config) =>
-      objectMap(config, (entities) =>
-        objectMap(entities, (json) => JSON.parse(json))
-      )
-    );
+    originalGetConfig().then((config) => {
+      const defaultLanguage = config.defaultLanguage;
+      delete config.defaultLanguage;
+      const providers = objectMap(config, (entities) =>
+        objectMap(entities, (json) => JSON.parse(json)),
+      );
+      return { ...providers, defaultLanguage };
+    });
 }
 
 /**
@@ -45,7 +48,7 @@ if (originalGetConfig) {
  * @returns ONE Core instance
  */
 export async function initializeCore(
-  config: Record<string, unknown> = {}
+  config: Record<string, unknown> = {},
 ): Promise<ONECore> {
   await wrapFn(ONE.initialize, "initializeCore")(JSON.stringify(config));
   return wrapObj(ONE);
@@ -55,7 +58,7 @@ export async function initializeCore(
 // returns a new object with the values at each key mapped using fn(value)
 const objectMap = <Source, Result>(
   obj: Record<string, Source>,
-  fn: (value: Source) => Result
+  fn: (value: Source) => Result,
 ): Record<string, Result> =>
   Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, fn(v)]));
 
@@ -64,7 +67,7 @@ const objectMap = <Source, Result>(
 
 function wrapFn<Fn extends (...args: any[]) => Promise<any>>(
   fn: Fn,
-  operation: string
+  operation: string,
 ) {
   return (...args: any[]) => {
     const errHandler = (e: unknown) => {
@@ -101,13 +104,13 @@ function wrapFn<Fn extends (...args: any[]) => Promise<any>>(
 }
 
 function wrapObj<T extends Record<string, (...args: any[]) => Promise<any>>>(
-  obj: T
+  obj: T,
 ): T {
   return Object.entries(obj).reduce(
     (aggr, [key, fn]) => ({
       ...aggr,
       [key]: typeof fn === "function" ? wrapFn(fn, key) : fn,
     }),
-    {} as T
+    {} as T,
   );
 }
