@@ -44,7 +44,7 @@ export interface CharacteristicSettings {
 }
 export interface Claim {
     path: string;
-    schema: ClaimSchema;
+    schema: ClaimSchemaInfo;
     value: ClaimValue;
 }
 export interface ClaimSchema {
@@ -56,6 +56,18 @@ export interface ClaimSchema {
     required: boolean;
     array: boolean;
     claims: Array<ClaimSchema>;
+    mappings?: Array<CredentialClaimSchemaMapping>;
+    translations: CredentialClaimSchemaTranslations;
+}
+export interface ClaimSchemaInfo {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    key: string;
+    datatype: string;
+    required: boolean;
+    array: boolean;
+    claims: Array<ClaimSchemaInfo>;
     translations: CredentialClaimSchemaTranslations;
 }
 export interface Config {
@@ -91,6 +103,7 @@ export interface Config {
      */
     walletProvider: Record<string, string>;
     verifierProvider: Record<string, string>;
+    defaultLanguage: string;
 }
 export interface ContinueIssuanceResponse {
     /** For reference. */
@@ -115,6 +128,21 @@ export interface CreateCertificateRequest {
     chain: string;
     keyId: string;
     roles: Array<CertificateRole>;
+}
+export interface CreateCredentialSchemaRequest {
+    name: string;
+    formats: Array<CredentialSchemaFormatRequest>;
+    organisationId: string;
+    claims: Array<CredentialClaimSchemaRequest>;
+    keyStorageSecurity?: KeyStorageSecurity;
+    layoutType: LayoutType;
+    layoutProperties?: CredentialSchemaLayoutProperties;
+    allowSuspension?: boolean;
+    allowRevocation?: boolean;
+    batchSize?: number;
+    requiresWalletInstanceAttestation: boolean;
+    transactionCode?: CredentialSchemaTransactionCodeRequest;
+    translations?: CredentialSchemaTranslations;
 }
 export interface CreateDidRequest {
     organisationId: string;
@@ -237,6 +265,20 @@ export interface CreatedBackup {
     file: string;
     unexportable: UnexportableEntities;
 }
+export interface CredentialClaimSchemaMapping {
+    format: string;
+    technicalKey: string;
+    namespace?: string;
+}
+export interface CredentialClaimSchemaRequest {
+    key: string;
+    datatype: string;
+    required: boolean;
+    array?: boolean;
+    claims: Array<CredentialClaimSchemaRequest>;
+    mappings?: Array<CredentialClaimSchemaMapping>;
+    translations?: CredentialClaimSchemaTranslations;
+}
 export interface CredentialClaimSchemaTranslations {
     name: Record<string, string>;
 }
@@ -253,7 +295,7 @@ export interface CredentialDetail {
     /** State representation of the credential in the system. */
     state: CredentialState;
     /** Schema of the credential. */
-    schema: CredentialSchemaListItem;
+    schema: CredentialSchemaInfo;
     claims: Array<Claim>;
     redirectUri?: string;
     /**
@@ -290,7 +332,7 @@ export interface CredentialListItem {
     /** State representation of the credential in the system. */
     state: CredentialState;
     /** Schema of the credential. */
-    schema: CredentialSchemaListItem;
+    schema: CredentialSchemaInfo;
     /**
      * The role the system has in relation to the credential. For example,
      * if the system received the credential as a wallet this value will
@@ -392,7 +434,7 @@ export interface CredentialQuery {
 }
 export interface CredentialQueryFailureHint {
     reason: CredentialQueryFailureReason;
-    credentialSchema?: CredentialSchemaDetail;
+    credentialSchema?: CredentialSchemaDetailInfo;
 }
 export interface CredentialRevocationCheckResponse {
     credentialId: string;
@@ -413,9 +455,28 @@ export interface CredentialSchemaDetail {
     createdDate: string;
     lastModified: string;
     name: string;
+    formats: Array<CredentialSchemaFormatResponse>;
+    organisationId: string;
+    claims: Array<ClaimSchema>;
+    keyStorageSecurity?: KeyStorageSecurity;
+    importedSourceUrl: string;
+    layoutType?: LayoutType;
+    layoutProperties?: CredentialSchemaLayoutProperties;
+    allowSuspension: boolean;
+    allowRevocation?: boolean;
+    batchSize?: number;
+    requiresWalletInstanceAttestation: boolean;
+    transactionCode?: CredentialSchemaTransactionCode;
+    translations: CredentialSchemaTranslations;
+}
+export interface CredentialSchemaDetailInfo {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
     format: string;
     revocationMethod?: string;
-    claims: Array<ClaimSchema>;
+    claims: Array<ClaimSchemaInfo>;
     keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
     importedSourceUrl: string;
@@ -425,6 +486,30 @@ export interface CredentialSchemaDetail {
     requiresWalletInstanceAttestation: boolean;
     transactionCode?: CredentialSchemaTransactionCode;
     translations: CredentialSchemaTranslations;
+}
+export interface CredentialSchemaFormatRequest {
+    format: string;
+    schemaId?: string;
+}
+export interface CredentialSchemaFormatResponse {
+    format: string;
+    schemaId: string;
+}
+export interface CredentialSchemaInfo {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    name: string;
+    format: string;
+    revocationMethod?: string;
+    keyStorageSecurity?: KeyStorageSecurity;
+    schemaId: string;
+    layoutType?: LayoutType;
+    importedSourceUrl: string;
+    layoutProperties?: CredentialSchemaLayoutProperties;
+    allowSuspension: boolean;
+    requiresWalletInstanceAttestation: boolean;
+    translations?: CredentialSchemaTranslations;
 }
 export interface CredentialSchemaLayoutProperties {
     background?: CredentialSchemaBackgroundProperties;
@@ -444,16 +529,15 @@ export interface CredentialSchemaListItem {
     createdDate: string;
     lastModified: string;
     name: string;
-    format: string;
-    revocationMethod?: string;
+    formats: Array<CredentialSchemaFormatResponse>;
     keyStorageSecurity?: KeyStorageSecurity;
-    schemaId: string;
-    layoutType?: LayoutType;
     importedSourceUrl: string;
+    layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
+    allowRevocation?: boolean;
+    batchSize?: number;
     requiresWalletInstanceAttestation: boolean;
-    translations: CredentialSchemaTranslations;
 }
 export interface CredentialSchemaListQuery {
     page: number;
@@ -484,6 +568,11 @@ export interface CredentialSchemaShareResponse {
     url: string;
 }
 export interface CredentialSchemaTransactionCode {
+    type: TransactionCodeType;
+    length: number;
+    description?: string;
+}
+export interface CredentialSchemaTransactionCodeRequest {
     type: TransactionCodeType;
     length: number;
     description?: string;
@@ -850,6 +939,11 @@ export interface ImportCredentialSchemaClaimSchema {
     datatype: string;
     array?: boolean;
     claims?: Array<ImportCredentialSchemaClaimSchema>;
+    mappings?: Array<CredentialClaimSchemaMapping>;
+}
+export interface ImportCredentialSchemaFormat {
+    format: string;
+    schemaId: string;
 }
 export interface ImportCredentialSchemaLayoutProperties {
     background?: CredentialSchemaBackgroundProperties;
@@ -868,18 +962,19 @@ export interface ImportCredentialSchemaRequestSchema {
     createdDate: string;
     lastModified: string;
     name: string;
-    format: string;
-    revocationMethod: string;
+    formats: Array<ImportCredentialSchemaFormat>;
     organisationId: string;
     claims: Array<ImportCredentialSchemaClaimSchema>;
     keyStorageSecurity?: KeyStorageSecurity;
-    schemaId: string;
     importedSourceUrl: string;
     layoutType?: LayoutType;
     layoutProperties?: ImportCredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
     requiresWalletInstanceAttestation?: boolean;
     transactionCode?: ImportCredentialSchemaTransactionCode;
+    allowRevocation?: boolean;
+    batchSize?: number;
+    translations?: CredentialSchemaTranslations;
 }
 export interface ImportCredentialSchemaTransactionCode {
     type: TransactionCodeType;
@@ -1089,7 +1184,7 @@ export interface PresentationDefinitionV2 {
 }
 export interface PresentationDefinitionV2Claim {
     path: string;
-    schema: ClaimSchema;
+    schema: ClaimSchemaInfo;
     value: PresentationDefinitionV2ClaimValue;
     userSelection: boolean;
     required: boolean;
@@ -1104,7 +1199,7 @@ export interface PresentationDefinitionV2Credential {
     issuerCertificate?: CertificateDetail;
     holder?: IdentifierListItem;
     state: CredentialState;
-    schema: CredentialSchemaListItem;
+    schema: CredentialSchemaInfo;
     claims: Array<PresentationDefinitionV2Claim>;
     redirectUri?: string;
     role: CredentialRole;
@@ -1189,11 +1284,11 @@ export interface ProofInput {
     /** Shared credential metadata. */
     credential?: CredentialDetail;
     /** Credential schema metadata. */
-    credentialSchema: CredentialSchemaListItem;
+    credentialSchema: CredentialSchemaInfo;
 }
 export interface ProofInputSchema {
     claimSchemas: Array<ProofClaimSchema>;
-    credentialSchema: CredentialSchemaListItem;
+    credentialSchema: CredentialSchemaInfo;
 }
 export interface ProofList {
     values: Array<ProofListItem>;
@@ -1647,7 +1742,7 @@ export declare enum CreateSelfSignedCaRequestIssuerAlternativeNameType {
 }
 export declare enum CredentialListIncludeEntityType {
     LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES",
-    CREDENTIAL = "CREDENTIAL"
+    TRANSLATIONS = "TRANSLATIONS"
 }
 export declare enum CredentialListQueryExactColumn {
     NAME = "NAME"
@@ -1673,7 +1768,8 @@ export declare enum CredentialSchemaCodeType {
     QR_CODE = "QR_CODE"
 }
 export declare enum CredentialSchemaListIncludeEntityType {
-    LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES"
+    LAYOUT_PROPERTIES = "LAYOUT_PROPERTIES",
+    TRANSLATIONS = "TRANSLATIONS"
 }
 export declare enum CredentialSchemaListQueryExactColumn {
     NAME = "NAME",
@@ -2122,6 +2218,8 @@ export interface OneCore {
     continueIssuance(url: string): Promise<ContinueIssuanceResponse>;
     /** Creates a backup of the current database and writes it to a file. */
     createBackup(password: string, outputPath: string): Promise<CreatedBackup>;
+    /** Creates a credential schema */
+    createCredentialSchema(request: CreateCredentialSchemaRequest): Promise<string>;
     /** Deprecated. Use the `createIdentifier` method. */
     createDid(request: CreateDidRequest): Promise<string>;
     /** Creates a new identifier. */

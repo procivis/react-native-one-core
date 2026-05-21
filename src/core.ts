@@ -45,6 +45,7 @@ export const interfaceMethodNames = [
   "deleteCredential",
   "importCredentialSchema",
   "getCredentialSchema",
+  "createCredentialSchema",
   "listCredentialSchemas",
   "deleteCredentialSchema",
   "createProof",

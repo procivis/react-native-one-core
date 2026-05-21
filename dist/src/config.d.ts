@@ -156,5 +156,6 @@ export interface CoreConfig {
     credentialIssuer: ConfigEntities<undefined, {}>;
     walletProvider: ConfigEntities;
     verifierProvider: ConfigEntities<undefined, {}>;
+    defaultLanguage: string;
 }
 export {};

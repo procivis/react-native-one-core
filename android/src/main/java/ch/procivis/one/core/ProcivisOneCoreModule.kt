@@ -392,6 +392,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun createCredentialSchema(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            return@asyncCall getCore().createCredentialSchema(construct(request))
+        }
+    }
+
+    @ReactMethod
     fun listCredentialSchemas(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             val schemas = getCore().listCredentialSchemas(construct(query))

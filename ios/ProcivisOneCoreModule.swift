@@ -427,6 +427,17 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(createCredentialSchema:resolver:rejecter:)
+  func createCredentialSchema(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      return try await self.getCore().createCredentialSchema(request: try deserialize(request))
+    }
+  }
+
   @objc(listCredentialSchemas:resolver:rejecter:)
   func listCredentialSchemas(
     query: NSDictionary,

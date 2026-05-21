@@ -67,7 +67,7 @@ export var CreateSelfSignedCaRequestIssuerAlternativeNameType;
 export var CredentialListIncludeEntityType;
 (function (CredentialListIncludeEntityType) {
     CredentialListIncludeEntityType["LAYOUT_PROPERTIES"] = "LAYOUT_PROPERTIES";
-    CredentialListIncludeEntityType["CREDENTIAL"] = "CREDENTIAL";
+    CredentialListIncludeEntityType["TRANSLATIONS"] = "TRANSLATIONS";
 })(CredentialListIncludeEntityType || (CredentialListIncludeEntityType = {}));
 export var CredentialListQueryExactColumn;
 (function (CredentialListQueryExactColumn) {
@@ -100,6 +100,7 @@ export var CredentialSchemaCodeType;
 export var CredentialSchemaListIncludeEntityType;
 (function (CredentialSchemaListIncludeEntityType) {
     CredentialSchemaListIncludeEntityType["LAYOUT_PROPERTIES"] = "LAYOUT_PROPERTIES";
+    CredentialSchemaListIncludeEntityType["TRANSLATIONS"] = "TRANSLATIONS";
 })(CredentialSchemaListIncludeEntityType || (CredentialSchemaListIncludeEntityType = {}));
 export var CredentialSchemaListQueryExactColumn;
 (function (CredentialSchemaListQueryExactColumn) {
