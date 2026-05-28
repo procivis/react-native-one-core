@@ -13,48 +13,47 @@ The SDK's SSI functionality is powered by the [Procivis One Core][core], a compl
 solution capable of powering every element of the digital identity credential lifecycle.
 See the [key features][key] and complete solution [architecture][archi].
 
-## Table of Contents
+## Installation
 
-- [How to use the One Core SDK](#how-to-use-the-one-core-react-native-sdk)
-- [Getting started](#getting-started)
-- [Background](#background)
-- [EU Digital Identity Ecosystem](#eu-digital-identity-ecosystem)
-- [Interoperability and conformance](#interoperability-and-conformance)
-- [Supported standards](#supported-standards)
-- [Support](#support)
-- [License](#license)
+```bash
+yarn add @procivis/react-native-one-core
+```
 
-## How to use the One Core React Native SDK
+### Android
+
+Add the following to `android/build.gradle`:
+
+```kotlin
+allprojects {
+    repositories {
+        flatDir { dirs "$rootDir/../node_modules/@procivis/react-native-one-core/android/libs" }
+    }
+}
+```
+
+### iOS
+
+```bash
+cd ios && pod install
+```
+
+## Documentation
+
+Full documentation including configuration, initialization, and SDK reference is available at
+[docs.procivis.ch/sdk][sdkref].
+
+## How to use the Procivis One SDK
 
 - Use this SDK to embed wallet capabilities into an existing app
 - Use the [Procivis One Wallet][pow] for a free-standing solution that can be white-labeled
 - Use the [One Core React Components][comp] library for UI elements for your digital wallet app
 
-## Getting started
-
-### Trial
+## Procivis One Trial
 
 The fastest way to get started with the _Procivis One Wallet_ is to download the app
 from the iOS or Android app stores and [join our Trial Environment][trial].
 In the trial environment, you are given control of an organization on our server
 solution, the _Procivis One Desk_, and can quickly begin issuing and verifying credentials.
-
-### Documentation
-
-See our documentation:
-
-- [SDK docs][sdkref]
-- [Docs home][docs]
-
-## Background
-
-Decentralized digital identities and credentials is an approach to identity that relocates
-digital credentials from the possession and control of centralized authorities to the
-digital wallet of the credentials holder. This architecture eliminates the need for the
-user to "phone home" to use their credentials as well as the verifier to communicate to
-the issuer via back-channels, keeping the wallet holder's interactions private between only
-those parties directly involved in each interaction. This model of digital identity is
-often referred to as Self-Sovereign Identity, or SSI.
 
 ## EU Digital Identity Ecosystem
 
