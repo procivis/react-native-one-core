@@ -350,6 +350,10 @@ export interface CredentialDetail {
   /** Country profile associated with the credential. */
   profile?: string;
   trustInformation?: TrustInformation;
+  consumedAt?: string;
+  type: CredentialType;
+  remainingBatchItemCount?: number /*u32*/;
+  parentId?: string;
 }
 
 export interface CredentialList {
@@ -383,6 +387,9 @@ export interface CredentialListItem {
   protocol: string;
   /** Country profile associated with the credential. */
   profile?: string;
+  consumedAt?: string;
+  type: CredentialType;
+  parentId?: string;
 }
 
 export interface CredentialListQuery {
@@ -416,8 +423,12 @@ export interface CredentialListQuery {
   roles?: Array<CredentialRole>;
   /** Filter by one or more UUIDs. */
   ids?: Array<string>;
+  /** Filter by batch parent UUID. */
+  parentId?: string;
   /** Filter by one or more credential states. */
   states?: Array<CredentialState>;
+  /** Filter by one or more credential types. */
+  types?: Array<CredentialType>;
   /**
    * Additional fields to include in response objects. Omitting
    * this keeps responses shorter.
@@ -886,10 +897,6 @@ export interface HolderAcceptCredentialRequest {
   keyId?: string;
   /** User-provided transaction code. */
   txCode?: string;
-}
-
-export interface HolderAcceptCredentialResponse {
-  credentialIds: Array<string>;
 }
 
 export interface HolderRefreshCredentialResponse {
@@ -1999,6 +2006,12 @@ export enum CredentialState {
   INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
 }
 
+export enum CredentialType {
+  SINGLE = "SINGLE",
+  BATCH_PARENT = "BATCH_PARENT",
+  BATCH_ITEM = "BATCH_ITEM",
+}
+
 export enum DidListQueryExactColumn {
   NAME = "NAME",
   DID = "DID",
@@ -2085,6 +2098,7 @@ export enum HistoryAction {
   WRP_RC_RECEIVED = "WRP_RC_RECEIVED",
   WRP_NR_RECEIVED = "WRP_NR_RECEIVED",
   TRUST_RESOLVED = "TRUST_RESOLVED",
+  REFRESHED = "REFRESHED",
 }
 
 export enum HistoryEntityType {
@@ -2592,7 +2606,7 @@ export interface OneCore {
    * identifier that matches issuer's restrictions. Alternatively,
    * you can specify an existing identifier.
    */
-  holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<HolderAcceptCredentialResponse>;
+  holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
   /** Returns wallet registration details from the Wallet Provider. */
   holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
   /** Returns trust collections curated by the Wallet Provider. */

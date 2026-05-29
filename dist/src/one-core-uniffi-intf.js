@@ -119,6 +119,12 @@ export var CredentialState;
     CredentialState["ERROR"] = "ERROR";
     CredentialState["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
 })(CredentialState || (CredentialState = {}));
+export var CredentialType;
+(function (CredentialType) {
+    CredentialType["SINGLE"] = "SINGLE";
+    CredentialType["BATCH_PARENT"] = "BATCH_PARENT";
+    CredentialType["BATCH_ITEM"] = "BATCH_ITEM";
+})(CredentialType || (CredentialType = {}));
 export var DidListQueryExactColumn;
 (function (DidListQueryExactColumn) {
     DidListQueryExactColumn["NAME"] = "NAME";
@@ -163,6 +169,7 @@ export var HistoryAction;
     HistoryAction["WRP_RC_RECEIVED"] = "WRP_RC_RECEIVED";
     HistoryAction["WRP_NR_RECEIVED"] = "WRP_NR_RECEIVED";
     HistoryAction["TRUST_RESOLVED"] = "TRUST_RESOLVED";
+    HistoryAction["REFRESHED"] = "REFRESHED";
 })(HistoryAction || (HistoryAction = {}));
 export var HistoryEntityType;
 (function (HistoryEntityType) {
