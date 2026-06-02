@@ -208,8 +208,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         promise: Promise
     ) {
         asyncCall(promise, scope) {
-            val result = getCore().holderAcceptCredential(construct(request))
-            return@asyncCall convertToRN(result)
+            return@asyncCall getCore().holderAcceptCredential(construct(request))
         }
     }
 
