@@ -40,6 +40,14 @@ object Serialize {
             return Pair(RNType.BOOLEAN, input as Boolean)
         } else if (type == String::class.java || type == java.lang.String::class.java) {
             return Pair(RNType.STRING, input as String)
+        } else if (type == UByte::class.java) {
+            return Pair(RNType.INT, (input as UByte).toInt())
+        } else if (type == UShort::class.java) {
+            return Pair(RNType.INT, (input as UShort).toInt())
+        } else if (type == UInt::class.java) {
+            return Pair(RNType.DOUBLE, (input as UInt).toDouble())
+        } else if (type == ULong::class.java) {
+            return Pair(RNType.DOUBLE, (input as ULong).toDouble())
         } else if (type == Int::class.java || type == java.lang.Integer::class.java) {
             return Pair(RNType.INT, input as Int)
         } else if (type == Byte::class.java || type == java.lang.Byte::class.java) {
