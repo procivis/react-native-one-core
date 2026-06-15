@@ -5,15 +5,23 @@ export var CacheType;
 (function (CacheType) {
     CacheType["DID_DOCUMENT"] = "DID_DOCUMENT";
     CacheType["JSON_LD_CONTEXT"] = "JSON_LD_CONTEXT";
+    /** Credential status list fetched from an external source. */
     CacheType["STATUS_LIST_CREDENTIAL"] = "STATUS_LIST_CREDENTIAL";
+    /** Metadata for SD-JWT VC type (VCT). */
     CacheType["VCT_METADATA"] = "VCT_METADATA";
     CacheType["JSON_SCHEMA"] = "JSON_SCHEMA";
     CacheType["TRUST_LIST"] = "TRUST_LIST";
+    /** X.509 certificate revocation list. */
     CacheType["X509_CRL"] = "X509_CRL";
+    /** Certificate revocation list used for Android key attestation. */
     CacheType["ANDROID_ATTESTATION_CRL"] = "ANDROID_ATTESTATION_CRL";
+    /** OpenID provider metadata fetched from holder endpoints. */
     CacheType["OPEN_ID_METADATA_HOLDER"] = "OPEN_ID_METADATA_HOLDER";
+    /** OpenID provider metadata fetched from issuer endpoints. */
     CacheType["OPEN_ID_METADATA_ISSUER"] = "OPEN_ID_METADATA_ISSUER";
+    /** Metadata fetched from the registered wallet provider. */
     CacheType["WALLET_PROVIDER_METADATA"] = "WALLET_PROVIDER_METADATA";
+    /** Trust collection data fetched from a remote source. */
     CacheType["REMOTE_TRUST_COLLECTION"] = "REMOTE_TRUST_COLLECTION";
 })(CacheType || (CacheType = {}));
 export var CertificateRole;
@@ -302,7 +310,6 @@ export var SortableCredentialColumn;
 export var SortableCredentialSchemaColumn;
 (function (SortableCredentialSchemaColumn) {
     SortableCredentialSchemaColumn["NAME"] = "NAME";
-    SortableCredentialSchemaColumn["FORMAT"] = "FORMAT";
     SortableCredentialSchemaColumn["CREATED_DATE"] = "CREATED_DATE";
 })(SortableCredentialSchemaColumn || (SortableCredentialSchemaColumn = {}));
 export var SortableDidColumn;

@@ -826,12 +826,29 @@ export interface HistoryListItem {
   id: string;
   createdDate: string;
   action: HistoryAction;
+  /**
+   * For credential events, this is the credential schema name. For
+   * presentation events, this is the proof schema name. For all other
+   * entity types, it is the entity name.
+   */
   name: string;
   entityId?: string;
   entityType: HistoryEntityType;
+  /**
+   * Structured metadata attached to the event. The variant depends on
+   * the type.
+   */
   metadata?: HistoryMetadata;
   organisationId?: string;
+  /**
+   * Identifier UUID of the external participant in the interaction, if
+   * applicable. For credential events, this is the counterpart's identifier
+   * (holder when the system is issuer, issuer when the system is holder).
+   * For presentation events, this is the holder's identifier when the system
+   * is verifier, or the verifier's identifier when the system is holder.
+   */
   target?: string;
+  /** Identifier of the user who triggered the event. */
   user?: string;
 }
 
@@ -850,7 +867,7 @@ export interface HistoryListQuery {
   entityIds?: Array<string>;
   /** Return only events associated with the provided entity types. */
   entityTypes?: Array<HistoryEntityType>;
-  /** Return only the provided events. */
+  /** Return only events of the specified action types. */
   actions?: Array<HistoryAction>;
   /**
    * Return only entries created after this time. Timestamp in
@@ -872,14 +889,22 @@ export interface HistoryListQuery {
   proofId?: string;
   /** Return only events associated with the provided proof schema ID. */
   proofSchemaId?: string;
-  /** Search for a string. */
+  /**
+   * Search history events by string. Set `text` to specify the search
+   * string and optionally `type` to restrict which field is searched.
+   * When `type` is omitted, all searchable fields are checked.
+   */
   search?: HistorySearch;
-  /** Return only events associated with the provided user(s). */
+  /** Return only events triggered by the specified users. */
   users?: Array<string>;
 }
 
 export interface HistorySearch {
   text: string;
+  /**
+   * When omitted, all searchable fields are checked. Set to restrict
+   * the search to a specific field.
+   */
   type?: HistorySearchType;
 }
 
@@ -1859,15 +1884,23 @@ export type BleError =
 export enum CacheType {
   DID_DOCUMENT = "DID_DOCUMENT",
   JSON_LD_CONTEXT = "JSON_LD_CONTEXT",
+  /** Credential status list fetched from an external source. */
   STATUS_LIST_CREDENTIAL = "STATUS_LIST_CREDENTIAL",
+  /** Metadata for SD-JWT VC type (VCT). */
   VCT_METADATA = "VCT_METADATA",
   JSON_SCHEMA = "JSON_SCHEMA",
   TRUST_LIST = "TRUST_LIST",
+  /** X.509 certificate revocation list. */
   X509_CRL = "X509_CRL",
+  /** Certificate revocation list used for Android key attestation. */
   ANDROID_ATTESTATION_CRL = "ANDROID_ATTESTATION_CRL",
+  /** OpenID provider metadata fetched from holder endpoints. */
   OPEN_ID_METADATA_HOLDER = "OPEN_ID_METADATA_HOLDER",
+  /** OpenID provider metadata fetched from issuer endpoints. */
   OPEN_ID_METADATA_ISSUER = "OPEN_ID_METADATA_ISSUER",
+  /** Metadata fetched from the registered wallet provider. */
   WALLET_PROVIDER_METADATA = "WALLET_PROVIDER_METADATA",
+  /** Trust collection data fetched from a remote source. */
   REMOTE_TRUST_COLLECTION = "REMOTE_TRUST_COLLECTION",
 }
 
@@ -2332,7 +2365,6 @@ export enum SortableCredentialColumn {
 
 export enum SortableCredentialSchemaColumn {
   NAME = "NAME",
-  FORMAT = "FORMAT",
   CREATED_DATE = "CREATED_DATE",
 }
 
@@ -2541,9 +2573,9 @@ export interface OneCore {
    */
   createProofSchema(request: CreateProofSchemaRequest): Promise<string>;
   /**
-   * Deletes the system cache. See the
+   * Deletes entries from the system cache. See
    * [Caching](https://docs.procivis.ch/configure/caching#cached-entities)
-   * guide for details on cached entities.
+   * for details on cached entity types.
    */
   deleteCache(types: Array<CacheType> | undefined): Promise<void>;
   deleteCredential(credentialId: string): Promise<void>;
@@ -2578,7 +2610,10 @@ export interface OneCore {
   getCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaDetail>;
   /** Returns detailed trust information about a credential issuer. */
   getCredentialTrustInformation(credentialId: string): Promise<TrustInformationDetail>;
-  /** Returns details on a single event. */
+  /**
+   * Returns the full record for a single history event, including metadata
+   * if present.
+   */
   getHistoryEntry(historyId: string): Promise<HistoryListItem>;
   getIdentifier(id: string): Promise<IdentifierDetail>;
   /** Returns details of an existing organization. */
@@ -2669,13 +2704,17 @@ export interface OneCore {
   proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
   /** Registers the verifier unit with a Verifier Provider. */
   registerVerifierInstance(request: RegisterVerifierInstanceRequest): Promise<RegisterVerifierInstanceResponse>;
-  /** Returns the @context of a JSON-LD credential. The result is cached. */
+  /**
+   * Returns the JSON-LD context document for a given URI. This is a
+   * [cached entity](https://docs.procivis.ch/configure/caching).
+   */
   resolveJsonldContext(url: string): Promise<ResolvedJsonLdContext>;
   /** Discards the restored database and continues using the original. */
   rollbackImport(): Promise<void>;
   /**
-   * Runs a task. Check the `task` object of your configuration and reference
-   * the configured instance.
+   * Triggers a configured task by name. Pass the task name as defined in the
+   * `task` configuration object, and optionally a JSON string of task-specific
+   * parameters. Returns the result as a JSON string.
    */
   runTask(task: string, params: string | undefined): Promise<string>;
   /**
