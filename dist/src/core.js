@@ -48,6 +48,8 @@ export const interfaceMethodNames = [
     "listProofs",
     "deleteProof",
     "proposeProof",
+    "qesAuthorize",
+    "qesSign",
     "createProofSchema",
     "listProofSchemas",
     "getProofSchema",

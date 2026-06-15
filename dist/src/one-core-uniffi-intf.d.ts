@@ -1492,6 +1492,27 @@ export interface ProposeProofResponse {
     interactionId: string;
     url?: string;
 }
+export interface QesAuthorizeRequest {
+    provider: string;
+    document: number[];
+    redirectUri?: string;
+    organisationId?: string;
+}
+export interface QesAuthorizeResponse {
+    authorizationUrl: string;
+    codeVerifier: string;
+}
+export interface QesSignRequest {
+    provider: string;
+    code: string;
+    codeVerifier: string;
+    document: number[];
+    redirectUri?: string;
+    organisationId?: string;
+}
+export interface QesSignResponse {
+    signedDocument: number[];
+}
 export interface RegisterVerifierInstanceRequest {
     /** The verifier unit's organization. */
     organisationId: string;
@@ -1912,7 +1933,8 @@ export declare enum HistoryAction {
     WRP_RC_RECEIVED = "WRP_RC_RECEIVED",
     WRP_NR_RECEIVED = "WRP_NR_RECEIVED",
     TRUST_RESOLVED = "TRUST_RESOLVED",
-    REFRESHED = "REFRESHED"
+    REFRESHED = "REFRESHED",
+    SIGNED = "SIGNED"
 }
 export declare enum HistoryEntityType {
     KEY = "KEY",
@@ -1940,7 +1962,8 @@ export declare enum HistoryEntityType {
     TRUST_LIST_PUBLICATION = "TRUST_LIST_PUBLICATION",
     TRUST_COLLECTION = "TRUST_COLLECTION",
     TRUST_LIST_SUBSCRIPTION = "TRUST_LIST_SUBSCRIPTION",
-    VERIFIER_INSTANCE = "VERIFIER_INSTANCE"
+    VERIFIER_INSTANCE = "VERIFIER_INSTANCE",
+    QES_DOCUMENT = "QES_DOCUMENT"
 }
 export type HistoryMetadata = {
     type_: "UNEXPORTABLE_ENTITIES";
@@ -2415,6 +2438,8 @@ export interface OneCore {
      * options for `engagement`.
      */
     proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
+    qesAuthorize(request: QesAuthorizeRequest): Promise<QesAuthorizeResponse>;
+    qesSign(request: QesSignRequest): Promise<QesSignResponse>;
     /** Registers the verifier unit with a Verifier Provider. */
     registerVerifierInstance(request: RegisterVerifierInstanceRequest): Promise<RegisterVerifierInstanceResponse>;
     /**

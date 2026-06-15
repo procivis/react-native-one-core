@@ -469,6 +469,22 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun qesAuthorize(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().qesAuthorize(construct(request))
+            return@asyncCall convertToRN(result)
+        }
+    }
+
+    @ReactMethod
+    fun qesSign(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().qesSign(construct(request))
+            return@asyncCall convertToRN(result)
+        }
+    }
+
+    @ReactMethod
     fun createProofSchema(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             return@asyncCall getCore().createProofSchema(construct(request))

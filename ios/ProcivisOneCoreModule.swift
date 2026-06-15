@@ -656,6 +656,30 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(qesAuthorize:resolver:rejecter:)
+  func qesAuthorize(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().qesAuthorize(request: try deserialize(request))
+      return try serializeAny(result)
+    }
+  }
+
+  @objc(qesSign:resolver:rejecter:)
+  func qesSign(
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().qesSign(request: try deserialize(request))
+      return try serializeAny(result)
+    }
+  }
+
   @objc(checkRevocation:forceRefresh:resolver:rejecter:)
   func checkRevocation(
     credentialIds: NSArray,

@@ -178,6 +178,7 @@ export var HistoryAction;
     HistoryAction["WRP_NR_RECEIVED"] = "WRP_NR_RECEIVED";
     HistoryAction["TRUST_RESOLVED"] = "TRUST_RESOLVED";
     HistoryAction["REFRESHED"] = "REFRESHED";
+    HistoryAction["SIGNED"] = "SIGNED";
 })(HistoryAction || (HistoryAction = {}));
 export var HistoryEntityType;
 (function (HistoryEntityType) {
@@ -207,6 +208,7 @@ export var HistoryEntityType;
     HistoryEntityType["TRUST_COLLECTION"] = "TRUST_COLLECTION";
     HistoryEntityType["TRUST_LIST_SUBSCRIPTION"] = "TRUST_LIST_SUBSCRIPTION";
     HistoryEntityType["VERIFIER_INSTANCE"] = "VERIFIER_INSTANCE";
+    HistoryEntityType["QES_DOCUMENT"] = "QES_DOCUMENT";
 })(HistoryEntityType || (HistoryEntityType = {}));
 export var HistorySearchType;
 (function (HistorySearchType) {

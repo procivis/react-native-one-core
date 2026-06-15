@@ -215,6 +215,14 @@ RCT_EXTERN_METHOD(proposeProof:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(qesAuthorize:(NSDictionary *)request
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(qesSign:(NSDictionary *)request
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(checkRevocation:(NSArray *)credentialIds
                   forceRefresh:(BOOL *)forceRefresh
                   resolver:(RCTPromiseResolveBlock)resolve
