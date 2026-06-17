@@ -75,6 +75,7 @@ export const interfaceMethodNames = [
   "rollbackImport",
   "resolveJsonldContext",
   "holderRegisterWalletUnit",
+  "holderActivateWalletUnit",
   "holderWalletUnitStatus",
   "holderGetWalletUnit",
   "holderWalletUnitUpdate",

@@ -263,6 +263,11 @@ RCT_EXTERN_METHOD(holderRegisterWalletUnit:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(holderActivateWalletUnit:(NSString *)unitId
+                  request:(NSDictionary *)request
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(holderWalletUnitStatus:(NSString *)walletUnitId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)

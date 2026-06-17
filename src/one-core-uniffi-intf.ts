@@ -160,6 +160,7 @@ export interface CreateCredentialSchemaRequest {
   requiresWalletInstanceAttestation: boolean;
   transactionCode?: CredentialSchemaTransactionCodeRequest;
   translations?: CredentialSchemaTranslations;
+  embeddedDisclosurePolicy?: DisclosurePolicyCreateRequest;
 }
 
 export interface CreateDidRequest {
@@ -724,6 +725,37 @@ export interface DidRequestKeys {
   capabilityDelegation: Array<string>;
 }
 
+export interface DisclosurePolicy {
+  id: string;
+  policy: string;
+  description?: string;
+  url?: string;
+  options?: DisclosurePolicyOptions;
+}
+
+export interface DisclosurePolicyCreateRequest {
+  policy: string;
+  description?: string;
+  url?: string;
+  options?: DisclosurePolicyOptions;
+}
+
+export interface DisclosurePolicyOption {
+  dn?: string;
+  entitlement?: string;
+  serial?: string;
+}
+
+export interface DisclosurePolicyOptions {
+  values: Array<DisclosurePolicyOption>;
+}
+
+export interface DisclosurePolicyViolation {
+  id: string;
+  description?: string;
+  url?: string;
+}
+
 export interface DisplayName {
   lang: string;
   value: string;
@@ -924,6 +956,13 @@ export interface HolderAcceptCredentialRequest {
   txCode?: string;
 }
 
+export interface HolderActivateWalletUnitRequest {
+  /** Key type for the authentication key generated during activation. */
+  keyType: string;
+  /** Identity token obtained from the identity provider after user authentication. */
+  userIdToken?: string;
+}
+
 export interface HolderRefreshCredentialResponse {
   credentialIds: Array<string>;
 }
@@ -949,6 +988,7 @@ export interface HolderRegisterWalletUnitRequest {
 export interface HolderRegisterWalletUnitResponse {
   id: string;
   status: WalletUnitStatus;
+  userNonce?: string;
 }
 
 export interface HolderWalletInstanceDetail {
@@ -1103,6 +1143,7 @@ export interface ImportCredentialSchemaRequestSchema {
   allowRevocation?: boolean;
   batchSize?: number /*i32*/;
   translations?: CredentialSchemaTranslations;
+  embeddedDisclosurePolicy?: DisclosurePolicy;
 }
 
 export interface ImportCredentialSchemaTransactionCode {
@@ -1362,6 +1403,8 @@ export interface PresentationDefinitionV2Credential {
   mdocMsoValidity?: MdocMsoValidity;
   protocol: string;
   profile?: string;
+  /** if violated, issuer's disclosure policy information */
+  embeddedDisclosurePolicyViolation?: DisclosurePolicyViolation;
 }
 
 export interface PresentationSubmitCredentialRequest {
@@ -2669,6 +2712,8 @@ export interface OneCore {
    * you can specify an existing identifier.
    */
   holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
+  /** Activates the wallet instance with the Wallet Provider after user authentication. */
+  holderActivateWalletUnit(id: string, request: HolderActivateWalletUnitRequest): Promise<void>;
   /** Returns wallet registration details from the Wallet Provider. */
   holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
   /** Returns trust collections curated by the Wallet Provider. */

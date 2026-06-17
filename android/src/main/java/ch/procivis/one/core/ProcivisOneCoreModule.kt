@@ -620,6 +620,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun holderActivateWalletUnit(id: String, request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            getCore().holderActivateWalletUnit(id, construct(request))
+            return@asyncCall null
+        }
+    }
+
+    @ReactMethod
     fun holderWalletUnitStatus(walletUnitId: String, promise: Promise) {
         asyncCall(promise, scope) {
             getCore().holderWalletUnitStatus(walletUnitId)

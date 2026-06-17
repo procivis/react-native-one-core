@@ -815,6 +815,19 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+  @objc(holderActivateWalletUnit:request:resolver:rejecter:)
+  func holderActivateWalletUnit(
+    id: String,
+    request: NSDictionary,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      try await self.getCore().holderActivateWalletUnit(id: id, request: try deserialize(request))
+      return nil as NSDictionary?
+    }
+  }
+
   @objc(holderWalletUnitStatus:resolver:rejecter:)
   func holderWalletUnitStatus(
     walletUnitId: String,
