@@ -1531,7 +1531,7 @@ export interface ProposeProofResponse {
 }
 export interface QesAuthorizeRequest {
     provider: string;
-    document: number[];
+    document: string;
     redirectUri?: string;
     organisationId?: string;
 }
@@ -1543,12 +1543,12 @@ export interface QesSignRequest {
     provider: string;
     code: string;
     codeVerifier: string;
-    document: number[];
+    document: string;
     redirectUri?: string;
     organisationId?: string;
 }
 export interface QesSignResponse {
-    signedDocument: number[];
+    signedDocument: string;
 }
 export interface RegisterVerifierInstanceRequest {
     /** The verifier unit's organization. */

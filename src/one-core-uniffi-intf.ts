@@ -1677,7 +1677,7 @@ export interface ProposeProofResponse {
 
 export interface QesAuthorizeRequest {
   provider: string;
-  document: number[] /*bytearray*/;
+  document: string;
   redirectUri?: string;
   organisationId?: string;
 }
@@ -1691,13 +1691,13 @@ export interface QesSignRequest {
   provider: string;
   code: string;
   codeVerifier: string;
-  document: number[] /*bytearray*/;
+  document: string;
   redirectUri?: string;
   organisationId?: string;
 }
 
 export interface QesSignResponse {
-  signedDocument: number[] /*bytearray*/;
+  signedDocument: string;
 }
 
 export interface RegisterVerifierInstanceRequest {
