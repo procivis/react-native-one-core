@@ -21,8 +21,16 @@ object Deserialize {
         return when (kClass) {
             Boolean::class -> data.getBoolean(index)
             String::class -> data.getString(index)
-            UInt::class -> data.getInt(index).toUInt()
-            Long::class -> data.getInt(index).toLong()
+
+            Byte::class -> data.getInt(index).toByte()
+            UByte::class -> data.getInt(index).toUByte()
+            Short::class -> data.getInt(index).toShort()
+            UShort::class -> data.getInt(index).toUShort()
+            Int::class -> data.getInt(index)
+            UInt::class -> data.getLong(index).toUInt()
+            Long::class -> data.getLong(index)
+            ULong::class -> data.getLong(index).toULong()
+
             List::class -> {
                 val itemType = kType.arguments.first().type
                 val values = data.getArray(index)
@@ -80,8 +88,16 @@ object Deserialize {
         return when (kClass) {
             Boolean::class -> data.getBoolean(name)
             String::class -> data.getString(name)
-            UInt::class -> data.getInt(name).toUInt()
-            Long::class -> data.getInt(name).toLong()
+
+            Byte::class -> data.getInt(name).toByte()
+            UByte::class -> data.getInt(name).toUByte()
+            Short::class -> data.getInt(name).toShort()
+            UShort::class -> data.getInt(name).toUShort()
+            Int::class -> data.getInt(name)
+            UInt::class -> data.getLong(name).toUInt()
+            Long::class -> data.getLong(name)
+            ULong::class -> data.getLong(name).toULong()
+
             List::class -> {
                 val values = data.getArray(name)!!
                 val itemType = type.arguments.first().type
