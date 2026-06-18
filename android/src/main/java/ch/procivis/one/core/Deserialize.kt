@@ -27,9 +27,9 @@ object Deserialize {
             Short::class -> data.getInt(index).toShort()
             UShort::class -> data.getInt(index).toUShort()
             Int::class -> data.getInt(index)
-            UInt::class -> data.getLong(index).toUInt()
-            Long::class -> data.getLong(index)
-            ULong::class -> data.getLong(index).toULong()
+            UInt::class -> data.getDouble(index).toUInt()
+            Long::class -> data.getDouble(index).toLong()
+            ULong::class -> data.getDouble(index).toULong()
 
             List::class -> {
                 val itemType = kType.arguments.first().type
@@ -94,9 +94,9 @@ object Deserialize {
             Short::class -> data.getInt(name).toShort()
             UShort::class -> data.getInt(name).toUShort()
             Int::class -> data.getInt(name)
-            UInt::class -> data.getLong(name).toUInt()
-            Long::class -> data.getLong(name)
-            ULong::class -> data.getLong(name).toULong()
+            UInt::class -> data.getDouble(name).toUInt()
+            Long::class -> data.getDouble(name).toLong()
+            ULong::class -> data.getDouble(name).toULong()
 
             List::class -> {
                 val values = data.getArray(name)!!
