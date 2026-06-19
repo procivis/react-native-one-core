@@ -1010,6 +1010,7 @@ export interface HolderWalletUnit {
   status: WalletUnitStatus;
   authenticationKey?: KeyListItem;
   trustedRpRequired: boolean;
+  userNonce?: string;
 }
 
 export interface HolderWalletUnitUpdateRequest {
