@@ -103,7 +103,8 @@ export interface Config {
      */
     walletProvider: Record<string, string>;
     verifierProvider: Record<string, string>;
-    defaultLanguage: string;
+    /** Deployment-wide settings that are not tied to a specific config entity. */
+    globalSettings: GlobalSettings;
 }
 export interface ContinueIssuanceResponse {
     /** For reference. */
@@ -741,6 +742,9 @@ export interface GenerateKeyRequest {
 export interface GeneratedKey {
     keyReference: number[];
     publicKey: number[];
+}
+export interface GlobalSettings {
+    defaultLanguage: string;
 }
 export interface HandleInvitationRequest {
     /**

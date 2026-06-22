@@ -1,4 +1,4 @@
-import { IdentifierType } from "./one-core-uniffi-intf";
+import { GlobalSettings, IdentifierType } from "./one-core-uniffi-intf";
 export declare enum KeyAlgorithmFeature {
     GENERATE_CSR = "GENERATE_CSR"
 }
@@ -156,6 +156,6 @@ export interface CoreConfig {
     credentialIssuer: ConfigEntities<undefined, {}>;
     walletProvider: ConfigEntities;
     verifierProvider: ConfigEntities<undefined, {}>;
-    defaultLanguage: string;
+    globalSettings: GlobalSettings;
 }
 export {};

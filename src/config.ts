@@ -1,4 +1,4 @@
-import { Config, IdentifierType } from "./one-core-uniffi-intf";
+import {Config, GlobalSettings, IdentifierType} from "./one-core-uniffi-intf";
 
 export enum KeyAlgorithmFeature {
   GENERATE_CSR = "GENERATE_CSR",
@@ -188,7 +188,7 @@ export interface CoreConfig {
   credentialIssuer: ConfigEntities<undefined, {}>;
   walletProvider: ConfigEntities;
   verifierProvider: ConfigEntities<undefined, {}>;
-  defaultLanguage: string;
+  globalSettings: GlobalSettings;
 }
 
 // Typescript automatic assertions to keep the fields of ONECore Config and typed Config in sync

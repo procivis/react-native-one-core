@@ -13,11 +13,14 @@ interfaceMethodNames.forEach((method) => ONE?.[method]);
 // Config entities are exposed as serialized JSON, here conversion to structs
 const originalGetConfig = ONE?.getConfig;
 if (originalGetConfig) {
-    ONE.getConfig = () => originalGetConfig().then((config) => objectMap(config, (entityValue) => {
-        return typeof entityValue === "string"
-            ? entityValue
-            : objectMap(entityValue, (json) => JSON.parse(json));
-    }));
+    ONE.getConfig = () => originalGetConfig().then((config) => {
+        const { globalSettings, ...providers } = config;
+        const parsed = objectMap(providers, (entityValue) => objectMap(entityValue, (json) => JSON.parse(json)));
+        return {
+            globalSettings,
+            ...parsed
+        };
+    });
 }
 /**
  * Initialize ONE Core
