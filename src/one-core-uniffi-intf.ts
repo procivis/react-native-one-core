@@ -1884,76 +1884,76 @@ export interface WalletRelyingPartyMetadata {
 
 export type ApplicableCredentialOrFailureHint =
   | {
-  type_: "APPLICABLE_CREDENTIALS";
-  applicableCredentials: Array<PresentationDefinitionV2Credential>;
-  purpose?: Record<string, string>;
-}
+      type_: "APPLICABLE_CREDENTIALS";
+      applicableCredentials: Array<PresentationDefinitionV2Credential>;
+      purpose?: Record<string, string>;
+    }
   | {
-  type_: "FAILURE_HINT";
-  failureHint: CredentialQueryFailureHint;
-};
+      type_: "FAILURE_HINT";
+      failureHint: CredentialQueryFailureHint;
+    };
 
 export type BleError =
   | {
-  type_: "ADAPTER_NOT_ENABLED";
-}
+      type_: "ADAPTER_NOT_ENABLED";
+    }
   | {
-  type_: "SCAN_ALREADY_STARTED";
-}
+      type_: "SCAN_ALREADY_STARTED";
+    }
   | {
-  type_: "SCAN_NOT_STARTED";
-}
+      type_: "SCAN_NOT_STARTED";
+    }
   | {
-  type_: "BROADCAST_ALREADY_STARTED";
-}
+      type_: "BROADCAST_ALREADY_STARTED";
+    }
   | {
-  type_: "BROADCAST_NOT_STARTED";
-}
+      type_: "BROADCAST_NOT_STARTED";
+    }
   | {
-  type_: "ANOTHER_OPERATION_IN_PROGRESS";
-}
+      type_: "ANOTHER_OPERATION_IN_PROGRESS";
+    }
   | {
-  type_: "WRITE_DATA_TOO_LONG";
-}
+      type_: "WRITE_DATA_TOO_LONG";
+    }
   | {
-  type_: "DEVICE_ADDRESS_NOT_FOUND";
-  address: string;
-}
+      type_: "DEVICE_ADDRESS_NOT_FOUND";
+      address: string;
+    }
   | {
-  type_: "SERVICE_NOT_FOUND";
-  service: string;
-}
+      type_: "SERVICE_NOT_FOUND";
+      service: string;
+    }
   | {
-  type_: "CHARACTERISTIC_NOT_FOUND";
-  characteristic: string;
-}
+      type_: "CHARACTERISTIC_NOT_FOUND";
+      characteristic: string;
+    }
   | {
-  type_: "INVALID_UUID";
-  uuid: string;
-}
+      type_: "INVALID_UUID";
+      uuid: string;
+    }
   | {
-  type_: "DEVICE_NOT_CONNECTED";
-  address: string;
-}
+      type_: "DEVICE_NOT_CONNECTED";
+      address: string;
+    }
   | {
-  type_: "INVALID_CHARACTERISTIC_OPERATION";
-  service: string;
-  characteristic: string;
-  operation: string;
-}
+      type_: "INVALID_CHARACTERISTIC_OPERATION";
+      service: string;
+      characteristic: string;
+      operation: string;
+    }
   | {
-  type_: "NOT_SUPPORTED";
-}
+      type_: "NOT_SUPPORTED";
+    }
   | {
-  type_: "NOT_AUTHORIZED";
-}
+      type_: "NOT_AUTHORIZED";
+    }
   | {
-  type_: "SERVER_NOT_RUNNING";
-}
+      type_: "SERVER_NOT_RUNNING";
+    }
   | {
-  type_: "UNKNOWN";
-  reason: string;
-};
+      type_: "UNKNOWN";
+      reason: string;
+    };
 
 export enum CacheType {
   DID_DOCUMENT = "DID_DOCUMENT",
@@ -2016,25 +2016,25 @@ export enum CharacteristicWriteType {
 
 export type ClaimValue =
   | {
-  type_: "BOOLEAN";
-  value: boolean;
-}
+      type_: "BOOLEAN";
+      value: boolean;
+    }
   | {
-  type_: "FLOAT";
-  value: number /*f64*/;
-}
+      type_: "FLOAT";
+      value: number /*f64*/;
+    }
   | {
-  type_: "INTEGER";
-  value: number /*i64*/;
-}
+      type_: "INTEGER";
+      value: number /*i64*/;
+    }
   | {
-  type_: "STRING";
-  value: string;
-}
+      type_: "STRING";
+      value: string;
+    }
   | {
-  type_: "NESTED";
-  value: Array<Claim>;
-};
+      type_: "NESTED";
+      value: Array<Claim>;
+    };
 
 export enum ClientIdScheme {
   REDIRECT_URI = "REDIRECT_URI",
@@ -2045,13 +2045,13 @@ export enum ClientIdScheme {
 
 export type ConnectionEvent =
   | {
-  type_: "CONNECTED";
-  deviceInfo: DeviceInfo;
-}
+      type_: "CONNECTED";
+      deviceInfo: DeviceInfo;
+    }
   | {
-  type_: "DISCONNECTED";
-  deviceAddress: string;
-};
+      type_: "DISCONNECTED";
+      deviceAddress: string;
+    };
 
 export enum CreateSelfSignedCaRequestIssuerAlternativeNameType {
   EMAIL = "EMAIL",
@@ -2131,46 +2131,46 @@ export enum DidType {
 
 export type HandleInvitationResponse =
   | {
-  type_: "CREDENTIAL_ISSUANCE";
-  /** For reference. */
-  interactionId: string;
-  /** Key storage required to complete issuance. */
-  keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
-  /** Key algorithms suitable for issuance. */
-  keyAlgorithms?: Array<string>;
-  /**
-   * Metadata for entering a transaction code
-   * If a pre-authorized code is issued with a transaction code object, the
-   * wallet user must input a transaction code to receive the offered credential.
-   * This code is typically sent through a separate channel such as SMS or email.
-   */
-  txCode?: OpenId4vciTxCode;
-  /** Protocol used for issuance. */
-  protocol: string;
-  /** Whether a valid WIA is required to complete issuance. */
-  requiresWalletInstanceAttestation: boolean;
-}
+      type_: "CREDENTIAL_ISSUANCE";
+      /** For reference. */
+      interactionId: string;
+      /** Key storage required to complete issuance. */
+      keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
+      /** Key algorithms suitable for issuance. */
+      keyAlgorithms?: Array<string>;
+      /**
+       * Metadata for entering a transaction code
+       * If a pre-authorized code is issued with a transaction code object, the
+       * wallet user must input a transaction code to receive the offered credential.
+       * This code is typically sent through a separate channel such as SMS or email.
+       */
+      txCode?: OpenId4vciTxCode;
+      /** Protocol used for issuance. */
+      protocol: string;
+      /** Whether a valid WIA is required to complete issuance. */
+      requiresWalletInstanceAttestation: boolean;
+    }
   | {
-  type_: "AUTHORIZATION_CODE_FLOW";
-  /** For reference. */
-  interactionId: string;
-  /**
-   * For issuer-initiated Authorization Code Flows, use this URL to start
-   * the authorization process with the authorization server.
-   */
-  authorizationCodeFlowUrl: string;
-  /** Protocol used for issuance. */
-  protocol: string;
-}
+      type_: "AUTHORIZATION_CODE_FLOW";
+      /** For reference. */
+      interactionId: string;
+      /**
+       * For issuer-initiated Authorization Code Flows, use this URL to start
+       * the authorization process with the authorization server.
+       */
+      authorizationCodeFlowUrl: string;
+      /** Protocol used for issuance. */
+      protocol: string;
+    }
   | {
-  type_: "PROOF_REQUEST";
-  /** For reference. */
-  interactionId: string;
-  /** Proof request. */
-  proofId: string;
-  /** Protocol used for issuance. */
-  protocol: string;
-};
+      type_: "PROOF_REQUEST";
+      /** For reference. */
+      interactionId: string;
+      /** Proof request. */
+      proofId: string;
+      /** Protocol used for issuance. */
+      protocol: string;
+    };
 
 export enum HistoryAction {
   ACCEPTED = "ACCEPTED",
@@ -2241,25 +2241,25 @@ export enum HistoryEntityType {
 
 export type HistoryMetadata =
   | {
-  type_: "UNEXPORTABLE_ENTITIES";
-  value: UnexportableEntities;
-}
+      type_: "UNEXPORTABLE_ENTITIES";
+      value: UnexportableEntities;
+    }
   | {
-  type_: "ERROR_METADATA";
-  value: HistoryErrorMetadata;
-}
+      type_: "ERROR_METADATA";
+      value: HistoryErrorMetadata;
+    }
   | {
-  type_: "WALLET_UNIT_JWT";
-  value: [string]
-}
+      type_: "WALLET_UNIT_JWT";
+      value: [string]
+    }
   | {
-  type_: "WALLET_RELYING_PARTY";
-  value: WalletRelyingPartyMetadata;
-}
+      type_: "WALLET_RELYING_PARTY";
+      value: WalletRelyingPartyMetadata;
+    }
   | {
-  type_: "TRUST_RESOLUTION";
-  value: TrustResolutionMetadata;
-};
+      type_: "TRUST_RESOLUTION";
+      value: TrustResolutionMetadata;
+    };
 
 export enum HistorySearchType {
   ALL = "ALL",
@@ -2316,50 +2316,50 @@ export enum LayoutType {
 
 export type NativeKeyStorageError =
   | {
-  type_: "KEY_GENERATION_FAILURE";
-  reason: string;
-}
+      type_: "KEY_GENERATION_FAILURE";
+      reason: string;
+    }
   | {
-  type_: "SIGNATURE_FAILURE";
-  reason: string;
-}
+      type_: "SIGNATURE_FAILURE";
+      reason: string;
+    }
   | {
-  type_: "UNSUPPORTED";
-}
+      type_: "UNSUPPORTED";
+    }
   | {
-  type_: "UNKNOWN";
-  reason: string;
-};
+      type_: "UNKNOWN";
+      reason: string;
+    };
 
 export type NfcError =
   | {
-  type_: "NOT_ENABLED";
-}
+      type_: "NOT_ENABLED";
+    }
   | {
-  type_: "NOT_SUPPORTED";
-}
+      type_: "NOT_SUPPORTED";
+    }
   | {
-  type_: "ALREADY_STARTED";
-}
+      type_: "ALREADY_STARTED";
+    }
   | {
-  type_: "NOT_STARTED";
-}
+      type_: "NOT_STARTED";
+    }
   | {
-  type_: "CANCELLED";
-}
+      type_: "CANCELLED";
+    }
   | {
-  type_: "SESSION_CLOSED";
-}
+      type_: "SESSION_CLOSED";
+    }
   | {
-  type_: "UNKNOWN";
-  reason: string;
-};
+      type_: "UNKNOWN";
+      reason: string;
+    };
 
 export type OneCoreError =
   | {
-  type_: "RESPONSE";
-  data: ErrorResponse;
-};
+      type_: "RESPONSE";
+      data: ErrorResponse;
+    };
 
 export enum OpenId4vciTxCodeInputMode {
   NUMERIC = "NUMERIC",
@@ -2373,35 +2373,35 @@ export enum PresentationDefinitionRuleType {
 
 export type PresentationDefinitionV2ClaimValue =
   | {
-  type_: "BOOLEAN";
-  value: boolean;
-}
+      type_: "BOOLEAN";
+      value: boolean;
+    }
   | {
-  type_: "FLOAT";
-  value: number /*f64*/;
-}
+      type_: "FLOAT";
+      value: number /*f64*/;
+    }
   | {
-  type_: "INTEGER";
-  value: number /*i64*/;
-}
+      type_: "INTEGER";
+      value: number /*i64*/;
+    }
   | {
-  type_: "STRING";
-  value: string;
-}
+      type_: "STRING";
+      value: string;
+    }
   | {
-  type_: "NESTED";
-  value: Array<PresentationDefinitionV2Claim>;
-};
+      type_: "NESTED";
+      value: Array<PresentationDefinitionV2Claim>;
+    };
 
 export type ProofClaimValue =
   | {
-  type_: "VALUE";
-  value: string;
-}
+      type_: "VALUE";
+      value: string;
+    }
   | {
-  type_: "CLAIMS";
-  value: Array<ProofClaim>;
-};
+      type_: "CLAIMS";
+      value: Array<ProofClaim>;
+    };
 
 export enum ProofListQueryExactColumn {
   NAME = "NAME",
