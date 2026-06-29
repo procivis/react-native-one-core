@@ -1280,7 +1280,13 @@ export interface PresentationDefinitionV2Credential {
     mdocMsoValidity?: MdocMsoValidity;
     protocol: string;
     profile?: string;
-    /** if violated, issuer's disclosure policy information */
+    /**
+     * Present when the relying party's certificates do not satisfy
+     * the embedded disclosure policy attached to the requested
+     * credential. The wallet should surface this to the user as a
+     * warning before they proceed with disclosure. See
+     * [Handling Trust Information](https://docs.procivis.ch/wallet/handling-trust).
+     */
     embeddedDisclosurePolicyViolation?: DisclosurePolicyViolation;
 }
 export interface PresentationSubmitCredentialRequest {
