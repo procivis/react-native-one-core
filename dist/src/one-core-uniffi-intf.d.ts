@@ -562,7 +562,6 @@ export interface CredentialSchemaListQuery {
     ids?: Array<string>;
     exact?: Array<CredentialSchemaListQueryExactColumn>;
     include?: Array<CredentialSchemaListIncludeEntityType>;
-    schemaId?: string;
     schemaIds?: Array<string>;
     formats?: Array<string>;
     usesBatchIssuance?: boolean;
@@ -1012,6 +1011,7 @@ export interface ImportCredentialSchemaClaimSchema {
     array?: boolean;
     claims?: Array<ImportCredentialSchemaClaimSchema>;
     mappings?: Array<CredentialClaimSchemaMapping>;
+    translations?: CredentialClaimSchemaTranslations;
 }
 export interface ImportCredentialSchemaFormat {
     format: string;
@@ -1218,39 +1218,6 @@ export interface PeripheralDiscoveryData {
     advertisedServices: Array<string>;
     advertisedServiceData?: Record<string, number[]>;
 }
-export interface PresentationDefinition {
-    requestGroups: Array<PresentationDefinitionRequestGroup>;
-    credentials: Array<CredentialDetail>;
-}
-export interface PresentationDefinitionField {
-    id: string;
-    name?: string;
-    purpose?: string;
-    required: boolean;
-    keyMap: Record<string, string>;
-}
-export interface PresentationDefinitionRequestGroup {
-    id: string;
-    name?: string;
-    purpose?: string;
-    rule: PresentationDefinitionRule;
-    requestedCredentials: Array<PresentationDefinitionRequestedCredential>;
-}
-export interface PresentationDefinitionRequestedCredential {
-    id: string;
-    name?: string;
-    purpose?: string;
-    fields: Array<PresentationDefinitionField>;
-    applicableCredentials: Array<string>;
-    inapplicableCredentials: Array<string>;
-    multiple?: boolean;
-}
-export interface PresentationDefinitionRule {
-    type: PresentationDefinitionRuleType;
-    min?: number;
-    max?: number;
-    count?: number;
-}
 export interface PresentationDefinitionV2 {
     credentialQueries: Record<string, CredentialQuery>;
     credentialSets: Array<CredentialSet>;
@@ -1288,11 +1255,6 @@ export interface PresentationDefinitionV2Credential {
      * [Handling Trust Information](https://docs.procivis.ch/wallet/handling-trust).
      */
     embeddedDisclosurePolicyViolation?: DisclosurePolicyViolation;
-}
-export interface PresentationSubmitCredentialRequest {
-    /** ID of the credential to submit. */
-    credentialId: string;
-    submitClaims: Array<string>;
 }
 export interface PresentationSubmitV2CredentialRequest {
     /** ID of the credential to submit. */
@@ -1541,24 +1503,48 @@ export interface ProposeProofResponse {
     url?: string;
 }
 export interface QesAuthorizeRequest {
+    /** Configured document signer name (for example, `SIGN8`). */
     provider: string;
+    /** Base64-encoded document to be signed. */
     document: string;
+    /**
+     * Wallet deep link to which the provider redirects after authorization,
+     * appending the authorization `code`. When omitted, the configured
+     * default is used.
+     */
     redirectUri?: string;
+    /** Organizational context. Optional when resolvable from STS auth. */
     organisationId?: string;
 }
 export interface QesAuthorizeResponse {
+    /** Authorization URL the wallet opens to identify and authorize signing. */
     authorizationUrl: string;
+    /** PKCE `code_verifier` to pass back to `qesSign`. */
     codeVerifier: string;
 }
 export interface QesSignRequest {
+    /** Configured document signer name (for example, `SIGN8`). */
     provider: string;
+    /** Authorization code from the document signer redirect. */
     code: string;
+    /** `codeVerifier` returned from the `qesAuthorize` method. */
     codeVerifier: string;
+    /**
+     * Base64-encoded document to be signed. Must be identical to the
+     * document provided to `qes_authorize`.
+     */
     document: string;
+    /**
+     * Wallet deep link. Must be identical to the one used at
+     * `qesAuthorize`. When omitted, the configured default
+     * is used.
+     */
     redirectUri?: string;
+    /** Organizational context. Optional when resolvable from STS auth. */
     organisationId?: string;
 }
 export interface QesSignResponse {
+    /** Base64-encoded signed document returned by the QES provider. */
     signedDocument: string;
 }
 export interface RegisterVerifierInstanceRequest {
@@ -2110,10 +2096,6 @@ export declare enum OpenId4vciTxCodeInputMode {
     NUMERIC = "NUMERIC",
     TEXT = "TEXT"
 }
-export declare enum PresentationDefinitionRuleType {
-    ALL = "ALL",
-    PICK = "PICK"
-}
 export type PresentationDefinitionV2ClaimValue = {
     type_: "BOOLEAN";
     value: boolean;
@@ -2402,7 +2384,6 @@ export interface OneCore {
     getIdentifier(id: string): Promise<IdentifierDetail>;
     /** Returns details of an existing organization. */
     getOrganisation(id: string): Promise<OrganisationDetail>;
-    getPresentationDefinition(proofId: string): Promise<PresentationDefinition>;
     getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2>;
     /** Returns detailed information about a proof request. */
     getProof(proofId: string): Promise<ProofDetail>;
@@ -2440,11 +2421,6 @@ export interface OneCore {
     holderRejectCredential(interactionId: string): Promise<void>;
     /** Rejects a proof request. */
     holderRejectProof(interactionId: string): Promise<void>;
-    /**
-     * Submits a presentation using Presentation Exchange as the query
-     * language; this should be used after `getPresentationDefinition`.
-     */
-    holderSubmitProof(interactionId: string, submitCredentials: Record<string, Array<PresentationSubmitCredentialRequest>>): Promise<void>;
     /**
      * Submits a presentation using DCQL as a query language; this should
      * be used after `getPresentationDefinitionv2`.
@@ -2488,7 +2464,18 @@ export interface OneCore {
      * options for `engagement`.
      */
     proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
+    /**
+     * Initiates the QES signing flow for a document with a configured
+     * QES provider. Returns an `authorizationUrl` for the user to
+     * authenticate with the provider, and a `codeVerifier` to be passed
+     * to the `qesSign` method on return.
+     */
     qesAuthorize(request: QesAuthorizeRequest): Promise<QesAuthorizeResponse>;
+    /**
+     * Completes the QES signing flow. Exchanges the authorization
+     * `code` received from the provider redirect and the `codeVerifier`
+     * from `qesAuthorize` for a signed document.
+     */
     qesSign(request: QesSignRequest): Promise<QesSignResponse>;
     /** Registers the verifier unit with a Verifier Provider. */
     registerVerifierInstance(request: RegisterVerifierInstanceRequest): Promise<RegisterVerifierInstanceResponse>;

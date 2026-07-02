@@ -268,11 +268,6 @@ export var OpenId4vciTxCodeInputMode;
     OpenId4vciTxCodeInputMode["NUMERIC"] = "NUMERIC";
     OpenId4vciTxCodeInputMode["TEXT"] = "TEXT";
 })(OpenId4vciTxCodeInputMode || (OpenId4vciTxCodeInputMode = {}));
-export var PresentationDefinitionRuleType;
-(function (PresentationDefinitionRuleType) {
-    PresentationDefinitionRuleType["ALL"] = "ALL";
-    PresentationDefinitionRuleType["PICK"] = "PICK";
-})(PresentationDefinitionRuleType || (PresentationDefinitionRuleType = {}));
 export var ProofListQueryExactColumn;
 (function (ProofListQueryExactColumn) {
     ProofListQueryExactColumn["NAME"] = "NAME";
