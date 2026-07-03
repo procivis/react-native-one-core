@@ -842,6 +842,8 @@ export interface HistoryListQuery {
     proofId?: string;
     /** Return only events associated with the provided proof schema ID. */
     proofSchemaId?: string;
+    /** Return only events associated with the provided trust collection D. */
+    trustCollectionId?: string;
     /**
      * Search history events by string. Set `text` to specify the search
      * string and optionally `type` to restrict which field is searched.

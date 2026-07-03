@@ -33,7 +33,7 @@ export declare enum FormatFeature {
 }
 export declare enum FormatSelectiveDisclosure {
     AnyLevel = "ANY_LEVEL",
-    SecondLevel = "SECOND_LEVEL"
+    FirstLevel = "FIRST_LEVEL"
 }
 export interface FormatCapabilities {
     features: FormatFeature[];

@@ -26,7 +26,7 @@ export var FormatFeature;
 export var FormatSelectiveDisclosure;
 (function (FormatSelectiveDisclosure) {
     FormatSelectiveDisclosure["AnyLevel"] = "ANY_LEVEL";
-    FormatSelectiveDisclosure["SecondLevel"] = "SECOND_LEVEL";
+    FormatSelectiveDisclosure["FirstLevel"] = "FIRST_LEVEL";
 })(FormatSelectiveDisclosure || (FormatSelectiveDisclosure = {}));
 export var RevocationOperation;
 (function (RevocationOperation) {
