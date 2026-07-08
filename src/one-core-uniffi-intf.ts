@@ -1751,6 +1751,7 @@ export interface TrustCollectionInfo {
   logo: string;
   displayName: Array<DisplayName>;
   description: Array<DisplayName>;
+  defaultSelected?: boolean;
 }
 
 export interface TrustCollections {
