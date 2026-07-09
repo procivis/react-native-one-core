@@ -256,6 +256,8 @@ export interface CreateProofRequest {
   profile?: string;
   /** Use for ISO mDL verification over BLE. */
   engagement?: string;
+  /** Optional transaction data to request authorization for. */
+  transactionData?: Array<ProofRequestTransactionData>;
 }
 
 export interface CreateProofSchemaInput {
@@ -1342,9 +1344,16 @@ export interface PeripheralDiscoveryData {
   advertisedServiceData?: Record<string, number[] /*bytearray*/>;
 }
 
+export interface PresentationDefinitionTransactionData {
+  id: string;
+  type: string;
+  credentialQueryIds: Array<string>;
+}
+
 export interface PresentationDefinitionV2 {
   credentialQueries: Record<string, CredentialQuery>;
   credentialSets: Array<CredentialSet>;
+  transactionData: Array<PresentationDefinitionTransactionData>;
 }
 
 export interface PresentationDefinitionV2Claim {
@@ -1393,6 +1402,13 @@ export interface PresentationSubmitV2CredentialRequest {
    * optional claims.
    */
   userSelections: Array<string>;
+  /**
+   * Optional ids of transaction-data entries to bind to this credential.
+   * Entries not listed here are auto-assigned. Ids must reference transaction
+   * data applicable to this credential. Omit entirely or use an empty array
+   * to auto-assign all transaction data.
+   */
+  transactionDataIds: Array<string>;
 }
 
 export interface ProofClaim {
@@ -1569,6 +1585,19 @@ export interface ProofListQuery {
    * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
    */
   completedDateBefore?: string;
+}
+
+/** Transaction data to include in a proof request. */
+export interface ProofRequestTransactionData {
+  /** The transaction data provider to use. */
+  type: string;
+  /**
+   * The credential schemas (of the given proof schema) the transaction data
+   * applies to.
+   */
+  credentialSchemaIds: Array<string>;
+  /** Type-specific transaction data content, encoded as a JSON string. */
+  data?: string;
 }
 
 export interface ProofSchemaDetail {
