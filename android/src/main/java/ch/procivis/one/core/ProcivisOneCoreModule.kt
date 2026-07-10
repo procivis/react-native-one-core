@@ -405,6 +405,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun holderGetTransactionData(proofId: String, transactionDataId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val transactionData = getCore().holderGetTransactionData(proofId, transactionDataId)
+            return@asyncCall convertToRN(transactionData)
+        }
+    }
+
+    @ReactMethod
     fun listProofs(query: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             val proofs = getCore().listProofs(construct(query))

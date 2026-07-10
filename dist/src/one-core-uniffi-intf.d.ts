@@ -1275,14 +1275,14 @@ export interface PresentationSubmitV2CredentialRequest {
      * holder selects. Omit entirely or use an empty array if withholding all
      * optional claims.
      */
-    userSelections: Array<string>;
+    userSelections?: Array<string>;
     /**
      * Optional ids of transaction-data entries to bind to this credential.
      * Entries not listed here are auto-assigned. Ids must reference transaction
      * data applicable to this credential. Omit entirely or use an empty array
      * to auto-assign all transaction data.
      */
-    transactionDataIds: Array<string>;
+    transactionDataIds?: Array<string>;
 }
 export interface ProofClaim {
     schema: ProofClaimSchema;
@@ -1337,6 +1337,8 @@ export interface ProofDetail {
     profile?: string;
     /** Trust information of the verifier, if any. */
     trustInformation?: TrustInformation;
+    /** Transaction data attached to this proof request. Present only if the proof role is `VERIFIER`. */
+    transactionData?: Array<TransactionDataResponse>;
 }
 export interface ProofInput {
     /** Set of claims asserted by the shared credential. */
@@ -1520,6 +1522,21 @@ export interface ProofSchemaListQuery {
 export interface ProofSchemaShareResponse {
     url: string;
 }
+/** Details of a single (holder-side) transaction data entry of a proof request. */
+export interface ProofTransactionData {
+    id: string;
+    /** The transaction data provider that validated this entry. */
+    type: string;
+    /** Credential query ids the transaction data is bound to. */
+    credentialQueryIds: Array<string>;
+    /** Grouped key-value data for displaying the transaction to the user. */
+    transactionDataDisplay: Array<TransactionDataDisplay>;
+    /**
+     * The raw transaction data received from the verifier, encoded as a JSON
+     * string.
+     */
+    rawTransactionData?: string;
+}
 export interface ProposeProofRequest {
     protocol: string;
     organisationId: string;
@@ -1617,6 +1634,24 @@ export interface ShareProofRequestParams {
 export interface ShareProofResponse {
     url: string;
     expiresAt?: string;
+}
+export interface TransactionDataDisplay {
+    title: string;
+    attributes: Array<TransactionDataDisplayAttribute>;
+}
+export interface TransactionDataDisplayAttribute {
+    key: string;
+    /** The attribute value, encoded as a JSON string. */
+    value: string;
+}
+/** Transaction data attached to a proof request. */
+export interface TransactionDataResponse {
+    /** The transaction data provider used. */
+    type: string;
+    /** The credential schemas the transaction data applies to. */
+    credentialSchemaIds: Array<string>;
+    /** Type-specific transaction data content, encoded as a JSON string. */
+    data?: string;
 }
 export interface TrustCollectionInfo {
     /** When true, the wallet is subscribed to this trust collection. */
@@ -2439,6 +2474,13 @@ export interface OneCore {
     holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
     /** Activates the wallet instance with the Wallet Provider after user authentication. */
     holderActivateWalletUnit(id: string, request: HolderActivateWalletUnitRequest): Promise<void>;
+    /**
+     * For wallets; returns the details of a single transaction data entry of a
+     * proof request, including human-readable display data and the raw
+     * transaction data received from the verifier. The `transactionDataId` is
+     * obtained from `getPresentationDefinitionv2`.
+     */
+    holderGetTransactionData(proofId: string, transactionDataId: string): Promise<ProofTransactionData>;
     /** Returns wallet registration details from the Wallet Provider. */
     holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
     /** Returns trust collections curated by the Wallet Provider. */

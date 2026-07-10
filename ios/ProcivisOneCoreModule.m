@@ -194,6 +194,11 @@ RCT_EXTERN_METHOD(getProofTrustInformation:(NSString *)proofId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(holderGetTransactionData:(NSString *)proofId
+                  transactionDataId:(NSString *)transactionDataId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(listProofs:(NSDictionary *)query
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)

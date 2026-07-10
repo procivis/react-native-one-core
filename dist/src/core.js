@@ -43,6 +43,7 @@ export const interfaceMethodNames = [
     "shareCredentialSchema",
     "getProof",
     "getProofTrustInformation",
+    "holderGetTransactionData",
     "listProofs",
     "deleteProof",
     "proposeProof",

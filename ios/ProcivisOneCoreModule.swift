@@ -592,6 +592,19 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
+    @objc(holderGetTransactionData:transactionDataId:resolver:rejecter:)
+    func holderGetTransactionData(
+      proofId: String,
+      transactionDataId: String,
+      resolve: @escaping RCTPromiseResolveBlock,
+      reject: @escaping RCTPromiseRejectBlock
+    ) {
+      asyncCall(resolve, reject) {
+        let result = try await self.getCore().holderGetTransactionData(proofId: proofId, transactionDataId: transactionDataId)
+        return try serializeAny(result)
+      }
+    }
+
   @objc(listProofs:resolver:rejecter:)
   func listProofs(
     query: NSDictionary,
