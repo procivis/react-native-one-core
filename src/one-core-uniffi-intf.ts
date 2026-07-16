@@ -1797,7 +1797,6 @@ export interface TransactionDataDisplay {
 
 export interface TransactionDataDisplayAttribute {
   key: string;
-  /** The attribute value, encoded as a JSON string. */
   value: string;
 }
 
