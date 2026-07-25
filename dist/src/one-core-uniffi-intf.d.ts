@@ -357,6 +357,7 @@ export interface CredentialListItem {
     consumedAt?: string;
     type: CredentialType;
     parentId?: string;
+    redirectUri?: string;
 }
 export interface CredentialListQuery {
     /** Page number to retrieve (0-based indexing). */
@@ -1384,6 +1385,7 @@ export interface ProofListItem {
     retainUntilDate?: string;
     /** Country profile associated with this request. */
     profile?: string;
+    redirectUri?: string;
 }
 export interface ProofListQuery {
     /** Page number to retrieve (0-based indexing). */

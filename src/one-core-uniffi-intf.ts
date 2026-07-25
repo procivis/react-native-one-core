@@ -394,6 +394,7 @@ export interface CredentialListItem {
   consumedAt?: string;
   type: CredentialType;
   parentId?: string;
+  redirectUri?: string;
 }
 
 export interface CredentialListQuery {
@@ -1517,6 +1518,7 @@ export interface ProofListItem {
   retainUntilDate?: string;
   /** Country profile associated with this request. */
   profile?: string;
+  redirectUri?: string;
 }
 
 export interface ProofListQuery {
