@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { JSX, useCallback, useEffect, useState } from "react";
 import { Button, SafeAreaView, ScrollView, Text } from "react-native";
 import {
   ONECore,

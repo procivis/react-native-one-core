@@ -1,12 +1,11 @@
 const { getDefaultConfig } = require("@react-native/metro-config");
-const exclusionList = require("metro-config/src/defaults/exclusionList");
 const path = require("path");
 const fs = require("fs");
 const escape = require("escape-string-regexp");
 
 const root = path.resolve(__dirname, "..");
 const pak = JSON.parse(
-  fs.readFileSync(path.join(root, "package.json"), "utf8")
+  fs.readFileSync(path.join(root, "package.json"), "utf8"),
 );
 
 const defaultConfig = getDefaultConfig(__dirname);
@@ -28,9 +27,9 @@ module.exports = {
   resolver: {
     ...defaultConfig.resolver,
 
-    blacklistRE: exclusionList([
+    blacklistRE: [
       new RegExp(`^${escape(path.join(root, "node_modules"))}\\/.*$`),
-    ]),
+    ],
 
     extraNodeModules: modules.reduce((acc, name) => {
       acc[name] = path.join(__dirname, "node_modules", name);
