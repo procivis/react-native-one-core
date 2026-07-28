@@ -207,7 +207,6 @@ export var HistoryEntityType;
     HistoryEntityType["TRUST_LIST_PUBLICATION"] = "TRUST_LIST_PUBLICATION";
     HistoryEntityType["TRUST_COLLECTION"] = "TRUST_COLLECTION";
     HistoryEntityType["TRUST_LIST_SUBSCRIPTION"] = "TRUST_LIST_SUBSCRIPTION";
-    HistoryEntityType["VERIFIER_INSTANCE"] = "VERIFIER_INSTANCE";
     HistoryEntityType["QES_DOCUMENT"] = "QES_DOCUMENT";
 })(HistoryEntityType || (HistoryEntityType = {}));
 export var HistorySearchType;
@@ -242,6 +241,23 @@ export var IdentifierType;
     IdentifierType["CERTIFICATE"] = "CERTIFICATE";
     IdentifierType["CERTIFICATE_AUTHORITY"] = "CERTIFICATE_AUTHORITY";
 })(IdentifierType || (IdentifierType = {}));
+export var InstanceProviderType;
+(function (InstanceProviderType) {
+    InstanceProviderType["PROCIVIS_ONE"] = "PROCIVIS_ONE";
+})(InstanceProviderType || (InstanceProviderType = {}));
+export var InstanceRole;
+(function (InstanceRole) {
+    InstanceRole["WALLET"] = "WALLET";
+    InstanceRole["VERIFIER"] = "VERIFIER";
+})(InstanceRole || (InstanceRole = {}));
+export var InstanceStatus;
+(function (InstanceStatus) {
+    InstanceStatus["PENDING"] = "PENDING";
+    InstanceStatus["ACTIVE"] = "ACTIVE";
+    InstanceStatus["REVOKED"] = "REVOKED";
+    InstanceStatus["UNATTESTED"] = "UNATTESTED";
+    InstanceStatus["ERROR"] = "ERROR";
+})(InstanceStatus || (InstanceStatus = {}));
 export var KeyRole;
 (function (KeyRole) {
     KeyRole["AUTHENTICATION"] = "AUTHENTICATION";
@@ -357,15 +373,3 @@ export var TrustResolutionResult;
     TrustResolutionResult["UNTRUSTED"] = "UNTRUSTED";
     TrustResolutionResult["UNKNOWN"] = "UNKNOWN";
 })(TrustResolutionResult || (TrustResolutionResult = {}));
-export var WalletProviderType;
-(function (WalletProviderType) {
-    WalletProviderType["PROCIVIS_ONE"] = "PROCIVIS_ONE";
-})(WalletProviderType || (WalletProviderType = {}));
-export var WalletUnitStatus;
-(function (WalletUnitStatus) {
-    WalletUnitStatus["PENDING"] = "PENDING";
-    WalletUnitStatus["ACTIVE"] = "ACTIVE";
-    WalletUnitStatus["REVOKED"] = "REVOKED";
-    WalletUnitStatus["UNATTESTED"] = "UNATTESTED";
-    WalletUnitStatus["ERROR"] = "ERROR";
-})(WalletUnitStatus || (WalletUnitStatus = {}));

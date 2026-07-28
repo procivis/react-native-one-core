@@ -788,113 +788,63 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(holderRegisterWalletUnit:resolver:rejecter:)
-  func holderRegisterWalletUnit(
+  @objc(holderRegisterInstance:resolver:rejecter:)
+  func holderRegisterInstance(
     request: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().holderRegisterWalletUnit(request: try deserialize(request))
+      let result = try await self.getCore().holderRegisterInstance(request: try deserialize(request))
       return try serializeAny(result)
     }
   }
 
-  @objc(holderActivateWalletUnit:request:resolver:rejecter:)
-  func holderActivateWalletUnit(
+  @objc(holderActivateInstance:request:resolver:rejecter:)
+  func holderActivateInstance(
     id: String,
     request: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      try await self.getCore().holderActivateWalletUnit(id: id, request: try deserialize(request))
-      return nil as NSDictionary?
-    }
-  }
-
-  @objc(holderWalletUnitStatus:resolver:rejecter:)
-  func holderWalletUnitStatus(
-    walletUnitId: String,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      try await self.getCore().holderWalletUnitStatus(id: walletUnitId)
-      return nil as NSDictionary?
-    }
-  }
-
-  @objc(holderWalletUnitUpdate:request:resolver:rejecter:)
-  func holderWalletUnitUpdate(
-    walletUnitId: String,
-    request: NSDictionary,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      try await self.getCore().holderWalletUnitUpdate(id: walletUnitId, request: try deserialize(request))
-      return nil as NSDictionary?
-    }
-  }
-
-  @objc(holderGetWalletUnit:resolver:rejecter:)
-  func holderGetWalletUnit(
-    walletUnitId: String,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      let result = try await self.getCore().holderGetWalletUnit(id: walletUnitId)
+      let result = try await self.getCore().holderActivateInstance(id: id, request: try deserialize(request))
       return try serializeAny(result)
     }
   }
 
-  @objc(holderGetWalletUnitTrustCollections:resolver:rejecter:)
-  func holderGetWalletUnitTrustCollections(
-    walletUnitId: String,
+  @objc(holderInstanceStatus:resolver:rejecter:)
+  func holderInstanceStatus(
+    instanceId: String,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().holderGetWalletUnitTrustCollections(id: walletUnitId)
-      return try serializeAny(result)
-    }
-  }
-
-  @objc(registerVerifierInstance:resolver:rejecter:)
-  func registerVerifierInstance(
-    request: NSDictionary,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      let result = try await self.getCore().registerVerifierInstance(request: try deserialize(request))
-      return try serializeAny(result)
-    }
-  }
-
-  @objc(updateVerifierInstance:request:resolver:rejecter:)
-  func updateVerifierInstance(
-    verifierInstanceId: String,
-    request: NSDictionary,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      try await self.getCore().updateVerifierInstance(id: verifierInstanceId, request: try deserialize(request))
+      try await self.getCore().holderInstanceStatus(id: instanceId)
       return nil as NSDictionary?
     }
   }
 
-  @objc(getVerifierInstanceTrustCollections:resolver:rejecter:)
-  func getVerifierInstanceTrustCollections(
-    verifierInstanceId: String,
+  @objc(holderGetInstance:resolver:rejecter:)
+  func holderGetInstance(
+    instanceId: String,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().getVerifierInstanceTrustCollections(id: verifierInstanceId)
+      let result = try await self.getCore().holderGetInstance(id: instanceId)
+      return try serializeAny(result)
+    }
+  }
+
+  @objc(getOrganisationTrustCollections:resolver:rejecter:)
+  func getOrganisationTrustCollections(
+    organisationId: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) {
+    asyncCall(resolve, reject) {
+      let result = try await self.getCore().getOrganisationTrustCollections(id: organisationId)
       return try serializeAny(result)
     }
   }

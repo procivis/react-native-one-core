@@ -39,6 +39,10 @@ RCT_EXTERN_METHOD(getOrganisation:(NSString *)organisationId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getOrganisationTrustCollections:(NSString *)organisationId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(generateKey:(NSDictionary *)keyRequest
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
@@ -255,42 +259,20 @@ RCT_EXTERN_METHOD(resolveJsonldContext:(NSString *)url
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(holderRegisterWalletUnit:(NSDictionary *)request
+RCT_EXTERN_METHOD(holderRegisterInstance:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(holderActivateWalletUnit:(NSString *)unitId
+RCT_EXTERN_METHOD(holderActivateInstance:(NSString *)instanceId
                   request:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(holderWalletUnitStatus:(NSString *)walletUnitId
+RCT_EXTERN_METHOD(holderInstanceStatus:(NSString *)instanceId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(holderGetWalletUnit:(NSString *)walletUnitId
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(holderWalletUnitUpdate:(NSString *)walletUnitId
-                  request:(NSDictionary *)request
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(holderGetWalletUnitTrustCollections:(NSString *)walletUnitId
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(registerVerifierInstance:(NSDictionary *)request
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(updateVerifierInstance:(NSString *)verifierInstanceId
-                  request:(NSDictionary *)request
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(getVerifierInstanceTrustCollections:(NSString *)verifierInstanceId
+RCT_EXTERN_METHOD(holderGetInstance:(NSString *)instanceId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

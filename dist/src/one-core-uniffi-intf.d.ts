@@ -879,72 +879,51 @@ export interface HolderAcceptCredentialRequest {
     /** User-provided transaction code. */
     txCode?: string;
 }
-export interface HolderActivateWalletUnitRequest {
+export interface HolderActivateInstanceRequest {
     /** Key type for the authentication key generated during activation. */
     keyType: string;
     /** Identity token obtained from the identity provider after user authentication. */
     userIdToken?: string;
+    /** Access token obtained from the identity provider after user authentication. */
+    userAccessToken?: string;
+}
+export interface HolderActivateInstanceResponse {
+    /** IdentifierId with provisioned access certificate (if any) */
+    accessCertificateIdentifierId?: string;
+}
+export interface HolderInstance {
+    id: string;
+    createdDate: string;
+    lastModified: string;
+    role: InstanceRole;
+    providerInstanceId: string;
+    providerUrl: string;
+    providerType: InstanceProviderType;
+    providerName: string;
+    status: InstanceStatus;
+    authenticationKey?: KeyListItem;
+    userNonce?: string;
 }
 export interface HolderRefreshCredentialResponse {
     credentialIds: Array<string>;
 }
-export interface HolderRegisterWalletUnitRequest {
-    /** The wallet unit's organization. */
+export interface HolderRegisterInstanceRequest {
+    /** The instance's organization. */
     organisationId: string;
-    /** Wallet Provider details. */
-    walletProvider: WalletProvider;
+    /** Role of the instance being registered. */
+    role: InstanceRole;
+    /** Provider details. */
+    provider: InstanceProvider;
     /**
      * Choose a key type and the system will generate a key to use for
      * registration.
      */
     keyType: string;
-    /**
-     * When true, the wallet will only interact with entities that can be
-     * verified as trusted. Requires the Wallet Provider to have the
-     * `trustEcosystemsEnabled` feature flag enabled.
-     */
-    trustedRpRequired: boolean;
 }
-export interface HolderRegisterWalletUnitResponse {
+export interface HolderRegisterInstanceResponse {
     id: string;
-    status: WalletUnitStatus;
+    status: InstanceStatus;
     userNonce?: string;
-}
-export interface HolderWalletInstanceDetail {
-    id: string;
-    trustedRpRequired: boolean;
-    walletProviderUrl: string;
-    walletProviderName: string;
-    authenticationKeyType: string;
-}
-export interface HolderWalletUnit {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    providerWalletUnitId: string;
-    walletProviderUrl: string;
-    walletProviderType: WalletProviderType;
-    walletProviderName: string;
-    status: WalletUnitStatus;
-    authenticationKey?: KeyListItem;
-    trustedRpRequired: boolean;
-    userNonce?: string;
-}
-export interface HolderWalletUnitUpdateRequest {
-    /**
-     * The trust collections the wallet subscribes to, selected from those
-     * made available by the Wallet Provider. The wallet will evaluate trust
-     * against the lists contained in these collections. To keep subscribed
-     * collections in sync with the Wallet Provider, run the
-     * `TRUST_COLLECTION_SYNC` task.
-     */
-    trustCollections?: Array<string>;
-    /**
-     * When true, the wallet will only interact with entities that can be
-     * verified as trusted. Requires the Wallet Provider to have the
-     * `trustEcosystemsEnabled` feature flag enabled.
-     */
-    trustedRpRequired?: boolean;
 }
 export interface IdentifierDetail {
     id: string;
@@ -1145,6 +1124,22 @@ export interface InitiateIssuanceRequest {
 export interface InitiateIssuanceResponse {
     url: string;
 }
+export interface InstanceDetail {
+    id: string;
+    providerUrl: string;
+    providerName: string;
+    authenticationKeyType: string;
+}
+export interface InstanceProvider {
+    /**
+     * Full URL for the GET provider metadata endpoint, for example:
+     * <domain>/ssi/wallet-provider/v1/<provider> or
+     * <domain>/ssi/verifier-provider/v1/<provider>
+     */
+    url: string;
+    /** Choose the provider implementation. */
+    type: InstanceProviderType;
+}
 export interface KeyDetail {
     id: string;
     createdDate: string;
@@ -1195,6 +1190,18 @@ export interface OpenId4vciTxCode {
      */
     description?: string;
 }
+export interface OrganisationConfiguration {
+    /**
+     * When true, the verifier will only validate presentations of
+     * credentials issued by trusted issuers.
+     */
+    trustedIssuerRequired: boolean;
+    /**
+     * When true, the wallet only accepts presentation requests from
+     * trusted relying parties.
+     */
+    trustedRpRequired: boolean;
+}
 export interface OrganisationDetail {
     id: string;
     createdDate: string;
@@ -1205,17 +1212,20 @@ export interface OrganisationDetail {
      * configuration from, if any.
      */
     parentOrganisation?: string;
+    /** Policy-level configuration for this organization. */
+    configuration?: OrganisationConfiguration;
     walletProvider?: WalletProviderDetail;
+    verifierProvider?: VerifierProviderDetail;
     /**
      * Wallet registration details for this organization's Business
      * Wallet.
      */
-    walletInstance?: HolderWalletInstanceDetail;
+    walletInstance?: InstanceDetail;
     /**
-     * Wallet registration details for this organization's Business
-     * Wallet.
+     * Verifier registration details for this organization's Business
+     * Verifier.
      */
-    verifierInstance?: VerifierInstanceDetail;
+    verifierInstance?: InstanceDetail;
 }
 export interface PeripheralDiscoveryData {
     deviceAddress: string;
@@ -1595,24 +1605,6 @@ export interface QesSignResponse {
     /** Base64-encoded signed document returned by the QES provider. */
     signedDocument: string;
 }
-export interface RegisterVerifierInstanceRequest {
-    /** The verifier unit's organization. */
-    organisationId: string;
-    /** The Verifier Provider's reference URL. */
-    verifierProviderUrl: string;
-    /** Reference a configured `verifierProvider` instance. */
-    type: string;
-    /**
-     * When true, the verifier will only validate presentations of
-     * credentials issued by trusted issuers. Requires the Verifier
-     * Provider to have the `trustEcosystemsEnabled` feature flag
-     * enabled.
-     */
-    trustedIssuerRequired: boolean;
-}
-export interface RegisterVerifierInstanceResponse {
-    id: string;
-}
 export interface ResolvedJsonLdContext {
     context: string;
 }
@@ -1655,7 +1647,7 @@ export interface TransactionDataResponse {
     data?: string;
 }
 export interface TrustCollectionInfo {
-    /** When true, the wallet is subscribed to this trust collection. */
+    /** When true, the organization is subscribed to this trust collection. */
     selected: boolean;
     id: string;
     name: string;
@@ -1663,10 +1655,6 @@ export interface TrustCollectionInfo {
     displayName: Array<DisplayName>;
     description: Array<DisplayName>;
     defaultSelected?: boolean;
-}
-export interface TrustCollections {
-    /** Trust collections available from the Wallet Provider. */
-    trustCollections: Array<TrustCollectionInfo>;
 }
 export interface TrustInformation {
     receivedAt: string;
@@ -1693,22 +1681,17 @@ export interface UnexportableEntities {
     totalDids: number;
     totalIdentifiers: number;
 }
-export interface UpdateVerifierInstanceRequest {
-    /**
-     * The trust collections the verifier subscribes to, selected from
-     * those made available by the Verifier Provider. The verifier will
-     * evaluate trust against the lists contained in these collections.
-     * To keep subscribed collections in sync with the Verifier Provider,
-     * run the `TRUST_COLLECTION_SYNC` task.
-     */
-    trustCollections?: Array<string>;
+export interface UpsertOrganisationConfiguration {
     /**
      * When true, the verifier will only validate presentations of
-     * credentials issued by trusted issuers. Requires the Verifier
-     * Provider to have the `trustEcosystemsEnabled` feature flag
-     * enabled.
+     * credentials issued by trusted issuers.
      */
     trustedIssuerRequired?: boolean;
+    /**
+     * When true, the wallet only accepts presentation requests from
+     * trusted relying parties.
+     */
+    trustedRpRequired?: boolean;
 }
 export interface UpsertOrganisationRequest {
     /** Unique identifier of the organization to create or update. */
@@ -1719,21 +1702,32 @@ export interface UpsertOrganisationRequest {
     walletProvider?: string | null;
     /** Wallet Provider use only. */
     walletProviderIssuer?: string | null;
+    /** Verifier Provider use only. */
+    verifierProvider?: string | null;
+    /** Verifier Provider use only. */
+    verifierProviderIssuer?: string | null;
+    /** Policy-level configuration for this organization. */
+    configuration?: UpsertOrganisationConfiguration;
+    /**
+     * The trust collections this organization's wallet subscribes to,
+     * selected from those made available by the Wallet Provider. Omit to
+     * leave the current selection unchanged.
+     */
+    trustCollections?: Array<string>;
     /**
      * The parent organization this organization inherits policy-level
      * configuration from, if any.
      */
     parentOrganisation?: string | null;
 }
-export interface VerifierInstanceDetail {
-    id: string;
+export interface VerifierProviderDetail {
+    /** Verifier Provider configuration used by this organization. */
+    providerName?: string;
     /**
-     * When true, the verifier will only validate presentations of
-     * credentials issued by trusted issuers. Requires the Verifier
-     * Provider to have the `trustEcosystemsEnabled` feature flag
-     * enabled.
+     * Identifier used by this organization to authenticate to the
+     * verifier provider.
      */
-    trustedIssuerRequired: boolean;
+    issuer?: IdentifierListItem;
 }
 export interface Version {
     target: string;
@@ -1743,15 +1737,6 @@ export interface Version {
     commit: string;
     rustVersion: string;
     pipelineId: string;
-}
-export interface WalletProvider {
-    /**
-     * Full URL for the GET Wallet Provider metadata endpoint,
-     * for example: <domain>/ssi/wallet-provider/v1/<walletProvider>
-     */
-    url: string;
-    /** Choose the Wallet Provider implementation. */
-    type: WalletProviderType;
 }
 export interface WalletProviderDetail {
     /**
@@ -2062,7 +2047,6 @@ export declare enum HistoryEntityType {
     TRUST_LIST_PUBLICATION = "TRUST_LIST_PUBLICATION",
     TRUST_COLLECTION = "TRUST_COLLECTION",
     TRUST_LIST_SUBSCRIPTION = "TRUST_LIST_SUBSCRIPTION",
-    VERIFIER_INSTANCE = "VERIFIER_INSTANCE",
     QES_DOCUMENT = "QES_DOCUMENT"
 }
 export type HistoryMetadata = {
@@ -2107,6 +2091,20 @@ export declare enum IdentifierType {
     DID = "DID",
     CERTIFICATE = "CERTIFICATE",
     CERTIFICATE_AUTHORITY = "CERTIFICATE_AUTHORITY"
+}
+export declare enum InstanceProviderType {
+    PROCIVIS_ONE = "PROCIVIS_ONE"
+}
+export declare enum InstanceRole {
+    WALLET = "WALLET",
+    VERIFIER = "VERIFIER"
+}
+export declare enum InstanceStatus {
+    PENDING = "PENDING",
+    ACTIVE = "ACTIVE",
+    REVOKED = "REVOKED",
+    UNATTESTED = "UNATTESTED",
+    ERROR = "ERROR"
 }
 export declare enum KeyRole {
     AUTHENTICATION = "AUTHENTICATION",
@@ -2259,16 +2257,6 @@ export declare enum TrustResolutionResult {
     TRUSTED = "TRUSTED",
     UNTRUSTED = "UNTRUSTED",
     UNKNOWN = "UNKNOWN"
-}
-export declare enum WalletProviderType {
-    PROCIVIS_ONE = "PROCIVIS_ONE"
-}
-export declare enum WalletUnitStatus {
-    PENDING = "PENDING",
-    ACTIVE = "ACTIVE",
-    REVOKED = "REVOKED",
-    UNATTESTED = "UNATTESTED",
-    ERROR = "ERROR"
 }
 export interface BleCentral {
     connect(peripheral: string): Promise<number>;
@@ -2450,6 +2438,7 @@ export interface OneCore {
     getIdentifier(id: string): Promise<IdentifierDetail>;
     /** Returns details of an existing organization. */
     getOrganisation(id: string): Promise<OrganisationDetail>;
+    getOrganisationTrustCollections(id: string): Promise<Array<TrustCollectionInfo>>;
     getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2>;
     /** Returns detailed information about a proof request. */
     getProof(proofId: string): Promise<ProofDetail>;
@@ -2459,8 +2448,6 @@ export interface OneCore {
      * proof request.
      */
     getProofTrustInformation(proofId: string): Promise<TrustInformationDetail>;
-    /** Returns trust collections curated by the Verifier Provider. */
-    getVerifierInstanceTrustCollections(id: string): Promise<TrustCollections>;
     /**
      * For a wallet, handles the interaction once the wallet connects to a share
      * endpoint URL (for example, scans the QR code of an offered credential or
@@ -2473,8 +2460,10 @@ export interface OneCore {
      * you can specify an existing identifier.
      */
     holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
-    /** Activates the wallet instance with the Wallet Provider after user authentication. */
-    holderActivateWalletUnit(id: string, request: HolderActivateWalletUnitRequest): Promise<void>;
+    /** Activates the instance with the provider after user authentication. */
+    holderActivateInstance(id: string, request: HolderActivateInstanceRequest): Promise<HolderActivateInstanceResponse>;
+    /** Returns instance registration details from the provider. */
+    holderGetInstance(id: string): Promise<HolderInstance>;
     /**
      * For wallets; returns the details of a single transaction data entry of a
      * proof request, including human-readable display data and the raw
@@ -2482,14 +2471,15 @@ export interface OneCore {
      * obtained from `getPresentationDefinitionv2`.
      */
     holderGetTransactionData(proofId: string, transactionDataId: string): Promise<ProofTransactionData>;
-    /** Returns wallet registration details from the Wallet Provider. */
-    holderGetWalletUnit(id: string): Promise<HolderWalletUnit>;
-    /** Returns trust collections curated by the Wallet Provider. */
-    holderGetWalletUnitTrustCollections(id: string): Promise<TrustCollections>;
+    /**
+     * Check status of the instance with the provider. Will return an error
+     * if the instance has been revoked.
+     */
+    holderInstanceStatus(id: string): Promise<void>;
     /** Receive a new credential batch */
     holderRefreshCredential(interactionId: string): Promise<HolderRefreshCredentialResponse>;
-    /** Registers the wallet unit with a Wallet Provider. */
-    holderRegisterWalletUnit(request: HolderRegisterWalletUnitRequest): Promise<HolderRegisterWalletUnitResponse>;
+    /** Registers the instance with a Wallet or Verifier Provider. */
+    holderRegisterInstance(request: HolderRegisterInstanceRequest): Promise<HolderRegisterInstanceResponse>;
     /** Rejects an offered credential. */
     holderRejectCredential(interactionId: string): Promise<void>;
     /** Rejects a proof request. */
@@ -2499,13 +2489,6 @@ export interface OneCore {
      * be used after `getPresentationDefinitionv2`.
      */
     holderSubmitProofV2(interactionId: string, submission: Record<string, Array<PresentationSubmitV2CredentialRequest>>): Promise<void>;
-    /**
-     * Check status of wallet unit with the Wallet Provider. Will return an error
-     * if the unit has been revoked.
-     */
-    holderWalletUnitStatus(id: string): Promise<void>;
-    /** Modifies wallet unit's settings. */
-    holderWalletUnitUpdate(id: string, request: HolderWalletUnitUpdateRequest): Promise<void>;
     /**
      * Imports a credential schema shared from another mobile verifier device
      * using the one-core.
@@ -2550,8 +2533,6 @@ export interface OneCore {
      * from `qesAuthorize` for a signed document.
      */
     qesSign(request: QesSignRequest): Promise<QesSignResponse>;
-    /** Registers the verifier unit with a Verifier Provider. */
-    registerVerifierInstance(request: RegisterVerifierInstanceRequest): Promise<RegisterVerifierInstanceResponse>;
     /**
      * Returns the JSON-LD context document for a given URI. This is a
      * [cached entity](https://docs.procivis.ch/configure/caching).
@@ -2586,8 +2567,6 @@ export interface OneCore {
      * Follow by calling either `finalizeImport` or `rollbackImport`.
      */
     unpackBackup(password: string, inputPath: string): Promise<Metadata>;
-    /** Modifies verifier unit's settings. */
-    updateVerifierInstance(id: string, request: UpdateVerifierInstanceRequest): Promise<void>;
     /**
      * Updates or deactivates an organization if it exists, otherwise
      * creates a new organization using the provided UUID and name.

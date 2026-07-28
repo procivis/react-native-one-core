@@ -139,6 +139,14 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getOrganisationTrustCollections(organisationId: String, promise: Promise) {
+        asyncCall(promise, scope) {
+            val result = getCore().getOrganisationTrustCollections(organisationId)
+            return@asyncCall convertToRN(result)
+        }
+    }
+
+    @ReactMethod
     fun generateKey(keyRequest: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             return@asyncCall getCore().generateKey(construct(keyRequest))
@@ -580,73 +588,33 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun holderRegisterWalletUnit(request: ReadableMap, promise: Promise) {
+    fun holderRegisterInstance(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            val result = getCore().holderRegisterWalletUnit(construct(request))
+            val result = getCore().holderRegisterInstance(construct(request))
             return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
-    fun holderActivateWalletUnit(id: String, request: ReadableMap, promise: Promise) {
+    fun holderActivateInstance(id: String, request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            getCore().holderActivateWalletUnit(id, construct(request))
-            return@asyncCall null
-        }
-    }
-
-    @ReactMethod
-    fun holderWalletUnitStatus(walletUnitId: String, promise: Promise) {
-        asyncCall(promise, scope) {
-            getCore().holderWalletUnitStatus(walletUnitId)
-            return@asyncCall null
-        }
-    }
-
-    @ReactMethod
-    fun holderWalletUnitUpdate(walletUnitId: String, request: ReadableMap, promise: Promise) {
-        asyncCall(promise, scope) {
-            getCore().holderWalletUnitUpdate(walletUnitId, construct(request))
-            return@asyncCall null
-        }
-    }
-
-    @ReactMethod
-    fun holderGetWalletUnit(walletUnitId: String, promise: Promise) {
-        asyncCall(promise, scope) {
-            val result = getCore().holderGetWalletUnit(walletUnitId)
+            val result = getCore().holderActivateInstance(id, construct(request))
             return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
-    fun holderGetWalletUnitTrustCollections(walletUnitId: String, promise: Promise) {
+    fun holderInstanceStatus(id: String, promise: Promise) {
         asyncCall(promise, scope) {
-            val result = getCore().holderGetWalletUnitTrustCollections(walletUnitId)
-            return@asyncCall convertToRN(result)
-        }
-    }
-
-    @ReactMethod
-    fun registerVerifierInstance(request: ReadableMap, promise: Promise) {
-        asyncCall(promise, scope) {
-            val result = getCore().registerVerifierInstance(construct(request))
-            return@asyncCall convertToRN(result)
-        }
-    }
-
-    @ReactMethod
-    fun updateVerifierInstance(verifierInstanceId: String, request: ReadableMap, promise: Promise) {
-        asyncCall(promise, scope) {
-            getCore().updateVerifierInstance(verifierInstanceId, construct(request))
+            getCore().holderInstanceStatus(id)
             return@asyncCall null
         }
     }
 
     @ReactMethod
-    fun getVerifierInstanceTrustCollections(verifierInstanceId: String, promise: Promise) {
+    fun holderGetInstance(id: String, promise: Promise) {
         asyncCall(promise, scope) {
-            val result = getCore().getVerifierInstanceTrustCollections(verifierInstanceId)
+            val result = getCore().holderGetInstance(id)
             return@asyncCall convertToRN(result)
         }
     }

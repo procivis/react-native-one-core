@@ -10,6 +10,7 @@ export const interfaceMethodNames = [
     "createOrganisation",
     "upsertOrganisation",
     "getOrganisation",
+    "getOrganisationTrustCollections",
     "generateKey",
     "createDid",
     "listDids",
@@ -64,21 +65,16 @@ export const interfaceMethodNames = [
     "finalizeImport",
     "rollbackImport",
     "resolveJsonldContext",
-    "holderRegisterWalletUnit",
-    "holderActivateWalletUnit",
-    "holderWalletUnitStatus",
-    "holderGetWalletUnit",
-    "holderWalletUnitUpdate",
-    "holderGetWalletUnitTrustCollections",
-    "registerVerifierInstance",
-    "updateVerifierInstance",
-    "getVerifierInstanceTrustCollections",
+    "holderRegisterInstance",
+    "holderActivateInstance",
+    "holderInstanceStatus",
+    "holderGetInstance",
     "nfcReadIsoMdlEngagement",
     "nfcStopIsoMdlEngagement",
     "uninitialize",
 ];
 // Typescript automatic assertions to keep ONECore and interfaceMethodNames in sync
 /** assert that all method names listed in {@link interfaceMethodNames} exist in {@link ONECore} interface */
-const methodNamesCheck = interfaceMethodNames;
+const missingMethodsCheck = interfaceMethodNames;
 /** assert that all {@link ONECore} interface methods are listed in {@link interfaceMethodNames} */
-const interfaceMethodsCheck = null;
+const extraMethodsCheck = null;
