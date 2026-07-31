@@ -1322,6 +1322,11 @@ export interface OrganisationConfiguration {
    * trusted relying parties.
    */
   trustedRpRequired: boolean;
+  /**
+   * When true, the issuer will only issue credentials requiring wallet
+   * attestations to wallets of trusted wallet providers.
+   */
+  trustedWalletProviderRequired: boolean;
 }
 
 export interface OrganisationDetail {
@@ -1855,6 +1860,11 @@ export interface UpsertOrganisationConfiguration {
    * trusted relying parties.
    */
   trustedRpRequired?: boolean;
+  /**
+   * When true, the issuer will only issue credentials requiring wallet
+   * attestations to wallets of trusted wallet providers.
+   */
+  trustedWalletProviderRequired?: boolean;
 }
 
 export interface UpsertOrganisationRequest {
