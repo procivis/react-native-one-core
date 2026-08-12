@@ -331,6 +331,7 @@ export interface CredentialDetail {
   issuanceDate?: string;
   lastModified: string;
   revocationDate?: string;
+  expiresAt?: string;
   /** Credential issuer metadata. */
   issuer?: IdentifierListItem;
   /** Credential holder metadata. */
@@ -376,6 +377,7 @@ export interface CredentialListItem {
   issuanceDate?: string;
   lastModified: string;
   revocationDate?: string;
+  expiresAt?: string;
   /** Credential issuer metadata. */
   issuer?: string;
   /** State representation of the credential in the system. */
@@ -532,6 +534,7 @@ export interface CredentialSchemaDetail {
   requiresWalletInstanceAttestation: boolean;
   transactionCode?: CredentialSchemaTransactionCode;
   translations: CredentialSchemaTranslations;
+  expiration?: number /*i64*/;
 }
 
 export interface CredentialSchemaDetailInfo {
@@ -609,6 +612,7 @@ export interface CredentialSchemaListItem {
   allowRevocation?: boolean;
   batchSize?: number /*i32*/;
   requiresWalletInstanceAttestation: boolean;
+  expiration?: number /*i64*/;
 }
 
 export interface CredentialSchemaListQuery {
