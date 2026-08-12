@@ -320,6 +320,7 @@ export var SortableCredentialColumn;
     SortableCredentialColumn["SCHEMA_NAME"] = "SCHEMA_NAME";
     SortableCredentialColumn["ISSUER"] = "ISSUER";
     SortableCredentialColumn["STATE"] = "STATE";
+    SortableCredentialColumn["EXPIRES_AT"] = "EXPIRES_AT";
 })(SortableCredentialColumn || (SortableCredentialColumn = {}));
 export var SortableCredentialSchemaColumn;
 (function (SortableCredentialSchemaColumn) {

@@ -2517,6 +2517,7 @@ export enum SortableCredentialColumn {
   SCHEMA_NAME = "SCHEMA_NAME",
   ISSUER = "ISSUER",
   STATE = "STATE",
+  EXPIRES_AT = "EXPIRES_AT",
 }
 
 export enum SortableCredentialSchemaColumn {
