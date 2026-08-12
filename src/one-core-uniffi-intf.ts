@@ -116,6 +116,7 @@ export interface Config {
    */
   walletProvider: Record<string, string>;
   verifierProvider: Record<string, string>;
+  ecosystem: Record<string, string>;
   /** Deployment-wide settings that are not tied to a specific config entity. */
   globalSettings: GlobalSettings;
 }
@@ -131,6 +132,7 @@ export interface ContinueIssuanceResponse {
   requiresWalletInstanceAttestation: boolean;
   /** Protocol used for issuance. */
   protocol: string;
+  ecosystem?: string;
 }
 
 export interface CreateCertificateAuthorityRequest {
@@ -162,6 +164,7 @@ export interface CreateCredentialSchemaRequest {
   transactionCode?: CredentialSchemaTransactionCodeRequest;
   translations?: CredentialSchemaTranslations;
   embeddedDisclosurePolicy?: DisclosurePolicyCreateRequest;
+  expiration?: number /*i64*/;
 }
 
 export interface CreateDidRequest {
@@ -258,6 +261,7 @@ export interface CreateProofRequest {
   engagement?: string;
   /** Optional transaction data to request authorization for. */
   transactionData?: Array<ProofRequestTransactionData>;
+  ecosystem?: string;
 }
 
 export interface CreateProofSchemaInput {
@@ -848,6 +852,7 @@ export interface HandleInvitationRequest {
    * "myapp://example".
    */
   redirectUri?: string;
+  ecosystem?: string;
 }
 
 export interface HistoryErrorMetadata {
@@ -1133,6 +1138,7 @@ export interface ImportCredentialSchemaRequestSchema {
   batchSize?: number /*i32*/;
   translations?: CredentialSchemaTranslations;
   embeddedDisclosurePolicy?: DisclosurePolicy;
+  expiration?: number /*i64*/;
 }
 
 export interface ImportCredentialSchemaTransactionCode {
@@ -1230,6 +1236,7 @@ export interface InitiateIssuanceRequest {
   scope?: Array<string>;
   /** OpenID4VCI authorization request parameter. */
   authorizationDetails?: Array<InitiateIssuanceAuthorizationDetail>;
+  ecosystem?: string;
 }
 
 export interface InitiateIssuanceResponse {
@@ -1312,6 +1319,7 @@ export interface OpenId4vciTxCode {
 }
 
 export interface OrganisationConfiguration {
+  selectedEcosystems: Array<string>;
   /**
    * When true, the verifier will only validate presentations of
    * credentials issued by trusted issuers.
@@ -1703,6 +1711,7 @@ export interface ProposeProofRequest {
   organisationId: string;
   engagement: Array<string>;
   uiMessage?: string;
+  ecosystem?: string;
 }
 
 export interface ProposeProofResponse {
@@ -1790,7 +1799,7 @@ export interface ShareProofResponse {
 }
 
 export interface TransactionDataDisplay {
-  title: string;
+  title?: string;
   attributes: Array<TransactionDataDisplayAttribute>;
 }
 
@@ -1850,6 +1859,7 @@ export interface UnexportableEntities {
 }
 
 export interface UpsertOrganisationConfiguration {
+  selectedEcosystems?: Array<string>;
   /**
    * When true, the verifier will only validate presentations of
    * credentials issued by trusted issuers.
@@ -2090,7 +2100,7 @@ export type ClaimValue =
 export enum ClientIdScheme {
   REDIRECT_URI = "REDIRECT_URI",
   VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION",
-  DID = "DID",
+  DECENTRALIZED_IDENTIFIER = "DECENTRALIZED_IDENTIFIER",
   X509_SAN_DNS = "X509_SAN_DNS",
 }
 
@@ -2162,6 +2172,7 @@ export enum CredentialState {
   SUSPENDED = "SUSPENDED",
   ERROR = "ERROR",
   INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
+  EXPIRED = "EXPIRED",
 }
 
 export enum CredentialType {
@@ -2200,6 +2211,7 @@ export type HandleInvitationResponse =
       protocol: string;
       /** Whether a valid WIA is required to complete issuance. */
       requiresWalletInstanceAttestation: boolean;
+      ecosystem?: string;
     }
   | {
       type_: "AUTHORIZATION_CODE_FLOW";
@@ -2212,6 +2224,7 @@ export type HandleInvitationResponse =
       authorizationCodeFlowUrl: string;
       /** Protocol used for issuance. */
       protocol: string;
+      ecosystem?: string;
     }
   | {
       type_: "PROOF_REQUEST";
@@ -2221,6 +2234,7 @@ export type HandleInvitationResponse =
       proofId: string;
       /** Protocol used for issuance. */
       protocol: string;
+      ecosystem?: string;
     };
 
 export enum HistoryAction {

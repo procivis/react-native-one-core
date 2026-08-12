@@ -103,6 +103,7 @@ export interface Config {
      */
     walletProvider: Record<string, string>;
     verifierProvider: Record<string, string>;
+    ecosystem: Record<string, string>;
     /** Deployment-wide settings that are not tied to a specific config entity. */
     globalSettings: GlobalSettings;
 }
@@ -117,6 +118,7 @@ export interface ContinueIssuanceResponse {
     requiresWalletInstanceAttestation: boolean;
     /** Protocol used for issuance. */
     protocol: string;
+    ecosystem?: string;
 }
 export interface CreateCertificateAuthorityRequest {
     name?: string;
@@ -145,6 +147,7 @@ export interface CreateCredentialSchemaRequest {
     transactionCode?: CredentialSchemaTransactionCodeRequest;
     translations?: CredentialSchemaTranslations;
     embeddedDisclosurePolicy?: DisclosurePolicyCreateRequest;
+    expiration?: number;
 }
 export interface CreateDidRequest {
     organisationId: string;
@@ -234,6 +237,7 @@ export interface CreateProofRequest {
     engagement?: string;
     /** Optional transaction data to request authorization for. */
     transactionData?: Array<ProofRequestTransactionData>;
+    ecosystem?: string;
 }
 export interface CreateProofSchemaInput {
     credentialSchemaId: string;
@@ -769,6 +773,7 @@ export interface HandleInvitationRequest {
      * "myapp://example".
      */
     redirectUri?: string;
+    ecosystem?: string;
 }
 export interface HistoryErrorMetadata {
     errorCode: string;
@@ -1032,6 +1037,7 @@ export interface ImportCredentialSchemaRequestSchema {
     batchSize?: number;
     translations?: CredentialSchemaTranslations;
     embeddedDisclosurePolicy?: DisclosurePolicy;
+    expiration?: number;
 }
 export interface ImportCredentialSchemaTransactionCode {
     type: TransactionCodeType;
@@ -1120,6 +1126,7 @@ export interface InitiateIssuanceRequest {
     scope?: Array<string>;
     /** OpenID4VCI authorization request parameter. */
     authorizationDetails?: Array<InitiateIssuanceAuthorizationDetail>;
+    ecosystem?: string;
 }
 export interface InitiateIssuanceResponse {
     url: string;
@@ -1191,6 +1198,7 @@ export interface OpenId4vciTxCode {
     description?: string;
 }
 export interface OrganisationConfiguration {
+    selectedEcosystems: Array<string>;
     /**
      * When true, the verifier will only validate presentations of
      * credentials issued by trusted issuers.
@@ -1559,6 +1567,7 @@ export interface ProposeProofRequest {
     organisationId: string;
     engagement: Array<string>;
     uiMessage?: string;
+    ecosystem?: string;
 }
 export interface ProposeProofResponse {
     proofId: string;
@@ -1635,7 +1644,7 @@ export interface ShareProofResponse {
     expiresAt?: string;
 }
 export interface TransactionDataDisplay {
-    title: string;
+    title?: string;
     attributes: Array<TransactionDataDisplayAttribute>;
 }
 export interface TransactionDataDisplayAttribute {
@@ -1687,6 +1696,7 @@ export interface UnexportableEntities {
     totalIdentifiers: number;
 }
 export interface UpsertOrganisationConfiguration {
+    selectedEcosystems?: Array<string>;
     /**
      * When true, the verifier will only validate presentations of
      * credentials issued by trusted issuers.
@@ -1883,7 +1893,7 @@ export type ClaimValue = {
 export declare enum ClientIdScheme {
     REDIRECT_URI = "REDIRECT_URI",
     VERIFIER_ATTESTATION = "VERIFIER_ATTESTATION",
-    DID = "DID",
+    DECENTRALIZED_IDENTIFIER = "DECENTRALIZED_IDENTIFIER",
     X509_SAN_DNS = "X509_SAN_DNS"
 }
 export type ConnectionEvent = {
@@ -1941,7 +1951,8 @@ export declare enum CredentialState {
     REVOKED = "REVOKED",
     SUSPENDED = "SUSPENDED",
     ERROR = "ERROR",
-    INTERACTION_EXPIRED = "INTERACTION_EXPIRED"
+    INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
+    EXPIRED = "EXPIRED"
 }
 export declare enum CredentialType {
     SINGLE = "SINGLE",
@@ -1975,6 +1986,7 @@ export type HandleInvitationResponse = {
     protocol: string;
     /** Whether a valid WIA is required to complete issuance. */
     requiresWalletInstanceAttestation: boolean;
+    ecosystem?: string;
 } | {
     type_: "AUTHORIZATION_CODE_FLOW";
     /** For reference. */
@@ -1986,6 +1998,7 @@ export type HandleInvitationResponse = {
     authorizationCodeFlowUrl: string;
     /** Protocol used for issuance. */
     protocol: string;
+    ecosystem?: string;
 } | {
     type_: "PROOF_REQUEST";
     /** For reference. */
@@ -1994,6 +2007,7 @@ export type HandleInvitationResponse = {
     proofId: string;
     /** Protocol used for issuance. */
     protocol: string;
+    ecosystem?: string;
 };
 export declare enum HistoryAction {
     ACCEPTED = "ACCEPTED",

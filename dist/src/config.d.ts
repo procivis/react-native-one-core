@@ -157,5 +157,6 @@ export interface CoreConfig {
     walletProvider: ConfigEntities;
     verifierProvider: ConfigEntities<undefined, {}>;
     globalSettings: GlobalSettings;
+    ecosystem: ConfigEntities;
 }
 export {};

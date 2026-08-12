@@ -124,7 +124,7 @@ private func serialize(proofRequestClaimValue: ProofClaimValue) throws -> NSDict
 
 private func serialize(invitationResponse: HandleInvitationResponse) throws -> NSDictionary {
     switch (invitationResponse) {
-    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode, `protocol`, requiresWalletInstanceAttestation):
+    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode, `protocol`, requiresWalletInstanceAttestation, ecosystem):
         var result: [String: Any] = [
             "type_": "CREDENTIAL_ISSUANCE",
             "interactionId": interactionId,
@@ -140,23 +140,34 @@ private func serialize(invitationResponse: HandleInvitationResponse) throws -> N
         if let txCode = txCode {
             result["txCode"] = try serializeAny(txCode)
         }
+        if let ecosystem = ecosystem {
+            result["ecosystem"] = ecosystem
+        }
         return result as NSDictionary;
 
-    case let .proofRequest(interactionId, proofId, `protocol`):
-        return [
+    case let .proofRequest(interactionId, proofId, `protocol`, ecosystem):
+        var result: [String: Any] = [
             "type_": "PROOF_REQUEST",
             "interactionId": interactionId,
             "proofId": proofId,
             "protocol": `protocol`
         ];
+        if let ecosystem = ecosystem {
+            result["ecosystem"] = ecosystem
+        }
+        return result as NSDictionary;
 
-    case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl, `protocol`):
-        return [
+    case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl, `protocol`, ecosystem):
+        var result: [String: Any] = [
             "type_": "AUTHORIZATION_CODE_FLOW",
             "interactionId": interactionId,
             "authorizationCodeFlowUrl": authorizationCodeFlowUrl,
             "protocol": `protocol`
         ];
+        if let ecosystem = ecosystem {
+            result["ecosystem"] = ecosystem
+        }
+        return result as NSDictionary;
     }
 }
 

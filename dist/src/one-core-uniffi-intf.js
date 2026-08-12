@@ -64,7 +64,7 @@ export var ClientIdScheme;
 (function (ClientIdScheme) {
     ClientIdScheme["REDIRECT_URI"] = "REDIRECT_URI";
     ClientIdScheme["VERIFIER_ATTESTATION"] = "VERIFIER_ATTESTATION";
-    ClientIdScheme["DID"] = "DID";
+    ClientIdScheme["DECENTRALIZED_IDENTIFIER"] = "DECENTRALIZED_IDENTIFIER";
     ClientIdScheme["X509_SAN_DNS"] = "X509_SAN_DNS";
 })(ClientIdScheme || (ClientIdScheme = {}));
 export var CreateSelfSignedCaRequestIssuerAlternativeNameType;
@@ -126,6 +126,7 @@ export var CredentialState;
     CredentialState["SUSPENDED"] = "SUSPENDED";
     CredentialState["ERROR"] = "ERROR";
     CredentialState["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
+    CredentialState["EXPIRED"] = "EXPIRED";
 })(CredentialState || (CredentialState = {}));
 export var CredentialType;
 (function (CredentialType) {

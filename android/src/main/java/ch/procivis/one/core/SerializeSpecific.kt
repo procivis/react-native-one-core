@@ -224,6 +224,9 @@ object SerializeSpecific {
                     }
                     result.putString("protocol", value.protocol)
                     result.putBoolean("requiresWalletInstanceAttestation", value.requiresWalletInstanceAttestation)
+                    value.ecosystem?.let {
+                        result.putString("ecosystem", it)
+                    }
                 }
 
                 is HandleInvitationResponse.AuthorizationCodeFlow -> {
@@ -231,6 +234,9 @@ object SerializeSpecific {
                     result.putString("interactionId", value.interactionId)
                     result.putString("authorizationCodeFlowUrl", value.authorizationCodeFlowUrl)
                     result.putString("protocol", value.protocol)
+                    value.ecosystem?.let {
+                        result.putString("ecosystem", it)
+                    }
                 }
 
                 is HandleInvitationResponse.ProofRequest -> {
@@ -238,6 +244,9 @@ object SerializeSpecific {
                     result.putString("interactionId", value.interactionId)
                     result.putString("proofId", value.proofId)
                     result.putString("protocol", value.protocol)
+                    value.ecosystem?.let {
+                        result.putString("ecosystem", it)
+                    }
                 }
             }
             return result
