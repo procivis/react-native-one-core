@@ -139,9 +139,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getOrganisationTrustCollections(organisationId: String, promise: Promise) {
+    fun getOrganisationEcosystems(organisationId: String, promise: Promise) {
         asyncCall(promise, scope) {
-            val result = getCore().getOrganisationTrustCollections(organisationId)
+            val result = getCore().getOrganisationEcosystems(organisationId)
             return@asyncCall convertToRN(result)
         }
     }

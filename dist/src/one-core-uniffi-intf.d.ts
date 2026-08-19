@@ -148,6 +148,7 @@ export interface CreateCredentialSchemaRequest {
     translations?: CredentialSchemaTranslations;
     embeddedDisclosurePolicy?: DisclosurePolicyCreateRequest;
     expiration?: number;
+    ecosystem?: string;
 }
 export interface CreateDidRequest {
     organisationId: string;
@@ -253,6 +254,7 @@ export interface CreateProofSchemaRequest {
     expireDuration: number;
     /** Set of all claims to request. */
     proofInputSchemas: Array<CreateProofSchemaInput>;
+    ecosystem?: string;
 }
 export interface CreateSelfSignedCertificateAuthorityIssuerAlternativeNameRequest {
     type: CreateSelfSignedCaRequestIssuerAlternativeNameType;
@@ -328,6 +330,7 @@ export interface CredentialDetail {
     type: CredentialType;
     remainingBatchItemCount?: number;
     parentId?: string;
+    ecosystem?: string;
 }
 export interface CredentialList {
     values: Array<CredentialListItem>;
@@ -364,6 +367,7 @@ export interface CredentialListItem {
     type: CredentialType;
     parentId?: string;
     redirectUri?: string;
+    ecosystem?: string;
 }
 export interface CredentialListQuery {
     /** Page number to retrieve (0-based indexing). */
@@ -409,6 +413,7 @@ export interface CredentialListQuery {
     include?: Array<CredentialListIncludeEntityType>;
     /** Return only credentials with the specified credential schema(s). */
     credentialSchemaIds?: Array<string>;
+    ecosystems?: Array<string>;
     /**
      * Return only credentials created after this time. Timestamp in
      * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
@@ -491,6 +496,7 @@ export interface CredentialSchemaDetail {
     transactionCode?: CredentialSchemaTransactionCode;
     translations: CredentialSchemaTranslations;
     expiration?: number;
+    ecosystem?: string;
 }
 export interface CredentialSchemaDetailInfo {
     id: string;
@@ -562,6 +568,7 @@ export interface CredentialSchemaListItem {
     batchSize?: number;
     requiresWalletInstanceAttestation: boolean;
     expiration?: number;
+    ecosystem?: string;
 }
 export interface CredentialSchemaListQuery {
     page: number;
@@ -575,6 +582,7 @@ export interface CredentialSchemaListQuery {
     include?: Array<CredentialSchemaListIncludeEntityType>;
     schemaIds?: Array<string>;
     formats?: Array<string>;
+    ecosystems?: Array<string>;
     usesBatchIssuance?: boolean;
     isMultiformatSchema?: boolean;
     createdDateAfter?: string;
@@ -699,6 +707,15 @@ export interface DisclosurePolicyViolation {
 export interface DisplayName {
     lang: string;
     value: string;
+}
+export interface EcosystemInfo {
+    /** When true, the organization has selected this ecosystem. */
+    selected: boolean;
+    /** Ecosystem provider name. */
+    name: string;
+    displayName: Array<DisplayName>;
+    description: Array<DisplayName>;
+    logo: string;
 }
 export interface ErrorResponse {
     code: string;
@@ -981,8 +998,14 @@ export interface IdentifierListQuery {
     keyStorages?: Array<string>;
     certificateRoles?: Array<CertificateRole>;
     certificateRolesMatchMode?: CertificateRolesMatchMode;
+    /** Deprecated, use `ecosystemCredentialSchemaId` */
     trustIssuanceSchemaId?: string;
+    /** Deprecated, use `ecosystemProofSchemaId` */
     trustVerificationSchemaId?: string;
+    ecosystem?: string;
+    ecosystemRoles?: Array<EcosystemRole>;
+    ecosystemCredentialSchemaId?: string;
+    ecosystemProofSchemaId?: string;
     createdDateAfter?: string;
     createdDateBefore?: string;
     lastModifiedAfter?: string;
@@ -1204,20 +1227,20 @@ export interface OpenId4vciTxCode {
 export interface OrganisationConfiguration {
     selectedEcosystems: Array<string>;
     /**
-     * When true, the verifier will only validate presentations of
-     * credentials issued by trusted issuers.
+     * When true, the issuer will only issue credentials to holders of one of
+     * the selected ecosystems.
      */
-    trustedIssuerRequired: boolean;
+    enforceEcosystemAsIssuer: boolean;
     /**
-     * When true, the wallet only accepts presentation requests from
-     * trusted relying parties.
+     * When true, the wallet only accepts issuance and presentation requests
+     * from members of one of the selected ecosystems.
      */
-    trustedRpRequired: boolean;
+    enforceEcosystemAsHolder: boolean;
     /**
-     * When true, the issuer will only issue credentials requiring wallet
-     * attestations to wallets of trusted wallet providers.
+     * When true, the verifier will only validate presentations of credentials
+     * issued within one of the selected ecosystems.
      */
-    trustedWalletProviderRequired: boolean;
+    enforceEcosystemAsVerifier: boolean;
 }
 export interface OrganisationDetail {
     id: string;
@@ -1367,6 +1390,7 @@ export interface ProofDetail {
     trustInformation?: TrustInformation;
     /** Transaction data attached to this proof request. Present only if the proof role is `VERIFIER`. */
     transactionData?: Array<TransactionDataResponse>;
+    ecosystem?: string;
 }
 export interface ProofInput {
     /** Set of claims asserted by the shared credential. */
@@ -1412,6 +1436,7 @@ export interface ProofListItem {
     retainUntilDate?: string;
     /** Country profile associated with this request. */
     profile?: string;
+    ecosystem?: string;
     redirectUri?: string;
 }
 export interface ProofListQuery {
@@ -1429,6 +1454,7 @@ export interface ProofListQuery {
     name?: string;
     /** Filter by one or more country profiles. */
     profiles?: Array<string>;
+    ecosystems?: Array<string>;
     /** Filter by one or more UUIDs. */
     ids?: Array<string>;
     /** Filter by one or more proof request states. */
@@ -1513,6 +1539,7 @@ export interface ProofSchemaDetail {
     proofInputSchemas: Array<ProofInputSchema>;
     /** Source URL for imported schema. */
     importedSourceUrl?: string;
+    ecosystem?: string;
 }
 export interface ProofSchemaList {
     values: Array<ProofSchemaListItem>;
@@ -1532,6 +1559,7 @@ export interface ProofSchemaListItem {
      * deleted.
      */
     expireDuration: number;
+    ecosystem?: string;
 }
 export interface ProofSchemaListQuery {
     page: number;
@@ -1543,6 +1571,7 @@ export interface ProofSchemaListQuery {
     exact?: Array<ProofSchemaListQueryExactColumn>;
     ids?: Array<string>;
     formats?: Array<string>;
+    ecosystems?: Array<string>;
     createdDateAfter?: string;
     createdDateBefore?: string;
     lastModifiedAfter?: string;
@@ -1664,27 +1693,15 @@ export interface TransactionDataResponse {
     /** Type-specific transaction data content, encoded as a JSON string. */
     data?: string;
 }
-export interface TrustCollectionInfo {
-    /** When true, the organization is subscribed to this trust collection. */
-    selected: boolean;
-    id: string;
-    name: string;
-    logo: string;
-    displayName: Array<DisplayName>;
-    description: Array<DisplayName>;
-    defaultSelected?: boolean;
-}
 export interface TrustInformation {
     receivedAt: string;
     name?: string;
     result: TrustResolutionResult;
 }
 export interface TrustInformationDetail {
-    /**
-     * EUDI trust information received from Access Certificates, Registration
-     * Certificates, or National Registry public APIs.
-     */
-    eudiEcosystem?: EudiTrustInformation;
+    ecosystem?: string;
+    issuer?: TrustInformationDetailInfo;
+    verifier?: TrustInformationDetailInfo;
 }
 export interface TrustResolutionMetadata {
     result: TrustResolutionResult;
@@ -1702,20 +1719,21 @@ export interface UnexportableEntities {
 export interface UpsertOrganisationConfiguration {
     selectedEcosystems?: Array<string>;
     /**
-     * When true, the verifier will only validate presentations of
-     * credentials issued by trusted issuers.
+     * When true, the issuer will only issue credentials to wallet units of one of
+     * the selected ecosystems.
      */
-    trustedIssuerRequired?: boolean;
+    enforceEcosystemAsIssuer?: boolean;
     /**
-     * When true, the wallet only accepts presentation requests from
-     * trusted relying parties.
+     * When true, the wallet only accepts issuance and presentation requests
+     * from members of one of the selected ecosystems.
      */
-    trustedRpRequired?: boolean;
+    enforceEcosystemAsHolder?: boolean;
     /**
-     * When true, the issuer will only issue credentials requiring wallet
-     * attestations to wallets of trusted wallet providers.
+     * When true, the verifier will only accept presentations of credentials
+     * issued by issuers of the selected ecosystems. Ecosystems must be consistent
+     * across presentations belonging to the same proof request.
      */
-    trustedWalletProviderRequired?: boolean;
+    enforceEcosystemAsVerifier?: boolean;
 }
 export interface UpsertOrganisationRequest {
     /** Unique identifier of the organization to create or update. */
@@ -1970,6 +1988,14 @@ export declare enum DidListQueryExactColumn {
 export declare enum DidType {
     LOCAL = "LOCAL",
     REMOTE = "REMOTE"
+}
+export declare enum EcosystemRole {
+    HOLDER = "HOLDER",
+    ISSUER = "ISSUER",
+    VERIFIER = "VERIFIER",
+    PID_PROVIDER = "PID_PROVIDER",
+    NATIONAL_REGISTRY_REGISTRAR = "NATIONAL_REGISTRY_REGISTRAR",
+    WALLET_PROVIDER = "WALLET_PROVIDER"
 }
 export type HandleInvitationResponse = {
     type_: "CREDENTIAL_ISSUANCE";
@@ -2282,6 +2308,10 @@ export declare enum TransactionCodeType {
     NUMERIC = "NUMERIC",
     ALPHANUMERIC = "ALPHANUMERIC"
 }
+export type TrustInformationDetailInfo = {
+    type_: "EUDI";
+    value: [EudiTrustInformation];
+};
 export declare enum TrustResolutionResult {
     TRUSTED = "TRUSTED",
     UNTRUSTED = "UNTRUSTED",
@@ -2467,7 +2497,15 @@ export interface OneCore {
     getIdentifier(id: string): Promise<IdentifierDetail>;
     /** Returns details of an existing organization. */
     getOrganisation(id: string): Promise<OrganisationDetail>;
-    getOrganisationTrustCollections(id: string): Promise<Array<TrustCollectionInfo>>;
+    /**
+     * Returns the ecosystems offered to this organization by its wallet or
+     * verifier provider, annotated with whether the organization currently
+     * selected each one. Ecosystems this system is not configured for are
+     * omitted.
+     * If there is no wallet or verifier provider, the ecosystems
+     * configured in the local system are returned.
+     */
+    getOrganisationEcosystems(id: string): Promise<Array<EcosystemInfo>>;
     getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2>;
     /** Returns detailed information about a proof request. */
     getProof(proofId: string): Promise<ProofDetail>;

@@ -30,6 +30,7 @@ ios/ProcivisOneCoreFFI.xcframework
 ios/ProcivisOneCore.xcframework
 ios/htmldoc/
 ios/ProcivisOneCore.doccarchive
+ios/deploy.zip
 android/libs/onecore-*
 docs/
 

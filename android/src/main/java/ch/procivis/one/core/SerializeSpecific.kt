@@ -45,6 +45,9 @@ object SerializeSpecific {
             if (input is HandleInvitationResponse) {
                 return invitationResponse(input)
             }
+            if (input is TrustInformationDetailInfo) {
+                return trustInformationDetailInfo(input)
+            }
             throw IllegalArgumentException("Invalid map conversion: $input")
         }
 
@@ -247,6 +250,19 @@ object SerializeSpecific {
                     value.ecosystem?.let {
                         result.putString("ecosystem", it)
                     }
+                }
+            }
+            return result
+        }
+
+        private fun trustInformationDetailInfo(value: TrustInformationDetailInfo): ReadableMap {
+            val result = Arguments.createMap()
+            when (value) {
+                is TrustInformationDetailInfo.Eudi -> {
+                    result.putString("type_", "EUDI")
+                    val values = Arguments.createArray()
+                    values.pushMap(convertToRN(value.v1) as ReadableMap)
+                    result.putArray("value", values)
                 }
             }
             return result

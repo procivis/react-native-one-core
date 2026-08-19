@@ -144,6 +144,15 @@ export var DidType;
     DidType["LOCAL"] = "LOCAL";
     DidType["REMOTE"] = "REMOTE";
 })(DidType || (DidType = {}));
+export var EcosystemRole;
+(function (EcosystemRole) {
+    EcosystemRole["HOLDER"] = "HOLDER";
+    EcosystemRole["ISSUER"] = "ISSUER";
+    EcosystemRole["VERIFIER"] = "VERIFIER";
+    EcosystemRole["PID_PROVIDER"] = "PID_PROVIDER";
+    EcosystemRole["NATIONAL_REGISTRY_REGISTRAR"] = "NATIONAL_REGISTRY_REGISTRAR";
+    EcosystemRole["WALLET_PROVIDER"] = "WALLET_PROVIDER";
+})(EcosystemRole || (EcosystemRole = {}));
 export var HistoryAction;
 (function (HistoryAction) {
     HistoryAction["ACCEPTED"] = "ACCEPTED";

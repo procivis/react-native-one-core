@@ -837,14 +837,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getOrganisationTrustCollections:resolver:rejecter:)
-  func getOrganisationTrustCollections(
+  @objc(getOrganisationEcosystems:resolver:rejecter:)
+  func getOrganisationEcosystems(
     organisationId: String,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().getOrganisationTrustCollections(id: organisationId)
+      let result = try await self.getCore().getOrganisationEcosystems(id: organisationId)
       return try serializeAny(result)
     }
   }

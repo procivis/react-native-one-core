@@ -41,6 +41,8 @@ private func serializeSpecific(_ value: Encodable) throws -> Any? {
         return try serialize(applicableCredentialQuery: data)
     case let data as PresentationDefinitionV2ClaimValue:
         return try serialize(presentationDefinitionV2ClaimValue: data)
+    case let data as TrustInformationDetailInfo:
+        return try serialize(trustInformationDetailInfo: data)
 
     default:
         return nil
@@ -214,6 +216,16 @@ private func serialize(presentationDefinitionV2ClaimValue: PresentationDefinitio
         return [
             "type_": "NESTED",
             "value": try values.map { try serializeAny($0) }
+        ];
+    }
+}
+
+private func serialize(trustInformationDetailInfo: TrustInformationDetailInfo) throws -> NSDictionary {
+    switch (trustInformationDetailInfo) {
+    case let .eudi(value):
+        return [
+            "type_": "EUDI",
+            "value": [try serializeAny(value)]
         ];
     }
 }
