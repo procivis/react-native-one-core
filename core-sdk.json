@@ -1,16 +1,16 @@
 {
   "android": {
     "debug": {
-      "url": "https://onesdk.blob.core.windows.net/core-sdk/121924/android/onecore-debug.aar",
-      "sha1": "3f06bbdad67f708993a04e44b25e345c77beb234"
+      "url": "https://onesdk.blob.core.windows.net/core-sdk/122179/android/onecore-debug.aar",
+      "sha1": "f8625ec0b7879027e547c869c4ccceae900817ad"
     },
     "release": {
-      "url": "https://onesdk.blob.core.windows.net/core-sdk/121924/android/onecore-release.aar",
-      "sha1": "36de34d6942f64145ee655a4b9836b0e42ac3be6"
+      "url": "https://onesdk.blob.core.windows.net/core-sdk/122179/android/onecore-release.aar",
+      "sha1": "6f56073d2fe4f207d7012a3b42b9e7d2f0165fd3"
     }
   },
   "ios": {
-    "url": "https://onesdk.blob.core.windows.net/core-sdk/121924/ios/deploy.zip",
-    "sha1": "906c2ee79d33284c8652569c4aa30e4bc2461dce"
+    "url": "https://onesdk.blob.core.windows.net/core-sdk/122179/ios/deploy.zip",
+    "sha1": "7368da831258c4e5ae721dc2595e3b89070971f7"
   }
 }

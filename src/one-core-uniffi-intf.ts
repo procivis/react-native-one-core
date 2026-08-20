@@ -783,6 +783,8 @@ export interface DisplayName {
 export interface EcosystemInfo {
   /** When true, the organization has selected this ecosystem. */
   selected: boolean;
+  /** When true, the ecosystem should be selected by provider default (if any). */
+  defaultSelected: boolean;
   /** Ecosystem provider name. */
   name: string;
   displayName: Array<DisplayName>;
