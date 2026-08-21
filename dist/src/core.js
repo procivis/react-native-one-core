@@ -10,7 +10,6 @@ export const interfaceMethodNames = [
     "createOrganisation",
     "upsertOrganisation",
     "getOrganisation",
-    "getOrganisationEcosystems",
     "generateKey",
     "createDid",
     "listDids",

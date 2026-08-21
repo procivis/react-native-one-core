@@ -139,14 +139,6 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun getOrganisationEcosystems(organisationId: String, promise: Promise) {
-        asyncCall(promise, scope) {
-            val result = getCore().getOrganisationEcosystems(organisationId)
-            return@asyncCall convertToRN(result)
-        }
-    }
-
-    @ReactMethod
     fun generateKey(keyRequest: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
             return@asyncCall getCore().generateKey(construct(keyRequest))

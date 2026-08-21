@@ -127,6 +127,7 @@ export var CredentialState;
     CredentialState["ERROR"] = "ERROR";
     CredentialState["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
     CredentialState["EXPIRED"] = "EXPIRED";
+    CredentialState["EXPIRING"] = "EXPIRING";
 })(CredentialState || (CredentialState = {}));
 export var CredentialType;
 (function (CredentialType) {
@@ -179,6 +180,7 @@ export var HistoryAction;
     HistoryAction["UPDATED"] = "UPDATED";
     HistoryAction["REACTIVATED"] = "REACTIVATED";
     HistoryAction["EXPIRED"] = "EXPIRED";
+    HistoryAction["EXPIRING"] = "EXPIRING";
     HistoryAction["INTERACTION_CREATED"] = "INTERACTION_CREATED";
     HistoryAction["INTERACTION_ERRORED"] = "INTERACTION_ERRORED";
     HistoryAction["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
@@ -283,12 +285,6 @@ export var KeyStorageSecurity;
     KeyStorageSecurity["ENHANCED_BASIC"] = "ENHANCED_BASIC";
     KeyStorageSecurity["BASIC"] = "BASIC";
 })(KeyStorageSecurity || (KeyStorageSecurity = {}));
-export var LayoutType;
-(function (LayoutType) {
-    LayoutType["CARD"] = "CARD";
-    LayoutType["DOCUMENT"] = "DOCUMENT";
-    LayoutType["SINGLE_ATTRIBUTE"] = "SINGLE_ATTRIBUTE";
-})(LayoutType || (LayoutType = {}));
 export var OpenId4vciTxCodeInputMode;
 (function (OpenId4vciTxCodeInputMode) {
     OpenId4vciTxCodeInputMode["NUMERIC"] = "NUMERIC";

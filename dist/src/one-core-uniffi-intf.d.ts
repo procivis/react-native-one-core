@@ -138,7 +138,6 @@ export interface CreateCredentialSchemaRequest {
     organisationId: string;
     claims: Array<CredentialClaimSchemaRequest>;
     keyStorageSecurity?: KeyStorageSecurity;
-    layoutType: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
     allowRevocation?: boolean;
@@ -487,7 +486,6 @@ export interface CredentialSchemaDetail {
     claims: Array<ClaimSchema>;
     keyStorageSecurity?: KeyStorageSecurity;
     importedSourceUrl: string;
-    layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
     allowRevocation?: boolean;
@@ -509,7 +507,6 @@ export interface CredentialSchemaDetailInfo {
     keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
     importedSourceUrl: string;
-    layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
     requiresWalletInstanceAttestation: boolean;
@@ -533,7 +530,6 @@ export interface CredentialSchemaInfo {
     revocationMethod?: string;
     keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
-    layoutType?: LayoutType;
     importedSourceUrl: string;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
@@ -561,7 +557,6 @@ export interface CredentialSchemaListItem {
     formats: Array<CredentialSchemaFormatResponse>;
     keyStorageSecurity?: KeyStorageSecurity;
     importedSourceUrl: string;
-    layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
     allowRevocation?: boolean;
@@ -1057,7 +1052,6 @@ export interface ImportCredentialSchemaRequestSchema {
     claims: Array<ImportCredentialSchemaClaimSchema>;
     keyStorageSecurity?: KeyStorageSecurity;
     importedSourceUrl: string;
-    layoutType?: LayoutType;
     layoutProperties?: ImportCredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
     requiresWalletInstanceAttestation?: boolean;
@@ -1111,7 +1105,6 @@ export interface ImportProofSchemaCredentialSchema {
     keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
     importedSourceUrl: string;
-    layoutType?: LayoutType;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
     requiresWalletInstanceAttestation?: boolean;
@@ -1227,7 +1220,6 @@ export interface OpenId4vciTxCode {
     description?: string;
 }
 export interface OrganisationConfiguration {
-    selectedEcosystems: Array<string>;
     /**
      * When true, the issuer will only issue credentials to holders of one of
      * the selected ecosystems.
@@ -1256,6 +1248,14 @@ export interface OrganisationDetail {
     parentOrganisation?: string;
     /** Policy-level configuration for this organization. */
     configuration?: OrganisationConfiguration;
+    /**
+     * The ecosystems offered to this organization by its wallet or verifier
+     * provider, annotated with whether the organization currently selected
+     * each one. Ecosystems this system is not configured for are omitted.
+     * If there is no wallet or verifier provider, the ecosystems configured
+     * in the local system are returned.
+     */
+    ecosystems: Array<EcosystemInfo>;
     walletProvider?: WalletProviderDetail;
     verifierProvider?: VerifierProviderDetail;
     /**
@@ -1792,7 +1792,7 @@ export interface WalletProviderDetail {
     issuer?: IdentifierListItem;
 }
 export interface WalletRelyingPartyMetadata {
-    name: string;
+    name?: string;
 }
 export type ApplicableCredentialOrFailureHint = {
     type_: "APPLICABLE_CREDENTIALS";
@@ -1976,7 +1976,8 @@ export declare enum CredentialState {
     SUSPENDED = "SUSPENDED",
     ERROR = "ERROR",
     INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
-    EXPIRED = "EXPIRED"
+    EXPIRED = "EXPIRED",
+    EXPIRING = "EXPIRING"
 }
 export declare enum CredentialType {
     SINGLE = "SINGLE",
@@ -2066,6 +2067,7 @@ export declare enum HistoryAction {
     UPDATED = "UPDATED",
     REACTIVATED = "REACTIVATED",
     EXPIRED = "EXPIRED",
+    EXPIRING = "EXPIRING",
     INTERACTION_CREATED = "INTERACTION_CREATED",
     INTERACTION_ERRORED = "INTERACTION_ERRORED",
     INTERACTION_EXPIRED = "INTERACTION_EXPIRED",
@@ -2174,11 +2176,6 @@ export declare enum KeyStorageSecurity {
     MODERATE = "MODERATE",
     ENHANCED_BASIC = "ENHANCED_BASIC",
     BASIC = "BASIC"
-}
-export declare enum LayoutType {
-    CARD = "CARD",
-    DOCUMENT = "DOCUMENT",
-    SINGLE_ATTRIBUTE = "SINGLE_ATTRIBUTE"
 }
 export type NativeKeyStorageError = {
     type_: "KEY_GENERATION_FAILURE";
@@ -2497,17 +2494,11 @@ export interface OneCore {
      */
     getHistoryEntry(historyId: string): Promise<HistoryListItem>;
     getIdentifier(id: string): Promise<IdentifierDetail>;
-    /** Returns details of an existing organization. */
-    getOrganisation(id: string): Promise<OrganisationDetail>;
     /**
-     * Returns the ecosystems offered to this organization by its wallet or
-     * verifier provider, annotated with whether the organization currently
-     * selected each one. Ecosystems this system is not configured for are
-     * omitted.
-     * If there is no wallet or verifier provider, the ecosystems
-     * configured in the local system are returned.
+     * Returns details of an existing organization, including the ecosystems
+     * offered to it.
      */
-    getOrganisationEcosystems(id: string): Promise<Array<EcosystemInfo>>;
+    getOrganisation(id: string): Promise<OrganisationDetail>;
     getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2>;
     /** Returns detailed information about a proof request. */
     getProof(proofId: string): Promise<ProofDetail>;

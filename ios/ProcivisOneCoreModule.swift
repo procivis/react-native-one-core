@@ -837,18 +837,6 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(getOrganisationEcosystems:resolver:rejecter:)
-  func getOrganisationEcosystems(
-    organisationId: String,
-    resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    asyncCall(resolve, reject) {
-      let result = try await self.getCore().getOrganisationEcosystems(id: organisationId)
-      return try serializeAny(result)
-    }
-  }
-
   @objc(nfcReadIsoMdlEngagement:resolver:rejecter:)
   func nfcReadIsoMdlEngagement(
     request: NSDictionary,
