@@ -1266,13 +1266,6 @@ export interface InitiateIssuanceResponse {
   url: string;
 }
 
-export interface InstanceDetail {
-  id: string;
-  providerUrl: string;
-  providerName: string;
-  authenticationKeyType: string;
-}
-
 export interface InstanceProvider {
   /**
    * Full URL for the GET provider metadata endpoint, for example:
@@ -1385,12 +1378,12 @@ export interface OrganisationDetail {
    * Wallet registration details for this organization's Business
    * Wallet.
    */
-  walletInstance?: InstanceDetail;
+  walletInstance?: WalletInstanceDetail;
   /**
    * Verifier registration details for this organization's Business
    * Verifier.
    */
-  verifierInstance?: InstanceDetail;
+  verifierInstance?: VerifierInstanceDetail;
 }
 
 export interface PeripheralDiscoveryData {
@@ -1929,6 +1922,22 @@ export interface UpsertOrganisationRequest {
   parentOrganisation?: string | null /* pass null to clear the value */;
 }
 
+export interface VerifierInstanceDetail {
+  id: string;
+  providerUrl: string;
+  providerName: string;
+  authenticationKeyType: string;
+  /** The feature flags advertised by the provider backing this instance. */
+  featureFlags: VerifierInstanceFeatureFlags;
+}
+
+export interface VerifierInstanceFeatureFlags {
+  ecosystemsEnabled: boolean;
+  /** Whether this instance must enforce the ecosystems advertised by its provider. */
+  ecosystemsEnforcementEnabled: boolean;
+  accessCertificateProvisioningEnabled: boolean;
+}
+
 export interface VerifierProviderDetail {
   /** Verifier Provider configuration used by this organization. */
   providerName?: string;
@@ -1947,6 +1956,23 @@ export interface Version {
   commit: string;
   rustVersion: string;
   pipelineId: string;
+}
+
+export interface WalletInstanceDetail {
+  id: string;
+  providerUrl: string;
+  providerName: string;
+  authenticationKeyType: string;
+  /** The feature flags advertised by the provider backing this instance. */
+  featureFlags: WalletInstanceFeatureFlags;
+}
+
+export interface WalletInstanceFeatureFlags {
+  ecosystemsEnabled: boolean;
+  /** Whether this instance must enforce the ecosystems advertised by its provider. */
+  ecosystemsEnforcementEnabled: boolean;
+  refreshCredentialBatchEnabled: boolean;
+  documentSigningEnabled: boolean;
 }
 
 export interface WalletProviderDetail {
