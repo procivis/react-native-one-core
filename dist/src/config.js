@@ -58,6 +58,10 @@ export var PresentationDefinitionVersion;
     PresentationDefinitionVersion["V1"] = "V1";
     PresentationDefinitionVersion["V2"] = "V2";
 })(PresentationDefinitionVersion || (PresentationDefinitionVersion = {}));
+export var TransactionDataFeature;
+(function (TransactionDataFeature) {
+    TransactionDataFeature["SupportsMultipleTxDataPerPresentation"] = "SUPPORTS_MULTIPLE_TX_DATA_PER_PRESENTATION";
+})(TransactionDataFeature || (TransactionDataFeature = {}));
 // Typescript automatic assertions to keep the fields of ONECore Config and typed Config in sync
 /** assert that all fields listed in {@link CoreConfig} exist in {@link Config} */
 const missingFieldsCheck = null;

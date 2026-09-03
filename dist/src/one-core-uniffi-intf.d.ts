@@ -103,6 +103,8 @@ export interface Config {
      */
     walletProvider: Record<string, string>;
     verifierProvider: Record<string, string>;
+    /** Transaction data types and their capabilities. */
+    transactionDataProvider: Record<string, string>;
     ecosystem: Record<string, string>;
     /** Deployment-wide settings that are not tied to a specific config entity. */
     globalSettings: GlobalSettings;
@@ -305,7 +307,7 @@ export interface CredentialDetail {
     /** State representation of the credential in the system. */
     state: CredentialState;
     /** Schema of the credential. */
-    schema: CredentialSchemaInfo;
+    schema: CredentialSchemaListItem;
     claims: Array<Claim>;
     redirectUri?: string;
     /**
@@ -348,7 +350,7 @@ export interface CredentialListItem {
     /** State representation of the credential in the system. */
     state: CredentialState;
     /** Schema of the credential. */
-    schema: CredentialSchemaInfo;
+    schema: CredentialSchemaListItem;
     /**
      * The role the system has in relation to the credential. For example,
      * if the system received the credential as a wallet this value will
@@ -515,11 +517,11 @@ export interface CredentialSchemaDetailInfo {
 }
 export interface CredentialSchemaFormatRequest {
     format: string;
-    schemaId?: string;
+    ecosystemSchemaId?: string;
 }
 export interface CredentialSchemaFormatResponse {
     format: string;
-    schemaId: string;
+    ecosystemSchemaId: string;
 }
 export interface CredentialSchemaInfo {
     id: string;
@@ -527,7 +529,6 @@ export interface CredentialSchemaInfo {
     lastModified: string;
     name: string;
     format: string;
-    revocationMethod?: string;
     keyStorageSecurity?: KeyStorageSecurity;
     schemaId: string;
     importedSourceUrl: string;
@@ -575,7 +576,7 @@ export interface CredentialSchemaListQuery {
     ids?: Array<string>;
     exact?: Array<CredentialSchemaListQueryExactColumn>;
     include?: Array<CredentialSchemaListIncludeEntityType>;
-    schemaIds?: Array<string>;
+    ecosystemSchemaIds?: Array<string>;
     formats?: Array<string>;
     ecosystems?: Array<string>;
     usesBatchIssuance?: boolean;
@@ -1028,7 +1029,7 @@ export interface ImportCredentialSchemaClaimSchema {
 }
 export interface ImportCredentialSchemaFormat {
     format: string;
-    schemaId: string;
+    ecosystemSchemaId: string;
 }
 export interface ImportCredentialSchemaLayoutProperties {
     background?: CredentialSchemaBackgroundProperties;

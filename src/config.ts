@@ -172,6 +172,16 @@ export interface VerificationProtocolCapabilities {
   supportedPresentationDefinition: PresentationDefinitionVersion[];
 }
 
+export enum TransactionDataFeature {
+  SupportsMultipleTxDataPerPresentation = "SUPPORTS_MULTIPLE_TX_DATA_PER_PRESENTATION",
+}
+
+export interface TransactionDataCapabilities {
+  features: TransactionDataFeature[];
+  formats: string[];
+  transactionDataTypes: string[];
+}
+
 export interface CoreConfig {
   format: ConfigEntities<FormatCapabilities>;
   issuanceProtocol: ConfigEntities<IssuanceProtocolCapabilities>;
@@ -189,6 +199,7 @@ export interface CoreConfig {
   walletProvider: ConfigEntities;
   verifierProvider: ConfigEntities<undefined, {}>;
   globalSettings: GlobalSettings;
+  transactionDataProvider: ConfigEntities<TransactionDataCapabilities>;
   ecosystem: ConfigEntities;
 }
 
