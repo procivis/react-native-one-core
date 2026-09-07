@@ -15,6 +15,7 @@ object SerializeSpecific {
                 ApplicableCredentialOrFailureHint::class.java,
                 PresentationDefinitionV2ClaimValue::class.java,
                 HandleInvitationResponse::class.java,
+                TrustInformationDetailInfo::class.java,
             )
 
         fun isCustomConversionType(input: Any?): Boolean {
