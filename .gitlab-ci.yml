@@ -188,7 +188,7 @@ sdk:generate_docs:
     - .azure:upload_to_onesdk_storage
   needs: []
   before_script:
-    - apk add npm zip
+    - apk add --no-cache --upgrade --repository https://dl-cdn.alpinelinux.org/alpine/v3.21/main nodejs npm zip
     - npm install -g yarn
     - yarn install --frozen-lockfile
     - yarn documentation
