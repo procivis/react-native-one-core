@@ -233,6 +233,11 @@ export var HistorySearchType;
     HistorySearchType["VERIFIER_NAME"] = "VERIFIER_NAME";
     HistorySearchType["PROOF_SCHEMA_NAME"] = "PROOF_SCHEMA_NAME";
 })(HistorySearchType || (HistorySearchType = {}));
+export var IdentifierListIncludeEntity;
+(function (IdentifierListIncludeEntity) {
+    IdentifierListIncludeEntity["LOGO"] = "LOGO";
+    IdentifierListIncludeEntity["TRANSLATIONS"] = "TRANSLATIONS";
+})(IdentifierListIncludeEntity || (IdentifierListIncludeEntity = {}));
 export var IdentifierListQueryExactColumn;
 (function (IdentifierListQueryExactColumn) {
     IdentifierListQueryExactColumn["NAME"] = "NAME";
