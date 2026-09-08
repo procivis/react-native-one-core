@@ -76,6 +76,7 @@ RCT_EXTERN_METHOD(holderAcceptCredential:(NSDictionary *)request
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(holderRejectCredential:(NSString *)interactionId
+                  credentialIds:(NSArray *)credentialIds
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

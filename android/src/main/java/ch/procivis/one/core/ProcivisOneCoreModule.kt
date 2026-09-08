@@ -208,14 +208,20 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         promise: Promise
     ) {
         asyncCall(promise, scope) {
-            return@asyncCall getCore().holderAcceptCredential(construct(request))
+            val result = getCore().holderAcceptCredential(construct(request))
+            return@asyncCall convertToRN(result)
         }
     }
 
     @ReactMethod
-    fun holderRejectCredential(interactionId: String, promise: Promise) {
+    fun holderRejectCredential(
+        interactionId: String,
+        credentialIds: ReadableArray?,
+        promise: Promise
+    ) {
         asyncCall(promise, scope) {
-            getCore().holderRejectCredential(interactionId)
+            val ids = credentialIds?.let { DeserializeSpecific.ids(it) }
+            getCore().holderRejectCredential(interactionId, ids)
             return@asyncCall null
         }
     }

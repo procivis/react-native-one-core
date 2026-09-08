@@ -906,6 +906,15 @@ export interface HolderAcceptCredentialRequest {
     /** User-provided transaction code. */
     txCode?: string;
 }
+export interface HolderAcceptCredentialResponse {
+    /** One credential per accepted credential configuration. */
+    credentialIds: Array<string>;
+    /**
+     * Some of the offered credential configurations could not be issued.
+     * Only set when several configurations were offered.
+     */
+    partiallySuccessful?: boolean;
+}
 export interface HolderActivateInstanceRequest {
     /** Key type for the authentication key generated during activation. */
     keyType: string;
@@ -2560,7 +2569,7 @@ export interface OneCore {
      * identifier that matches issuer's restrictions. Alternatively,
      * you can specify an existing identifier.
      */
-    holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<string>;
+    holderAcceptCredential(request: HolderAcceptCredentialRequest): Promise<HolderAcceptCredentialResponse>;
     /** Activates the instance with the provider after user authentication. */
     holderActivateInstance(id: string, request: HolderActivateInstanceRequest): Promise<HolderActivateInstanceResponse>;
     /** Returns instance registration details from the provider. */
@@ -2581,8 +2590,8 @@ export interface OneCore {
     holderRefreshCredential(interactionId: string): Promise<HolderRefreshCredentialResponse>;
     /** Registers the instance with a Wallet or Verifier Provider. */
     holderRegisterInstance(request: HolderRegisterInstanceRequest): Promise<HolderRegisterInstanceResponse>;
-    /** Rejects an offered credential. */
-    holderRejectCredential(interactionId: string): Promise<void>;
+    /** Rejects offered credentials. Without `credentialIds`, all credentials of the interaction are rejected. */
+    holderRejectCredential(interactionId: string, credentialIds: Array<string> | undefined): Promise<void>;
     /** Rejects a proof request. */
     holderRejectProof(interactionId: string): Promise<void>;
     /**
