@@ -1082,6 +1082,7 @@ export interface ImportCredentialSchemaRequestSchema {
     translations?: CredentialSchemaTranslations;
     embeddedDisclosurePolicy?: DisclosurePolicy;
     expiration?: number;
+    ecosystem?: string;
 }
 export interface ImportCredentialSchemaTransactionCode {
     type: TransactionCodeType;
@@ -2590,7 +2591,7 @@ export interface OneCore {
     holderRefreshCredential(interactionId: string): Promise<HolderRefreshCredentialResponse>;
     /** Registers the instance with a Wallet or Verifier Provider. */
     holderRegisterInstance(request: HolderRegisterInstanceRequest): Promise<HolderRegisterInstanceResponse>;
-    /** Rejects offered credentials. Without `credentialIds`, all credentials of the interaction are rejected. */
+    /** Rejects offered credentials. Without `credential_ids`, all credentials of the interaction are rejected. */
     holderRejectCredential(interactionId: string, credentialIds: Array<string> | undefined): Promise<void>;
     /** Rejects a proof request. */
     holderRejectProof(interactionId: string): Promise<void>;
