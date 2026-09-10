@@ -1069,6 +1069,8 @@ export interface IdentifierDetail {
   key?: KeyDetail;
   certificates?: Array<CertificateDetail>;
   trustInformation: Array<IdentifierTrustInformationResponseDto>;
+  logo?: string;
+  translations: IdentifierTranslationsResponse;
 }
 
 export interface IdentifierList {
