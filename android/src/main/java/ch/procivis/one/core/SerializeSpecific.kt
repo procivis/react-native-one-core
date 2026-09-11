@@ -93,6 +93,14 @@ object SerializeSpecific {
                         convertToRN(metadata.value) as ReadableMap
                     )
                 }
+
+                is HistoryMetadata.EcosystemsResolved -> {
+                    result.putString("type_", "ECOSYSTEMS_RESOLVED")
+                    result.putMap(
+                        "value",
+                        convertToRN(metadata.value) as ReadableMap
+                    )
+                }
             }
             return result
         }
@@ -231,6 +239,10 @@ object SerializeSpecific {
                     value.ecosystem?.let {
                         result.putString("ecosystem", it)
                     }
+                    result.putMap(
+                        "ecosystemErrors",
+                        convertToRN(value.ecosystemErrors) as ReadableMap
+                    )
                 }
 
                 is HandleInvitationResponse.AuthorizationCodeFlow -> {
@@ -241,6 +253,10 @@ object SerializeSpecific {
                     value.ecosystem?.let {
                         result.putString("ecosystem", it)
                     }
+                    result.putMap(
+                        "ecosystemErrors",
+                        convertToRN(value.ecosystemErrors) as ReadableMap
+                    )
                 }
 
                 is HandleInvitationResponse.ProofRequest -> {
@@ -251,6 +267,10 @@ object SerializeSpecific {
                     value.ecosystem?.let {
                         result.putString("ecosystem", it)
                     }
+                    result.putMap(
+                        "ecosystemErrors",
+                        convertToRN(value.ecosystemErrors) as ReadableMap
+                    )
                 }
             }
             return result

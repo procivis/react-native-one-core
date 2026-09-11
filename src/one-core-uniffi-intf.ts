@@ -791,6 +791,12 @@ export interface EcosystemInfo {
   logo: string;
 }
 
+export interface EcosystemOutcome {
+  result: EcosystemTrustResult;
+  /** Why the provider did not trust the interaction. `None` when it did. */
+  error?: HistoryErrorMetadata;
+}
+
 export interface ErrorResponse {
   code: string;
   message: string;
@@ -1001,6 +1007,8 @@ export interface HolderAcceptCredentialResponse {
    * Only set when several configurations were offered.
    */
   partiallySuccessful?: boolean;
+  /** One entry per ecosystem provider consulted, keyed by provider id. */
+  ecosystemErrors: Record<string, EcosystemOutcome>;
 }
 
 export interface HolderActivateInstanceRequest {
@@ -1562,6 +1570,8 @@ export interface ProofInput {
   credential?: CredentialDetail;
   /** Credential schema metadata. */
   credentialSchema: CredentialSchemaInfo;
+  /** Trust of the credential shared for this input, and of its issuer. */
+  trustInformation?: TrustInformation;
 }
 
 export interface ProofInputSchema {
@@ -1886,12 +1896,16 @@ export interface TrustInformation {
   receivedAt: string;
   name?: string;
   result: TrustResolutionResult;
+  /** One entry per ecosystem provider consulted, keyed by provider id. */
+  ecosystemErrors: Record<string, EcosystemOutcome>;
 }
 
 export interface TrustInformationDetail {
   ecosystem?: string;
   issuer?: TrustInformationDetailInfo;
   verifier?: TrustInformationDetailInfo;
+  /** One entry per ecosystem provider consulted, keyed by provider id. */
+  ecosystemErrors: Record<string, EcosystemOutcome>;
 }
 
 export interface TrustResolutionMetadata {
@@ -2286,6 +2300,11 @@ export enum EcosystemRole {
   WALLET_PROVIDER = "WALLET_PROVIDER",
 }
 
+export enum EcosystemTrustResult {
+  TRUSTED = "TRUSTED",
+  NOT_TRUSTED = "NOT_TRUSTED",
+}
+
 export type HandleInvitationResponse =
   | {
       type_: "CREDENTIAL_ISSUANCE";
@@ -2307,6 +2326,8 @@ export type HandleInvitationResponse =
       /** Whether a valid WIA is required to complete issuance. */
       requiresWalletInstanceAttestation: boolean;
       ecosystem?: string;
+      /** One entry per ecosystem provider consulted, keyed by provider id. */
+      ecosystemErrors: Record<string, EcosystemOutcome>;
     }
   | {
       type_: "AUTHORIZATION_CODE_FLOW";
@@ -2320,6 +2341,8 @@ export type HandleInvitationResponse =
       /** Protocol used for issuance. */
       protocol: string;
       ecosystem?: string;
+      /** One entry per ecosystem provider consulted, keyed by provider id. */
+      ecosystemErrors: Record<string, EcosystemOutcome>;
     }
   | {
       type_: "PROOF_REQUEST";
@@ -2330,6 +2353,8 @@ export type HandleInvitationResponse =
       /** Protocol used for issuance. */
       protocol: string;
       ecosystem?: string;
+      /** One entry per ecosystem provider consulted, keyed by provider id. */
+      ecosystemErrors: Record<string, EcosystemOutcome>;
     };
 
 export enum HistoryAction {
@@ -2366,6 +2391,7 @@ export enum HistoryAction {
   WRP_RC_RECEIVED = "WRP_RC_RECEIVED",
   WRP_NR_RECEIVED = "WRP_NR_RECEIVED",
   TRUST_RESOLVED = "TRUST_RESOLVED",
+  ECOSYSTEMS_RESOLVED = "ECOSYSTEMS_RESOLVED",
   REFRESHED = "REFRESHED",
   SIGNED = "SIGNED",
 }
@@ -2419,6 +2445,11 @@ export type HistoryMetadata =
   | {
       type_: "TRUST_RESOLUTION";
       value: TrustResolutionMetadata;
+    }
+    /** One entry per ecosystem provider consulted, keyed by provider id. */
+  | {
+      type_: "ECOSYSTEMS_RESOLVED";
+      value: Record<string, EcosystemOutcome>;
     };
 
 export enum HistorySearchType {

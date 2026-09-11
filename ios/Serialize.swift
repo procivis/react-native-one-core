@@ -76,6 +76,11 @@ private func serialize(historyMetadata: HistoryMetadata) throws -> NSDictionary 
             "type_": "TRUST_RESOLUTION",
             "value": try serializeAny(value)
         ];
+    case let .ecosystemsResolved(value):
+        return [
+            "type_": "ECOSYSTEMS_RESOLVED",
+            "value": try serializeAny(value)
+        ];
     }
 }
 
@@ -126,7 +131,7 @@ private func serialize(proofRequestClaimValue: ProofClaimValue) throws -> NSDict
 
 private func serialize(invitationResponse: HandleInvitationResponse) throws -> NSDictionary {
     switch (invitationResponse) {
-    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode, `protocol`, requiresWalletInstanceAttestation, ecosystem):
+    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode, `protocol`, requiresWalletInstanceAttestation, ecosystem, ecosystemErrors):
         var result: [String: Any] = [
             "type_": "CREDENTIAL_ISSUANCE",
             "interactionId": interactionId,
@@ -145,9 +150,10 @@ private func serialize(invitationResponse: HandleInvitationResponse) throws -> N
         if let ecosystem = ecosystem {
             result["ecosystem"] = ecosystem
         }
+        result["ecosystemErrors"] = try serializeAny(ecosystemErrors)
         return result as NSDictionary;
 
-    case let .proofRequest(interactionId, proofId, `protocol`, ecosystem):
+    case let .proofRequest(interactionId, proofId, `protocol`, ecosystem, ecosystemErrors):
         var result: [String: Any] = [
             "type_": "PROOF_REQUEST",
             "interactionId": interactionId,
@@ -157,9 +163,10 @@ private func serialize(invitationResponse: HandleInvitationResponse) throws -> N
         if let ecosystem = ecosystem {
             result["ecosystem"] = ecosystem
         }
+        result["ecosystemErrors"] = try serializeAny(ecosystemErrors)
         return result as NSDictionary;
 
-    case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl, `protocol`, ecosystem):
+    case let .authorizationCodeFlow(interactionId, authorizationCodeFlowUrl, `protocol`, ecosystem, ecosystemErrors):
         var result: [String: Any] = [
             "type_": "AUTHORIZATION_CODE_FLOW",
             "interactionId": interactionId,
@@ -169,6 +176,7 @@ private func serialize(invitationResponse: HandleInvitationResponse) throws -> N
         if let ecosystem = ecosystem {
             result["ecosystem"] = ecosystem
         }
+        result["ecosystemErrors"] = try serializeAny(ecosystemErrors)
         return result as NSDictionary;
     }
 }

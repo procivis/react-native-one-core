@@ -154,6 +154,11 @@ export var EcosystemRole;
     EcosystemRole["NATIONAL_REGISTRY_REGISTRAR"] = "NATIONAL_REGISTRY_REGISTRAR";
     EcosystemRole["WALLET_PROVIDER"] = "WALLET_PROVIDER";
 })(EcosystemRole || (EcosystemRole = {}));
+export var EcosystemTrustResult;
+(function (EcosystemTrustResult) {
+    EcosystemTrustResult["TRUSTED"] = "TRUSTED";
+    EcosystemTrustResult["NOT_TRUSTED"] = "NOT_TRUSTED";
+})(EcosystemTrustResult || (EcosystemTrustResult = {}));
 export var HistoryAction;
 (function (HistoryAction) {
     HistoryAction["ACCEPTED"] = "ACCEPTED";
@@ -189,6 +194,7 @@ export var HistoryAction;
     HistoryAction["WRP_RC_RECEIVED"] = "WRP_RC_RECEIVED";
     HistoryAction["WRP_NR_RECEIVED"] = "WRP_NR_RECEIVED";
     HistoryAction["TRUST_RESOLVED"] = "TRUST_RESOLVED";
+    HistoryAction["ECOSYSTEMS_RESOLVED"] = "ECOSYSTEMS_RESOLVED";
     HistoryAction["REFRESHED"] = "REFRESHED";
     HistoryAction["SIGNED"] = "SIGNED";
 })(HistoryAction || (HistoryAction = {}));
