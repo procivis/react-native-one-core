@@ -61,9 +61,9 @@ private func serialize(historyMetadata: HistoryMetadata) throws -> NSDictionary 
             "type_": "ERROR_METADATA",
             "value": try serializeAny(value)
         ];
-    case let .walletUnitJwt(value):
+    case let .managedInstanceAttestation(value):
         return [
-            "type_": "WALLET_UNIT_JWT",
+            "type_": "MANAGED_INSTANCE_ATTESTATION",
             "value": [value]
         ];
     case let .walletRelyingParty(value):

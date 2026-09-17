@@ -71,8 +71,8 @@ object SerializeSpecific {
                     )
                 }
 
-                is HistoryMetadata.WalletUnitJwt -> {
-                    result.putString("type_", "WALLET_UNIT_JWT")
+                is HistoryMetadata.ManagedInstanceAttestation -> {
+                    result.putString("type_", "MANAGED_INSTANCE_ATTESTATION")
                     val values = Arguments.createArray()
                     values.pushString(metadata.v1)
                     result.putArray("value", values)

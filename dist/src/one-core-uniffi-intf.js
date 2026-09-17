@@ -197,6 +197,8 @@ export var HistoryAction;
     HistoryAction["ECOSYSTEMS_RESOLVED"] = "ECOSYSTEMS_RESOLVED";
     HistoryAction["REFRESHED"] = "REFRESHED";
     HistoryAction["SIGNED"] = "SIGNED";
+    HistoryAction["KA_CREATED"] = "KA_CREATED";
+    HistoryAction["WIA_CREATED"] = "WIA_CREATED";
 })(HistoryAction || (HistoryAction = {}));
 export var HistoryEntityType;
 (function (HistoryEntityType) {
@@ -210,7 +212,8 @@ export var HistoryEntityType;
     HistoryEntityType["PROOF_SCHEMA"] = "PROOF_SCHEMA";
     HistoryEntityType["ORGANISATION"] = "ORGANISATION";
     HistoryEntityType["BACKUP"] = "BACKUP";
-    HistoryEntityType["WALLET_UNIT"] = "WALLET_UNIT";
+    HistoryEntityType["INSTANCE"] = "INSTANCE";
+    HistoryEntityType["MANAGED_INSTANCE"] = "MANAGED_INSTANCE";
     HistoryEntityType["USER"] = "USER";
     HistoryEntityType["PROVIDER"] = "PROVIDER";
     HistoryEntityType["WALLET_RELYING_PARTY"] = "WALLET_RELYING_PARTY";

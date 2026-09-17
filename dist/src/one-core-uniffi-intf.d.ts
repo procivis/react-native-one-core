@@ -102,6 +102,10 @@ export interface Config {
      * management, trust collections, and feature flags.
      */
     walletProvider: Record<string, string>;
+    /**
+     * Configurations from the Verifier Provider, incluiding
+     * version management, ecosystems, and feature flags.
+     */
     verifierProvider: Record<string, string>;
     /** Transaction data types and their capabilities. */
     transactionDataProvider: Record<string, string>;
@@ -139,12 +143,11 @@ export interface CreateCredentialSchemaRequest {
     formats: Array<CredentialSchemaFormatRequest>;
     organisationId: string;
     claims: Array<CredentialClaimSchemaRequest>;
-    keyStorageSecurity?: KeyStorageSecurity;
+    walletAttestation?: CredentialSchemaWalletAttestation;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
     allowRevocation?: boolean;
     batchSize?: number;
-    requiresWalletInstanceAttestation: boolean;
     transactionCode?: CredentialSchemaTransactionCodeRequest;
     translations?: CredentialSchemaTranslations;
     embeddedDisclosurePolicy?: DisclosurePolicyCreateRequest;
@@ -331,7 +334,8 @@ export interface CredentialDetail {
     trustInformation?: TrustInformation;
     consumedAt?: string;
     type: CredentialType;
-    remainingBatchItemCount?: number;
+    remainingBatchItemCount?: Record<string, number>;
+    format?: string;
     parentId?: string;
     ecosystem?: string;
 }
@@ -368,6 +372,7 @@ export interface CredentialListItem {
     profile?: string;
     consumedAt?: string;
     type: CredentialType;
+    format?: string;
     parentId?: string;
     redirectUri?: string;
     ecosystem?: string;
@@ -488,13 +493,12 @@ export interface CredentialSchemaDetail {
     formats: Array<CredentialSchemaFormatResponse>;
     organisationId: string;
     claims: Array<ClaimSchema>;
-    keyStorageSecurity?: KeyStorageSecurity;
+    walletAttestation: CredentialSchemaWalletAttestation;
     importedSourceUrl: string;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
     allowRevocation?: boolean;
     batchSize?: number;
-    requiresWalletInstanceAttestation: boolean;
     transactionCode?: CredentialSchemaTransactionCode;
     translations: CredentialSchemaTranslations;
     expiration?: number;
@@ -558,13 +562,12 @@ export interface CredentialSchemaListItem {
     lastModified: string;
     name: string;
     formats: Array<CredentialSchemaFormatResponse>;
-    keyStorageSecurity?: KeyStorageSecurity;
+    walletAttestation: CredentialSchemaWalletAttestation;
     importedSourceUrl: string;
     layoutProperties?: CredentialSchemaLayoutProperties;
     allowSuspension: boolean;
     allowRevocation?: boolean;
     batchSize?: number;
-    requiresWalletInstanceAttestation: boolean;
     expiration?: number;
     ecosystem?: string;
     translations?: CredentialSchemaTranslations;
@@ -610,6 +613,12 @@ export interface CredentialSchemaTransactionCodeRequest {
 export interface CredentialSchemaTranslations {
     name: Record<string, string>;
     description?: Record<string, string>;
+}
+export interface CredentialSchemaWalletAttestation {
+    requireInstanceAttestation: boolean;
+    keyStorageSecurityLevel?: KeyStorageSecurity;
+    preferredKeyStorageAttestationLifetime?: number;
+    preferredInstanceAttestationLifetime?: number;
 }
 export interface CredentialSet {
     required: boolean;
@@ -731,7 +740,8 @@ export interface ErrorResponse {
 export interface EudiIntermediary {
     name?: string;
     identifier: string;
-    website: string;
+    supportUrl?: string;
+    infoUrl?: string;
     email?: string;
     phone?: string;
     country: string;
@@ -743,7 +753,9 @@ export interface EudiSupervisoryAuthority {
 }
 export interface EudiTrustInformation {
     name: string;
-    website: string;
+    supportUrl?: string;
+    infoUrl?: string;
+    privacyPolicyUrl?: string;
     email?: string;
     phone?: string;
     country: string;
@@ -1086,11 +1098,10 @@ export interface ImportCredentialSchemaRequestSchema {
     formats: Array<ImportCredentialSchemaFormat>;
     organisationId: string;
     claims: Array<ImportCredentialSchemaClaimSchema>;
-    keyStorageSecurity?: KeyStorageSecurity;
+    walletAttestation?: CredentialSchemaWalletAttestation;
     importedSourceUrl: string;
     layoutProperties?: ImportCredentialSchemaLayoutProperties;
     allowSuspension?: boolean;
-    requiresWalletInstanceAttestation?: boolean;
     transactionCode?: ImportCredentialSchemaTransactionCode;
     allowRevocation?: boolean;
     batchSize?: number;
@@ -1343,6 +1354,7 @@ export interface PresentationDefinitionV2Credential {
     mdocMsoValidity?: MdocMsoValidity;
     protocol: string;
     profile?: string;
+    format?: string;
     /**
      * Present when the relying party's certificates do not satisfy
      * the embedded disclosure policy attached to the requested
@@ -2156,7 +2168,9 @@ export declare enum HistoryAction {
     TRUST_RESOLVED = "TRUST_RESOLVED",
     ECOSYSTEMS_RESOLVED = "ECOSYSTEMS_RESOLVED",
     REFRESHED = "REFRESHED",
-    SIGNED = "SIGNED"
+    SIGNED = "SIGNED",
+    KA_CREATED = "KA_CREATED",
+    WIA_CREATED = "WIA_CREATED"
 }
 export declare enum HistoryEntityType {
     KEY = "KEY",
@@ -2169,7 +2183,8 @@ export declare enum HistoryEntityType {
     PROOF_SCHEMA = "PROOF_SCHEMA",
     ORGANISATION = "ORGANISATION",
     BACKUP = "BACKUP",
-    WALLET_UNIT = "WALLET_UNIT",
+    INSTANCE = "INSTANCE",
+    MANAGED_INSTANCE = "MANAGED_INSTANCE",
     USER = "USER",
     PROVIDER = "PROVIDER",
     WALLET_RELYING_PARTY = "WALLET_RELYING_PARTY",
@@ -2193,7 +2208,7 @@ export type HistoryMetadata = {
     type_: "ERROR_METADATA";
     value: HistoryErrorMetadata;
 } | {
-    type_: "WALLET_UNIT_JWT";
+    type_: "MANAGED_INSTANCE_ATTESTATION";
     value: [string];
 } | {
     type_: "WALLET_RELYING_PARTY";
@@ -2620,8 +2635,8 @@ export interface OneCore {
      */
     holderGetTransactionData(proofId: string, transactionDataId: string): Promise<ProofTransactionData>;
     /**
-     * Check status of the instance with the provider. Will return an error
-     * if the instance has been revoked.
+     * Checks the status of an instance with the provider. Successful calls return `204`.
+     * To see the result, call `holderGetInstance`.
      */
     holderInstanceStatus(id: string): Promise<void>;
     /** Receive a new credential batch */
