@@ -78,6 +78,13 @@ object SerializeSpecific {
                     result.putArray("value", values)
                 }
 
+                is HistoryMetadata.WalletAttestation -> {
+                    result.putString("type_", "WALLET_ATTESTATION")
+                    val values = Arguments.createArray()
+                    values.pushString(metadata.v1)
+                    result.putArray("value", values)
+                }
+
                 is HistoryMetadata.WalletRelyingParty -> {
                     result.putString("type_", "WALLET_RELYING_PARTY")
                     result.putMap(

@@ -66,6 +66,11 @@ private func serialize(historyMetadata: HistoryMetadata) throws -> NSDictionary 
             "type_": "MANAGED_INSTANCE_ATTESTATION",
             "value": [value]
         ];
+    case let .walletAttestation(value):
+        return [
+            "type_": "WALLET_ATTESTATION",
+            "value": [value]
+        ];
     case let .walletRelyingParty(value):
         return [
             "type_": "WALLET_RELYING_PARTY",

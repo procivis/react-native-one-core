@@ -2455,6 +2455,10 @@ export type HistoryMetadata =
       value: [string]
     }
   | {
+      type_: "WALLET_ATTESTATION";
+      value: [string]
+    }
+  | {
       type_: "WALLET_RELYING_PARTY";
       value: WalletRelyingPartyMetadata;
     }

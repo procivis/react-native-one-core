@@ -2211,6 +2211,9 @@ export type HistoryMetadata = {
     type_: "MANAGED_INSTANCE_ATTESTATION";
     value: [string];
 } | {
+    type_: "WALLET_ATTESTATION";
+    value: [string];
+} | {
     type_: "WALLET_RELYING_PARTY";
     value: WalletRelyingPartyMetadata;
 } | {
