@@ -807,10 +807,16 @@ export interface EcosystemOutcome {
   error?: HistoryErrorMetadata;
 }
 
+export interface ErrorData {
+  ecosystemErrors?: Record<string, EcosystemOutcome>;
+}
+
 export interface ErrorResponse {
   code: string;
   message: string;
   cause?: Cause;
+  /** Only set on BR_0476 */
+  data?: ErrorData;
 }
 
 export interface EudiIntermediary {
@@ -1241,6 +1247,7 @@ export interface ImportProofSchema {
   importedSourceUrl: string;
   /** Set of all claims to request. */
   proofInputSchemas: Array<ImportProofSchemaInputSchema>;
+  ecosystem?: string;
 }
 
 export interface ImportProofSchemaClaimSchema {
@@ -1267,6 +1274,7 @@ export interface ImportProofSchemaCredentialSchema {
   layoutProperties?: CredentialSchemaLayoutProperties;
   allowSuspension?: boolean;
   requiresWalletInstanceAttestation?: boolean;
+  ecosystem?: string;
 }
 
 export interface ImportProofSchemaInputSchema {

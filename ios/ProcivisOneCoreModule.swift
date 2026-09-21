@@ -35,7 +35,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           data: ErrorResponse(
             code: "BR_0183",
             message: "core already initialized",
-            cause: nil
+            cause: nil,
+            data: nil
           )
         )
       }
@@ -70,7 +71,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
   private func getCore() throws -> OneCoreProtocol {
     guard let result = core else {
       throw OneCoreError.Response(
-        data: ErrorResponse(code: "BR_0184", message: "core not initialized", cause: nil)
+        data: ErrorResponse(code: "BR_0184", message: "core not initialized", cause: nil, data: nil)
       )
     }
     return result
@@ -906,7 +907,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
-            cause: nil
+            cause: nil,
+            data: nil
           )
         )
       }
@@ -926,7 +928,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
-            cause: nil
+            cause: nil,
+            data: nil
           )
         )
       }
@@ -945,7 +948,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
-            cause: nil
+            cause: nil,
+            data: nil
           )
         )
       }
@@ -965,7 +969,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
-            cause: nil
+            cause: nil,
+            data: nil
           )
         )
       }
@@ -1002,7 +1007,8 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           data: ErrorResponse(
             code: "BR_0184",
             message: "ubiqu not initialized",
-            cause: nil
+            cause: nil,
+            data: nil
           )
         )
       }

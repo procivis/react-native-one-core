@@ -30,6 +30,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             ErrorResponse(
                 "BR_0184",
                 "core not initialized",
+                null,
                 null
             )
         )
@@ -41,6 +42,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             ErrorResponse(
                 "BR_0184",
                 "ubiqu not initialized",
+                null,
                 null
             )
         )
