@@ -38,8 +38,15 @@ func asyncCall<Result>(
 private func handleError(error: Error, _ reject: @escaping RCTPromiseRejectBlock) {
   if case OneCoreError.Response(data: let errorResponse) = error {
     var userInfo: [String: Any] = [NSUnderlyingErrorKey: error]
-    if let cause = errorResponse.cause?.message {
-      userInfo["cause"] = cause
+    do {
+      if let cause = errorResponse.cause {
+        userInfo["cause"] = try serializeAny(cause)
+      }
+      if let data = errorResponse.data {
+        userInfo["data"] = try serializeAny(data)
+      }
+    } catch {
+      print("error: while parsing OneCoreError: \(error).")
     }
 
     reject(

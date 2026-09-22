@@ -1,6 +1,12 @@
-import {NativeModules} from "react-native";
-import {OneError} from "./src/error";
-import {ONECore, interfaceMethodNames, GlobalSettings} from "./src/core";
+import { NativeModules } from "react-native";
+import { OneError } from "./src/error";
+import {
+  ONECore,
+  interfaceMethodNames,
+  GlobalSettings,
+  Cause,
+  ErrorData,
+} from "./src/core";
 import * as ubiqu from "./src/ubiqu";
 
 export * from "./src/core";
@@ -26,19 +32,21 @@ interfaceMethodNames.forEach((method) => ONE?.[method]);
 const originalGetConfig: () => Promise<
   Record<
     string /* entity type */,
-    | Record<string /* entity identifier */, string /* json */>
-  > & { "globalSettings": GlobalSettings }
+    Record<string /* entity identifier */, string /* json */>
+  > & { globalSettings: GlobalSettings }
 > = ONE?.getConfig;
 if (originalGetConfig) {
   ONE.getConfig = () =>
     originalGetConfig().then((config) => {
-      const {globalSettings, ...providers} = config;
+      const { globalSettings, ...providers } = config;
 
-      const parsed = objectMap(providers, (entityValue) => objectMap(entityValue, (json) => JSON.parse(json)));
+      const parsed = objectMap(providers, (entityValue) =>
+        objectMap(entityValue, (json) => JSON.parse(json)),
+      );
       return {
         globalSettings,
-        ...parsed
-      }
+        ...parsed,
+      };
     });
 }
 
@@ -72,21 +80,26 @@ function wrapFn<Fn extends (...args: any[]) => Promise<any>>(
 ) {
   return (...args: any[]) => {
     const errHandler = (e: unknown) => {
-      if (e instanceof Error && "code" in e) {
+      if (e instanceof Error && "code" in e && typeof e.code === "string") {
         const userInfo =
           "userInfo" in e && typeof e.userInfo === "object"
             ? e.userInfo
             : undefined;
         const cause =
-          userInfo && "cause" in userInfo && typeof userInfo.cause === "string"
-            ? userInfo.cause
+          userInfo && "cause" in userInfo && typeof userInfo.cause === "object"
+            ? (userInfo.cause as Cause)
+            : undefined;
+        const data =
+          userInfo && "data" in userInfo && typeof userInfo.data === "object"
+            ? (userInfo.data as ErrorData)
             : undefined;
 
         throw new OneError({
           operation,
-          code: e.code as string,
+          code: e.code,
           message: e.message,
           cause,
+          data,
           originalError: e,
         });
 
@@ -98,7 +111,7 @@ function wrapFn<Fn extends (...args: any[]) => Promise<any>>(
     };
 
     // set name on the err handler to display the original function name in callstack
-    Object.defineProperty(errHandler, "name", {value: operation});
+    Object.defineProperty(errHandler, "name", { value: operation });
 
     return fn(...args).catch(errHandler) as unknown as Fn;
   };

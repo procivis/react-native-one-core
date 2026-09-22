@@ -1,6 +1,6 @@
 import { NativeModules } from "react-native";
 import { OneError } from "./src/error";
-import { interfaceMethodNames } from "./src/core";
+import { interfaceMethodNames, } from "./src/core";
 import * as ubiqu from "./src/ubiqu";
 export * from "./src/core";
 export * from "./src/error";
@@ -18,7 +18,7 @@ if (originalGetConfig) {
         const parsed = objectMap(providers, (entityValue) => objectMap(entityValue, (json) => JSON.parse(json)));
         return {
             globalSettings,
-            ...parsed
+            ...parsed,
         };
     });
 }
@@ -40,18 +40,22 @@ const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([k, v
 function wrapFn(fn, operation) {
     return (...args) => {
         const errHandler = (e) => {
-            if (e instanceof Error && "code" in e) {
+            if (e instanceof Error && "code" in e && typeof e.code === "string") {
                 const userInfo = "userInfo" in e && typeof e.userInfo === "object"
                     ? e.userInfo
                     : undefined;
-                const cause = userInfo && "cause" in userInfo && typeof userInfo.cause === "string"
+                const cause = userInfo && "cause" in userInfo && typeof userInfo.cause === "object"
                     ? userInfo.cause
+                    : undefined;
+                const data = userInfo && "data" in userInfo && typeof userInfo.data === "object"
+                    ? userInfo.data
                     : undefined;
                 throw new OneError({
                     operation,
                     code: e.code,
                     message: e.message,
                     cause,
+                    data,
                     originalError: e,
                 });
                 // iOS additional fields: "nativeStackIOS"

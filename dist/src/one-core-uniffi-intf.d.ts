@@ -247,6 +247,11 @@ export interface CreateProofRequest {
     ecosystem?: string;
 }
 export interface CreateProofSchemaInput {
+    /**
+     * Formatter provider names selected for this input. If omitted, all
+     * formats of the credential schema are selected.
+     */
+    formats?: Array<string>;
     credentialSchemaId: string;
     claimSchemas: Array<CreateProofSchemaInputClaim>;
 }
@@ -1167,6 +1172,11 @@ export interface ImportProofSchemaCredentialSchema {
     ecosystem?: string;
 }
 export interface ImportProofSchemaInputSchema {
+    /**
+     * Formatter provider names selected for this input. Defaulting
+     * to all formats of the resolved credential schema if omitted.
+     */
+    formats?: Array<string>;
     claimSchemas: Array<ImportProofSchemaClaimSchema>;
     credentialSchema: ImportProofSchemaCredentialSchema;
 }
@@ -1459,6 +1469,8 @@ export interface ProofInput {
     trustInformation?: TrustInformation;
 }
 export interface ProofInputSchema {
+    /** Formatter provider names saved for this proof input. */
+    formats: Array<string>;
     claimSchemas: Array<ProofClaimSchema>;
     credentialSchema: CredentialSchemaInfo;
 }
