@@ -430,6 +430,8 @@ export interface CredentialListQuery {
   name?: string;
   /** Filter by one or more country profiles. */
   profiles?: Array<string>;
+  /** Filter by one or more formatter configuration names. */
+  formats?: Array<string>;
   /** Search for a string. */
   searchText?: string;
   /**
@@ -815,7 +817,7 @@ export interface ErrorResponse {
   code: string;
   message: string;
   cause?: Cause;
-  /** Only set on BR_0476 */
+  /** Only set when ecosystems rejected the interaction */
   data?: ErrorData;
 }
 
@@ -2963,7 +2965,11 @@ export interface OneCore {
   holderRefreshCredential(interactionId: string): Promise<HolderRefreshCredentialResponse>;
   /** Registers the instance with a Wallet or Verifier Provider. */
   holderRegisterInstance(request: HolderRegisterInstanceRequest): Promise<HolderRegisterInstanceResponse>;
-  /** Rejects offered credentials. Without `credential_ids`, all credentials of the interaction are rejected. */
+  /**
+   * Rejects credentials or individual batch items. Selecting a batch parent rejects all its items.
+   * Without `credential_ids`, all credentials of the interaction are rejected.
+   * A batch format is notified as rejected and excluded from refreshes only when all its items are rejected.
+   */
   holderRejectCredential(interactionId: string, credentialIds: Array<string> | undefined): Promise<void>;
   /** Rejects a proof request. */
   holderRejectProof(interactionId: string): Promise<void>;
