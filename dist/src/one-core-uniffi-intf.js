@@ -199,6 +199,7 @@ export var HistoryAction;
     HistoryAction["SIGNED"] = "SIGNED";
     HistoryAction["KA_CREATED"] = "KA_CREATED";
     HistoryAction["WIA_CREATED"] = "WIA_CREATED";
+    HistoryAction["CLIENT_SECRET_REGENERATED"] = "CLIENT_SECRET_REGENERATED";
 })(HistoryAction || (HistoryAction = {}));
 export var HistoryEntityType;
 (function (HistoryEntityType) {

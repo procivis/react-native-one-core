@@ -1033,7 +1033,7 @@ export interface HolderAcceptCredentialResponse {
    * Only set when several configurations were offered.
    */
   partiallySuccessful?: boolean;
-  /** One entry per ecosystem provider consulted, keyed by provider id. */
+  /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
   ecosystemErrors: Record<string, EcosystemOutcome>;
 }
 
@@ -1931,7 +1931,7 @@ export interface TrustInformation {
   receivedAt: string;
   name?: string;
   result: TrustResolutionResult;
-  /** One entry per ecosystem provider consulted, keyed by provider id. */
+  /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
   ecosystemErrors: Record<string, EcosystemOutcome>;
 }
 
@@ -1939,7 +1939,7 @@ export interface TrustInformationDetail {
   ecosystem?: string;
   issuer?: TrustInformationDetailInfo;
   verifier?: TrustInformationDetailInfo;
-  /** One entry per ecosystem provider consulted, keyed by provider id. */
+  /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
   ecosystemErrors: Record<string, EcosystemOutcome>;
 }
 
@@ -2361,7 +2361,7 @@ export type HandleInvitationResponse =
       /** Whether a valid WIA is required to complete issuance. */
       requiresWalletInstanceAttestation: boolean;
       ecosystem?: string;
-      /** One entry per ecosystem provider consulted, keyed by provider id. */
+      /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
       ecosystemErrors: Record<string, EcosystemOutcome>;
     }
   | {
@@ -2376,7 +2376,7 @@ export type HandleInvitationResponse =
       /** Protocol used for issuance. */
       protocol: string;
       ecosystem?: string;
-      /** One entry per ecosystem provider consulted, keyed by provider id. */
+      /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
       ecosystemErrors: Record<string, EcosystemOutcome>;
     }
   | {
@@ -2388,7 +2388,7 @@ export type HandleInvitationResponse =
       /** Protocol used for issuance. */
       protocol: string;
       ecosystem?: string;
-      /** One entry per ecosystem provider consulted, keyed by provider id. */
+      /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
       ecosystemErrors: Record<string, EcosystemOutcome>;
     };
 
@@ -2431,6 +2431,7 @@ export enum HistoryAction {
   SIGNED = "SIGNED",
   KA_CREATED = "KA_CREATED",
   WIA_CREATED = "WIA_CREATED",
+  CLIENT_SECRET_REGENERATED = "CLIENT_SECRET_REGENERATED",
 }
 
 export enum HistoryEntityType {
