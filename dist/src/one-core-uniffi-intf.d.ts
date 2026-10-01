@@ -2241,10 +2241,9 @@ export type HistoryMetadata = {
 } | {
     type_: "TRUST_RESOLUTION";
     value: TrustResolutionMetadata;
-}
-/** One entry per ecosystem provider consulted, keyed by provider id. */
- | {
+} | {
     type_: "ECOSYSTEMS_RESOLVED";
+    /** One entry per ecosystem provider consulted, keyed by provider id. */
     value: Record<string, EcosystemOutcome>;
 };
 export declare enum HistorySearchType {
