@@ -114,7 +114,7 @@ export interface Config {
     globalSettings: GlobalSettings;
 }
 export interface ContinueIssuanceResponse {
-    /** For reference. */
+    /** Use with `holderAcceptCredential` and `holderRejectCredential`. */
     interactionId: string;
     /** Key storage required to complete issuance. */
     keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
@@ -124,6 +124,7 @@ export interface ContinueIssuanceResponse {
     requiresWalletInstanceAttestation: boolean;
     /** Protocol used for issuance. */
     protocol: string;
+    /** Ecosystem applied to this interaction. */
     ecosystem?: string;
 }
 export interface CreateCertificateAuthorityRequest {
@@ -191,20 +192,26 @@ export interface CreateOrganisationRequest {
     /** If no UUID is passed, one will be created. */
     id?: string;
     parentOrganisation?: string;
+    /** Policy-level configuration for this organization. */
+    configuration?: SetOrganisationConfiguration;
 }
 /**
- * If protocol is `ISO_MDL`, specify the device engagement type
- * by referencing an entry from `verificationEngagement` of your
- * configuration. `iso_mdl_engagement` accepts either QR code content
- * (for QR device engagement) or NFC engagement parameters from
- * `nfc_read_iso_mdl_engagement`.
+ * If `protocol` is `ISO_MDL`, also set `engagement`, `isoMdlEngagement`,
+ * and `transport`.
  */
 export interface CreateProofRequest {
     /** Choose a proof schema to use. */
     proofSchemaId: string;
     /** Deprecated. Use `verifierIdentifierId`. */
     verifierDidId?: string;
-    /** Choose the identifier to use to make the request. */
+    /**
+     * Choose the identifier to use to make the request. Either this or
+     * the deprecated `verifierDidId` must be set.
+     *
+     * For `ISO_MDL`, a certificate identifier enables reader
+     * authentication, so the wallet can verify who is asking. Key
+     * identifiers are not allowed.
+     */
     verifierIdentifierId?: string;
     /**
      * Choose the protocol to use for verification. Check the
@@ -226,24 +233,48 @@ export interface CreateProofRequest {
     verifierKey?: string;
     /**
      * If the identifier contains multiple certificates, use this to
-     * specify which key to use. If omitted, the first suitable
+     * specify which certificate to use. If omitted, the first suitable
      * certificate is used.
      */
     verifierCertificate?: string;
-    /** Use to specify device engagement type. */
+    /**
+     * For `ISO_MDL`, the device engagement data received from the
+     * wallet: the scanned QR code content, or the result of
+     * `nfcReadIsoMdlEngagement`.
+     */
     isoMdlEngagement?: string;
     /**
      * Choose the transport protocol for the exchange. Check the
      * `transport` object of your configuration for supported
-     * options and reference the configuration instance.
+     * options and reference the configuration instance. For
+     * `ISO_MDL`, use `BLE`.
      */
     transport?: Array<string>;
-    /** Country profile to associate with this request. */
+    /**
+     * Country profile to associate with this request. See
+     * [Country Profiles](https://docs.procivis.ch/profiles) for more
+     * information.
+     */
     profile?: string;
-    /** Use for ISO mDL verification over BLE. */
+    /**
+     * For `ISO_MDL`, the device engagement method used to receive
+     * `isoMdlEngagement`, such as `NFC` or `QR_CODE`. Reference an
+     * entry from the `verificationEngagement` object of your configuration.
+     */
     engagement?: string;
-    /** Optional transaction data to request authorization for. */
+    /**
+     * Optional transaction data to request authorization for. Only
+     * supported for OpenID4VP. See
+     * [Transaction Authorization for Verifiers](https://docs.procivis.ch/verify/transaction-authorization)
+     * for more information.
+     */
     transactionData?: Array<ProofRequestTransactionData>;
+    /**
+     * Use this to enforce the constraints of a regulatory ecosystem
+     * for this request. See
+     * [Enforcing an Ecosystem as a Verifier](https://docs.procivis.ch/verify/ecosystem-enforcement)
+     * for more information.
+     */
     ecosystem?: string;
 }
 export interface CreateProofSchemaInput {
@@ -471,7 +502,12 @@ export interface CredentialListQuery {
     revocationDateBefore?: string;
 }
 export interface CredentialQuery {
+    /** Whether more than one credential can be submitted for this query. */
     multiple: boolean;
+    /**
+     * Either the wallet's credentials that match this query, or the
+     * reason no credential matches.
+     */
     credentialOrFailureHint: ApplicableCredentialOrFailureHint;
 }
 export interface CredentialQueryFailureHint {
@@ -628,7 +664,15 @@ export interface CredentialSchemaWalletAttestation {
     preferredInstanceAttestationLifetime?: number;
 }
 export interface CredentialSet {
+    /**
+     * Whether this set must be satisfied for the request to be
+     * satisfied.
+     */
     required: boolean;
+    /**
+     * Alternative combinations of credential query IDs. Satisfying any
+     * one combination satisfies the set.
+     */
     options: Array<Array<string>>;
 }
 export interface DeviceInfo {
@@ -824,6 +868,13 @@ export interface HandleInvitationRequest {
      * "myapp://example".
      */
     redirectUri?: string;
+    /**
+     * Use this to enforce the constraints of a regulatory ecosystem
+     * for this interaction. If omitted, every ecosystem available to
+     * the wallet checks the interaction. See
+     * [Enforcing an Ecosystem as a Wallet](https://docs.procivis.ch/hold/ecosystem-enforcement)
+     * for more information.
+     */
     ecosystem?: string;
 }
 export interface HistoryErrorMetadata {
@@ -925,6 +976,15 @@ export interface HolderAcceptCredentialRequest {
     interactionId: string;
     /** Deprecated. Use `identifierId`. */
     didId?: string;
+    /**
+     * Pass nothing here for the recommended key auto-generation. See
+     * [Auto-generate Keys for Issuance](https://docs.procivis.ch/configure/auto-generate-keys)
+     * for more information.
+     *
+     * Alternatively, choose an existing identifier to hold the credential.
+     * If neither this nor the deprecated `didId` is set, the system generates
+     * a new identifier that matches the issuer's restrictions.
+     */
     identifierId?: string;
     /**
      * If you are using an identifier with multiple keys for authentication,
@@ -1215,6 +1275,12 @@ export interface InitiateIssuanceRequest {
     scope?: Array<string>;
     /** OpenID4VCI authorization request parameter. */
     authorizationDetails?: Array<InitiateIssuanceAuthorizationDetail>;
+    /**
+     * Use this to enforce the constraints of a regulatory ecosystem
+     * for this issuance. See
+     * [Enforcing an Ecosystem as a Wallet](https://docs.procivis.ch/hold/ecosystem-enforcement)
+     * for more information.
+     */
     ecosystem?: string;
 }
 export interface InitiateIssuanceResponse {
@@ -1343,16 +1409,39 @@ export interface PresentationDefinitionTransactionData {
     type: string;
     credentialQueryIds: Array<string>;
 }
+/**
+ * What a proof request asks for, together with the wallet's credentials
+ * that can satisfy it.
+ */
 export interface PresentationDefinitionV2 {
+    /**
+     * One entry per requested credential, keyed by credential query ID.
+     * Use these IDs as the keys of the submission for
+     * `holderSubmitProofV2`.
+     */
     credentialQueries: Record<string, CredentialQuery>;
+    /** Combinations of credential queries that satisfy the request. */
     credentialSets: Array<CredentialSet>;
+    /**
+     * Transaction data entries attached to the request. Get the details
+     * of an entry with `holderGetTransactionData`.
+     */
     transactionData: Array<PresentationDefinitionTransactionData>;
 }
 export interface PresentationDefinitionV2Claim {
+    /** Path of the claim. Use it in `userSelections` when submitting. */
     path: string;
     schema: ClaimSchemaInfo;
     value: PresentationDefinitionV2ClaimValue;
+    /**
+     * Whether the holder can choose whether to share this claim. To
+     * share it, include its `path` in `userSelections` when submitting.
+     */
     userSelection: boolean;
+    /**
+     * Whether the verifier marked this claim as required. Always
+     * `false` for `ISO_MDL` requests.
+     */
     required: boolean;
 }
 export interface PresentationDefinitionV2Credential {
@@ -1395,9 +1484,11 @@ export interface PresentationSubmitV2CredentialRequest {
     userSelections?: Array<string>;
     /**
      * Optional ids of transaction-data entries to bind to this credential.
-     * Entries not listed here are auto-assigned. Ids must reference transaction
+     * Entries not listed here are auto-assigned. IDs must reference transaction
      * data applicable to this credential. Omit entirely or use an empty array
-     * to auto-assign all transaction data.
+     * to auto-assign all transaction data. See
+     * [Transaction Authorization for Wallets](https://docs.procivis.ch/hold/transaction-authorization)
+     * for more information.
      */
     transactionDataIds?: Array<string>;
 }
@@ -1450,12 +1541,26 @@ export interface ProofDetail {
     completedDate?: string;
     /** When claim data was deleted. */
     claimsRemovedAt?: string;
-    /** Country profile associated with this request. */
+    /**
+     * Country profile associated with this request. See
+     * [Country Profiles](https://docs.procivis.ch/profiles) for more
+     * information.
+     */
     profile?: string;
     /** Trust information of the verifier, if any. */
     trustInformation?: TrustInformation;
-    /** Transaction data attached to this proof request. Present only if the proof role is `VERIFIER`. */
+    /**
+     * Transaction data attached to this proof request. Present only if the proof
+     * role is `VERIFIER`. See
+     * [Transaction Authorization for Verifiers](https://docs.procivis.ch/verify/transaction-authorization)
+     * for more information.
+     */
     transactionData?: Array<TransactionDataResponse>;
+    /**
+     * Ecosystem applied to this request. See
+     * [Ecosystems](https://docs.procivis.ch/ecosystems)
+     * for more information.
+     */
     ecosystem?: string;
 }
 export interface ProofInput {
@@ -1504,8 +1609,17 @@ export interface ProofListItem {
      * proof schema.
      */
     retainUntilDate?: string;
-    /** Country profile associated with this request. */
+    /**
+     * Country profile associated with this request. See
+     * [Country Profiles](https://docs.procivis.ch/profiles) for more
+     * information.
+     */
     profile?: string;
+    /**
+     * Ecosystem applied to this request. See
+     * [Ecosystems](https://docs.procivis.ch/ecosystems)
+     * for more information.
+     */
     ecosystem?: string;
     redirectUri?: string;
 }
@@ -1522,8 +1636,17 @@ export interface ProofListQuery {
     sortDirection?: SortDirection;
     /** Return only proof requests with a name starting with this string. */
     name?: string;
-    /** Filter by one or more country profiles. */
+    /**
+     * Filter by one or more country profiles. See
+     * [Country Profiles](https://docs.procivis.ch/profiles) for more
+     * information.
+     */
     profiles?: Array<string>;
+    /**
+     * Filter by ecosystem applied to proof. See
+     * [Ecosystems](https://docs.procivis.ch/ecosystems)
+     * for more information.
+     */
     ecosystems?: Array<string>;
     /** Filter by one or more UUIDs. */
     ids?: Array<string>;
@@ -1569,12 +1692,12 @@ export interface ProofListQuery {
      */
     requestedDateBefore?: string;
     /**
-     * Return only proofs requested completed after this time. Timestamp in
+     * Return only proofs completed after this time. Timestamp in
      * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
      */
     completedDateAfter?: string;
     /**
-     * Return only proofs requested completed before this time. Timestamp in
+     * Return only proofs completed before this time. Timestamp in
      * RFC 3339 format (for example `2023-06-09T14:19:57.000Z`).
      */
     completedDateBefore?: string;
@@ -1666,15 +1789,44 @@ export interface ProofTransactionData {
     rawTransactionData?: string;
 }
 export interface ProposeProofRequest {
+    /**
+     * Choose the protocol to use. Check the `verificationProtocol`
+     * object of your configuration for supported options and reference
+     * the configuration instance.
+     */
     protocol: string;
+    /** Specifies the organizational context for this operation. */
     organisationId: string;
+    /**
+     * The device engagement method to offer. Reference one or more entries
+     * from the `verificationEngagement` object of your configuration.
+     */
     engagement: Array<string>;
+    /**
+     * Text shown on the iOS system overlay during NFC engagement. Has
+     * no effect for QR code engagement or on Android.
+     */
     uiMessage?: string;
+    /**
+     * Use this to enforce the constraints of a regulatory ecosystem
+     * for this presentation. See
+     * [Enforcing an Ecosystem as a Wallet](https://docs.procivis.ch/hold/ecosystem-enforcement)
+     * for more information.
+     */
     ecosystem?: string;
 }
 export interface ProposeProofResponse {
+    /**
+     * ID of the proof, created in `PENDING` state. Use it with
+     * `getProof` and `getPresentationDefinitionV2`.
+     */
     proofId: string;
+    /** Use with `holderSubmitProofV2` and `holderRejectProof`. */
     interactionId: string;
+    /**
+     * For QR code engagement, the device engagement data to display as a
+     * QR code. Not returned for NFC engagement.
+     */
     url?: string;
 }
 export interface QesAuthorizeRequest {
@@ -1730,6 +1882,25 @@ export interface ServiceDescription {
     advertise: boolean;
     advertisedServiceData?: number[];
     characteristics: Array<CharacteristicSettings>;
+}
+export interface SetOrganisationConfiguration {
+    selectedEcosystems?: Array<string>;
+    /**
+     * When true, the issuer will only issue credentials to wallet units of one of
+     * the selected ecosystems.
+     */
+    enforceEcosystemAsIssuer?: boolean;
+    /**
+     * When true, the wallet only accepts issuance and presentation requests
+     * from members of one of the selected ecosystems.
+     */
+    enforceEcosystemAsHolder?: boolean;
+    /**
+     * When true, the verifier will only accept presentations of credentials
+     * issued by issuers of the selected ecosystems. Ecosystems must be consistent
+     * across presentations belonging to the same proof request.
+     */
+    enforceEcosystemAsVerifier?: boolean;
 }
 export interface ShareProofRequest {
     params?: ShareProofRequestParams;
@@ -1790,25 +1961,6 @@ export interface UnexportableEntities {
     totalDids: number;
     totalIdentifiers: number;
 }
-export interface UpsertOrganisationConfiguration {
-    selectedEcosystems?: Array<string>;
-    /**
-     * When true, the issuer will only issue credentials to wallet units of one of
-     * the selected ecosystems.
-     */
-    enforceEcosystemAsIssuer?: boolean;
-    /**
-     * When true, the wallet only accepts issuance and presentation requests
-     * from members of one of the selected ecosystems.
-     */
-    enforceEcosystemAsHolder?: boolean;
-    /**
-     * When true, the verifier will only accept presentations of credentials
-     * issued by issuers of the selected ecosystems. Ecosystems must be consistent
-     * across presentations belonging to the same proof request.
-     */
-    enforceEcosystemAsVerifier?: boolean;
-}
 export interface UpsertOrganisationRequest {
     /** Unique identifier of the organization to create or update. */
     id: string;
@@ -1823,7 +1975,7 @@ export interface UpsertOrganisationRequest {
     /** Verifier Provider use only. */
     verifierProviderIssuer?: string | null;
     /** Policy-level configuration for this organization. */
-    configuration?: UpsertOrganisationConfiguration;
+    configuration?: SetOrganisationConfiguration;
     /**
      * The trust collections this organization's wallet subscribes to,
      * selected from those made available by the Wallet Provider. Omit to
@@ -1895,11 +2047,15 @@ export interface WalletProviderDetail {
 export interface WalletRelyingPartyMetadata {
     name?: string;
 }
-export type ApplicableCredentialOrFailureHint = {
+export type ApplicableCredentialOrFailureHint = 
+/** The wallet's credentials that match the query. */
+{
     type_: "APPLICABLE_CREDENTIALS";
     applicableCredentials: Array<PresentationDefinitionV2Credential>;
     purpose?: Record<string, string>;
-} | {
+}
+/** Why no credential in the wallet matches the query. */
+ | {
     type_: "FAILURE_HINT";
     failureHint: CredentialQueryFailureHint;
 };
@@ -2045,8 +2201,17 @@ export declare enum CredentialListQuerySearchType {
     CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME"
 }
 export declare enum CredentialQueryFailureReason {
+    /** The wallet holds no credential of the requested type. */
     NO_CREDENTIAL = "NO_CREDENTIAL",
+    /**
+     * Credentials of the requested type exist, but none is currently
+     * valid.
+     */
     VALIDITY = "VALIDITY",
+    /**
+     * Credentials of the requested type exist, but none satisfies the
+     * constraints of the request.
+     */
     CONSTRAINT = "CONSTRAINT"
 }
 export declare enum CredentialRole {
@@ -2107,7 +2272,7 @@ export declare enum EcosystemTrustResult {
 }
 export type HandleInvitationResponse = {
     type_: "CREDENTIAL_ISSUANCE";
-    /** For reference. */
+    /** Use with `holderAcceptCredential` and `holderRejectCredential`. */
     interactionId: string;
     /** Key storage required to complete issuance. */
     keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
@@ -2124,6 +2289,7 @@ export type HandleInvitationResponse = {
     protocol: string;
     /** Whether a valid WIA is required to complete issuance. */
     requiresWalletInstanceAttestation: boolean;
+    /** Ecosystem applied to this interaction. */
     ecosystem?: string;
     /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
     ecosystemErrors: Record<string, EcosystemOutcome>;
@@ -2138,17 +2304,22 @@ export type HandleInvitationResponse = {
     authorizationCodeFlowUrl: string;
     /** Protocol used for issuance. */
     protocol: string;
+    /** Ecosystem applied to this interaction. */
     ecosystem?: string;
     /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
     ecosystemErrors: Record<string, EcosystemOutcome>;
 } | {
     type_: "PROOF_REQUEST";
-    /** For reference. */
+    /** Use with `holderSubmitProofV2` and `holderRejectProof`. */
     interactionId: string;
-    /** Proof request. */
+    /**
+     * ID of the proof request. Use it with `getProof` and
+     * `getPresentationDefinitionV2`.
+     */
     proofId: string;
     /** Protocol used for issuance. */
     protocol: string;
+    /** Ecosystem applied to this interaction. */
     ecosystem?: string;
     /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
     ecosystemErrors: Record<string, EcosystemOutcome>;
@@ -2367,20 +2538,62 @@ export declare enum ProofListQueryExactColumn {
     NAME = "NAME"
 }
 export declare enum ProofRole {
+    /** The system received this request. */
     HOLDER = "HOLDER",
+    /** The system made this request. */
     VERIFIER = "VERIFIER"
 }
 export declare enum ProofSchemaListQueryExactColumn {
     NAME = "NAME"
 }
+/**
+ * State of a proof request. Some states mean something different
+ * depending on whether the system is the holder or the verifier of the
+ * request. See [Proof States as a Verifier](https://docs.procivis.ch/verify/states)
+ * and [Proof States as a Holder](https://docs.procivis.ch/hold/manage-credentials-requests#proof-request-states-as-a-holder)
+ * for complete state diagrams.
+ */
 export declare enum ProofState {
+    /**
+     * For verifiers, the request was created but not yet shared with a
+     * wallet.
+     */
     CREATED = "CREATED",
+    /**
+     * Waiting for the other party. For verifiers, the request was shared
+     * or, for `ISO_MDL`, created from the wallet's engagement data. For
+     * holders, device engagement was started with `proposeProof`.
+     */
     PENDING = "PENDING",
+    /**
+     * The request reached the wallet and is waiting for the holder to
+     * respond.
+     */
     REQUESTED = "REQUESTED",
+    /**
+     * For verifiers, the presentation was received and verified. For
+     * holders, the presentation was submitted.
+     */
     ACCEPTED = "ACCEPTED",
+    /**
+     * The holder rejected the request. Not all protocols report a
+     * rejection to the verifier.
+     */
     REJECTED = "REJECTED",
+    /**
+     * The request was cancelled with `deleteProof` after it reached
+     * `REQUESTED`. The history of the interaction is retained.
+     */
     RETRACTED = "RETRACTED",
+    /**
+     * A technical error occurred or, for verifiers, the presentation
+     * could not be verified.
+     */
     ERROR = "ERROR",
+    /**
+     * For verifiers, the shared request expired before a wallet
+     * connected. Share it again with `shareProof`.
+     */
     INTERACTION_EXPIRED = "INTERACTION_EXPIRED"
 }
 export declare enum SortDirection {
@@ -2565,9 +2778,15 @@ export interface OneCore {
     /** Creates an organization. */
     createOrganisation(request: CreateOrganisationRequest): Promise<string>;
     /**
-     * For verifiers, creates a proof request. Choose what information to
-     * request via a proof schema, an identifier, and which protocol to use
-     * for making the request.
+     * For verifiers, creates a proof request and returns its ID. Choose
+     * what information to request via a proof schema, an identifier, and
+     * which protocol to use for making the request.
+     *
+     * For online protocols, the request is created in `CREATED` state;
+     * share it with the wallet using `shareProof`. For `ISO_MDL`, the
+     * wallet starts the exchange: pass the device engagement data from the
+     * wallet in `isoMdlEngagement`. The request is created directly in
+     * `PENDING` state and needs no sharing.
      */
     createProof(request: CreateProofRequest): Promise<string>;
     /**
@@ -2590,8 +2809,16 @@ export interface OneCore {
     /**
      * Deletes an incomplete proof request. If the request is in `REQUESTED`
      * state the proof is retracted instead, retaining history of the interaction.
+     *
+     * For `ISO_MDL`, this also closes the BLE session.
      */
     deleteProof(proofId: string): Promise<void>;
+    /**
+     * Deletes the claim data shared by the wallet holder for a proof
+     * request, without waiting for the retention period set by the
+     * `expireDuration` of the proof schema. The proof request itself is
+     * kept, and `claimsRemovedAt` records when the claims were deleted.
+     */
     deleteProofClaims(proofId: string): Promise<void>;
     deleteProofSchema(proofSchemaId: string): Promise<void>;
     /**
@@ -2626,8 +2853,21 @@ export interface OneCore {
      * offered to it.
      */
     getOrganisation(id: string): Promise<OrganisationDetail>;
+    /**
+     * For wallets, returns what a proof request asks for and which of the
+     * wallet's credentials can satisfy it. Use the result to build the
+     * submission for `holderSubmitProofV2`.
+     *
+     * For `ISO_MDL` requests, every claim has `required: false`, since the
+     * protocol cannot mark claims as mandatory. An incomplete submission
+     * may be rejected if the verifier requires claims not submitted.
+     */
     getPresentationDefinitionV2(proofId: string): Promise<PresentationDefinitionV2>;
-    /** Returns detailed information about a proof request. */
+    /**
+     * Returns detailed information about a proof request.
+     *
+     * Poll this method to follow the state of the request.
+     */
     getProof(proofId: string): Promise<ProofDetail>;
     getProofSchema(proofSchemaId: string): Promise<ProofSchemaDetail>;
     /**
@@ -2639,6 +2879,9 @@ export interface OneCore {
      * For a wallet, handles the interaction once the wallet connects to a share
      * endpoint URL (for example, scans the QR code of an offered credential or
      * request for proof).
+     *
+     * Not for use with `ISO_MDL` proximity flows, where the wallet initiates the
+     * flow using `proposeProof` instead.
      */
     handleInvitation(request: HandleInvitationRequest): Promise<HandleInvitationResponse>;
     /**
@@ -2655,7 +2898,9 @@ export interface OneCore {
      * For wallets; returns the details of a single transaction data entry of a
      * proof request, including human-readable display data and the raw
      * transaction data received from the verifier. The `transactionDataId` is
-     * obtained from `getPresentationDefinitionv2`.
+     * obtained from `getPresentationDefinitionV2`. See
+     * [Transaction Authorization for Wallets](https://docs.procivis.ch/hold/transaction-authorization)
+     * for more information.
      */
     holderGetTransactionData(proofId: string, transactionDataId: string): Promise<ProofTransactionData>;
     /**
@@ -2663,7 +2908,7 @@ export interface OneCore {
      * To see the result, call `holderGetInstance`.
      */
     holderInstanceStatus(id: string): Promise<void>;
-    /** Receive a new credential batch */
+    /** Request a new credential batch. */
     holderRefreshCredential(interactionId: string): Promise<HolderRefreshCredentialResponse>;
     /** Registers the instance with a Wallet or Verifier Provider. */
     holderRegisterInstance(request: HolderRegisterInstanceRequest): Promise<HolderRegisterInstanceResponse>;
@@ -2673,11 +2918,21 @@ export interface OneCore {
      * A batch format is notified as rejected and excluded from refreshes only when all its items are rejected.
      */
     holderRejectCredential(interactionId: string, credentialIds: Array<string> | undefined): Promise<void>;
-    /** Rejects a proof request. */
+    /**
+     * For wallets, rejects a proof request. Pass the `interactionId` of
+     * the request, not the proof ID.
+     *
+     * For `ISO_MDL`, the wallet sends an empty response to the verifier and
+     * closes the BLE session.
+     */
     holderRejectProof(interactionId: string): Promise<void>;
     /**
-     * Submits a presentation using DCQL as a query language; this should
-     * be used after `getPresentationDefinitionv2`.
+     * For wallets, submits a presentation using DCQL as a query language.
+     * Use this after `getPresentationDefinitionV2`. Pass the
+     * `interactionId` of the request, not the proof ID.
+     *
+     * `submission` maps each credential query ID from the presentation
+     * definition to the credentials chosen for it.
      */
     holderSubmitProofV2(interactionId: string, submission: Record<string, Array<PresentationSubmitV2CredentialRequest>>): Promise<void>;
     /**
@@ -2709,6 +2964,11 @@ export interface OneCore {
      * For wallets, initiates device engagement for offline flows. Reference
      * the `verificationEngagement` entry of your configuration for your
      * options for `engagement`.
+     *
+     * For `ISO_MDL`, this creates a proof in `PENDING` state and starts BLE
+     * according to the `bleMode` set in your configuration. Poll `getProof`
+     * until the state is `REQUESTED`, then call
+     * `getPresentationDefinitionV2`.
      */
     proposeProof(request: ProposeProofRequest): Promise<ProposeProofResponse>;
     /**
@@ -2744,7 +3004,7 @@ export interface OneCore {
     shareCredentialSchema(credentialSchemaId: string): Promise<CredentialSchemaShareResponse>;
     /**
      * Creates a share URL from a proof request. A wallet holder can use this
-     * URL to access the request.
+     * URL to access the request. Not used for the `ISO_MDL` proximity flow.
      */
     shareProof(proofId: string, params: ShareProofRequest): Promise<ShareProofResponse>;
     shareProofSchema(proofSchemaId: string): Promise<ProofSchemaShareResponse>;

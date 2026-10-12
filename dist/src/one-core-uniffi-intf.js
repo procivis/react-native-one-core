@@ -89,8 +89,17 @@ export var CredentialListQuerySearchType;
 })(CredentialListQuerySearchType || (CredentialListQuerySearchType = {}));
 export var CredentialQueryFailureReason;
 (function (CredentialQueryFailureReason) {
+    /** The wallet holds no credential of the requested type. */
     CredentialQueryFailureReason["NO_CREDENTIAL"] = "NO_CREDENTIAL";
+    /**
+     * Credentials of the requested type exist, but none is currently
+     * valid.
+     */
     CredentialQueryFailureReason["VALIDITY"] = "VALIDITY";
+    /**
+     * Credentials of the requested type exist, but none satisfies the
+     * constraints of the request.
+     */
     CredentialQueryFailureReason["CONSTRAINT"] = "CONSTRAINT";
 })(CredentialQueryFailureReason || (CredentialQueryFailureReason = {}));
 export var CredentialRole;
@@ -311,22 +320,64 @@ export var ProofListQueryExactColumn;
 })(ProofListQueryExactColumn || (ProofListQueryExactColumn = {}));
 export var ProofRole;
 (function (ProofRole) {
+    /** The system received this request. */
     ProofRole["HOLDER"] = "HOLDER";
+    /** The system made this request. */
     ProofRole["VERIFIER"] = "VERIFIER";
 })(ProofRole || (ProofRole = {}));
 export var ProofSchemaListQueryExactColumn;
 (function (ProofSchemaListQueryExactColumn) {
     ProofSchemaListQueryExactColumn["NAME"] = "NAME";
 })(ProofSchemaListQueryExactColumn || (ProofSchemaListQueryExactColumn = {}));
+/**
+ * State of a proof request. Some states mean something different
+ * depending on whether the system is the holder or the verifier of the
+ * request. See [Proof States as a Verifier](https://docs.procivis.ch/verify/states)
+ * and [Proof States as a Holder](https://docs.procivis.ch/hold/manage-credentials-requests#proof-request-states-as-a-holder)
+ * for complete state diagrams.
+ */
 export var ProofState;
 (function (ProofState) {
+    /**
+     * For verifiers, the request was created but not yet shared with a
+     * wallet.
+     */
     ProofState["CREATED"] = "CREATED";
+    /**
+     * Waiting for the other party. For verifiers, the request was shared
+     * or, for `ISO_MDL`, created from the wallet's engagement data. For
+     * holders, device engagement was started with `proposeProof`.
+     */
     ProofState["PENDING"] = "PENDING";
+    /**
+     * The request reached the wallet and is waiting for the holder to
+     * respond.
+     */
     ProofState["REQUESTED"] = "REQUESTED";
+    /**
+     * For verifiers, the presentation was received and verified. For
+     * holders, the presentation was submitted.
+     */
     ProofState["ACCEPTED"] = "ACCEPTED";
+    /**
+     * The holder rejected the request. Not all protocols report a
+     * rejection to the verifier.
+     */
     ProofState["REJECTED"] = "REJECTED";
+    /**
+     * The request was cancelled with `deleteProof` after it reached
+     * `REQUESTED`. The history of the interaction is retained.
+     */
     ProofState["RETRACTED"] = "RETRACTED";
+    /**
+     * A technical error occurred or, for verifiers, the presentation
+     * could not be verified.
+     */
     ProofState["ERROR"] = "ERROR";
+    /**
+     * For verifiers, the shared request expired before a wallet
+     * connected. Share it again with `shareProof`.
+     */
     ProofState["INTERACTION_EXPIRED"] = "INTERACTION_EXPIRED";
 })(ProofState || (ProofState = {}));
 export var SortDirection;
