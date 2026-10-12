@@ -737,6 +737,21 @@ export interface DidRequestKeys {
     capabilityInvocation: Array<string>;
     capabilityDelegation: Array<string>;
 }
+export interface DigitalCredentialClaim {
+    path: Array<string>;
+    displayName?: string;
+}
+export interface DigitalCredentialDisplay {
+    credentialName: string;
+    issuerName?: string;
+    logo?: string;
+}
+export interface DigitalCredentialRegistration {
+    credentialId: string;
+    metadata: DigitalCredentialMetadata;
+    claims: Array<DigitalCredentialClaim>;
+    display: DigitalCredentialDisplay;
+}
 export interface DisclosurePolicy {
     id: string;
     policy: string;
@@ -1255,6 +1270,7 @@ export interface InitParams {
     blePeripheral?: BlePeripheral;
     nfcHce?: NfcHce;
     nfcScanner?: NfcScanner;
+    credentialManager?: CredentialManager;
 }
 export interface InitiateIssuanceAuthorizationDetail {
     type: string;
@@ -2200,6 +2216,13 @@ export declare enum CredentialListQuerySearchType {
     CLAIM_VALUE = "CLAIM_VALUE",
     CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME"
 }
+export type CredentialManagerError = {
+    type_: "SYNCHRONIZATION_ERROR";
+    reason: string;
+} | {
+    type_: "UNKNOWN";
+    reason: string;
+};
 export declare enum CredentialQueryFailureReason {
     /** The wallet holds no credential of the requested type. */
     NO_CREDENTIAL = "NO_CREDENTIAL",
@@ -2258,6 +2281,13 @@ export declare enum DidType {
     LOCAL = "LOCAL",
     REMOTE = "REMOTE"
 }
+export type DigitalCredentialMetadata = {
+    type_: "SD_JWT_VC";
+    vct: string;
+} | {
+    type_: "MDOC";
+    doctype: string;
+};
 export declare enum EcosystemRole {
     HOLDER = "HOLDER",
     ISSUER = "ISSUER",
@@ -2681,6 +2711,14 @@ export interface BlePeripheral {
     stopAdvertisement(): Promise<void>;
     stopServer(): Promise<void>;
     waitForCharacteristicRead(device: string, service: string, characteristic: string): Promise<void>;
+}
+/** Provider of native credential manager (for DC-API) */
+export interface CredentialManager {
+    /**
+     * register credentials in the native credential manager
+     * while removing any previous credential registrations
+     */
+    synchronize(credentials: Array<DigitalCredentialRegistration>): Promise<void>;
 }
 export interface NativeKeyStorage {
     generateAttestation(keyReference: number[], nonce: string | undefined): Promise<Array<string>>;

@@ -63,7 +63,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                         bleCentral = AndroidBLECentral(context),
                         blePeripheral = AndroidBLEPeripheral(context),
                         nfcHce = nfcHce,
-                        nfcScanner = NfcScanner(context) { context.currentActivity }
+                        nfcScanner = NfcScanner(context) { context.currentActivity },
+                        credentialManager = null
                     )
                 )
             return@syncCall null

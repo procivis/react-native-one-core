@@ -1892,7 +1892,7 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
     - SocketRocket
-  - react-native-one-core (1.128884.0):
+  - react-native-one-core (1.134103.0):
     - React-Core
   - React-NativeModulesApple (0.83.0):
     - boost
@@ -2743,7 +2743,7 @@ SPEC CHECKSUMS:
   React-logger: 9e597cbeda7b8cc8aa8fb93860dade97190f69cc
   React-Mapbuffer: 20046c0447efaa7aace0b76085aa9bb35b0e8105
   React-microtasksnativemodule: 0e837de56519c92d8a2e3097717df9497feb33cb
-  react-native-one-core: 9735c3261c862f74937eaa935a90f0e730627194
+  react-native-one-core: 409c6118ba91c5be4d38c7dcdb008f1e0db2fbeb
   React-NativeModulesApple: 1a378198515f8e825c5931a7613e98da69320cee
   React-networking: bfd1695ada5a57023006ce05823ac5391c3ce072
   React-oscompat: aedc0afbded67280de6bb6bfac8cfde0389e2b33
