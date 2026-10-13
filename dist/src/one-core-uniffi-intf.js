@@ -166,6 +166,7 @@ export var EcosystemRole;
 export var EcosystemTrustResult;
 (function (EcosystemTrustResult) {
     EcosystemTrustResult["TRUSTED"] = "TRUSTED";
+    EcosystemTrustResult["COMPLIANT"] = "COMPLIANT";
     EcosystemTrustResult["NOT_TRUSTED"] = "NOT_TRUSTED";
 })(EcosystemTrustResult || (EcosystemTrustResult = {}));
 export var HistoryAction;
@@ -443,6 +444,7 @@ export var TransactionCodeType;
 export var TrustResolutionResult;
 (function (TrustResolutionResult) {
     TrustResolutionResult["TRUSTED"] = "TRUSTED";
+    TrustResolutionResult["COMPLIANT"] = "COMPLIANT";
     TrustResolutionResult["UNTRUSTED"] = "UNTRUSTED";
     TrustResolutionResult["UNKNOWN"] = "UNKNOWN";
 })(TrustResolutionResult || (TrustResolutionResult = {}));

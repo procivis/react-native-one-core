@@ -740,6 +740,7 @@ export interface DidRequestKeys {
 export interface DigitalCredentialClaim {
     path: Array<string>;
     displayName?: string;
+    selectivelyDisclosable: boolean;
 }
 export interface DigitalCredentialDisplay {
     credentialName: string;
@@ -795,7 +796,7 @@ export interface EcosystemInfo {
 }
 export interface EcosystemOutcome {
     result: EcosystemTrustResult;
-    /** Why the provider did not trust the interaction. `None` when it did. */
+    /** Why the provider rejected the interaction. `None` when accepted. */
     error?: HistoryErrorMetadata;
 }
 export interface ErrorData {
@@ -2050,6 +2051,7 @@ export interface WalletInstanceFeatureFlags {
     ecosystemsEnforcementEnabled: boolean;
     refreshCredentialBatchEnabled: boolean;
     documentSigningEnabled: boolean;
+    dcApiIntegrationEnabled: boolean;
 }
 export interface WalletProviderDetail {
     /**
@@ -2298,6 +2300,7 @@ export declare enum EcosystemRole {
 }
 export declare enum EcosystemTrustResult {
     TRUSTED = "TRUSTED",
+    COMPLIANT = "COMPLIANT",
     NOT_TRUSTED = "NOT_TRUSTED"
 }
 export type HandleInvitationResponse = {
@@ -2683,6 +2686,7 @@ export type TrustInformationDetailInfo = {
 };
 export declare enum TrustResolutionResult {
     TRUSTED = "TRUSTED",
+    COMPLIANT = "COMPLIANT",
     UNTRUSTED = "UNTRUSTED",
     UNKNOWN = "UNKNOWN"
 }
