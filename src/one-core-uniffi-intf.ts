@@ -2166,12 +2166,6 @@ export interface UpsertOrganisationRequest {
   /** Policy-level configuration for this organization. */
   configuration?: SetOrganisationConfiguration;
   /**
-   * The trust collections this organization's wallet subscribes to,
-   * selected from those made available by the Wallet Provider. Omit to
-   * leave the current selection unchanged.
-   */
-  trustCollections?: Array<string>;
-  /**
    * The parent organization this organization inherits policy-level
    * configuration from, if any.
    */
