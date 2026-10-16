@@ -58,8 +58,12 @@ if (originalGetConfig) {
  */
 export async function initializeCore(
   config: Record<string, unknown> = {},
+  dataDirPath?: string,
 ): Promise<ONECore> {
-  await wrapFn(ONE.initialize, "initializeCore")(JSON.stringify(config));
+  await wrapFn(ONE.initialize, "initializeCore")(
+    JSON.stringify(config),
+    dataDirPath,
+  );
   return wrapObj(ONE);
 }
 

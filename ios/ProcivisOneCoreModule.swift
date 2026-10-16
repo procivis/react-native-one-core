@@ -22,9 +22,10 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(initialize:resolver:rejecter:)
+  @objc(initialize:dataDirPath:resolver:rejecter:)
   func initialize(
     configJson: String,
+    dataDirPath: String?,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
@@ -61,8 +62,9 @@ class ProcivisOneCoreModule: RCTEventEmitter {
           blePeripheral: IOSBLEPeripheral(),
           nfcHce: nfcHce,
           nfcScanner: NFCScanner(),
-          credentialManager: nil
-        )
+          credentialManager: nil,
+        ),
+        dataDirPath: dataDirPath,
       )
 
       return nil as NSDictionary?

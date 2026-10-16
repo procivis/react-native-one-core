@@ -28,8 +28,8 @@ if (originalGetConfig) {
  * @param config one-core configuration
  * @returns ONE Core instance
  */
-export async function initializeCore(config = {}) {
-    await wrapFn(ONE.initialize, "initializeCore")(JSON.stringify(config));
+export async function initializeCore(config = {}, dataDirPath) {
+    await wrapFn(ONE.initialize, "initializeCore")(JSON.stringify(config), dataDirPath);
     return wrapObj(ONE);
 }
 // UTILS

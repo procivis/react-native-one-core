@@ -18,6 +18,7 @@
 RCT_EXTERN_METHOD(supportedEvents)
 
 RCT_EXTERN_METHOD(initialize:(NSString *)configJson
+                  dataDirPath:(NSString *)dataDirPath
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

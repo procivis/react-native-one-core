@@ -17,4 +17,4 @@ export declare namespace Ubiqu {
  * @param config one-core configuration
  * @returns ONE Core instance
  */
-export declare function initializeCore(config?: Record<string, unknown>): Promise<ONECore>;
+export declare function initializeCore(config?: Record<string, unknown>, dataDirPath?: string): Promise<ONECore>;

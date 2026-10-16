@@ -49,7 +49,7 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun initialize(configJson: String, promise: Promise) {
+    fun initialize(configJson: String, dataDirPath: String?, promise: Promise) {
         syncCall(promise) {
             val context = this.reactApplicationContext
             ubiqu = ubiqu ?: UbiquKeyStorage(context)
@@ -65,7 +65,8 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
                         nfcHce = nfcHce,
                         nfcScanner = NfcScanner(context) { context.currentActivity },
                         credentialManager = null
-                    )
+                    ),
+                    dataDirPath = dataDirPath ?: context.filesDir.absolutePath,
                 )
             return@syncCall null
         }
