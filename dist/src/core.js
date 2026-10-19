@@ -8,7 +8,7 @@ export const interfaceMethodNames = [
     "getVersion",
     "getConfig",
     "createOrganisation",
-    "upsertOrganisation",
+    "updateOrganisation",
     "getOrganisation",
     "generateKey",
     "createDid",

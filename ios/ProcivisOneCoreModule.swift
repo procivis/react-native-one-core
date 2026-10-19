@@ -113,14 +113,14 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     }
   }
 
-  @objc(upsertOrganisation:resolver:rejecter:)
-  func upsertOrganisation(
+  @objc(updateOrganisation:resolver:rejecter:)
+  func updateOrganisation(
     request: NSDictionary,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      try await self.getCore().upsertOrganisation(request: try deserialize(request))
+      try await self.getCore().updateOrganisation(request: try deserialize(request))
       return nil as NSDictionary?
     }
   }

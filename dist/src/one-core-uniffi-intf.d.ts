@@ -1978,7 +1978,7 @@ export interface UnexportableEntities {
     totalDids: number;
     totalIdentifiers: number;
 }
-export interface UpsertOrganisationRequest {
+export interface UpdateOrganisationRequest {
     /** Unique identifier of the organization to create or update. */
     id: string;
     /** Set to `true` to deactivate the organization. */
@@ -3054,11 +3054,8 @@ export interface OneCore {
      * Follow by calling either `finalizeImport` or `rollbackImport`.
      */
     unpackBackup(password: string, inputPath: string): Promise<Metadata>;
-    /**
-     * Updates or deactivates an organization if it exists, otherwise
-     * creates a new organization using the provided UUID and name.
-     */
-    upsertOrganisation(request: UpsertOrganisationRequest): Promise<void>;
+    /** Updates or deactivates an organization */
+    updateOrganisation(request: UpdateOrganisationRequest): Promise<void>;
     /** Returns build information. */
     version(): Version;
 }

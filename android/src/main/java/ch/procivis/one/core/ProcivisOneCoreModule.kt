@@ -127,9 +127,9 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun upsertOrganisation(request: ReadableMap, promise: Promise) {
+    fun updateOrganisation(request: ReadableMap, promise: Promise) {
         asyncCall(promise, scope) {
-            getCore().upsertOrganisation(construct(request))
+            getCore().updateOrganisation(construct(request))
             return@asyncCall null
         }
     }

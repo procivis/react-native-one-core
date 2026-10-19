@@ -32,7 +32,7 @@ RCT_EXTERN_METHOD(createOrganisation:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(upsertOrganisation:(NSDictionary *)request
+RCT_EXTERN_METHOD(updateOrganisation:(NSDictionary *)request
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
