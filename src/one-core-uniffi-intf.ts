@@ -950,11 +950,7 @@ export interface GlobalSettings {
 }
 
 export interface HandleInvitationRequest {
-  /**
-   * Typically encoded as a QR code or deep link by the issuer or
-   * verifier. For example: "https://example.com/credential-offer".
-   */
-  url: string;
+  data: HandleInvitationRequestData;
   /** Specifies the organizational context for this operation. */
   organisationId: string;
   /**
@@ -1595,6 +1591,11 @@ export interface PresentationDefinitionV2Claim {
    * `false` for `ISO_MDL` requests.
    */
   required: boolean;
+  /**
+   * Whether the ecosystem requires user consent before this biometric
+   * claim is shared.
+   */
+  requireBiometricDataUserConsent: boolean;
 }
 
 export interface PresentationDefinitionV2Credential {
@@ -2539,6 +2540,17 @@ export enum EcosystemTrustResult {
   NOT_TRUSTED = "NOT_TRUSTED",
 }
 
+export type HandleInvitationRequestData =
+    /** OpenID4VCI, OpenID4VP */
+  | {
+      type_: "URL";
+      /**
+       * Typically encoded as a QR code or deep link by the issuer or
+       * verifier. For example: "https://example.com/credential-offer".
+       */
+      url: string;
+    };
+
 export type HandleInvitationResponse =
   | {
       type_: "CREDENTIAL_ISSUANCE";
@@ -3031,6 +3043,19 @@ export interface CredentialManager {
    * while removing any previous credential registrations
    */
   synchronize(credentials: Array<DigitalCredentialRegistration>): Promise<void>;
+}
+
+/** Native handler of proof submission/rejection */
+export interface DcApiResponseHandler {
+  /** Called when user rejects proof */
+  onReject(): void;
+  /**
+   * Called when user accepts proof
+   * - `response`:
+   * - ISO 18013-7 Annex C: `Base64EncryptedResponse`
+   * - OpenID4VP DC-API: credentialJson (<https://developer.android.com/reference/kotlin/androidx/credentials/DigitalCredential#credentialJson()>)
+   */
+  onSubmit(response: string): void;
 }
 
 export interface NativeKeyStorage {

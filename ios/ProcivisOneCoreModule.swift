@@ -225,7 +225,7 @@ class ProcivisOneCoreModule: RCTEventEmitter {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     asyncCall(resolve, reject) {
-      let result = try await self.getCore().handleInvitation(request: try deserialize(request))
+      let result = try await self.getCore().handleInvitation(request: try deserializeHandleInvitationRequest(request))
       return try serializeAny(result)
     }
   }

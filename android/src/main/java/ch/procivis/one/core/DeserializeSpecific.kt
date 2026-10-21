@@ -6,7 +6,10 @@ import kotlin.reflect.KClass
 
 object DeserializeSpecific {
     object Obj {
-        private val CustomConversionTypes = arrayOf(OptionalString::class)
+        private val CustomConversionTypes = arrayOf(
+            OptionalString::class,
+            HandleInvitationRequestData::class
+        )
 
         fun isCustomConversionType(type: KClass<*>): Boolean {
             return CustomConversionTypes.contains(type)
@@ -22,6 +25,22 @@ object DeserializeSpecific {
                         OptionalString.Some(value)
                     }
                 }
+
+                HandleInvitationRequestData::class -> {
+                    val data = input.getMap(field)
+                        ?: throw IllegalArgumentException("Missing HandleInvitationRequestData data")
+
+                    val type = data.getString("type_")
+                        ?: throw IllegalArgumentException("Missing HandleInvitationRequestData type")
+                    if (type != "URL") {
+                        throw IllegalArgumentException("Invalid HandleInvitationRequestData type: $type")
+                    }
+
+                    val url = data.getString("url")
+                        ?: throw IllegalArgumentException("Missing HandleInvitationRequestData url")
+                    HandleInvitationRequestData.Url(url = url)
+                }
+
                 else -> {
                     throw IllegalArgumentException("Invalid map conversion: $input")
                 }
