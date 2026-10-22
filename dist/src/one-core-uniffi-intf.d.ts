@@ -37,11 +37,6 @@ export interface CertificateX509Extension {
     value: string;
     critical: boolean;
 }
-export interface CharacteristicSettings {
-    uuid: string;
-    permissions: Array<CharacteristicPermission>;
-    properties: Array<CharacteristicProperty>;
-}
 export interface Claim {
     path: string;
     schema: ClaimSchemaInfo;
@@ -675,10 +670,6 @@ export interface CredentialSet {
      */
     options: Array<Array<string>>;
 }
-export interface DeviceInfo {
-    address: string;
-    mtu: number;
-}
 export interface DidDetail {
     id: string;
     createdDate: string;
@@ -736,22 +727,6 @@ export interface DidRequestKeys {
     keyAgreement: Array<string>;
     capabilityInvocation: Array<string>;
     capabilityDelegation: Array<string>;
-}
-export interface DigitalCredentialClaim {
-    path: Array<string>;
-    displayName?: string;
-    selectivelyDisclosable: boolean;
-}
-export interface DigitalCredentialDisplay {
-    credentialName: string;
-    issuerName?: string;
-    logo?: string;
-}
-export interface DigitalCredentialRegistration {
-    credentialId: string;
-    metadata: DigitalCredentialMetadata;
-    claims: Array<DigitalCredentialClaim>;
-    display: DigitalCredentialDisplay;
 }
 export interface DisclosurePolicy {
     id: string;
@@ -855,10 +830,6 @@ export interface GenerateKeyRequest {
      */
     storageType: string;
     storageParams: Record<string, string>;
-}
-export interface GeneratedKey {
-    keyReference: number[];
-    publicKey: number[];
 }
 export interface GlobalSettings {
     defaultLanguage: string;
@@ -1256,19 +1227,6 @@ export interface ImportProofSchemaRequest {
     schema: ImportProofSchema;
     organisationId: string;
 }
-export interface InitParams {
-    /** Pass a serialized JSON to override the default configuration. */
-    configJson?: string;
-    /** Create an instance of the native implementation of Secure Element and pass it here. */
-    nativeSecureElement?: NativeKeyStorage;
-    /** Create a custom implementation of HSM and pass it. */
-    remoteSecureElement?: NativeKeyStorage;
-    bleCentral?: BleCentral;
-    blePeripheral?: BlePeripheral;
-    nfcHce?: NfcHce;
-    nfcScanner?: NfcScanner;
-    credentialManager?: CredentialManager;
-}
 export interface InitiateIssuanceAuthorizationDetail {
     type: string;
     credentialConfigurationId: string;
@@ -1410,12 +1368,6 @@ export interface OrganisationDetail {
      * Verifier.
      */
     verifierInstance?: VerifierInstanceDetail;
-}
-export interface PeripheralDiscoveryData {
-    deviceAddress: string;
-    localDeviceName?: string;
-    advertisedServices: Array<string>;
-    advertisedServiceData?: Record<string, number[]>;
 }
 export interface PresentationDefinitionTransactionData {
     id: string;
@@ -1895,12 +1847,6 @@ export interface QesSignResponse {
 export interface ResolvedJsonLdContext {
     context: string;
 }
-export interface ServiceDescription {
-    uuid: string;
-    advertise: boolean;
-    advertisedServiceData?: number[];
-    characteristics: Array<CharacteristicSettings>;
-}
 export interface SetOrganisationConfiguration {
     selectedEcosystems?: Array<string>;
     /**
@@ -2072,50 +2018,6 @@ export type ApplicableCredentialOrFailureHint =
     type_: "FAILURE_HINT";
     failureHint: CredentialQueryFailureHint;
 };
-export type BleError = {
-    type_: "ADAPTER_NOT_ENABLED";
-} | {
-    type_: "SCAN_ALREADY_STARTED";
-} | {
-    type_: "SCAN_NOT_STARTED";
-} | {
-    type_: "BROADCAST_ALREADY_STARTED";
-} | {
-    type_: "BROADCAST_NOT_STARTED";
-} | {
-    type_: "ANOTHER_OPERATION_IN_PROGRESS";
-} | {
-    type_: "WRITE_DATA_TOO_LONG";
-} | {
-    type_: "DEVICE_ADDRESS_NOT_FOUND";
-    address: string;
-} | {
-    type_: "SERVICE_NOT_FOUND";
-    service: string;
-} | {
-    type_: "CHARACTERISTIC_NOT_FOUND";
-    characteristic: string;
-} | {
-    type_: "INVALID_UUID";
-    uuid: string;
-} | {
-    type_: "DEVICE_NOT_CONNECTED";
-    address: string;
-} | {
-    type_: "INVALID_CHARACTERISTIC_OPERATION";
-    service: string;
-    characteristic: string;
-    operation: string;
-} | {
-    type_: "NOT_SUPPORTED";
-} | {
-    type_: "NOT_AUTHORIZED";
-} | {
-    type_: "SERVER_NOT_RUNNING";
-} | {
-    type_: "UNKNOWN";
-    reason: string;
-};
 export declare enum CacheType {
     DID_DOCUMENT = "DID_DOCUMENT",
     JSON_LD_CONTEXT = "JSON_LD_CONTEXT",
@@ -2153,21 +2055,6 @@ export declare enum CertificateState {
     REVOKED = "REVOKED",
     EXPIRED = "EXPIRED"
 }
-export declare enum CharacteristicPermission {
-    READ = "READ",
-    WRITE = "WRITE"
-}
-export declare enum CharacteristicProperty {
-    READ = "READ",
-    WRITE = "WRITE",
-    NOTIFY = "NOTIFY",
-    WRITE_WITHOUT_RESPONSE = "WRITE_WITHOUT_RESPONSE",
-    INDICATE = "INDICATE"
-}
-export declare enum CharacteristicWriteType {
-    WITH_RESPONSE = "WITH_RESPONSE",
-    WITHOUT_RESPONSE = "WITHOUT_RESPONSE"
-}
 export type ClaimValue = {
     type_: "BOOLEAN";
     value: boolean;
@@ -2190,13 +2077,6 @@ export declare enum ClientIdScheme {
     DECENTRALIZED_IDENTIFIER = "DECENTRALIZED_IDENTIFIER",
     X509_SAN_DNS = "X509_SAN_DNS"
 }
-export type ConnectionEvent = {
-    type_: "CONNECTED";
-    deviceInfo: DeviceInfo;
-} | {
-    type_: "DISCONNECTED";
-    deviceAddress: string;
-};
 export declare enum CreateSelfSignedCaRequestIssuerAlternativeNameType {
     EMAIL = "EMAIL",
     URI = "URI"
@@ -2213,13 +2093,6 @@ export declare enum CredentialListQuerySearchType {
     CLAIM_VALUE = "CLAIM_VALUE",
     CREDENTIAL_SCHEMA_NAME = "CREDENTIAL_SCHEMA_NAME"
 }
-export type CredentialManagerError = {
-    type_: "SYNCHRONIZATION_ERROR";
-    reason: string;
-} | {
-    type_: "UNKNOWN";
-    reason: string;
-};
 export declare enum CredentialQueryFailureReason {
     /** The wallet holds no credential of the requested type. */
     NO_CREDENTIAL = "NO_CREDENTIAL",
@@ -2278,13 +2151,6 @@ export declare enum DidType {
     LOCAL = "LOCAL",
     REMOTE = "REMOTE"
 }
-export type DigitalCredentialMetadata = {
-    type_: "SD_JWT_VC";
-    vct: string;
-} | {
-    type_: "MDOC";
-    doctype: string;
-};
 export declare enum EcosystemRole {
     HOLDER = "HOLDER",
     ISSUER = "ISSUER",
@@ -2513,34 +2379,6 @@ export declare enum KeyStorageSecurity {
     ENHANCED_BASIC = "ENHANCED_BASIC",
     BASIC = "BASIC"
 }
-export type NativeKeyStorageError = {
-    type_: "KEY_GENERATION_FAILURE";
-    reason: string;
-} | {
-    type_: "SIGNATURE_FAILURE";
-    reason: string;
-} | {
-    type_: "UNSUPPORTED";
-} | {
-    type_: "UNKNOWN";
-    reason: string;
-};
-export type NfcError = {
-    type_: "NOT_ENABLED";
-} | {
-    type_: "NOT_SUPPORTED";
-} | {
-    type_: "ALREADY_STARTED";
-} | {
-    type_: "NOT_STARTED";
-} | {
-    type_: "CANCELLED";
-} | {
-    type_: "SESSION_CLOSED";
-} | {
-    type_: "UNKNOWN";
-    reason: string;
-};
 export type OneCoreError = {
     type_: "RESPONSE";
     data: ErrorResponse;
@@ -2694,110 +2532,6 @@ export declare enum TrustResolutionResult {
     COMPLIANT = "COMPLIANT",
     UNTRUSTED = "UNTRUSTED",
     UNKNOWN = "UNKNOWN"
-}
-export interface BleCentral {
-    connect(peripheral: string): Promise<number>;
-    disconnect(peripheral: string): Promise<void>;
-    getDiscoveredDevices(): Promise<Array<PeripheralDiscoveryData>>;
-    getNotifications(peripheral: string, service: string, characteristic: string): Promise<Array<number[]>>;
-    isAdapterEnabled(): Promise<boolean>;
-    isScanning(): Promise<boolean>;
-    readData(peripheral: string, service: string, characteristic: string): Promise<number[]>;
-    startScan(filterServices: Array<string> | undefined): Promise<void>;
-    stopScan(): Promise<void>;
-    subscribeToCharacteristicNotifications(peripheral: string, service: string, characteristic: string): Promise<void>;
-    unsubscribeFromCharacteristicNotifications(peripheral: string, service: string, characteristic: string): Promise<void>;
-    writeData(peripheral: string, service: string, characteristic: string, data: number[], writeType: CharacteristicWriteType): Promise<void>;
-}
-export interface BlePeripheral {
-    getCharacteristicWrites(device: string, service: string, characteristic: string): Promise<Array<number[]>>;
-    getConnectionChangeEvents(): Promise<Array<ConnectionEvent>>;
-    isAdapterEnabled(): Promise<boolean>;
-    isAdvertising(): Promise<boolean>;
-    notifyCharacteristicData(deviceAddress: string, service: string, characteristic: string, data: number[]): Promise<void>;
-    setCharacteristicData(service: string, characteristic: string, data: number[]): Promise<void>;
-    startAdvertisement(deviceName: string | undefined, services: Array<ServiceDescription>): Promise<string | undefined>;
-    stopAdvertisement(): Promise<void>;
-    stopServer(): Promise<void>;
-    waitForCharacteristicRead(device: string, service: string, characteristic: string): Promise<void>;
-}
-/** Provider of native credential manager (for DC-API) */
-export interface CredentialManager {
-    /**
-     * register credentials in the native credential manager
-     * while removing any previous credential registrations
-     */
-    synchronize(credentials: Array<DigitalCredentialRegistration>): Promise<void>;
-}
-/** Native handler of proof submission/rejection */
-export interface DcApiResponseHandler {
-    /** Called when user rejects proof */
-    onReject(): void;
-    /**
-     * Called when user accepts proof
-     * - `response`:
-     * - ISO 18013-7 Annex C: `Base64EncryptedResponse`
-     * - OpenID4VP DC-API: credentialJson (<https://developer.android.com/reference/kotlin/androidx/credentials/DigitalCredential#credentialJson()>)
-     */
-    onSubmit(response: string): void;
-}
-export interface NativeKeyStorage {
-    generateAttestation(keyReference: number[], nonce: string | undefined): Promise<Array<string>>;
-    generateAttestationKey(keyAlias: string, nonce: string | undefined): Promise<GeneratedKey>;
-    generateKey(keyAlias: string): Promise<GeneratedKey>;
-    sign(keyReference: number[], message: number[]): Promise<number[]>;
-    signWithAttestationKey(keyReference: number[], message: number[]): Promise<number[]>;
-}
-/** Provider of NFC host-card emulation (HCE) */
-export interface NfcHce {
-    isEnabled(): Promise<boolean>;
-    isSupported(): Promise<boolean>;
-    /**
-     * Starts NFC host-card emulation (HCE)
-     * * `handler` implementation for handling NFC events
-     * * `message` UI message to be placed on the system overlay (iOS)
-     */
-    startHosting(handler: NfcHceHandler, message: string | undefined): Promise<void>;
-    /**
-     * stops emulation started via `start_hosting`
-     * * `success` true if hosting should be ended with a success or failure (iOS)
-     */
-    stopHosting(success: boolean): Promise<void>;
-}
-export interface NfcHceHandler {
-    /** Handle incoming APDU command, return response */
-    handleCommand(apdu: number[]): number[];
-    /** Called when NFC scanner disconnects */
-    onScannerDisconnected(): Promise<void>;
-    /** Called when NFC HCE hosting stops */
-    onSessionStopped(reason: NfcError): Promise<void>;
-}
-/** Provider of NFC scanner functionality */
-export interface NfcScanner {
-    /**
-     * Stops scanning previously started via `scan`
-     * or disconnects the established session
-     * * `error_message` - error UI message to display on the system NFC overlay (iOS)
-     */
-    cancelScan(errorMessage: string | undefined): Promise<void>;
-    /** Check whether NFC adapter is enabled on the device (android only, iOS always enabled) */
-    isEnabled(): Promise<boolean>;
-    /** Check whether NFC scanning is supported on the device */
-    isSupported(): Promise<boolean>;
-    /**
-     * Starts scanning for ISO 7816-4 NFC tag
-     * * `message` - UI message to display on the system NFC overlay (iOS)
-     *
-     * This function returns when:
-     * * an IsoDep tag is scanned and session established
-     * * on cancellation (`cancel_scan`) - `NfcError::Cancelled`
-     * * or on failure
-     */
-    scan(message: string | undefined): Promise<void>;
-    /** Update UI message on the system NFC scanner overlay (iOS) - previously set via `scan` */
-    setMessage(message: string): Promise<void>;
-    /** Send APDU request and wait for response APDU */
-    transceive(commandApdu: number[]): Promise<number[]>;
 }
 export interface OneCore {
     /**

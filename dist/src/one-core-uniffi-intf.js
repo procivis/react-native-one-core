@@ -42,24 +42,6 @@ export var CertificateState;
     CertificateState["REVOKED"] = "REVOKED";
     CertificateState["EXPIRED"] = "EXPIRED";
 })(CertificateState || (CertificateState = {}));
-export var CharacteristicPermission;
-(function (CharacteristicPermission) {
-    CharacteristicPermission["READ"] = "READ";
-    CharacteristicPermission["WRITE"] = "WRITE";
-})(CharacteristicPermission || (CharacteristicPermission = {}));
-export var CharacteristicProperty;
-(function (CharacteristicProperty) {
-    CharacteristicProperty["READ"] = "READ";
-    CharacteristicProperty["WRITE"] = "WRITE";
-    CharacteristicProperty["NOTIFY"] = "NOTIFY";
-    CharacteristicProperty["WRITE_WITHOUT_RESPONSE"] = "WRITE_WITHOUT_RESPONSE";
-    CharacteristicProperty["INDICATE"] = "INDICATE";
-})(CharacteristicProperty || (CharacteristicProperty = {}));
-export var CharacteristicWriteType;
-(function (CharacteristicWriteType) {
-    CharacteristicWriteType["WITH_RESPONSE"] = "WITH_RESPONSE";
-    CharacteristicWriteType["WITHOUT_RESPONSE"] = "WITHOUT_RESPONSE";
-})(CharacteristicWriteType || (CharacteristicWriteType = {}));
 export var ClientIdScheme;
 (function (ClientIdScheme) {
     ClientIdScheme["REDIRECT_URI"] = "REDIRECT_URI";
