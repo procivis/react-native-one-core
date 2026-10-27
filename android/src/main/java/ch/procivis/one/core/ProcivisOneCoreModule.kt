@@ -48,11 +48,24 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
         )
     }
 
+    private var credentialManager: RNCredentialManager? = null
+    private fun getCredentialManager(): RNCredentialManager {
+        return credentialManager ?: throw OneCoreException.Response(
+            ErrorResponse(
+                "BR_0184",
+                "CredentialManager not initialized",
+                null,
+                null
+            )
+        )
+    }
+
     @ReactMethod
     fun initialize(configJson: String, dataDirPath: String?, promise: Promise) {
         syncCall(promise) {
             val context = this.reactApplicationContext
             ubiqu = ubiqu ?: UbiquKeyStorage(context)
+            credentialManager = RNCredentialManager(context) { context.currentActivity }
             oneCore =
                 initializeCore(
                     context = context,
@@ -715,5 +728,13 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun removeListeners(count: Int) {
         UbiquKeyStorage.listenerCount -= count
+    }
+
+    // DC-API
+    @ReactMethod
+    fun checkDcApi(request: ReadableMap, promise: Promise) {
+        asyncCall(promise, scope) {
+            return@asyncCall getCredentialManager().checkDcApi(getCore(), construct(request))
+        }
     }
 }

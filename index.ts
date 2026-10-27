@@ -8,6 +8,7 @@ import {
   ErrorData,
 } from "./src/core";
 import * as ubiqu from "./src/ubiqu";
+import * as credentialManager from "./src/credential-manager";
 
 export * from "./src/core";
 export * from "./src/error";
@@ -22,6 +23,8 @@ export declare namespace Ubiqu {
   export type PinFlowType = ubiqu.PinFlowType;
   export type PinFlowStage = ubiqu.PinFlowStage;
 }
+
+export const CredentialManager = credentialManager;
 
 const ONE = NativeModules.ProcivisOneCoreModule;
 

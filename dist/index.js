@@ -2,11 +2,13 @@ import { NativeModules } from "react-native";
 import { OneError } from "./src/error";
 import { interfaceMethodNames, } from "./src/core";
 import * as ubiqu from "./src/ubiqu";
+import * as credentialManager from "./src/credential-manager";
 export * from "./src/core";
 export * from "./src/error";
 export * from "./src/nfc";
 /** @hidden */
 export const Ubiqu = ubiqu;
+export const CredentialManager = credentialManager;
 const ONE = NativeModules.ProcivisOneCoreModule;
 // New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
 interfaceMethodNames.forEach((method) => ONE?.[method]);

@@ -1,5 +1,6 @@
 import { ONECore } from "./src/core";
 import * as ubiqu from "./src/ubiqu";
+import * as credentialManager from "./src/credential-manager";
 export * from "./src/core";
 export * from "./src/error";
 export * from "./src/nfc";
@@ -11,6 +12,7 @@ export declare namespace Ubiqu {
     type PinFlowType = ubiqu.PinFlowType;
     type PinFlowStage = ubiqu.PinFlowStage;
 }
+export declare const CredentialManager: typeof credentialManager;
 /**
  * Initialize ONE Core
  * @note Beware that only one instance can be initialized at a time, repeated calls will fail
