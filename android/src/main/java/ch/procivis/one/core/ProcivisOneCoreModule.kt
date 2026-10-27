@@ -737,4 +737,19 @@ class ProcivisOneCoreModule(reactContext: ReactApplicationContext) :
             return@asyncCall getCredentialManager().checkDcApi(getCore(), construct(request))
         }
     }
+
+    @ReactMethod
+    fun isDcApiRequestActive(promise: Promise) {
+        asyncCall(promise, scope) {
+            return@asyncCall getCredentialManager().isDcApiRequestActive()
+        }
+    }
+
+    @ReactMethod
+    fun cancelDcApiRequest(promise: Promise) {
+        asyncCall(promise, scope) {
+            getCredentialManager().cancelDcApiRequest()
+            return@asyncCall null
+        }
+    }
 }

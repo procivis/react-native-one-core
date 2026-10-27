@@ -8,7 +8,7 @@ export * from "./src/error";
 export * from "./src/nfc";
 /** @hidden */
 export const Ubiqu = ubiqu;
-export const CredentialManager = credentialManager;
+export const CredentialManager = wrapObj(credentialManager);
 const ONE = NativeModules.ProcivisOneCoreModule;
 // New Architecture bridgeless issue workaround: see https://github.com/facebook/react-native/issues/43221
 interfaceMethodNames.forEach((method) => ONE?.[method]);

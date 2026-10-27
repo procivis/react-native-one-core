@@ -24,7 +24,7 @@ export declare namespace Ubiqu {
   export type PinFlowStage = ubiqu.PinFlowStage;
 }
 
-export const CredentialManager = credentialManager;
+export const CredentialManager = wrapObj(credentialManager);
 
 const ONE = NativeModules.ProcivisOneCoreModule;
 
