@@ -714,6 +714,7 @@ export interface CredentialSchemaWalletAttestation {
   keyStorageSecurityLevel?: KeyStorageSecurity;
   preferredKeyStorageAttestationLifetime?: number /*i64*/;
   preferredInstanceAttestationLifetime?: number /*i64*/;
+  monitorCredentialLifetime: boolean;
 }
 
 export interface CredentialSet {
