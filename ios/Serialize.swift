@@ -136,12 +136,11 @@ private func serialize(proofRequestClaimValue: ProofClaimValue) throws -> NSDict
 
 private func serialize(invitationResponse: HandleInvitationResponse) throws -> NSDictionary {
     switch (invitationResponse) {
-    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode, `protocol`, requiresWalletInstanceAttestation, ecosystem, ecosystemErrors):
+    case let .credentialIssuance(interactionId, keyStorageSecurityLevels, keyAlgorithms, txCode, `protocol`, ecosystem, ecosystemErrors):
         var result: [String: Any] = [
             "type_": "CREDENTIAL_ISSUANCE",
             "interactionId": interactionId,
             "protocol": `protocol`,
-            "requiresWalletInstanceAttestation": requiresWalletInstanceAttestation
         ];
         if let keyStorageSecurityLevels = keyStorageSecurityLevels {
             result["keyStorageSecurityLevels"] = keyStorageSecurityLevels.map { serializeEnumValue(value: $0) }

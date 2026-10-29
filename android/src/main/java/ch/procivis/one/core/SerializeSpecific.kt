@@ -242,7 +242,6 @@ object SerializeSpecific {
                         result.putMap("txCode", convertToRN(it) as ReadableMap)
                     }
                     result.putString("protocol", value.protocol)
-                    result.putBoolean("requiresWalletInstanceAttestation", value.requiresWalletInstanceAttestation)
                     value.ecosystem?.let {
                         result.putString("ecosystem", it)
                     }

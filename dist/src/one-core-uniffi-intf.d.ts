@@ -115,8 +115,6 @@ export interface ContinueIssuanceResponse {
     keyStorageSecurityLevels?: Array<KeyStorageSecurity>;
     /** Key algorithms suitable for issuance. */
     keyAlgorithms?: Array<string>;
-    /** Whether a valid WIA is required to complete issuance. */
-    requiresWalletInstanceAttestation: boolean;
     /** Protocol used for issuance. */
     protocol: string;
     /** Ecosystem applied to this interaction. */
@@ -2192,8 +2190,6 @@ export type HandleInvitationResponse = {
     txCode?: OpenId4vciTxCode;
     /** Protocol used for issuance. */
     protocol: string;
-    /** Whether a valid WIA is required to complete issuance. */
-    requiresWalletInstanceAttestation: boolean;
     /** Ecosystem applied to this interaction. */
     ecosystem?: string;
     /** One entry per ecosystem provider that rejected the artifact, keyed by provider id. */
