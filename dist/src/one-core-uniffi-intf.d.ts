@@ -1174,8 +1174,6 @@ export interface ImportProofSchema {
     createdDate: string;
     lastModified: string;
     name: string;
-    /** Specifies the organizational context for this operation. */
-    organisationId: string;
     /**
      * Defines how long the system will store data received from wallets. After
      * the defined duration, the received proof and its data are deleted from
@@ -1197,22 +1195,6 @@ export interface ImportProofSchemaClaimSchema {
     claims?: Array<ImportProofSchemaClaimSchema>;
     array: boolean;
 }
-export interface ImportProofSchemaCredentialSchema {
-    id: string;
-    createdDate: string;
-    lastModified: string;
-    deletedAt?: string;
-    name: string;
-    format: string;
-    revocationMethod?: string;
-    keyStorageSecurity?: KeyStorageSecurity;
-    schemaId: string;
-    importedSourceUrl: string;
-    layoutProperties?: CredentialSchemaLayoutProperties;
-    allowSuspension?: boolean;
-    requiresWalletInstanceAttestation?: boolean;
-    ecosystem?: string;
-}
 export interface ImportProofSchemaInputSchema {
     /**
      * Formatter provider names selected for this input. Defaulting
@@ -1220,7 +1202,7 @@ export interface ImportProofSchemaInputSchema {
      */
     formats?: Array<string>;
     claimSchemas: Array<ImportProofSchemaClaimSchema>;
-    credentialSchema: ImportProofSchemaCredentialSchema;
+    credentialSchema: ImportCredentialSchemaRequestSchema;
 }
 export interface ImportProofSchemaRequest {
     schema: ImportProofSchema;
