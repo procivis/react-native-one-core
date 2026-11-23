@@ -1471,8 +1471,11 @@ export interface ProofDetail {
     protocol: string;
     /** Engagement method used for this request. */
     engagement?: string;
-    /** Channel used for this request. */
-    transport: string;
+    /**
+     * Channel used for this request. Not set until a transport is
+     * selected, if multiple transports were offered.
+     */
+    transport?: string;
     /**
      * The wallet is redirected to this resource once a shared proof
      * is accepted.
@@ -1545,8 +1548,11 @@ export interface ProofListItem {
     verifier?: string;
     /** Protocol used for verification. */
     protocol: string;
-    /** Channel used for this request. */
-    transport: string;
+    /**
+     * Channel used for this request. Not set until a transport is
+     * selected, if multiple transports were offered.
+     */
+    transport?: string;
     /** Engagement method used for this request. */
     engagement?: string;
     /** State representation of this request. */
